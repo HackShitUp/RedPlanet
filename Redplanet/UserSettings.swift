@@ -58,7 +58,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.title = "Settings"
+            self.navigationController?.navigationBar.topItem!.title = "Settings"
         }
         // MARK: - RPHelpers; hide rpButton
         rpButton.isHidden = true

@@ -21,7 +21,6 @@ class MomentVideo: UICollectionViewCell {
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
@@ -31,36 +30,23 @@ class MomentVideo: UICollectionViewCell {
         rpVideoPlayer.autoplays = false
         rpVideoPlayer.playbackLoops = false
 //        rpVideoPlayer.play()
-        
-        // Bring buttons to front
-        let buttons = [self.rpUsername, self.time, self.moreButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
-            self.contentView.bringSubview(toFront: (b as AnyObject) as! UIView)
-        }
+
+        self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
+        self.time.layer.applyShadow(layer: self.time.layer)
+        self.contentView.bringSubview(toFront: self.rpUsername)
+        self.contentView.bringSubview(toFront: self.time)
     }
     
     func updateView() {
-        // Bring buttons to front
-        let buttons = [self.rpUsername, self.time, self.moreButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
-            self.contentView.bringSubview(toFront: (b as AnyObject) as! UIView)
-        }
+        
     }
-
 
     override func prepareForReuse() {
         super.prepareForReuse()
-//        rpVideoPlayer?.play()
     }
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
     }
     
-    
-
 }

@@ -533,8 +533,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
-        self.tableView?.estimatedRowHeight = 65.00
-        self.tableView?.rowHeight = UITableViewAutomaticDimension
+        self.tableView?.estimatedRowHeight = 75
+        self.tableView?.rowHeight = 75
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
         // Register NIB
@@ -712,7 +712,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+        return 75
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -30,7 +30,7 @@ class RPChatMediaCell: UITableViewCell {
     @IBOutlet weak var container: UIView!
     
     
-    // Function to zoom
+    // Photo or Sticker --> "ph" or "sti" --> Function to zoom into Photo/Sticker
     func zoom() {
         // Mark: - Agrume
         let agrume = Agrume(image: self.rpMediaAsset.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
@@ -38,7 +38,7 @@ class RPChatMediaCell: UITableViewCell {
     }
     
     
-    // Function to play video
+    // Video --> "vi" --> Function to play video
     func playVideo() {
         if let video = mediaObject!.value(forKey: "videoAsset") as? PFFile {
             // Traverse video url
@@ -52,53 +52,52 @@ class RPChatMediaCell: UITableViewCell {
             rpVideoPlayer.playbackLoops = true
             viewController.view.addSubview(rpVideoPlayer)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-            self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
+            self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
         }
     }
     
-    // Function to handle UIViewTap
-    func coldCall() {
-        if self.mediaObject?.value(forKey: "photoAsset") != nil {
-            // PHOTO
-            self.zoom()
-        } else if self.mediaObject?.value(forKey: "videoAsset") != nil {
-            // VIDEO
-            self.playVideo()
+    // Moment --> "itm" --> SingleStory
+    func showStory() {
+        print("Fired?")
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
+        let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! SingleStory
+        storyVC.singleStory = self.mediaObject!
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+        self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
+    }
+    
+    
+    // Function to add tap method
+    func addTapMethod() {
+        
+        // Configure tap method based on mediaType
+        switch mediaObject?.value(forKey: "mediaType") as! String {
+            case "itm":
+                let mediaTap = UITapGestureRecognizer(target: self, action: #selector(showStory))
+                mediaTap.numberOfTapsRequired = 1
+                self.rpMediaAsset.isUserInteractionEnabled = true
+                self.rpMediaAsset.addGestureRecognizer(mediaTap)
+            case "ph", "sti":
+                // Add tap gesture to zoom in
+                let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+                zoomTap.numberOfTapsRequired = 1
+                self.rpMediaAsset.isUserInteractionEnabled = true
+                self.rpMediaAsset.addGestureRecognizer(zoomTap)
+            case "vi":
+                // Add tap gesture to play video
+                let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+                playTap.numberOfTapsRequired = 1
+                self.rpMediaAsset.isUserInteractionEnabled = true
+                self.rpMediaAsset.addGestureRecognizer(playTap)
+        default:
+            break;
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // Set tap methods depending on type of media
-        if self.mediaObject?.value(forKey: "photoAsset") != nil {
-        // PHOTO
-            // Add tap gesture to zoom in
-            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
-            zoomTap.numberOfTapsRequired = 1
-            self.rpMediaAsset.isUserInteractionEnabled = true
-            self.rpMediaAsset.addGestureRecognizer(zoomTap)
-            
-        } else if self.mediaObject?.value(forKey: "videoAsset") != nil {
-        // VIDEO
-            // Add tap gesture to play video
-            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
-            playTap.numberOfTapsRequired = 1
-            self.rpMediaAsset.isUserInteractionEnabled = true
-            self.rpMediaAsset.addGestureRecognizer(playTap) 
-        }
-        
-        // Add method to tap view
-        if self.mediaObject != nil {
-            let viewTap = UITapGestureRecognizer(target: self, action: #selector(coldCall))
-            viewTap.numberOfTapsRequired = 1
-            self.container.isUserInteractionEnabled = true
-            self.container.addGestureRecognizer(viewTap)
-        }
     }
-    
-    
-    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -1741,7 +1741,7 @@
         <!--Single Story-->
         <scene sceneID="T6E-lV-HEM">
             <objects>
-                <viewController storyboardIdentifier="singleStoryVC" id="Z28-5z-g7K" customClass="SingleStory" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="storyVC" id="Z28-5z-g7K" customClass="SingleStory" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9zn-4Z-cEZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Z8r-uF-yWX"/>
@@ -1760,6 +1760,10 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Z28-5z-g7K" id="uZy-y6-Y2z"/>
+                                    <outlet property="delegate" destination="Z28-5z-g7K" id="ztt-Zh-80F"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1771,12 +1775,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="collectionView" destination="kfW-jM-eBz" id="fi3-Uj-Mrm"/>
+                        <outlet property="collectionView" destination="kfW-jM-eBz" id="5vg-dg-5aI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lfl-xR-KNv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5389" y="-3898"/>
+            <point key="canvasLocation" x="-2466" y="-560"/>
         </scene>
         <!--Chat Room-->
         <scene sceneID="7Ix-ZG-dx1">
@@ -2433,7 +2437,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
                                 <connections>
                                     <outlet property="delegate" destination="yaJ-ah-IQ2" id="Ehb-yy-eDv"/>
@@ -2653,8 +2657,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Hb5-4s-j8P">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="7V5-Wi-I5H">
-                            <rect key="frame" x="22.5" y="7" width="330" height="30"/>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" id="7V5-Wi-I5H">
+                            <rect key="frame" x="22.5" y="7" width="350" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

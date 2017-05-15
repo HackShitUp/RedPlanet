@@ -39,11 +39,6 @@
                         <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mm5-Jk-hSH">
-                        <rect key="frame" x="342" y="28" width="25" height="25"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="MoreBlack"/>
-                    </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nh-bt-Meb">
                         <rect key="frame" x="8" y="459" width="359" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -51,57 +46,11 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K59-Dp-fCA">
-                        <rect key="frame" x="0.0" y="488" width="125" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <state key="normal" title="likes">
-                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jT6-Gx-MeF">
-                        <rect key="frame" x="125" y="488" width="125" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <state key="normal" title="comments">
-                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tJX-z5-Gv5">
-                        <rect key="frame" x="250" y="488" width="125" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <state key="normal" title="shares">
-                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fG7-Dk-BGe">
-                        <rect key="frame" x="50" y="526" width="25" height="25"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Like"/>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AO7-TO-mlB">
-                        <rect key="frame" x="175" y="526" width="25" height="25"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Comment"/>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Flg-lJ-zgG">
-                        <rect key="frame" x="300" y="526" width="25" height="25"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Share"/>
-                    </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
-                <outlet property="commentButton" destination="AO7-TO-mlB" id="0xo-tA-AFC"/>
-                <outlet property="likeButton" destination="fG7-Dk-BGe" id="6VD-2Q-kDT"/>
-                <outlet property="moreButton" destination="mm5-Jk-hSH" id="UWH-j3-cyc"/>
-                <outlet property="numberOfComments" destination="jT6-Gx-MeF" id="IfO-DA-rtZ"/>
-                <outlet property="numberOfLikes" destination="K59-Dp-fCA" id="Omv-aT-G0M"/>
-                <outlet property="numberOfShares" destination="tJX-z5-Gv5" id="xWM-Yx-VL7"/>
                 <outlet property="rpUserProPic" destination="DUD-QC-5us" id="n6a-2n-Bof"/>
                 <outlet property="rpUsername" destination="4hd-Ye-Lmp" id="uOS-4j-QQa"/>
-                <outlet property="shareButton" destination="Flg-lJ-zgG" id="lHV-BG-1YC"/>
                 <outlet property="textPost" destination="4nh-bt-Meb" id="5MG-DR-KDG"/>
                 <outlet property="time" destination="CU1-sJ-WED" id="lz8-PN-UWc"/>
                 <outlet property="videoPreview" destination="w9D-Pk-t61" id="oWP-qX-AEH"/>
@@ -109,10 +58,4 @@
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="Comment" width="49" height="49"/>
-        <image name="Like" width="51" height="47"/>
-        <image name="MoreBlack" width="50" height="50"/>
-        <image name="Share" width="48" height="49"/>
-    </resources>
 </document>

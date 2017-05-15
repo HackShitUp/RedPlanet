@@ -91,7 +91,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
             agrume.hideStatusBar = true
             agrume.showFrom(self.delegate!.self)
         }
-        
     }
     
     // Function to edit profile
@@ -104,7 +103,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         let profileEdit = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profileEditVC") as! ProfileEdit
         self.delegate?.navigationController?.pushViewController(profileEdit, animated: true)
     }
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -138,78 +136,39 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         self.fullName.isUserInteractionEnabled = true
         self.fullName.addGestureRecognizer(editTap)
         
-        // (4) Handle KILabel taps
-        // Handle @username tap
+        // (4)
+        // MARK: - KILabel; @, #, and https://
+        // @@@
         userBio.userHandleLinkTapHandler = { label, handle, range in
-            // When mention is tapped, drop the "@" and send to user home page
-            var mention = handle
-            mention = String(mention.characters.dropFirst())
-            
             // Query data
             let user = PFUser.query()!
-            user.whereKey("username", equalTo: mention.lowercased())
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            user.whereKey("username", equalTo: String(handle.characters.dropFirst()).lowercased())
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
-                        // Append user's username
-                        otherName.append(mention)
-                        // Append user object
+                        // Append data
+                        otherName.append(String(handle.characters.dropFirst()).lowercased())
                         otherObject.append(object)
-                        
-                        
+                        // Push VC
                         let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - AudioToolBox; Vibrate Device
-                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "💩\nUnknown Account",
-                                                                  message: "Looks like this account doesn't exist.")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                        button.layer.masksToBounds = true
-                    }
-                    // Add Skip and verify button
-                    dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
-                        // Dismiss
-                        dialog.dismiss()
-                    }))
-                    dialogController.show(in: self.delegate!)
                 }
             })
         }
-        
-        // Handle #object tap
+        // ###
         userBio.hashtagLinkTapHandler = { label, handle, range in
-            // When # is tapped, drop the "#" and send to hashtags
-            var mention = handle
-            mention = String(mention.characters.dropFirst())
-            hashtags.append(mention.lowercased())
-//            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-//            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+            hashtags.append(String(handle.characters.dropFirst()).lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
         }
-        
-        
-        // Handle http: tap
+        // https://
         userBio.urlLinkTapHandler = { label, handle, range in
             // MARK: - SafariServices
             let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: false)
-            webVC.view.layer.cornerRadius = 8.00
-            webVC.view.clipsToBounds = true
-            self.delegate?.navigationController?.present(webVC, animated: true, completion: nil)
+            self.delegate?.present(webVC, animated: true, completion: nil)
         }
-        
     }
-    
-    
-    
 }

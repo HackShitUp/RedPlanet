@@ -23,16 +23,8 @@ class VideoCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var videoPreview: PFImageView!
     @IBOutlet weak var textPost: KILabel!
-    @IBOutlet weak var numberOfLikes: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var numberOfComments: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var numberOfShares: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
-    
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
@@ -44,7 +36,6 @@ class VideoCell: UITableViewCell {
         //        rpVideoPlayer.play()
         
         self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-        
     }
     
     

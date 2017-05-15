@@ -97,6 +97,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
         searchBar.textColor = UIColor.black
+//        searchBar.roundAllCorners(sender: searchBar)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

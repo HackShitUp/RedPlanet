@@ -35,17 +35,14 @@ class Explore: UITableViewController, UITextFieldDelegate {
         self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Configure UITextField
-        self.searchBar.delegate = self
-        self.searchBar.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
-        self.searchBar.placeholder = "🔍 Search..."
-//        self.searchBar.leftViewMode = .always
-//        // Add search icon in UITextField
-//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.image = UIImage(named: "Search")
-//        self.searchBar.leftView = imageView
-//        self.searchBar.addSubview(imageView)
+        searchBar.delegate = self
+        searchBar.backgroundColor = UIColor.groupTableViewBackground
+        searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        searchBar.text = "Search"
+        searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width - 32, height: 30)
+        searchBar.textAlignment = .center
+        searchBar.textColor = UIColor.darkGray
+        searchBar.roundAllCorners(sender: searchBar)
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()

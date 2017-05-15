@@ -450,8 +450,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Configure UITableview
         tableView.backgroundColor = UIColor.white
-        tableView.estimatedRowHeight = 65.00
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 75
+        tableView.rowHeight = 75
         tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         tableView.tableFooterView = UIView()
         // Register NIB
@@ -580,7 +580,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+        return 70
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

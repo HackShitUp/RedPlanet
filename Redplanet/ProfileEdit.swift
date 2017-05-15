@@ -503,8 +503,15 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         rpUsername.resignFirstResponder()
     }
     
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Configure UITabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
+        // MARK: - RPExtensions; Hide rpButton
+        rpButton.isHidden = true
     }
 
     override func viewDidLoad() {
@@ -613,6 +620,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // MARK: - RPExtensions; Show rpButton
+        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

@@ -226,6 +226,12 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Fetch Friends' or Following's Stories depending on index
+        if segmentedControl.selectedSegmentIndex == 0 {
+            fetchFriends()
+        } else {
+            fetchFollowing()
+        }
     }
     
     override func viewDidLoad() {
@@ -246,13 +252,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         
         // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-
-        // Fetch Friends' or Following's Stories depending on index
-        if segmentedControl.selectedSegmentIndex == 0 {
-            fetchFriends()
-        } else {
-            fetchFollowing()
-        }
         
         // Define Notification to reload data
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "home"), object: nil)
@@ -263,17 +262,17 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         // Configure UITableView
         self.tableView.layoutIfNeeded()
         self.tableView.setNeedsLayout()
-        self.tableView!.estimatedRowHeight = 65
-        self.tableView!.rowHeight = 65
-        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView!.tableFooterView = UIView()
+        self.tableView.estimatedRowHeight = 70
+        self.tableView.rowHeight = 70
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView.tableFooterView = UIView()
         
         // UIRefreshControl - Pull to refresh
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+        tableView.addSubview(refresher)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -315,7 +314,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+        return 70
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -379,8 +378,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
             cell.mediaPreview.isHidden = false
         }
         // MARK: - RPHelpers
-        cell.textPreview.roundAllCorners(sender: cell.textPreview)
-        cell.mediaPreview.roundAllCorners(sender: cell.mediaPreview)
+//        cell.textPreview.roundAllCorners(sender: cell.textPreview)
+//        cell.mediaPreview.roundAllCorners(sender: cell.mediaPreview)
+        cell.textPreview.makeCircular(forView: cell.textPreview, borderWidth: 0, borderColor: UIColor.clear)
+        cell.mediaPreview.makeCircular(forView: cell.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
         
         return cell
     }

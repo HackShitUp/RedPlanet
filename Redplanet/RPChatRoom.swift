@@ -1066,7 +1066,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Create cell's bounds
             mCell.contentView.frame = mCell.contentView.frame
             
-            // MARK: - RPHelpers extension
+            // MARK: - RPExtensions; Make rpUserProPic Circular
             mCell.rpUserProPic.makeCircular(forView: mCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // (1) Set usernames depending on who sent what
@@ -1080,47 +1080,37 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // (2) Fetch Media Asset
             mCell.rpMediaAsset.contentMode = .scaleAspectFill
-            mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
-            mCell.rpMediaAsset.layer.borderWidth = 0.0
             
             // (2A) PHOTO
             if let photo = self.messageObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // Traverse file to URL
-                let fileURL = URL(string: photo.url!)
             
                 // (A) REGULAR:  PHOTO OR STICKER
-                if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "ph" {
-                    mCell.rpMediaAsset.layer.cornerRadius = 2.00
-                } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "sti" {
-                // STICKER
-                    mCell.rpMediaAsset.layer.cornerRadius = 2.00
-                    mCell.rpMediaAsset.contentMode = .scaleAspectFit
+                if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "ph" || self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "sti" {
+                    // MARK: - RPExtensions
+                    mCell.rpMediaAsset.roundAllCorners(sender: mCell.rpMediaAsset)
+                
                 } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "itm" {
                 // (B) MOMENT
-                    mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                    // MARK: - RPExtensions
+                    mCell.rpMediaAsset.makeCircular(forView: mCell.rpMediaAsset, borderWidth: 0, borderColor: UIColor.clear)
                 }
             
                 // MARK: - SDWebImage
                 mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
                 mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
-                mCell.rpMediaAsset.sd_setImage(with: fileURL!, placeholderImage: mCell.rpMediaAsset.image)
+                mCell.rpMediaAsset.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: mCell.rpMediaAsset.image)
             }
             
             // (2B) VIDEO
             if let videoFile = self.messageObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // LayoutViews
-                mCell.rpMediaAsset.layoutIfNeeded()
-                mCell.rpMediaAsset.layoutSubviews()
-                mCell.rpMediaAsset.setNeedsLayout()
-                
                 if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "vi" {
-                // (A) REGULAR: VIDEO
-                    mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                    mCell.rpMediaAsset.layer.borderWidth = 3.50
+                // (A) REGULAR: VIDEO; Draw Purple Border
+                    // MARK: - RPExtensions
+                    mCell.rpMediaAsset.makeCircular(forView: mCell.rpMediaAsset, borderWidth: 3.50, borderColor: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
                 } else {
-                // (B) MOMENT
-                    mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                // (B) MOMENT; Make circular
+                    // MARK: - RPExtensions
+                    mCell.rpMediaAsset.makeCircular(forView: mCell.rpMediaAsset, borderWidth: 0, borderColor: UIColor.clear)
                 }
                 
                 // Load Video Preview and Play Video
@@ -1134,8 +1124,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 player.play()
             }
             
-            // Call Media Cell's awakeFromNib to layout the tap functions
-            mCell.awakeFromNib()
+            // Add tap methods
+            mCell.addTapMethod()
             
             // Fetch objects
             // (3) Set usernames depending on who sent what
@@ -1148,7 +1138,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
             
             // (4) Get and set user's profile photos
-            // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
+            // If the Receiver is the CurrentUser, and NOT the Sender...
             if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
@@ -1157,7 +1147,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 }
             }
             
-            // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
+            // If the CurrentUser is the Sender and NOT the Receiver...
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {

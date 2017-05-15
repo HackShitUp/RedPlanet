@@ -27,7 +27,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     // AppDelegate
     let appDelegate = AppDelegate()
-
     // Array to hold users to share with
     var usersToShareWith = [PFObject]()
     // Array to hold following

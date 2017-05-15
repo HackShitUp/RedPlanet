@@ -16,6 +16,7 @@ import Bolts
 
 import KILabel
 import SDWebImage
+import SafariServices
 
 class TextPostCell: UITableViewCell {
     
@@ -168,11 +169,46 @@ class TextPostCell: UITableViewCell {
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
+        
         // Add Username Tap
         let nameTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
+        
+        // MARK: - KILabel; @, #, and https://
+        // @@@
+        textPost.userHandleLinkTapHandler = { label, handle, range in
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: String(handle.characters.dropFirst()).lowercased())
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        // Append data
+                        otherName.append(String(handle.characters.dropFirst()).lowercased())
+                        otherObject.append(object)
+                        // Push VC
+                        let otherUser = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+                        self.superDelegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        // ###
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            hashtags.append(String(handle.characters.dropFirst()).lowercased())
+            let hashTags = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.superDelegate?.navigationController?.pushViewController(hashTags, animated: true)
+        }
+        // https://
+        textPost.urlLinkTapHandler = { label, handle, range in
+            // MARK: - SafariServices
+            let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: false)
+            self.superDelegate?.present(webVC, animated: true, completion: nil)
+        }
     }
     
 }

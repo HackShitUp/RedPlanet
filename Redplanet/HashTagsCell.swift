@@ -495,26 +495,19 @@ class HashTagsCell: UITableViewCell {
             self.photoAsset.addGestureRecognizer(playTap)
         }
         
-        
-        // Handle @username tap
+        // (4)
+        // MARK: - KILabel; @, #, and https://
+        // @@@
         textPost.userHandleLinkTapHandler = { label, handle, range in
-            // When mention is tapped, drop the "@" and send to user home page
-            var mention = handle
-            mention = String(mention.characters.dropFirst())
-            
             // Query data
             let user = PFUser.query()!
-            user.whereKey("username", equalTo: mention.lowercased())
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            user.whereKey("username", equalTo: String(handle.characters.dropFirst()).lowercased())
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
-                        
-                        // Append user's username
-                        otherName.append(mention)
-                        // Append user object
+                        // Append data
+                        otherName.append(String(handle.characters.dropFirst()).lowercased())
                         otherObject.append(object)
-                        
                         // Push VC
                         let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
@@ -524,17 +517,18 @@ class HashTagsCell: UITableViewCell {
                 }
             })
         }
-        
-        
-        // Handle http: tap
+        // ###
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            hashtags.append(String(handle.characters.dropFirst()).lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        }
+        // https://
         textPost.urlLinkTapHandler = { label, handle, range in
             // MARK: - SafariServices
             let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: false)
-            webVC.view.layer.cornerRadius = 8.00
-            webVC.view.clipsToBounds = true
-            self.delegate?.navigationController?.present(webVC, animated: true, completion: nil)
+            self.delegate?.present(webVC, animated: true, completion: nil)
         }
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

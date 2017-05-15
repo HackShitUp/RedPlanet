@@ -18,9 +18,8 @@ import SDWebImage
 
 class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate {
     
-    
-    // Initialized single, PFObject
-    var singleStory = PFObject()
+    // MARK: - Class Variable; Used to get object
+    open var singleStory: PFObject?
 
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -33,15 +32,28 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     var stories = [PFObject]()
     var likes = [PFObject]()
     
+    // ScrollSets
     let scrollSets = ["tp", "pp", "vi", "sp"]
     
     @IBOutlet weak var collectionView: UICollectionView!
     
     func fetchData() {
         let chats = PFQuery(className: "Chats")
-        chats.getObjectInBackground(withId: self.singleStory.objectId!) {
-            (object: PFObject?, error: Error?) in
+//        chats.whereKey("objectId", equalTo: self.singleStory.objectId!)
+        chats.whereKey("mediaType", equalTo: "itm")
+        chats.order(byDescending: "createdAt")
+        chats.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // Clear arrays
+                self.stories.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    // Ephemeral content
+                    let components: NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
+                        self.stories.append(object)
+                    }
+                }
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -50,6 +62,7 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
             DispatchQueue.main.async {
                 self.collectionView!.reloadData()
             }
+            
         }
     }
     
@@ -69,8 +82,12 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
+        // Straighten UIView
+        self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +125,12 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Fetch data
+        fetchData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -122,7 +145,7 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return self.stories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -130,13 +153,10 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        //        print("CELL: \(cell)\n")
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -147,7 +167,7 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         // Text Posts, Profile Photo
-        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
+        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "mediaType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
             // Set PFObject
@@ -157,7 +177,7 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
             
             return scrollCell
             
-        } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+        } else if self.stories[indexPath.row].value(forKey: "mediaType") as! String == "ph" {
             
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
@@ -192,7 +212,7 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
             
             return pCell
             
-        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
+        } else if self.stories[indexPath.item].value(forKey: "mediaType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
             // MOMENT PHOTO
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
