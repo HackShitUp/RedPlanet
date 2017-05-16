@@ -278,13 +278,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     (success: Bool, error: Error?) in
                     if success {
                         print("Successfully shared Space Post: \(space)")
-
-                        // MARK: - RPHelpers
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.showSuccess(withTitle: "Shared")
-                        // Check for @'s and #'s
-                        rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
-                        rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
                         
                         // Send Notification
                         let notifications = PFObject(className: "Notifications")
@@ -296,8 +289,11 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         notifications["forObjectId"] = space.objectId!
                         notifications.saveInBackground()
                         
-                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
+                        // MARK: - RPHelpers; show banner, check for #'s, check for @'s, and send push notification!
                         let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Shared")
+                        rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
+                        rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
                         rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                         
                         // Send Notification to otherUser's Profile
