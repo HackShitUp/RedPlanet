@@ -20,7 +20,6 @@ class Explore: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var searchBar: UITextField!
     // UIRefreshControl
     var refresher: UIRefreshControl!
-
     
     func refresh() {
         self.refresher.endRefreshing()
@@ -74,7 +73,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
     // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 3
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,44 +81,19 @@ class Explore: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 0 {
-            return 175
-        } else {
-            return 125
-        }
+//        if indexPath.section == 0 && indexPath.row == 0 {
+//            return 175
+//        } else {
+//            return 125
+//        }
+        return 175
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if indexPath.section == 0 && indexPath.row == 0 {
-            let ehCell = self.tableView.dequeueReusableCell(withIdentifier: "eHeaderCell", for: indexPath) as! EHeaderCell
-            ehCell.fetchStories()
-            ehCell.delegate = self
-            return ehCell
-        }
-        
-        
-        let eCell = self.tableView.dequeueReusableCell(withIdentifier: "eGenericCell", for: indexPath) as! EGenericCell
-        
-        
-        if indexPath.section == 1 && indexPath.row == 0 {
-            eCell.fetchType = "people"
-            eCell.fetchPeople({ (_: [PFObject]) in
-                eCell.collectionView.reloadData()
-            })
-        } else if indexPath.section == 2 && indexPath.row == 0 {
-            eCell.fetchType = "geoCodes"
-            eCell.fetchGeocodes()
-        } else {
-            eCell.fetchType = "randoms"
-            eCell.fetchRandoms()
-        }
-        
-//        eCell.collectionView.reloadData()
-        
-        return eCell
-        
-        
+        let ehCell = self.tableView.dequeueReusableCell(withIdentifier: "eHeaderCell", for: indexPath) as! EHeaderCell
+        ehCell.fetchStories()
+        ehCell.delegate = self
+        return ehCell
     }
 
 }

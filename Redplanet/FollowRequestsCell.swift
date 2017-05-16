@@ -46,7 +46,6 @@ class FollowRequestsCell: UICollectionViewCell {
         let alert = AlertController(title: "Follow Back?",
                                     message: "Would you like to follow \(self.rpUsername.text!) back?",
             style: .alert)
-        
         // Design content view
         alert.configContentView = { view in
             if let view = view as? AlertContentView {
@@ -59,7 +58,6 @@ class FollowRequestsCell: UICollectionViewCell {
                 view.textBackgroundView.clipsToBounds = true
             }
         }
-        
         // Design corner radius
         alert.configContainerCornerRadius = {
             return 14.00

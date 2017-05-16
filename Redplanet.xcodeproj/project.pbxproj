@@ -61,7 +61,6 @@
 		7E8B558C1E4EF67F004D3F31 /* SNTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55841E4EF67F004D3F31 /* SNTextField.swift */; };
 		7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55851E4EF67F004D3F31 /* SNUtils.swift */; };
 		7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */; };
-		7E8CF1121EB666E20012C4FB /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8CF1111EB666E20012C4FB /* ExploreCell.swift */; };
 		7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E54051EB29CAE00292B8C /* MomentVideo.swift */; };
 		7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* MomentVideo.xib */; };
 		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
@@ -158,7 +157,6 @@
 		7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B71DB36EE900437219 /* ActivityCell.swift */; };
 		7EC7690B1EB6655B00507911 /* FeaturedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC7690A1EB6655B00507911 /* FeaturedCell.swift */; };
 		7EC7690D1EB6657A00507911 /* EHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC7690C1EB6657A00507911 /* EHeaderCell.swift */; };
-		7EC7690F1EB6658100507911 /* EGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC7690E1EB6658100507911 /* EGenericCell.swift */; };
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */; };
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
@@ -262,7 +260,6 @@
 		7E8B55841E4EF67F004D3F31 /* SNTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNTextField.swift; sourceTree = "<group>"; };
 		7E8B55851E4EF67F004D3F31 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		7E8CF1111EB666E20012C4FB /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
 		7E8E54051EB29CAE00292B8C /* MomentVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentVideo.swift; sourceTree = "<group>"; };
 		7E8E54061EB29CAE00292B8C /* MomentVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentVideo.xib; sourceTree = "<group>"; };
 		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
@@ -414,7 +411,6 @@
 		7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redplanet.entitlements; sourceTree = "<group>"; };
 		7EC7690A1EB6655B00507911 /* FeaturedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedCell.swift; sourceTree = "<group>"; };
 		7EC7690C1EB6657A00507911 /* EHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EHeaderCell.swift; sourceTree = "<group>"; };
-		7EC7690E1EB6658100507911 /* EGenericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EGenericCell.swift; sourceTree = "<group>"; };
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = LICENSE.rtf; sourceTree = "<group>"; };
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
@@ -640,8 +636,8 @@
 			isa = PBXGroup;
 			children = (
 				7E79483D1EB5BD9D002DD324 /* Explore.swift */,
-				7EC769111EB6659200507911 /* UICollectionViewCells */,
-				7EC769101EB6658700507911 /* UITableViewCells */,
+				7EC7690C1EB6657A00507911 /* EHeaderCell.swift */,
+				7EC7690A1EB6655B00507911 /* FeaturedCell.swift */,
 			);
 			name = EXPLORE;
 			sourceTree = "<group>";
@@ -1209,24 +1205,6 @@
 			name = OTHERUSER;
 			sourceTree = "<group>";
 		};
-		7EC769101EB6658700507911 /* UITableViewCells */ = {
-			isa = PBXGroup;
-			children = (
-				7EC7690C1EB6657A00507911 /* EHeaderCell.swift */,
-				7EC7690E1EB6658100507911 /* EGenericCell.swift */,
-			);
-			name = UITableViewCells;
-			sourceTree = "<group>";
-		};
-		7EC769111EB6659200507911 /* UICollectionViewCells */ = {
-			isa = PBXGroup;
-			children = (
-				7EC7690A1EB6655B00507911 /* FeaturedCell.swift */,
-				7E8CF1111EB666E20012C4FB /* ExploreCell.swift */,
-			);
-			name = UICollectionViewCells;
-			sourceTree = "<group>";
-		};
 		7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */ = {
 			isa = PBXGroup;
 			children = (
@@ -1682,7 +1660,6 @@
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
-				7E8CF1121EB666E20012C4FB /* ExploreCell.swift in Sources */,
 				7EE697B81EAAC1FB004F4E24 /* PhotoCell.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7EA570B81EC02C4A00A57C70 /* ReactionsHeader.swift in Sources */,
@@ -1786,7 +1763,6 @@
 				7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */,
 				7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */,
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
-				7EC7690F1EB6658100507911 /* EGenericCell.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
