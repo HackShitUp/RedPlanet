@@ -30,7 +30,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     let reactionSelector = ReactionSelector()
-    let reactions = [Reaction(id: "ReactMore", title: "More", color: .lightGray, icon: UIImage(named: "ReactMore")!),
+    let reactions = [Reaction(id: "More", title: "More", color: .lightGray, icon: UIImage(named: "MoreBlack")!),
                      Reaction(id: "Like", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
                      Reaction(id: "Comment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
                      Reaction(id: "Share", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)]
@@ -113,7 +113,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
             // More
-            if reactionSelector.selectedReaction?.id == "ReactMore" {
+            if reactionSelector.selectedReaction?.id == "More" {
                 self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
                 
             } else if reactionSelector.selectedReaction?.id == "Like" {
@@ -204,8 +204,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-        reactButton.frame.origin.y = self.view.bounds.height - 75
+        reactButton.frame.origin.y = self.view.bounds.height - (reactButton.frame.size.height + 10)
         reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
+        reactButton.layer.applyShadow(layer: reactButton.layer)
         self.view.addSubview(reactButton)
         self.view.bringSubview(toFront: reactButton)
         

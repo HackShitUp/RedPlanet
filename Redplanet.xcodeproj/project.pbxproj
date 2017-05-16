@@ -121,6 +121,8 @@
 		7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* FollowRequests.swift */; };
 		7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */; };
 		7E99CA081E90E42700661B78 /* MasterUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99CA071E90E42700661B78 /* MasterUI.swift */; };
+		7E9B2E161ECAC669000F1AD2 /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B2E151ECAC669000F1AD2 /* ExploreCell.swift */; };
+		7E9B2E181ECACB48000F1AD2 /* TableCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B2E171ECACB48000F1AD2 /* TableCollectionCell.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
@@ -366,6 +368,8 @@
 		7E9955601DC975E5003D9D73 /* FollowRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsCell.swift; sourceTree = "<group>"; };
 		7E99CA071E90E42700661B78 /* MasterUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterUI.swift; sourceTree = "<group>"; };
+		7E9B2E151ECAC669000F1AD2 /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
+		7E9B2E171ECACB48000F1AD2 /* TableCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCollectionCell.swift; sourceTree = "<group>"; };
 		7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
@@ -638,6 +642,8 @@
 				7E79483D1EB5BD9D002DD324 /* Explore.swift */,
 				7EC7690C1EB6657A00507911 /* EHeaderCell.swift */,
 				7EC7690A1EB6655B00507911 /* FeaturedCell.swift */,
+				7E9B2E151ECAC669000F1AD2 /* ExploreCell.swift */,
+				7E9B2E171ECACB48000F1AD2 /* TableCollectionCell.swift */,
 			);
 			name = EXPLORE;
 			sourceTree = "<group>";
@@ -1682,6 +1688,7 @@
 				7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
 				7EB40B5B1EC6618A0034E8AF /* Story.swift in Sources */,
+				7E9B2E181ECACB48000F1AD2 /* TableCollectionCell.swift in Sources */,
 				7EC7690D1EB6657A00507911 /* EHeaderCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
@@ -1709,6 +1716,7 @@
 				7EA570B61EC01F3F00A57C70 /* CommentsCell.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
+				7E9B2E161ECAC669000F1AD2 /* ExploreCell.swift in Sources */,
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
 				7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
