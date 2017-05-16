@@ -121,14 +121,10 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
             (success: Bool, error: Error?) in
             if error == nil {
                 
-                // MARK: - RPHelpers
+                // MARK: - RPHelpers; update ChatsQueue, send push notification
                 let rpHelpers = RPHelpers()
-                // Update ChatQueue
-                _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                // Send push notification
-                if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                    _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-                }
+                rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                 
                 // Reload data for Chats
                 NotificationCenter.default.post(name: rpChat, object: nil)

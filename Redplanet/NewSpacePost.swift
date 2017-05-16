@@ -151,10 +151,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         print("Sent Notification: \(notifications)")
                         
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                        if otherObject.last!.value(forKey: "apnsId") != nil {
-                            let rpHelpers = RPHelpers()
-                            _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                        }
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                         
                         // Send Notification to otherUser's Profile
                         NotificationCenter.default.post(name: otherNotification, object: nil)
@@ -218,10 +216,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         print("Sent Notification: \(notifications)")
                         
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                        if otherObject.last!.value(forKey: "apnsId") != nil {
-                            let rpHelpers = RPHelpers()
-                            _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                        }
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                         
                         // Send Notification to otherUser's Profile
                         NotificationCenter.default.post(name: otherNotification, object: nil)
@@ -301,10 +297,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         notifications.saveInBackground()
                         
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                        if otherObject.last!.value(forKey: "apnsId") != nil {
-                            let rpHelpers = RPHelpers()
-                            _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                        }
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                         
                         // Send Notification to otherUser's Profile
                         NotificationCenter.default.post(name: otherNotification, object: nil)

@@ -241,10 +241,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                             // Handle optional chaining for user object
                             if let user = reactionObject.last!.value(forKey: "byUser") as? PFUser {
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                if user.value(forKey: "apnsId") != nil {
-                                    let rpHelpers = RPHelpers()
-                                    _ = rpHelpers.pushNotification(toUser: user, activityType: "commented on your post")
-                                }
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: user, activityType: "commented on your post")
                             }
                             
                         } else {

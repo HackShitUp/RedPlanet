@@ -384,17 +384,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             (success: Bool, error: Error?) in
                             if success {
                                 
-                                // MARK: - RPHelpers
+                                // MARK: - RPHelpers; update chatsQueue, and send push notification
                                 let rpHelpers = RPHelpers()
-                                _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                                rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                                rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                                 
                                 // Clear newChat
                                 self.newChat.text!.removeAll()
-                                // Handle optional chaining
-                                if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                                    let rpHelpers = RPHelpers()
-                                    _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-                                }
                                 
                                 // Reload data
                                 self.fetchChats()
@@ -454,28 +450,19 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             (success: Bool, error: Error?) in
             if error == nil {
                 
-                // MARK: - RPHelpers
+                // MARK: - RPHelpers; update ChatsQueue, show success, and push notification
                 let rpHelpers = RPHelpers()
-                _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                
-                // MARK: - RPHelpers
-                rpHelpers.showProgress(withTitle: "Sent")
+                rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                rpHelpers.showSuccess(withTitle: "Sent")
+                rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                 
                 // Re-enable done button
                 editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                 
                 // Clear newChat
                 self.newChat.text!.removeAll()
-                
-                // MARK: - RPHelpers; send push notification if user's apnsID is NOT nil
-                if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                    let rpHelpers = RPHelpers()
-                    _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-                }
-                
                 // Reload data
                 self.fetchChats()
-                
                 // Dismiss view controller
                 self.dismiss(animated: true, completion: nil)
                 
@@ -734,13 +721,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 (success: Bool, error: Error?) in
                 if error == nil {
                     
-                    // MARK: - RPHelpers
+                    // MARK: - RPHelpers; update ChatsQueue, and send push notification
                     let rpHelpers = RPHelpers()
-                    _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                    // Send push notification if user's apnsId is NOT nil
-                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-                    }
+                    rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                    rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                     
                     // Reload data
                     self.fetchChats()
@@ -778,17 +762,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Function to send screenshot
     func sendScreenshot() {
-        // Send push notification
-        if let apnsId = chatUserObject.last!.value(forKey: "apnsId") as? String {
-            OneSignal.postNotification(
-                ["contents":
-                    ["en": "\(PFUser.current()!.username!.lowercased()) screenshot the conversation"],
-                 "include_player_ids": ["\(apnsId)"],
-                 "ios_badgeType": "Increase",
-                 "ios_badgeCount": 1
-                ]
-            )
-        }
+        // MARK: - RPHelpers; send push notification
+        let rpHelpers = RPHelpers()
+        rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "screenshot the conversation!")
     }
     
     // Stylize title
@@ -966,19 +942,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UITextView Delegate Methods
     func textViewDidBeginEditing(_ textView: UITextView) {
-        // APNSID
-        if chatUserObject.last!.value(forKey: "apnsId") != nil {
-            // Show user is typing
-            // MARK: - OneSignal
-            OneSignal.postNotification(
-                ["contents":
-                    ["en": "\(PFUser.current()!.username!.lowercased()) is typing..."],
-                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                 "ios_badgeType": "Increase",
-                 "ios_badgeCount": 1,
-                 ]
-            )
-        }
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "is typing...")
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

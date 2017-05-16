@@ -89,19 +89,28 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                     switch shareWithObject.last!.value(forKey: "contentType") as! String {
                     case "tp":
                         // TEXT POST
-                        let chats = PFObject(className: "Chats")
-                        chats["sender"] = PFUser.current()!
-                        chats["senderUsername"] = PFUser.current()!.username!
-                        chats["receiver"] = user
-                        chats["receiverUsername"] = user.value(forKey: "username") as! String
-                        chats["read"] = false
-                        chats["saved"] = false
-                        chats["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
-                        chats.saveInBackground()
+                        let textPostChat = PFObject(className: "Chats")
+                        textPostChat["sender"] = PFUser.current()!
+                        textPostChat["senderUsername"] = PFUser.current()!.username!
+                        textPostChat["receiver"] = user
+                        textPostChat["receiverUsername"] = user.value(forKey: "username") as! String
+                        textPostChat["read"] = false
+                        textPostChat["saved"] = false
+                        textPostChat["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
+                        textPostChat.saveInBackground()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        _ = rpHelpers.updateQueue(chatQueue: textPostChat, userObject: user)
+                        
+                        // Save to "Shares"
+                        let shares = PFObject(className: "Shares")
+                        shares["byUser"] = PFUser.current()!
+                        shares["byUsername"] = PFUser.current()!.username!
+                        shares["toUser"] = user
+                        shares["toUsername"] = user.value(forKey: "username") as! String
+                        shares["forObject"] = shareWithObject.last!
+//                        shares.saveInBackground()
                         
                     case "ph":
                         // PHOTO
@@ -114,11 +123,12 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         chats["saved"] = false
                         chats["contentType"] = "ph"
                         chats["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
-                        chats.saveInBackground()
+//                        chats.saveInBackground()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
                         _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        
                         
                     case "vi":
                         // VIDEO
@@ -131,15 +141,12 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         chats["saved"] = false
                         chats["contentType"] = "vi"
                         chats["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
-                        chats.saveInBackground()
+//                        chats.saveInBackground()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
                         _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
-                        
-                        // TODO::
-                        // SPACE POST?
-                        
+
                     case "itm":
                         // MOMENT
                         let chats = PFObject(className: "Chats")
@@ -166,10 +173,8 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                     }
                     
                     // MARK: - RPHelpers; send push notification
-                    if user.value(forKey: "apnsId") != nil {
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.pushNotification(toUser: user, activityType: "from")
-                    }
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.pushNotification(toUser: user, activityType: "from")
                 }
             }
             

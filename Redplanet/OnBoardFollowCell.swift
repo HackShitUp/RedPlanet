@@ -49,10 +49,8 @@ class OnBoardFollowCell: UITableViewCell {
                 if success {
                     
                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                    if self.userObject!.value(forKey: "apnsId") != nil {
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
-                    }
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                     
                     // Change button's title and design
                     self.followButton.setTitle("Following", for: .normal)

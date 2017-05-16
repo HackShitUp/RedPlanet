@@ -92,6 +92,12 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
             }
             
         } else {
+            
+            // MARK: - HEAP
+            Heap.track("SharedMoment", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"])
+            
             // Send Chats
             let chats = PFObject(className: "Chats")
             chats["sender"] = PFUser.current()!
@@ -105,25 +111,13 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
             chats.saveInBackground()
             
             /*
-             MARK: - RPHelpers
-             Helper to update <ChatsQueue>
-             */
+            MARK: - RPHelpers
+            Helper to update <ChatsQueue>
+            Helper to send push notification
+            */
             let rpHelpers = RPHelpers()
-            _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-            
-            // MARK: - HEAP
-            Heap.track("SharedMoment", withProperties:
-                ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                ])
-            // Re-enable buttons
-            self.continueButton.isUserInteractionEnabled = true
-            
-            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-            if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                let rpHelpers = RPHelpers()
-                _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-            }
+            rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+            rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
 
             // Re-enable buttons
             self.continueButton.isUserInteractionEnabled = true

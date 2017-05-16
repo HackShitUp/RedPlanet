@@ -98,10 +98,8 @@ class ContactsCell: UITableViewCell {
                                 self.followButton.isEnabled = true
                                 
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                if self.userObject!.value(forKey: "apnsId") != nil {
-                                    let rpHelpers = RPHelpers()
-                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "requested to follow you")
-                                }
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: self.userObject!, activityType: "requested to follow you")
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -160,10 +158,8 @@ class ContactsCell: UITableViewCell {
                                 self.followButton.isEnabled = true
                                 
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                if self.userObject!.value(forKey: "apnsId") != nil {
-                                    let rpHelpers = RPHelpers()
-                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
-                                }
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -389,10 +385,8 @@ class ContactsCell: UITableViewCell {
                                     self.followButton.isEnabled = true
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                    if self.userObject!.value(forKey: "apnsId") != nil {
-                                        let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "requested to follow you")
-                                    }
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.pushNotification(toUser: self.userObject!, activityType: "requested to follow you")
                                     
                                     // Send to NotificationCenter
                                     NotificationCenter.default.post(name: contactsNotification, object: nil)
@@ -446,10 +440,8 @@ class ContactsCell: UITableViewCell {
                                     self.followButton.isEnabled = true
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                    if self.userObject!.value(forKey: "apnsId") != nil {
-                                        let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
-                                    }
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
@@ -769,10 +761,8 @@ class ContactsCell: UITableViewCell {
                                                         if success {
                                                             
                                                             // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                                            if self.userObject!.value(forKey: "apnsId") != nil {
-                                                                let rpHelpers = RPHelpers()
-                                                                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
-                                                            }
+                                                            let rpHelpers = RPHelpers()
+                                                            rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                                                             
                                                         } else {
                                                             print(error?.localizedDescription as Any)

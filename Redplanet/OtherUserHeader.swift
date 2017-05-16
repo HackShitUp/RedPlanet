@@ -148,10 +148,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             self.followButton.isEnabled = true
                             
                             // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                            if otherObject.last!.value(forKey: "apnsId") != nil {
-                                let rpHelpers = RPHelpers()
-                                _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
-                            }
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
                             
                         } else {
                             print(error?.localizedDescription as Any)
@@ -205,10 +203,9 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             self.followButton.isEnabled = true
                             
                             // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                            if otherObject.last!.value(forKey: "apnsId") != nil {
-                                let rpHelpers = RPHelpers()
-                                _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
-                            }
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
+                            
                         } else {
                             print(error?.localizedDescription as Any)
                         }
@@ -357,10 +354,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     print("Successfully sent notification: \(notifications)")
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId
-                                    if otherObject.last!.value(forKey: "apnsId") != nil {
-                                        let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
-                                    }
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
@@ -401,10 +396,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     print("Successfully sent notification: \(notifications)")
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                    if otherObject.last!.value(forKey: "apnsId") != nil {
-                                        let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
-                                    }
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
@@ -501,10 +494,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     self.relationType.setTitle("Follower", for: .normal)
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                    if otherObject.last!.value(forKey: "apnsId") != nil {
-                                        let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "confirmed your follow request")
-                                    }
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "confirmed your follow request")
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)

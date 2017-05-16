@@ -246,10 +246,8 @@ class FollowRequestsCell: UICollectionViewCell {
                                             NotificationCenter.default.post(name: requestsNotification, object: nil)
                                             
                                             // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                            if self.userObject!.value(forKey: "apnsId") != nil {
-                                                let rpHelpers = RPHelpers()
-                                                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "confirmed your follow request")
-                                            }
+                                            let rpHelpers = RPHelpers()
+                                            rpHelpers.pushNotification(toUser: self.userObject!, activityType: "confirmed your follow request")
                                             
                                         } else {
                                             print(error?.localizedDescription as Any)

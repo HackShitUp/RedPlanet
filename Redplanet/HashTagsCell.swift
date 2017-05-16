@@ -211,15 +211,15 @@ class HashTagsCell: UITableViewCell {
                             print("Successfully saved notificaiton: \(notifications)")
                             
                             // MARK: - RPHelpers; send push notification if user's object is NOT nil
-                            if self.userObject!.value(forKey: "apnsId") != nil {
+                            if self.contentObject!.value(forKey: "contentType") as! String == "ph" {
                                 let rpHelpers = RPHelpers()
-                                if self.contentObject!.value(forKey: "contentType") as! String == "ph" {
-                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Photo")
-                                } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
-                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Video")
-                                } else {
-                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Text Post")
-                                }
+                                rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Photo")
+                            } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Video")
+                            } else {
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Text Post")
                             }
                             
                         } else {

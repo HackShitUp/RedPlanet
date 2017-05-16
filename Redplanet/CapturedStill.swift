@@ -105,29 +105,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chats["saved"] = false
             chats.saveInBackground()
             
-            /*
-             MARK: - RPHelpers
-             Helper to update <ChatsQueue>
-             */
+            // MARK: - RPHelpers; update ChatsQueue and send push notification
             let rpHelpers = RPHelpers()
-            _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-            
-
-            // Send Push Notification to user
-            // Handle optional chaining
-            // Handle optional chaining
-            if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                // MARK: - OneSignal
-                // Send push notification
-                OneSignal.postNotification(
-                    ["contents":
-                        ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                     "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                     "ios_badgeType": "Increase",
-                     "ios_badgeCount": 1
-                    ]
-                )
-            }
+            rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+            rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
             
             // Reload data
             NotificationCenter.default.post(name: rpChat, object: nil)
