@@ -47,10 +47,34 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBAction func doneAction(_ sender: Any) {
-        if self.usersToShareWith.count != 0 {
+        switch self.usersToShareWith.count {
+        case let x where x > 7:
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nExceeded Maximum Number of Shares",
+                                                          message: "Sorry, you can only share posts with a maximum of 7 people...")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            // Show
+            dialogController.show(in: self)
+
+        case let x where x > 0:
             // Disable button
             self.doneButton.isEnabled = false
-            
             // Save to <Newsfeeds>
             if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 // Save in background
@@ -58,14 +82,13 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 // Send Notification
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
             }
-            
             // Send to individual people
             for user in self.usersToShareWith {
                 if user.objectId! != PFUser.current()!.objectId! {
                     // Switch Statement...
                     switch shareWithObject.last!.value(forKey: "contentType") as! String {
                     case "tp":
-                    // TEXT POST
+                        // TEXT POST
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
                         chats["senderUsername"] = PFUser.current()!.username!
@@ -81,7 +104,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
                         
                     case "ph":
-                    // PHOTO
+                        // PHOTO
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
                         chats["senderUsername"] = PFUser.current()!.username!
@@ -89,7 +112,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         chats["receiverUsername"] = user.value(forKey: "username") as! String
                         chats["read"] = false
                         chats["saved"] = false
-                        chats["mediaType"] = "ph"
+                        chats["contentType"] = "ph"
                         chats["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
                         chats.saveInBackground()
                         
@@ -98,7 +121,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
                         
                     case "vi":
-                    // VIDEO
+                        // VIDEO
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
                         chats["senderUsername"] = PFUser.current()!.username!
@@ -106,7 +129,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         chats["receiverUsername"] = user.value(forKey: "username") as! String
                         chats["read"] = false
                         chats["saved"] = false
-                        chats["mediaType"] = "vi"
+                        chats["contentType"] = "vi"
                         chats["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
                         chats.saveInBackground()
                         
@@ -114,17 +137,17 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         let rpHelpers = RPHelpers()
                         _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
                         
-                    // TODO::
-                    // SPACE POST?
+                        // TODO::
+                        // SPACE POST?
                         
                     case "itm":
-                    // MOMENT
+                        // MOMENT
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
                         chats["senderUsername"] = PFUser.current()!.username!
                         chats["receiver"] = user
                         chats["receiverUsername"] = user.value(forKey: "username") as! String
-                        chats["mediaType"] = "itm"
+                        chats["contentType"] = "itm"
                         chats["read"] = false
                         chats["saved"] = false
                         if shareWithObject.last!.value(forKey: "photoAsset") != nil {
@@ -149,7 +172,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                     }
                 }
             }
-
             
             // MARK: - RPHelpers
             let rpHelpers = RPHelpers()
@@ -161,15 +183,26 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             
             // Clear arrays
             self.usersToShareWith.removeAll(keepingCapacity: false)
-        }
         
-        
-        // Pop 3 VC's and push to bot || pop 1 VC
-        if self.navigationController?.viewControllers.count == 3 {
-            let viewControllers = self.navigationController!.viewControllers as [UIViewController]
-            _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: false)
-        } else {
-            _ = self.navigationController?.popViewController(animated: true)
+            // Pop 3 VC's and push to bot || pop 1 VC
+            if self.navigationController?.viewControllers.count == 3 {
+                let viewControllers = self.navigationController!.viewControllers as [UIViewController]
+                _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: false)
+            } else {
+                _ = self.navigationController?.popViewController(animated: true)
+            }
+            
+        case let x where x == 0 :
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showSuccess(withTitle: "Post or tap on someone to share...")
+            // Resign first responder
+            self.searchBar.resignFirstResponder()
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            
+        default:
+            break;
         }
     }
     
@@ -206,15 +239,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 self.tableView.reloadData()
             }
         }
-    }
-    
-    // Show current group w/NotificationBanner
-    func showPeople(withIndex: IndexPath) {
-        // Configure selected state
-        tableView?.cellForRow(at: withIndex)?.accessoryType = (self.tableView?.cellForRow(at: withIndex)?.isSelected)! ? .checkmark : .none
-        // MARK: - RPHelpers
-        let rpHelpers = RPHelpers()
-        rpHelpers.showProgress(withTitle: "Sharing with \(self.usersToShareWith.count) people...")
     }
     
     // Stylize UINavigationBar
@@ -502,8 +526,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         default:
             break;
         }
-        // Show current group
-        self.showPeople(withIndex: indexPath)
+        // Configure selected state
+        tableView.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
+        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.groupTableViewBackground
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -530,8 +555,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         default:
             break;
         }
-        // Show current group
-        self.showPeople(withIndex: indexPath)
+        // Configure selected state
+        tableView.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
+        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.white
     }
     
     // MARK: - UIScrollView Delegate Method

@@ -101,7 +101,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
             chats["read"] = false
             chats["saved"] = false
             chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData! as Data)
-            chats["mediaType"] = "itm"
+            chats["contentType"] = "itm"
             chats.saveInBackground()
             
             /*

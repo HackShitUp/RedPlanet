@@ -114,7 +114,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         chats["receiver"] = chatUserObject.last!
         chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
         chats["photoAsset"] = PFFile(data: UIImagePNGRepresentation(UIImage(named: self.stickers[indexPath.row])!)!)
-        chats["mediaType"] = "sti"
+        chats["contentType"] = "sti"
         chats["read"] = false
         chats["saved"] = false
         chats.saveInBackground {

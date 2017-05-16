@@ -377,7 +377,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         chats["receiver"] = chatUserObject.last!
                         chats["receiverUsername"] = chatUsername.last!
                         chats["videoAsset"] = PFFile(name: "video.mov", data: compressedData as Data)
-                        chats["mediaType"] = "vi"
+                        chats["contentType"] = "vi"
                         chats["read"] = false
                         chats["saved"] = false
                         chats.saveInBackground(block: {
@@ -447,7 +447,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats["receiver"] = chatUserObject.last!
         chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
         chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
-        chats["mediaType"] = "ph"
+        chats["contentType"] = "ph"
         chats["read"] = false
         chats["saved"] = false
         chats.saveInBackground {
@@ -1085,11 +1085,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             if let photo = self.messageObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
             
                 // (A) REGULAR:  PHOTO OR STICKER
-                if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "ph" || self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "sti" {
+                if self.messageObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" || self.messageObjects[indexPath.row].value(forKey: "contentType") as! String == "sti" {
                     // MARK: - RPExtensions
                     mCell.rpMediaAsset.roundAllCorners(sender: mCell.rpMediaAsset)
                 
-                } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "itm" {
+                } else if self.messageObjects[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 // (B) MOMENT
                     // MARK: - RPExtensions
                     mCell.rpMediaAsset.makeCircular(forView: mCell.rpMediaAsset, borderWidth: 0, borderColor: UIColor.clear)
@@ -1103,7 +1103,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // (2B) VIDEO
             if let videoFile = self.messageObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "vi" {
+                if self.messageObjects[indexPath.row].value(forKey: "contentType") as! String == "vi" {
                 // (A) REGULAR: VIDEO; Draw Purple Border
                     // MARK: - RPExtensions
                     mCell.rpMediaAsset.makeCircular(forView: mCell.rpMediaAsset, borderWidth: 3.50, borderColor: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))

@@ -42,7 +42,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     func fetchChat() {
         let chats = PFQuery(className: "Chats")
-        chats.whereKey("mediaType", equalTo: "itm")
+        chats.whereKey("contentType", equalTo: "itm")
         chats.order(byDescending: "createdAt")
         chats.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -141,6 +141,8 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
+        // Hide UINavigationBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Straighten UIView
         self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
     }
@@ -185,7 +187,11 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
 
@@ -218,7 +224,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         // Text Posts, Profile Photo
-        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "mediaType") as! String) {
+        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
             // Set PFObject
@@ -228,8 +234,8 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             
             return scrollCell
             
-        } else if self.stories[indexPath.row].value(forKey: "mediaType") as! String == "ph" {
-            
+        } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+        // PHOTO
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
@@ -263,8 +269,8 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             
             return pCell
             
-        } else if self.stories[indexPath.item].value(forKey: "mediaType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
-            // MOMENT PHOTO
+        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
+        // MOMENT PHOTO
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
@@ -286,8 +292,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             return mpCell
             
         } else {
-            
-            // MOMENT VIDEO CELL
+        // MOMENT VIDEO CELL
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             
             // (1) Set user's full name; "realNameOfUser"
@@ -345,10 +350,5 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             print("Not a video: \(indexPath![1])")
         }
     }
-    
-
-    
-    
-    
 
 }

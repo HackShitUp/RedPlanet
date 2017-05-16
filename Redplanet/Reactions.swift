@@ -54,6 +54,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Configure UI
         self.refresher?.endRefreshing()
         self.textView.resignFirstResponder()
+        self.tableView.allowsSelection = false
         // Handle switched TwicketSegmentedControl
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -67,6 +68,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             hold.minimumPressDuration = 0.40
             self.tableView.isUserInteractionEnabled = true
             self.tableView.addGestureRecognizer(hold)
+            self.tableView.allowsSelection = true
         case 2:
             fetchShares()
             reactionType = "shares"

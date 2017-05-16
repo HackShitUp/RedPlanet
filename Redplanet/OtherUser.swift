@@ -338,12 +338,10 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     // Function to refresh
     func refresh() {
-        // Query Content
-        fetchPosts()
         // End refresher
         self.refresher.endRefreshing()
-        // Reload data
-        self.tableView!.reloadData()
+        // Query Content
+        fetchPosts()
     }
 
     
@@ -514,11 +512,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         super.viewDidAppear(animated)
         // Stylize title again
         configureView()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+        // Fetch data
+        fetchPosts()
         // Track Who's Profile user lands on
         Heap.track("ViewedProfile", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
@@ -526,10 +521,10 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 "OtherUserID": "\(otherObject.last!.objectId!)",
                 "OtherUsername": "\(otherObject.last!.value(forKey: "username") as! String)"
             ])
-        
-        
-        // Fetch data
-        fetchPosts()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
@@ -810,7 +805,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
-            self.refresher.endRefreshing()
+            refresh()
         }
     }
 

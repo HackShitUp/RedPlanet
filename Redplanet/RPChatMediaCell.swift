@@ -72,7 +72,7 @@ class RPChatMediaCell: UITableViewCell {
     func addTapMethod() {
         
         // Configure tap method based on mediaType
-        switch mediaObject?.value(forKey: "mediaType") as! String {
+        switch mediaObject?.value(forKey: "contentType") as! String {
             case "itm":
                 let mediaTap = UITapGestureRecognizer(target: self, action: #selector(showStory))
                 mediaTap.numberOfTapsRequired = 1

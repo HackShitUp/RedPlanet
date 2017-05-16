@@ -70,11 +70,14 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
     // Handle segmentedControl query
     func handleCase() {
-        // Update UI by ending UIRefreshControl
+        // Update UI by ending UIRefreshControl and configuring UITableView
         self.refresher?.endRefreshing()
+        self.tableView.allowsSelection = true
+        
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             fetchActivity()
+            self.tableView.allowsSelection = false
         case 1:
             fetchToday()
         case 2:
@@ -441,12 +444,12 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         segmentedControl.delegate = self
         segmentedControl.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 16, height: 40)
         segmentedControl.isSliderShadowHidden = false
-        segmentedControl.setSegmentItems(["Actvitiy", "Today", "Saved"])
+        segmentedControl.setSegmentItems(["Notifications", "Today", "Saved"])
         segmentedControl.defaultTextColor = UIColor.black
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
         segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-        segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 13.5)!
+        segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 12)!
         
         // Configure UITableview
         tableView.backgroundColor = UIColor.white

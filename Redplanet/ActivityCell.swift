@@ -16,14 +16,11 @@ import Bolts
 
 
 class ActivityCell: UITableViewCell {
-    
-    
+
     // Instantiate parent view controller
     var delegate: UIViewController?
-    
     // Initialize user's object
     var userObject: PFObject?
-    
     // Inialize content object
     var contentObject: PFObject?
 
@@ -47,15 +44,11 @@ class ActivityCell: UITableViewCell {
     
     func viewPost() {
         DispatchQueue.main.async {
-            // ---------------------------------------------------------------------------------------------------------------
             // -------------------- L I K E ----------------------------------------------------------------------------------
-            // ---------------------------------------------------------------------------------------------------------------
-            
             // (A) LIKED POST
             if self.activity.text!.hasPrefix("liked") {
-                
-                // I
-                // TEXT POST
+
+                // I: TEXT POST
                 if self.activity.text!.hasSuffix("Text Post") {
                     // Check TextPosts
                     let texts = PFQuery(className: "Newsfeeds")
@@ -67,27 +60,26 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append text post object
-//                                textPostObject.append(object)
-//                                // Push VC
-//                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-//                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
-                            
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                         }
                     })
                 }
-                
-                
-                // II
-                // PHOTO
+
+                // II: PHOTO
                 if self.activity.text!.hasSuffix("your Photo") {
                     // Check "Photos_Videos"
                     let photos = PFQuery(className: "Newsfeeds")
@@ -99,14 +91,16 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             // Check Photos
                             for object in objects! {
-//                                // Append object
-//                                photoAssetObject.append(object)
-//                                // Push VC
-//                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-//                                self.delegate?.navigationController!.pushViewController(photoVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                             
                         } else {
@@ -118,10 +112,7 @@ class ActivityCell: UITableViewCell {
                     })
                 }
                 
-                
-                
-                // III
-                // PROFILE PHOTO
+                // III: PROFILE PHOTO
                 if self.activity.text!.hasSuffix("Profile Photo") {
                     let profilePhoto = PFQuery(className: "Newsfeeds")
                     profilePhoto.includeKeys(["byUser", "toUser", "pointObject"])
@@ -132,16 +123,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append necessary data for ProfilePhoto
-//                                proPicObject.append(object)
-//                                // Append other object
-//                                otherObject.append(PFUser.current()!)
-//                                otherName.append(PFUser.current()!.username!)
-//                                // Push ProfilePhoto view controller
-//                                let proPicVC = self.delegate!.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-//                                self.delegate!.navigationController!.pushViewController(proPicVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -151,11 +141,8 @@ class ActivityCell: UITableViewCell {
                         }
                     })
                 }
-                
-                
-                
-                // IV
-                // SPACE POST
+
+                // IV: SPACE POST
                 if self.activity.text!.hasSuffix("Space Post") {
                     let spacePost = PFQuery(className: "Newsfeeds")
                     spacePost.includeKeys(["byUser", "toUser", "pointObject"])
@@ -168,16 +155,17 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                /*
-                                // Append object
-                                spaceObject.append(object)
-                                // Push VC
-                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-                                 */
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
+                            
                         } else {
                             print(error?.localizedDescription as Any)
                             // Re-enable buttons
@@ -187,10 +175,7 @@ class ActivityCell: UITableViewCell {
                     })
                 }
                 
-                
-                
-                // V
-                // MOMENT
+                // V: MOMENT
                 if self.activity.text!.hasSuffix("Moment") {
                     let moment = PFQuery(className: "Newsfeeds")
                     moment.includeKeys(["byUser", "toUser", "pointObject"])
@@ -203,21 +188,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append object
-//                                itmObject.append(object)
-//                                // PHOTO
-//                                if object.value(forKey: "photoAsset") != nil {
-//                                    // Push to VC
-//                                    let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-//                                    self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
-//                                } else {
-//                                    // VIDEO
-//                                    // Push VC
-//                                    let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-//                                    self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
-//                                }
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -228,9 +207,7 @@ class ActivityCell: UITableViewCell {
                     })
                 }
                 
-                
-                // VI
-                // VIDEO
+                // VI: VIDEO
                 if self.activity.text!.hasSuffix("Video") {
                     let video = PFQuery(className: "Newsfeeds")
                     video.includeKeys(["byUser", "toUser", "pointObject"])
@@ -243,15 +220,16 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append object
-//                                videoObject.append(object)
-//                                // Push VC
-//                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-//                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
-                            
                         } else {
                             print(error?.localizedDescription as Any)
                             // Re-enable buttons
@@ -261,7 +239,7 @@ class ActivityCell: UITableViewCell {
                     })
                 }
                 
-            } // End Liked Content
+            }
             
             
             // (B) LIKED COMMENT
@@ -280,11 +258,8 @@ class ActivityCell: UITableViewCell {
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
-                        
                         for object in objects! {
-                            
                             let commentId = object.value(forKey: "forObjectId") as! String
-                            
                             // Find content
                             let newsfeeds = PFQuery(className: "Newsfeeds")
                             newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -292,111 +267,31 @@ class ActivityCell: UITableViewCell {
                             newsfeeds.findObjectsInBackground(block: {
                                 (objects: [PFObject]?, error: Error?) in
                                 if error == nil {
-                                    
                                     // PUSH VC
                                     for object in objects! {
-                                        /*
-                                        // I TEXT POST
-                                        if object.value(forKey: "contentType") as! String  == "tp" {
-                                            // Append object
-                                            textPostObject.append(object)
-                                            
-                                            // Push VC
-                                            let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                                            self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
-                                        }
-                                        
-                                        // II PHOTO
-                                        if object.value(forKey: "contentType") as! String  == "ph" {
-                                            // Append object
-                                            photoAssetObject.append(object)
-                                            
-                                            // Push VC
-                                            let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                            self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
-                                        }
-                                        
-                                        // III PROFILE PHOTO
-                                        if object.value(forKey: "contentType") as! String == "pp" {
-                                            // Append object
-                                            proPicObject.append(object)
-                                            
-                                            // Push VC
-                                            let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                                            self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                                        }
-                                        
-                                        // IV SPACE POST
-                                        if object.value(forKey: "contentType") as! String == "sp" {
-                                            // Append object
-                                            spaceObject.append(object)
-                                            
-                                            // Append to otherObject
-                                            otherObject.append(object.object(forKey: "toUser") as! PFUser)
-                                            // Append to otherName
-                                            otherName.append(object.value(forKey: "toUsername") as! String)
-                                            
-                                            // Push VC
-                                            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                                            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-                                        }
-                                        
-                                        // V MOMENT
-                                        if object.value(forKey: "contentType") as! String == "itm" {
-                                            // Append object
-                                            itmObject.append(object)
-                                            
-                                            // PHOTO
-                                            if object.value(forKey: "photoAsset") != nil {
-                                                // Push to VC
-                                                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                                self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
-                                            } else {
-                                                // VIDEO
-                                                // Push VC
-                                                let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                                                self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
-                                            }
-                                        }
-                                        
-                                        // VI VIDEO
-                                        if object.value(forKey: "contentType") as! String == "vi" {
-                                            // Append object
-                                            videoObject.append(object)
-                                            
-                                            // Push VC
-                                            let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                                            self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
-                                        }
-                                        */
+                                        // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                        let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                        storyVC.chatOrStory = "Story"
+                                        storyVC.singleStory = object
+                                        // MARK: - RPPopUpVC
+                                        let rpPopUpVC = RPPopUpVC()
+                                        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                        self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                                     }
-                                    
-                                    
-                                    
                                 } else {
                                     print(error?.localizedDescription as Any)
                                 }
                             })
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                     }
                 })
-                
             }
-            
-            
-            
-            
-            // --------------------------------------------------------------------------------------------------------------
             // -------------------- C O M M E N T ---------------------------------------------------------------------------
-            // --------------------------------------------------------------------------------------------------------------
-            
             if self.activity.text! == "commented on your post" {
                 
                 // Disable buttons
@@ -411,112 +306,30 @@ class ActivityCell: UITableViewCell {
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
-                        
                         // PUSH VC
                         for object in objects! {
-                            /*
-                            // I TEXT POST
-                            if object.value(forKey: "contentType") as! String  == "tp" {
-                                // Append object
-                                textPostObject.append(object)
-                                
-                                // Push VC
-                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
-                            }
-                            
-                            // II PHOTO
-                            if object.value(forKey: "contentType") as! String  == "ph" {
-                                // Append object
-                                photoAssetObject.append(object)
-                                
-                                // Push VC
-                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
-                            }
-
-                            // IV PROFILE PHOTO
-                            if object.value(forKey: "contentType") as! String == "pp" {
-                                // Append object
-                                proPicObject.append(object)
-                                otherObject.append(object.object(forKey: "byUser") as! PFUser)
-                                otherName.append((object.object(forKey: "byUser") as! PFUser).username!)
-                                // Push VC
-                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                            }
-                            
-                            // V SPACE POST
-                            if object.value(forKey: "contentType") as! String == "sp" {
-                                // Append object
-                                spaceObject.append(object)
-                                
-                                // Append to otherObject
-                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-                                // Append to otherName
-                                otherName.append(object.value(forKey: "toUsername") as! String)
-                                
-                                // Push VC
-                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-                            }
-                            
-                            // VI MOMENT
-                            if object.value(forKey: "contentType") as! String == "itm" {
-                                // Append object
-                                itmObject.append(object)
-                                
-                                // PHOTO
-                                if object.value(forKey: "photoAsset") != nil {
-                                    // Push to VC
-                                    let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                    self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
-                                } else {
-                                    // VIDEO
-                                    // Push VC
-                                    let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                                    self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
-                                }
-                            }
-                            
-                            // VII VIDEO
-                            if object.value(forKey: "contentType") as! String == "vi" {
-                                // Append object
-                                videoObject.append(object)
-                                
-                                // Push VC
-                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
-                            }
-                            */
+                            // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                            let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                            storyVC.chatOrStory = "Story"
+                            storyVC.singleStory = object
+                            // MARK: - RPPopUpVC
+                            let rpPopUpVC = RPPopUpVC()
+                            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                            self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                         }
-                        
-                        
-                        
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                     }
                 })
-                
-                
-            }// End commented on your content
-            
-            
-            
-            // ------------------------------------------------------------------------------------------------------------
+            }
             // -------------------- S H A R E D ---------------------------------------------------------------------------
-            // ------------------------------------------------------------------------------------------------------------
-            
             if self.activity.text!.hasPrefix("shared your") {
-                
                 // Disable buttons
                 self.activity.isUserInteractionEnabled = false
                 self.activity.isEnabled = false
@@ -533,13 +346,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append object
-//                                textPostObject.append(object)
-//                                // Push to VC
-//                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-//                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -563,13 +378,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append object
-//                                photoAssetObject.append(object)
-//                                // Push to VC
-//                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-//                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -589,13 +406,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append object
-//                                proPicObject.append(object)
-//                                // Push to VC
-//                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-//                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -615,17 +434,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-//                                // Append object
-//                                spaceObject.append(object)
-//                                // Append otherObject
-//                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-//                                // Append otherName
-//                                otherName.append(object.value(forKey: "toUsername") as! String)
-//                                // Push to VC
-//                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-//                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                             
                         } else {
@@ -649,23 +466,15 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                /*
-                                // Append object
-                                itmObject.append(object)
-                                // PHOTO
-                                if object.value(forKey: "photoAsset") != nil {
-                                    // Push to VC
-                                    let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                    self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
-                                } else {
-                                    // VIDEO
-                                    // Push VC
-                                    let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                                    self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
-                                }
-                                */
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                             
                         } else {
@@ -692,11 +501,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-//                                // Append object
-//                                videoObject.append(object)
-//                                // Push to VC
-//                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-//                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                             
                         } else {
@@ -709,14 +521,8 @@ class ActivityCell: UITableViewCell {
                 }
                 
             }
-            
-            
-            
-            
-            
-            // ----------------------------------------------------------------------------------------------------------------
+
             // -------------------- T A G -------------------------------------------------------------------------------------
-            // ----------------------------------------------------------------------------------------------------------------
             
             if self.activity.text!.hasPrefix("tagged you in a") {
                 // Disable buttons
@@ -738,11 +544,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-//                                // Append object
-//                                textPostObject.append(object)
-//                                // Push VC
-//                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-//                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -767,11 +576,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-//                                // Append object
-//                                photoAssetObject.append(object)
-//                                // Push VC
-//                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-//                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -796,15 +608,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-//                                // Append object
-//                                proPicObject.append(object)
-//                                // Append to otherObject
-//                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-//                                // Append to otherName
-//                                otherName.append(object.value(forKey: "toUsername") as! String)
-//                                // Push VC
-//                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-//                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -829,15 +640,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-//                                // Append object
-//                                spaceObject.append(object)
-//                                // Append to otherObject
-//                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-//                                // Append to otherName
-//                                otherName.append(object.value(forKey: "toUsername") as! String)
-//                                // Push VC
-//                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-//                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -863,11 +673,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-//                                // Append object
-//                                videoObject.append(object)
-//                                // Push VC
-//                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-//                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -889,62 +702,14 @@ class ActivityCell: UITableViewCell {
                         if error == nil {
                             // Find Content
                             for object in objects! {
-                                /*
-                                // TEXT POST
-                                if object.value(forKey: "contentType") as! String == "tp" {
-                                    // Append object
-                                    textPostObject.append(object)
-                                    // Push VC
-                                    let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                                    self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
-                                } else if object.value(forKey: "contentType") as! String == "ph" {
-                                    // PHOTO
-                                    // Append object
-                                    photoAssetObject.append(object)
-                                    // Push VC
-                                    let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                    self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
-                                } else if object.value(forKey: "contentType") as! String == "pp" {
-                                    // PROFILE PHOTO
-                                    // Append object
-                                    proPicObject.append(object)
-                                    // Push VC
-                                    let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                                    self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                                } else if object.value(forKey: "contentType") as! String == "sp" {
-                                    // SPACE POST
-                                    // Append object
-                                    spaceObject.append(object)
-                                    // otherUser
-                                    otherObject.append(object.object(forKey: "toUser") as! PFUser)
-                                    otherName.append(object.value(forKey: "toUsername") as! String)
-                                    // Push VC
-                                    let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                                    self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-                                } else if object.value(forKey: "contentType") as! String == "itm" {
-                                    // MOMENT
-                                    // Append object
-                                    itmObject.append(object)
-                                    
-                                    // PHOTO MOMENT
-                                    if object.value(forKey: "photoAsset") != nil {
-                                        let itmVC = self.delegate?.storyboard!.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                        self.delegate?.navigationController!.pushViewController(itmVC, animated: true)
-                                    } else {
-                                        // VIDEO MOMENT
-                                        let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                                        self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
-                                    }
-                                    
-                                } else if object.value(forKey: "contentType") as! String == "vi" {
-                                    // VIDEO
-                                    // Append object
-                                    videoObject.append(object)
-                                    // Push VC
-                                    let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                                    self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
-                                }
-                                */
+                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                                storyVC.chatOrStory = "Story"
+                                storyVC.singleStory = object
+                                // MARK: - RPPopUpVC
+                                let rpPopUpVC = RPPopUpVC()
+                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -957,12 +722,8 @@ class ActivityCell: UITableViewCell {
                 
                 
             }
-            
-            
-            
-            // ---------------------------------------------------------------------------------------------------------------
+
             // -------------------- R E L A T I O N S H I P S ----------------------------------------------------------------
-            // ---------------------------------------------------------------------------------------------------------------
             
             // requested to follow you
             if self.activity.text! == "requested to follow you" {
@@ -984,12 +745,7 @@ class ActivityCell: UITableViewCell {
                 self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
             }
             
-            
-            
-            
-            // --------------------------------------------------------------------------------------------------------------
             // -------------------- S P A C E -------------------------------------------------------------------------------
-            // --------------------------------------------------------------------------------------------------------------
             if self.activity.text!.hasPrefix("wrote on your Space") {
                 // Space Post
                 
@@ -1000,17 +756,14 @@ class ActivityCell: UITableViewCell {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         for object in objects! {
-                            /*
-                            // Append object
-                            spaceObject.append(object)
-                            // Append to otherObject
-                            otherObject.append(PFUser.current()!)
-                            // Append to otherName
-                            otherName.append(PFUser.current()!.username!)
-                            // Push VC
-                            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-                             */
+                            // Create storyVC, distinguish chatOrStory, and initialize PFObject
+                            let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                            storyVC.chatOrStory = "Story"
+                            storyVC.singleStory = object
+                            // MARK: - RPPopUpVC
+                            let rpPopUpVC = RPPopUpVC()
+                            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                            self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
@@ -1019,7 +772,6 @@ class ActivityCell: UITableViewCell {
             }
         }
     }
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -1045,11 +797,4 @@ class ActivityCell: UITableViewCell {
         self.activity.sizeToFit()
         self.activity.numberOfLines = 0
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
