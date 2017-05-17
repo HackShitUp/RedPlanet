@@ -43,7 +43,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var stories = [PFObject]()
     var likes = [PFObject]()
     
-    let scrollSets = ["tp", "pp", "vi", "sp"]
+    // ScrollSets
+    let scrollSets = ["tp", "ph", "pp", "vi", "sp"]
     
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -54,7 +55,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 //        newsfeeds.whereKey("objectId", containedIn: keys)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
-        newsfeeds.limit = 10
+        newsfeeds.limit = 20
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -213,7 +214,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
-        self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
     }
     
@@ -257,7 +257,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        print("CELL: \(cell)\n")
+        guard let storyScrollCell = cell as? StoryScrollCell else { return }
+        storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
     }
     
     
@@ -276,47 +277,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             // Set PFObject
             scrollCell.postObject = self.stories[indexPath.item]
             // Set parentDelegate
-            scrollCell.parentDelegate = self
+            scrollCell.delegate = self
+            scrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
             
             return scrollCell
             
-        } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-            
-            let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-            
-            // (1) Get user's object
-            if let user = self.stories[indexPath.item].value(forKey: "byUser") as? PFUser {
-                // Set user's fullName; "realNameOfUser"
-                pCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                // Set user's profile photo
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    pCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                    // MARK: - RPHelpers
-                    pCell.rpUserProPic.makeCircular(forView: pCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-                }
-            }
-            
-            // (2) MARK: - RPHelpers; Set time
-            pCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set photo
-            if let photo = self.stories[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                pCell.photo.sd_showActivityIndicatorView()
-                pCell.photo.sd_setIndicatorStyle(.gray)
-                pCell.photo.sd_setImage(with: URL(string: photo.url!)!)
-            }
-            
-            // (4) Set caption
-            if let textPost = self.stories[indexPath.item].value(forKey: "textPost") as? String {
-                pCell.caption.text = textPost
-            }
-            
-            return pCell
-            
         } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
-            // MOMENT PHOTO
+        // MOMENT PHOTO
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
@@ -338,8 +305,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             return mpCell
             
         } else {
-            
-            // MOMENT VIDEO CELL
+        // MOMENT VIDEO CELL
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             
             // (1) Set user's full name; "realNameOfUser"
@@ -391,9 +357,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         }
 
         if self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
-            print("Video: \(indexPath![1])")
+//            print("Video: \(indexPath![1])")
         } else {
-            print("Not a video: \(indexPath![1])")
+//            print("Not a video: \(indexPath![1])")
         }
     }
 
@@ -409,8 +375,52 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
         return 1
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        return cell
+        
+        if self.stories[tableView.tag].value(forKey: "contentType") as! String == "tp" {
+            
+            let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
+            
+            // Set PFObject
+            tpCell.postObject = self.stories[tableView.tag]
+            // Set parent UIViewController
+            tpCell.superDelegate = self
+            // Update UI
+            tpCell.updateView(postObject: self.stories[tableView.tag])
+            
+            return tpCell
+            
+        } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "ph" {
+            
+            let phCell = Bundle.main.loadNibNamed("PhotoCell", owner: self, options: nil)?.first as! PhotoCell
+            
+            phCell.postObject = self.stories[tableView.tag]
+            phCell.superDelegate = self
+            
+            
+            return phCell
+            
+        } else {
+        // if self.stories[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+        // PROFILE PHOTO
+            let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
+            
+            ppCell.postObject = self.stories[tableView.tag]
+            ppCell.superDelegate = self
+            ppCell.updateView(postObject: self.stories[tableView.tag])
+            
+            return ppCell
+        }
+    }
+    
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView.contentOffset.y <= 0 && scrollView.contentOffset.x == 0 {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 }

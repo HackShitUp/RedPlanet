@@ -8,6 +8,11 @@ PODS:
   - Bolts/Tasks (1.8.4)
   - DZNEmptyDataSet (1.8.1)
   - Heap (4.0.0)
+  - Ji (2.0.1):
+    - Ji/Ji (= 2.0.1)
+  - Ji/Ji (2.0.1):
+    - Ji/Ji-libxml
+  - Ji/Ji-libxml (2.0.1)
   - KILabel (1.0.1)
   - MarqueeLabel/Swift (3.0.5)
   - NotificationBannerSwift (1.2.0):
@@ -21,6 +26,8 @@ PODS:
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
   - Reactions (1.1.1)
+  - ReadabilityKit (0.6.1):
+    - Ji (~> 2.0.1)
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
@@ -40,6 +47,7 @@ DEPENDENCIES:
   - Parse
   - ParseUI
   - Reactions
+  - ReadabilityKit
   - SDWebImage
   - SwiftyCam (= 2.2.2)
   - SwipeNavigationController
@@ -49,6 +57,7 @@ SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
+  Ji: 6bb602a28dd08b804158f64990e6051ed5de0110
   KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
   MarqueeLabel: 8a25b2cf02cf52165022f01369e63536c58fcc00
   NotificationBannerSwift: 77f96e1c418309600aad70b21247d9b3cbc360e3
@@ -57,11 +66,12 @@ SPEC CHECKSUMS:
   Parse: b0aa91d2c435e53d4a9af26e741e014c9b35c42e
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   Reactions: cd5ef33d43191125297e792d7c18dd2385a4aa98
+  ReadabilityKit: 49c26a2da9708ae3b355854d5bee6a7edee2dfee
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: 34023ef5cce7d2b32f42f9ef0cafee7cd6bd9f2b
+PODFILE CHECKSUM: ac9ff146ace9126c18ea34991fe12cac16f92f32
 
 COCOAPODS: 1.2.1

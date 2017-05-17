@@ -17,6 +17,7 @@ import Bolts
 import KILabel
 import SDWebImage
 import SafariServices
+import ReadabilityKit
 
 class TextPostCell: UITableViewCell {
     
@@ -152,6 +153,26 @@ class TextPostCell: UITableViewCell {
                 self.textPost.textColor = UIColor.black
             }
             self.textPost.text = text
+
+            for var word in text.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+                // @'s
+                if word.hasPrefix("http") {
+//                    let apiEndpoint: String = "http://tinyurl.com/api-create.php?url=\(word)"
+//                    let shortURL = try? String(contentsOf: URL(string: apiEndpoint)!, encoding: String.Encoding.ascii)
+                    // Replace text
+                    Readability.parse(url: URL(string: word)!, completion: { (data) in
+                        let title = data?.title
+                        let description = data?.description
+                        let keywords = data?.keywords
+                        let imageUrl = data?.topImage
+                        let videoUrl = data?.topVideo
+                        print(title)
+                    })
+                }
+            }
+            
+            
+            
         }
         
         // (3) Set time

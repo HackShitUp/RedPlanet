@@ -36,7 +36,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     var likes = [PFObject]()
     
     // ScrollSets
-    let scrollSets = ["tp", "pp", "vi", "sp"]
+    let scrollSets = ["tp", "pp", "ph", "vi", "sp"]
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -230,44 +230,9 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             // Set PFObject
             scrollCell.postObject = self.stories[indexPath.item]
             // Set parentDelegate
-            scrollCell.parentDelegate = self
+            scrollCell.delegate = self
             
             return scrollCell
-            
-        } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-        // PHOTO
-            let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-            
-            // (1) Get user's object
-            if let user = self.stories[indexPath.item].value(forKey: "byUser") as? PFUser {
-                // Set user's fullName; "realNameOfUser"
-                pCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                // Set user's profile photo
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    pCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                    // MARK: - RPHelpers
-                    pCell.rpUserProPic.makeCircular(forView: pCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-                }
-            }
-            
-            // (2) MARK: - RPHelpers; Set time
-            pCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set photo
-            if let photo = self.stories[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                pCell.photo.sd_showActivityIndicatorView()
-                pCell.photo.sd_setIndicatorStyle(.gray)
-                pCell.photo.sd_setImage(with: URL(string: photo.url!)!)
-            }
-            
-            // (4) Set caption
-            if let textPost = self.stories[indexPath.item].value(forKey: "textPost") as? String {
-                pCell.caption.text = textPost
-            }
-            
-            return pCell
             
         } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO

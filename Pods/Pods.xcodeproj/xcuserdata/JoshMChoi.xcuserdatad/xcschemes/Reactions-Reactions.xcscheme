@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B6B2C3C7E4C597AD65ED357CECF3E4C2'
+               BlueprintIdentifier = '3F13C6D45D9C61934924570380B7F604'
                BlueprintName = 'Reactions-Reactions'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Reactions.bundle'>

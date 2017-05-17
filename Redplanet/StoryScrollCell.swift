@@ -12,104 +12,40 @@ import ParseUI
 import Bolts
 import SDWebImage
 
-class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
-    
+class StoryScrollCell: UICollectionViewCell, UIScrollViewDelegate {
     // PFObject; used to determine post type
     var postObject: PFObject?
     // Parent UIViewController
-    var parentDelegate: UIViewController?
-    
-    // UIRefreshControl
-    var refresher: UIRefreshControl!
+    var delegate: UIViewController?
 
     @IBOutlet weak var tableView: UITableView!
 
-    
+    // MARK: - StoryScrollCell Protocol Function; sets datasource and delegate methods
     func setTableViewDataSourceDelegate
         <D: UITableViewDataSource & UITableViewDelegate>
         (dataSourceDelegate: D, forRow row: Int) {
+        // Configure UITableView
+        tableView.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 50
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.delegate = dataSourceDelegate
         tableView.dataSource = dataSourceDelegate
         tableView.tag = row
         tableView.reloadData()
     }
-    
-    
-    func refresh() {
-        self.refresher.endRefreshing()
-    }
 
+    // MARK: - UICollectionView Life Cycle
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        // Configure UITableView
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.tableFooterView = UIView()
-        tableView.estimatedRowHeight = 50
-        tableView.rowHeight = UITableViewAutomaticDimension
-        
         // Configure UIRefreshControl
-        refresher = UIRefreshControl()
+        let refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.clear
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+        tableView.addSubview(refresher)
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
-    // MARK: - UITableView Data Source Methods
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if self.postObject!.value(forKey: "contentType") as! String == "tp" {
-            // Text Post
-            let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
-            
-            tpCell.postObject = self.postObject!
-            tpCell.superDelegate = self.parentDelegate
-            tpCell.updateView(postObject: self.postObject!)
-            
-            return tpCell
-            
-        } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
-            let vCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
-
-            if let video = self.postObject!.value(forKey: "videoAsset") as? PFFile {
-                vCell.addVideo(videoURL: URL(string: video.url!)!)
-            }
-            
-            return vCell
-            
-        } else {
-            // Profile Photo
-            let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
-            
-            ppCell.postObject = self.postObject!
-            ppCell.superDelegate = self.parentDelegate
-            ppCell.updateView(postObject: self.postObject!)
-            
-            return ppCell
-        }
-    }
-    
-    // MARK: - UIScrollView Delegate Methods
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y <= 0 {
-            self.parentDelegate?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    
     
 }
