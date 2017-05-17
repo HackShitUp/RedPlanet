@@ -54,9 +54,9 @@ class RPChatRoomCell: UITableViewCell {
         }
         // ###
         message.hashtagLinkTapHandler = { label, handle, range in
-            hashtags.append(String(handle.characters.dropFirst()).lowercased())
-            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+//            hashtags.append(String(handle.characters.dropFirst()).lowercased())
+//            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+//            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
         }
         // https://
         message.urlLinkTapHandler = { label, handle, range in

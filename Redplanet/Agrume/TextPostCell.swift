@@ -154,6 +154,7 @@ class TextPostCell: UITableViewCell {
             }
             self.textPost.text = text
 
+            /*
             for var word in text.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                 // @'s
                 if word.hasPrefix("http") {
@@ -170,7 +171,7 @@ class TextPostCell: UITableViewCell {
                     })
                 }
             }
-            
+            */
             
             
         }
@@ -220,9 +221,9 @@ class TextPostCell: UITableViewCell {
         }
         // ###
         textPost.hashtagLinkTapHandler = { label, handle, range in
-            hashtags.append(String(handle.characters.dropFirst()).lowercased())
-            let hashTags = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-            self.superDelegate?.navigationController?.pushViewController(hashTags, animated: true)
+//            hashtags.append(String(handle.characters.dropFirst()).lowercased())
+//            let hashTags = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+//            self.superDelegate?.navigationController?.pushViewController(hashTags, animated: true)
         }
         // https://
         textPost.urlLinkTapHandler = { label, handle, range in

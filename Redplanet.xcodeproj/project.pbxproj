@@ -27,8 +27,6 @@
 		7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E41C7B91E4056C90025129B /* OtherUserHeader.xib */; };
 		7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7BB1E4057000025129B /* OtherUserHeader.swift */; };
 		7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307801DD021A100AA2413 /* TimelineView.swift */; };
-		7E43833C1DD9138000337007 /* HashTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833B1DD9138000337007 /* HashTags.swift */; };
-		7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833D1DD9138F00337007 /* HashTagsCell.swift */; };
 		7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */; };
 		7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A98031DDCFFFA006DA985 /* FullName.swift */; };
 		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
@@ -224,8 +222,6 @@
 		7E41C7B91E4056C90025129B /* OtherUserHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherUserHeader.xib; sourceTree = "<group>"; };
 		7E41C7BB1E4057000025129B /* OtherUserHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserHeader.swift; sourceTree = "<group>"; };
 		7E4307801DD021A100AA2413 /* TimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
-		7E43833B1DD9138000337007 /* HashTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTags.swift; sourceTree = "<group>"; };
-		7E43833D1DD9138F00337007 /* HashTagsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HashTagsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E44F8AC1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		7E44F8AD1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoom.swift; sourceTree = "<group>"; };
@@ -547,8 +543,6 @@
 		7E43833F1DD9139300337007 /* HASHTAGS */ = {
 			isa = PBXGroup;
 			children = (
-				7E43833B1DD9138000337007 /* HashTags.swift */,
-				7E43833D1DD9138F00337007 /* HashTagsCell.swift */,
 			);
 			name = HASHTAGS;
 			sourceTree = "<group>";
@@ -1672,7 +1666,6 @@
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7EBDCB261E72251000E319A0 /* Library.swift in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
-				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7EA570B81EC02C4A00A57C70 /* ReactionsHeader.swift in Sources */,
@@ -1682,7 +1675,6 @@
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
-				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,

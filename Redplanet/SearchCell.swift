@@ -31,9 +31,8 @@ class SearchCell: UITableViewCell {
     func goUser() {
         
         if self.rpUsername.text!.hasPrefix("#") {
-            
             let mention = String(self.rpUsername.text!.characters.dropFirst())
-            hashtags.append(mention.lowercased())
+//            hashtags.append(mention.lowercased())
 //            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
 //            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
             
