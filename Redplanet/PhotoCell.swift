@@ -44,28 +44,28 @@ class PhotoCell: UITableViewCell {
         }
         
         // (2) Set text post
-        if let text = self.postObject!.value(forKey: "textPost") as? String {
-            // Manipulate font size and color depending on character count
-            if text.characters.count < 140 {
-                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 23)
-                // MARK: - RPExtensions
-                self.textPost.textColor = UIColor.randomColor()
-            } else {
-                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                self.textPost.textColor = UIColor.black
-            }
+        if let text = postObject!.value(forKey: "textPost") as? String {
+//            // Manipulate font size and color depending on character count
+//            if text.characters.count < 140 {
+//                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 23)
+//                // MARK: - RPExtensions
+//                self.textPost.textColor = UIColor.randomColor()
+//            } else {
+//                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 17)
+//                self.textPost.textColor = UIColor.black
+//            }
             self.textPost.text = text
         }
         
         // (3) Set time
-        let from = self.postObject!.createdAt!
+        let from = postObject!.createdAt!
         let now = Date()
         let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         self.time.text = difference.getFullTime(difference: difference, date: from)
         
         // (4) Set photo
-        if let image = self.postObject!.value(forKey: "photoAsset") as? PFFile {
+        if let image = postObject!.value(forKey: "photoAsset") as? PFFile {
             // MARK: - SDWebImage
             self.photo.sd_setIndicatorStyle(.gray)
             self.photo.sd_showActivityIndicatorView()

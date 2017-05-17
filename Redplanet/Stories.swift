@@ -382,7 +382,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if self.stories[tableView.tag].value(forKey: "contentType") as! String == "tp" {
-            
+        // TEXT POST
             let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
             
             // Set PFObject
@@ -395,12 +395,12 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             return tpCell
             
         } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "ph" {
-            
+        // PHOTO
             let phCell = Bundle.main.loadNibNamed("PhotoCell", owner: self, options: nil)?.first as! PhotoCell
             
             phCell.postObject = self.stories[tableView.tag]
             phCell.superDelegate = self
-            
+            phCell.updateView(postObject: self.stories[tableView.tag])
             
             return phCell
             
