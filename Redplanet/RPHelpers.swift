@@ -84,14 +84,14 @@ class RPHelpers: NSObject {
                 // Get username
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
+                print("FOR OBJECT: \(forObject!)\n")
                 // Save hashtag to server
                 let hashtags = PFObject(className: "Hashtags")
                 hashtags["hashtag"] = word.lowercased()
                 hashtags["userHash"] = "#" + word.lowercased()
                 hashtags["by"] = PFUser.current()!.username!
-                hashtags["pointUser"] = PFUser.current()!
-                hashtags["forObjectId"] =  forObject!.objectId!
+                hashtags["byUser"] = PFUser.current()!
+                hashtags["forObjectId"] =  forObject?.objectId!
                 hashtags.saveInBackground()
             }
         }

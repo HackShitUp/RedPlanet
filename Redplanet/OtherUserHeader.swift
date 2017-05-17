@@ -708,9 +708,13 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         }
         // ###
         userBio.hashtagLinkTapHandler = { label, handle, range in
-//            hashtags.append(String(handle.characters.dropFirst()).lowercased())
-//            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-//            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+            // Show #'s
+            let hashtagsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! Hashtags
+            hashtagsVC.hashtagString = String(handle.characters.dropFirst()).lowercased()
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: hashtagsVC)
+            self.delegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
         }
         // https://
         userBio.urlLinkTapHandler = { label, handle, range in

@@ -78,10 +78,27 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             // Save to <Newsfeeds>
             if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 // Save in background
-                shareWithObject.last!.saveInBackground()
+                shareWithObject.last!.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        if shareWithObject.last!.value(forKey: "textPost") != nil {
+                            // MARK: - RPHelpers; check for #'s and @'s
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.checkHash(forObject: shareWithObject.last!,
+                                                forText: (shareWithObject.last!.value(forKey: "textPost") as! String))
+                            rpHelpers.checkTags(forObject: shareWithObject.last!,
+                                                forText: (shareWithObject.last!.value(forKey: "textPost") as! String),
+                                                postType: (shareWithObject.last!.value(forKey: "contentType") as! String))
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                
                 // Send Notification
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
             }
+            
             // Send to individual people
             for user in self.usersToShareWith {
                 if user.objectId! != PFUser.current()!.objectId! {

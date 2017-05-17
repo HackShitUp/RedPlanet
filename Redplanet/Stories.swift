@@ -18,6 +18,7 @@ import Bolts
 import AnimatedCollectionViewLayout
 import SwipeNavigationController
 import Reactions
+import SDWebImage
 
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
@@ -232,7 +233,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     

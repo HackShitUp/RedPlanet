@@ -29,19 +29,20 @@ class SearchCell: UITableViewCell {
     
     // Go to user
     func goUser() {
-        
-        if self.rpUsername.text!.hasPrefix("#") {
-            let mention = String(self.rpUsername.text!.characters.dropFirst())
-//            hashtags.append(mention.lowercased())
-//            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-//            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        if self.rpFullName.text!.hasPrefix("#") {
+            // Show #'s
+            let hashtagsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! Hashtags
+            hashtagsVC.hashtagString = String(self.rpFullName.text!.characters.dropFirst())
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: hashtagsVC)
+            self.delegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
             
         } else {
             // Append other user
             otherObject.append(self.userObject!)
             // Append otherName
             otherName.append(self.userObject!.value(forKey: "username") as! String)
-            
             // Push VC
             let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
             self.delegate?.navigationController?.pushViewController(otherVC, animated: true)

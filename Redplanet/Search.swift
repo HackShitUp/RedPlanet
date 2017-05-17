@@ -71,6 +71,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         // MARK: - RPExtensions
         self.navigationController?.navigationBar.normalizeBar(navigator: self.navigationController)
         // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -85,10 +86,12 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         super.viewDidLoad()
         
         // Configure UITableView
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView!.tableFooterView = UIView()
+        tableView.separatorColor = UIColor.groupTableViewBackground
+        tableView.rowHeight = 60
+        tableView.tableFooterView = UIView()
+        
         // MARK: - DZNEmptyDataSet
-        self.tableView!.emptyDataSetSource = self
+        tableView.emptyDataSetSource = self
         
         // Configure UISearchBar
         searchBar.delegate = self
@@ -207,7 +210,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -216,27 +219,26 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         // Set cell's parent vc
         cell.delegate = self
 
+        
         if searchBar.text!.hasPrefix("#") {
-            
+            // De-allocate UITableViewCell's PFObject
             cell.userObject = nil
-            
             // Hide IBObjects
             cell.rpUserProPic.isHidden = true
-            cell.rpFullName.isHidden = true
-            cell.rpUsername.isHidden = false
-            
+            cell.rpUsername.isHidden = true
+            cell.rpFullName.isHidden = false
             // Set hashtag word
-            cell.rpUsername.text! = self.searchHashes[indexPath.row]
+            cell.rpFullName.text! = self.searchHashes[indexPath.row]
             
         } else {
             // Set user's object
             cell.userObject = searchObjects[indexPath.row]
-            
-            // Show IBObjects
+            // Configure UI
             cell.rpUserProPic.isHidden = false
             cell.rpFullName.isHidden = false
             cell.rpUsername.isHidden = false
-
+            cell.rpFullName.font = UIFont(name: "AvenirNext-Medium", size: 17)
+            
             // MARK: - RPHelpers extension
             cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
@@ -252,6 +254,8 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
         }
+        
+        
 
         return cell
     }

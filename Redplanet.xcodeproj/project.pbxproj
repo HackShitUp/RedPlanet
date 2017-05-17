@@ -52,6 +52,7 @@
 		7E80DAAB1EB420D7003F0067 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80DAA71EB420D7003F0067 /* Palette.swift */; };
 		7E80DAAC1EB420D7003F0067 /* TwicketSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80DAA91EB420D7003F0067 /* TwicketSegmentedControl.swift */; };
 		7E80DAAD1EB420D7003F0067 /* UIViewShadowExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80DAAA1EB420D7003F0067 /* UIViewShadowExtension.swift */; };
+		7E85C8711ECCC15200D5EF07 /* Hashtags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E85C8701ECCC15200D5EF07 /* Hashtags.swift */; };
 		7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55801E4EF67F004D3F31 /* SNFilter.swift */; };
 		7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55811E4EF67F004D3F31 /* SNSlider.swift */; };
 		7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55821E4EF67F004D3F31 /* SNSliderDataSource.swift */; };
@@ -251,6 +252,7 @@
 		7E80DAA81EB420D7003F0067 /* TwicketSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwicketSegmentedControl.h; sourceTree = "<group>"; };
 		7E80DAA91EB420D7003F0067 /* TwicketSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwicketSegmentedControl.swift; sourceTree = "<group>"; };
 		7E80DAAA1EB420D7003F0067 /* UIViewShadowExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewShadowExtension.swift; sourceTree = "<group>"; };
+		7E85C8701ECCC15200D5EF07 /* Hashtags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hashtags.swift; sourceTree = "<group>"; };
 		7E8B55801E4EF67F004D3F31 /* SNFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNFilter.swift; sourceTree = "<group>"; };
 		7E8B55811E4EF67F004D3F31 /* SNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNSlider.swift; sourceTree = "<group>"; };
 		7E8B55821E4EF67F004D3F31 /* SNSliderDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNSliderDataSource.swift; sourceTree = "<group>"; };
@@ -540,11 +542,14 @@
 			path = VideoViewController;
 			sourceTree = "<group>";
 		};
-		7E43833F1DD9139300337007 /* HASHTAGS */ = {
+		7E43833F1DD9139300337007 /* Hashtags/SelectedStories */ = {
 			isa = PBXGroup;
 			children = (
+				7E85C8701ECCC15200D5EF07 /* Hashtags.swift */,
+				7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */,
+				7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */,
 			);
-			name = HASHTAGS;
+			name = Hashtags/SelectedStories;
 			sourceTree = "<group>";
 		};
 		7E46EDD61DE4F4400034E434 /* Password */ = {
@@ -554,21 +559,6 @@
 				7E989A251DE4F17E000215A1 /* NewPassword.swift */,
 			);
 			name = Password;
-			sourceTree = "<group>";
-		};
-		7E4CFF951DB4393A0087454E /* POSTS */ = {
-			isa = PBXGroup;
-			children = (
-				7E6113D41DD157C2001CE98C /* EditContent.swift */,
-				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
-				7E8E54091EB29CF100292B8C /* MomentVideo */,
-				7E972FED1EA97D810047F4D4 /* TextPost */,
-				7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */,
-				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
-				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
-				7EE697C41EAAC440004F4E24 /* VideoCell */,
-			);
-			name = POSTS;
 			sourceTree = "<group>";
 		};
 		7E6A12E21E4D524C00CF108B /* Agrume */ = {
@@ -628,6 +618,15 @@
 				7E80DAAA1EB420D7003F0067 /* UIViewShadowExtension.swift */,
 			);
 			name = TwicketSegmentedControl;
+			sourceTree = "<group>";
+		};
+		7E85C8721ECCCE3B00D5EF07 /* UserCell */ = {
+			isa = PBXGroup;
+			children = (
+				7EECEE661E3C7B6D003FA134 /* UserCell.swift */,
+				7EECEE671E3C7B6D003FA134 /* UserCell.xib */,
+			);
+			name = UserCell;
 			sourceTree = "<group>";
 		};
 		7E873D821E5C0C6D004E5FCB /* EXPLORE */ = {
@@ -694,13 +693,13 @@
 			name = HOME/STORIES;
 			sourceTree = "<group>";
 		};
-		7E972FED1EA97D810047F4D4 /* TextPost */ = {
+		7E972FED1EA97D810047F4D4 /* TextPostCell */ = {
 			isa = PBXGroup;
 			children = (
 				7EDB84671EB968F8005E805E /* TextPostCell.swift */,
 				7EDB84681EB968F8005E805E /* TextPostCell.xib */,
 			);
-			name = TextPost;
+			name = TextPostCell;
 			sourceTree = "<group>";
 		};
 		7E972FEE1EA97D890047F4D4 /* MomentPhoto */ = {
@@ -1098,12 +1097,11 @@
 				7EC5D1391DB2FE4F00437219 /* Redplanet.xcdatamodeld */,
 				7EC5D16E1DB32F3800437219 /* TABBAR_NAVIGATION */,
 				7EC5D19A1DB3541900437219 /* LOGIN_SIGNUP */,
-				7E43833F1DD9139300337007 /* HASHTAGS */,
+				7E43833F1DD9139300337007 /* Hashtags/SelectedStories */,
 				7EC5D1B01DB359F300437219 /* OTHERUSER */,
 				7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */,
 				7ED4A91F1DBEBE130016698F /* REACTIONS */,
-				7EECEE6A1E3C7B7E003FA134 /* NIB: UserCell */,
-				7E4CFF951DB4393A0087454E /* POSTS */,
+				7EECEE6A1E3C7B7E003FA134 /* NIBS */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,
@@ -1188,7 +1186,6 @@
 			children = (
 				7E873D821E5C0C6D004E5FCB /* EXPLORE */,
 				7EC5D1A91DB357C600437219 /* SEARCH */,
-				7EE06C281E7B2C2700472200 /* SELECTED_STORIES */,
 			);
 			name = EXPLORE;
 			sourceTree = "<group>";
@@ -1226,6 +1223,7 @@
 			children = (
 				7EDFB8EC1EC95EF20019F2E0 /* REACTIONS */,
 				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
+				7E6113D41DD157C2001CE98C /* EditContent.swift */,
 				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 			);
 			name = REACTIONS;
@@ -1251,15 +1249,6 @@
 				7EA570B91EC02C5400A57C70 /* ReactionsHeader.xib */,
 			);
 			name = REACTIONS;
-			sourceTree = "<group>";
-		};
-		7EE06C281E7B2C2700472200 /* SELECTED_STORIES */ = {
-			isa = PBXGroup;
-			children = (
-				7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */,
-				7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */,
-			);
-			name = SELECTED_STORIES;
 			sourceTree = "<group>";
 		};
 		7EE697BA1EAAC200004F4E24 /* PhotoCell */ = {
@@ -1306,13 +1295,19 @@
 			name = SegmentedProgressBar;
 			sourceTree = "<group>";
 		};
-		7EECEE6A1E3C7B7E003FA134 /* NIB: UserCell */ = {
+		7EECEE6A1E3C7B7E003FA134 /* NIBS */ = {
 			isa = PBXGroup;
 			children = (
-				7EECEE661E3C7B6D003FA134 /* UserCell.swift */,
-				7EECEE671E3C7B6D003FA134 /* UserCell.xib */,
+				7E85C8721ECCCE3B00D5EF07 /* UserCell */,
+				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
+				7E8E54091EB29CF100292B8C /* MomentVideo */,
+				7E972FED1EA97D810047F4D4 /* TextPostCell */,
+				7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */,
+				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
+				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
+				7EE697C41EAAC440004F4E24 /* VideoCell */,
 			);
-			name = "NIB: UserCell";
+			name = NIBS;
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1784,6 +1779,7 @@
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
 				7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */,
 				7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */,
+				7E85C8711ECCC15200D5EF07 /* Hashtags.swift in Sources */,
 				7E80DAAB1EB420D7003F0067 /* Palette.swift in Sources */,
 				7E80DAAD1EB420D7003F0067 /* UIViewShadowExtension.swift in Sources */,
 				7E80352E1EB4102700C9BA63 /* Home.swift in Sources */,

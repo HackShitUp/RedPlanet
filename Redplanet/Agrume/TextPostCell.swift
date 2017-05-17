@@ -221,9 +221,13 @@ class TextPostCell: UITableViewCell {
         }
         // ###
         textPost.hashtagLinkTapHandler = { label, handle, range in
-//            hashtags.append(String(handle.characters.dropFirst()).lowercased())
-//            let hashTags = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-//            self.superDelegate?.navigationController?.pushViewController(hashTags, animated: true)
+            // Show #'s
+            let hashtagsVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! Hashtags
+            hashtagsVC.hashtagString = String(handle.characters.dropFirst()).lowercased()
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: hashtagsVC)
+            self.superDelegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
         }
         // https://
         textPost.urlLinkTapHandler = { label, handle, range in

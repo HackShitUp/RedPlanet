@@ -137,6 +137,9 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         // Fetch Unread Chats and new Follow Requests
         fetchChatsQueue()
         getNewRequests()
+        // MARK: - RPExtension; add rpButton to center bottom of UIView
+        self.view.setButton(container: self.view)
+        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
     }
     
     

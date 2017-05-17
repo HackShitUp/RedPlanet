@@ -312,7 +312,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UILabel()
         header.backgroundColor = UIColor.white
-        header.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+//        header.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        header.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         header.font = UIFont(name: "AvenirNext-Bold", size: 12)
         header.textAlignment = .left
         header.text = "      \(self.exploreTitles[section])"
