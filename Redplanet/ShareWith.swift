@@ -23,7 +23,7 @@ var shareWithObject = [PFObject]()
 class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
     // MARK: - Class Variables
-    open var createdPost: Bool? = false
+//    open var createdPost: Bool? = false
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -81,6 +81,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 shareWithObject.last!.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
+                        // Handle nil textPost
                         if shareWithObject.last!.value(forKey: "textPost") != nil {
                             // MARK: - RPHelpers; check for #'s and @'s
                             let rpHelpers = RPHelpers()
@@ -90,13 +91,14 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                                                 forText: (shareWithObject.last!.value(forKey: "textPost") as! String),
                                                 postType: (shareWithObject.last!.value(forKey: "contentType") as! String))
                         }
+                        
+                        // Send Notification
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
+                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
-                
-                // Send Notification
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
             }
             
             // Send to individual people
@@ -120,70 +122,61 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         let rpHelpers = RPHelpers()
                         _ = rpHelpers.updateQueue(chatQueue: textPostChat, userObject: user)
                         
-                        // Save to "Shares"
-                        let shares = PFObject(className: "Shares")
-                        shares["byUser"] = PFUser.current()!
-                        shares["byUsername"] = PFUser.current()!.username!
-                        shares["toUser"] = user
-                        shares["toUsername"] = user.value(forKey: "username") as! String
-                        shares["forObject"] = shareWithObject.last!
-//                        shares.saveInBackground()
-                        
                     case "ph":
                         // PHOTO
-                        let chats = PFObject(className: "Chats")
-                        chats["sender"] = PFUser.current()!
-                        chats["senderUsername"] = PFUser.current()!.username!
-                        chats["receiver"] = user
-                        chats["receiverUsername"] = user.value(forKey: "username") as! String
-                        chats["read"] = false
-                        chats["saved"] = false
-                        chats["contentType"] = "ph"
-                        chats["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
-//                        chats.saveInBackground()
+                        let photoChat = PFObject(className: "Chats")
+                        photoChat["sender"] = PFUser.current()!
+                        photoChat["senderUsername"] = PFUser.current()!.username!
+                        photoChat["receiver"] = user
+                        photoChat["receiverUsername"] = user.value(forKey: "username") as! String
+                        photoChat["read"] = false
+                        photoChat["saved"] = false
+                        photoChat["contentType"] = "ph"
+                        photoChat["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
+                        photoChat.saveInBackground()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        _ = rpHelpers.updateQueue(chatQueue: photoChat, userObject: user)
                         
                         
                     case "vi":
                         // VIDEO
-                        let chats = PFObject(className: "Chats")
-                        chats["sender"] = PFUser.current()!
-                        chats["senderUsername"] = PFUser.current()!.username!
-                        chats["receiver"] = user
-                        chats["receiverUsername"] = user.value(forKey: "username") as! String
-                        chats["read"] = false
-                        chats["saved"] = false
-                        chats["contentType"] = "vi"
-                        chats["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
-//                        chats.saveInBackground()
+                        let videoChat = PFObject(className: "Chats")
+                        videoChat["sender"] = PFUser.current()!
+                        videoChat["senderUsername"] = PFUser.current()!.username!
+                        videoChat["receiver"] = user
+                        videoChat["receiverUsername"] = user.value(forKey: "username") as! String
+                        videoChat["read"] = false
+                        videoChat["saved"] = false
+                        videoChat["contentType"] = "vi"
+                        videoChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
+                        videoChat.saveInBackground()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        _ = rpHelpers.updateQueue(chatQueue: videoChat, userObject: user)
 
                     case "itm":
                         // MOMENT
-                        let chats = PFObject(className: "Chats")
-                        chats["sender"] = PFUser.current()!
-                        chats["senderUsername"] = PFUser.current()!.username!
-                        chats["receiver"] = user
-                        chats["receiverUsername"] = user.value(forKey: "username") as! String
-                        chats["contentType"] = "itm"
-                        chats["read"] = false
-                        chats["saved"] = false
+                        let momentChat = PFObject(className: "Chats")
+                        momentChat["sender"] = PFUser.current()!
+                        momentChat["senderUsername"] = PFUser.current()!.username!
+                        momentChat["receiver"] = user
+                        momentChat["receiverUsername"] = user.value(forKey: "username") as! String
+                        momentChat["contentType"] = "itm"
+                        momentChat["read"] = false
+                        momentChat["saved"] = false
                         if shareWithObject.last!.value(forKey: "photoAsset") != nil {
-                            chats["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
+                            momentChat["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
                         } else {
-                            chats["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
+                            momentChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
                         }
-                        chats.saveInBackground()
+                        momentChat.saveInBackground()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        _ = rpHelpers.updateQueue(chatQueue: momentChat, userObject: user)
                         
                     default:
                         break
@@ -432,7 +425,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // If post was NOT created, hide "Everyone" option
-        if createdPost == false && section == 0 {
+        if shareWithObject.last!.objectId != nil && section == 0 {
             return 0
         } else {
             return 35
@@ -441,7 +434,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // If post was NOT created, hide "Everyone" option
-        if createdPost == false && indexPath.row == 0 {
+        if shareWithObject.last!.objectId != nil && indexPath.row == 0 {
             return 0
         } else {
             return 50

@@ -136,7 +136,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 
                 shareWithObject.append(self.stories.last!)
                 let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-                shareWithVC.createdPost = false
                 self.navigationController?.pushViewController(shareWithVC, animated: true)
             }
         } else {

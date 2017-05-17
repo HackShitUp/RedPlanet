@@ -144,7 +144,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             // Show ShareWith View Controller
             shareWithObject.append(textPost)
             let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-            shareWithVC.createdPost = true
             self.navigationController?.pushViewController(shareWithVC, animated: true)
         }
     }

@@ -521,7 +521,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         segmentedControl.frame = frame
         segmentedControl.delegate = self
         segmentedControl.isSliderShadowHidden = false
-        segmentedControl.setSegmentItems(["Likes", "Comments", "Shares"])
+        segmentedControl.setSegmentItems(["Likes", "Comments", "Share With"])
         segmentedControl.defaultTextColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white

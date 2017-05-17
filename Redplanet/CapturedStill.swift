@@ -86,7 +86,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // Show ShareWith View Controller
             shareWithObject.append(itmPhoto)
             let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-            shareWithVC.createdPost = true
             self.navigationController?.pushViewController(shareWithVC, animated: true)
             
         } else {
