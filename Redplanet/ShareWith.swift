@@ -263,7 +263,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         
         // MARK: - RPHelpers; whiten UINavigationBar and roundAllCorners
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.view.roundAllCorners(sender: self.navigationController?.view)
+        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         
         // MARK: - RPHelpers
         // Hide rpButton
@@ -533,7 +533,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         }
         // Configure selected state
         tableView.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
-        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.groupTableViewBackground
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -562,7 +561,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         }
         // Configure selected state
         tableView.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
-        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.white
     }
     
     // MARK: - UIScrollView Delegate Method

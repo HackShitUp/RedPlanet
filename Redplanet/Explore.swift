@@ -8,6 +8,12 @@
 
 import UIKit
 import CoreData
+
+import AudioToolbox
+import AVFoundation
+import AVKit
+import DZNEmptyDataSet
+
 import Parse
 import ParseUI
 import Bolts
@@ -15,41 +21,128 @@ import SDWebImage
 
 class Explore: UITableViewController, UITextFieldDelegate {
     
+    // Arrays to hold publisherNames and Objects for Stories
+    var sourceObjects = [PFObject]() // used for Selected Stories
+    var publisherNames = [String]()
+    var articles = [AnyObject]()
+    
     // Array to hold people
+    var promotedPosts = [PFObject]()
     var geocodeUsers = [PFObject]()
     var randomUsers = [PFObject]()
     
+    // AppDelegate
     let appDelegate = AppDelegate()
     // UIRefreshControl
     var refresher: UIRefreshControl!
     // PFQuery pipeline method
     var page: Int = 30
-    
-    
-    var exploreTitles = ["Featured", "Promoted", "Near Me", "Suggested"]
+    // Boolean to determine randomized query; whether function will fetch public/private accounts
+    var switchBool: Bool? = false
+    // Titles for header
+    var exploreTitles = ["News", "Promoted", "Suggested Accounts", "People Near Me"]
     
     @IBOutlet weak var searchBar: UITextField!
     
     func refresh() {
         self.refresher.endRefreshing()
+//        fetchNews()
+//        fetchPromoted()
+//        fetchRandoms()
     }
     
-    // Fetch Users and shuffle results
-    func fetchDiscover() {
+    // (1) Fetch News
+    func fetchNews() {
+        let ads = PFQuery(className: "Ads")
+        ads.order(byAscending: "createdAt")
+        ads.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.sourceObjects.removeAll(keepingCapacity: false)
+                self.publisherNames.removeAll(keepingCapacity: false)
+                self.articles.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    // (1) Append publisherNames, and articles
+                    URLSession.shared.dataTask(with: URL(string: object.value(forKey: "URL") as! String)!,
+                                               completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+                                                if error != nil {
+                                                    print(error?.localizedDescription as Any)
+                                                    return
+                                                }
+                                                do  {
+                                                    // Traverse JSON data to "Mutable Containers"
+                                                    let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
+                                                    // (2) Get Source (publisherNames) --> remove "-" and capitalize first word
+                                                    let source = ((json as AnyObject).value(forKey: "source") as! String).replacingOccurrences(of: "-", with: " ")
+                                                    self.publisherNames.append(source.localizedCapitalized)
+                                                    // (3) Get First Article for each source
+                                                    let items = (json as AnyObject).value(forKey: "articles") as? Array<Any>
+                                                    let firstSource = items![0]
+                                                    self.articles.append(firstSource as AnyObject)
+                                                    // (4) Append source object
+                                                    self.sourceObjects.append(object)
+                                                    
+                                                    // Reload data in main thread
+                                                    DispatchQueue.main.async {
+                                                        self.tableView.reloadData()
+                                                    }
+                                                    
+                                                } catch let error {
+                                                    print(error.localizedDescription as Any)
+                                                }
+                    }) .resume()
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+
+    // (2) Fetch Promoted
+    func fetchPromoted() {
+        let promoted = PFQuery(className: "Newsfeeds")
+        promoted.whereKey("byUser", matchesQuery: PFUser.query()!.whereKey("private", equalTo: false))
+        promoted.whereKey("contentType", containedIn: ["tp", "ph", "vi", "itm"])
+        promoted.includeKey("byUser")
+        promoted.order(byDescending: "createdAt")
+        promoted.limit = self.page
+        promoted.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.promotedPosts.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    // TODO:::
+                    self.promotedPosts.append(object)
+                }
+                
+                // Reload data in main thread
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
+    // (3) Fetch random users
+    func fetchRandoms() {
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
-        
-        let publicWProPic = PFUser.query()!
-        publicWProPic.whereKey("private", equalTo: false)
-        publicWProPic.whereKey("proPicExists", equalTo: true)
-        
-        let privateWProPic = PFUser.query()!
-        privateWProPic.whereKey("private", equalTo: true)
-        privateWProPic.whereKey("proPicExists", equalTo: true)
 
-        let both = PFQuery.orQuery(withSubqueries: [publicWProPic, privateWProPic])
+        let both = PFQuery.orQuery(withSubqueries:
+            [PFUser.query()!.whereKey("private", equalTo: false),
+             PFUser.query()!.whereKey("private", equalTo: true)])
         both.limit = self.page
+        both.whereKey("proPicExists", equalTo: true)
         both.whereKey("objectId", notEqualTo: "mWwx2cy2H7")
+        if switchBool == true {
+            both.order(byAscending: "createdAt")
+        } else {
+            both.order(byDescending: "createdAt")
+        }
         both.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -63,9 +156,48 @@ class Explore: UITableViewController, UITextFieldDelegate {
                     }
                 }
                 
-                // FETCH nearby users
+                // Fetch Location
                 if PFUser.current()!.value(forKey: "location") != nil {
-                    self.discoverGeoCodes()
+                    self.fetchNearMe()
+                } else {
+                    // Vibrate device
+                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                    
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "Location Access Denied",
+                                                                  message: "Please enable Location access so you can share Moments with geo-filters and help us find your friends better!")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
+                    
+                    // Add settings button
+                    dialogController.addAction(AZDialogAction(title: "Settings", handler: { (dialog) -> (Void) in
+                        // Dismiss
+                        dialog.dismiss()
+                        // Show Settings
+                        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                    }))
+                    
+                    // Cancel
+                    dialogController.cancelButtonStyle = { (button,height) in
+                        button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.setTitle("LATER", for: [])
+                        return true
+                    }
+                    
+                    dialogController.show(in: self)
+                }
+                
+                // Reload data in main thread
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
                 }
 
             } else {
@@ -78,16 +210,15 @@ class Explore: UITableViewController, UITextFieldDelegate {
         })
     }
     
-
-    
-    // Function to fetch geoLocation
-    func discoverGeoCodes() {
+    // (4) Fetch near users
+    func fetchNearMe() {
         // Find location
         let discover = PFUser.query()!
         discover.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
-        discover.limit = self.page
-        discover.order(byAscending: "createdAt")
+        discover.whereKey("objectId", notContainedIn: self.randomUsers.map {$0.objectId!})
         discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
+        discover.order(byAscending: "createdAt")
+        discover.limit = self.page
         discover.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -98,39 +229,48 @@ class Explore: UITableViewController, UITextFieldDelegate {
                         self.geocodeUsers.append(object)
                     }
                 }
+                
+                // Reload data in main thread
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
             }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
         })
     }
-
     
-
+    // MARK: - UIView Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Show geoCodes
-        fetchDiscover()
+        // Determine randomized integer that SHUFFLES OBJECTS
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            switchBool = true
+        } else {
+            // Odd
+            switchBool = false
+        }
+        
+        // Call queries
+        fetchNews()
+        fetchPromoted()
+        fetchRandoms()
         
         // Configure UITableView
         self.tableView.tableFooterView = UIView()
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView.separatorColor = UIColor.groupTableViewBackground
         
         // Configure UITextField
         searchBar.delegate = self
         searchBar.backgroundColor = UIColor.groupTableViewBackground
-        searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
-        searchBar.text = "Search"
         searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width - 32, height: 30)
-        searchBar.textAlignment = .center
-        searchBar.textColor = UIColor.darkGray
         searchBar.roundAllCorners(sender: searchBar)
         
         // Configure UIRefreshControl
@@ -162,7 +302,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
 
     // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return self.exploreTitles.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -175,13 +315,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
         header.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         header.font = UIFont(name: "AvenirNext-Bold", size: 12)
         header.textAlignment = .left
-        if section == 0 {
-            header.text = "      FEATURED"
-        } else if section == 1 {
-            header.text = "      NEAR YOU"
-        } else {
-            header.text = "      SUGGESTED"
-        }
+        header.text = "      \(self.exploreTitles[section])"
         return header
     }
     
@@ -190,7 +324,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
+        if indexPath.section == 0 || indexPath.section == 1 {
             return 175
         } else {
             return 125
@@ -203,17 +337,10 @@ class Explore: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 && indexPath.row == 0 {
-            let ehCell = self.tableView.dequeueReusableCell(withIdentifier: "eHeaderCell", for: indexPath) as! EHeaderCell
-            ehCell.fetchStories()
-            ehCell.delegate = self
-            return ehCell
-        } else {
-            let tCell = self.tableView.dequeueReusableCell(withIdentifier: "tableCollectionCell", for: indexPath) as! TableCollectionCell
-            // The below code is "unecessary"
-            tCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.section)
-            return tCell
-        }
+        let tCell = self.tableView.dequeueReusableCell(withIdentifier: "tableCollectionCell", for: indexPath) as! TableCollectionCell
+        // The below code is "unecessary"
+        tCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.section)
+        return tCell
     }
 }
 
@@ -224,7 +351,11 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource {
     
     // MARK: - UICollectionView Data Source Methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView.tag == 1 {
+        if collectionView.tag == 0 {
+            return self.articles.count
+        } else if collectionView.tag == 1 {
+            return self.promotedPosts.count
+        } else if collectionView.tag == 2 {
             return self.randomUsers.count
         } else {
             return self.geocodeUsers.count
@@ -232,58 +363,185 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView.tag == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
-            //set contentView frame and autoresizingMask
-            cell.contentView.frame = cell.bounds
+        if collectionView.tag == 0 {
+            let fCell = collectionView.dequeueReusableCell(withReuseIdentifier: "featuredCell", for: indexPath) as! FeaturedCell
             
-            // MARK: - RPHelpers extension
-            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            // Configure background color
+            fCell.storyCover.backgroundColor = UIColor.randomColor()
             
-            // (1) Set username
-            cell.rpUsername.text! = (self.geocodeUsers[indexPath.row].value(forKey: "username") as! String).lowercased()
+            // (1) Set publisher's name
+            fCell.publisherName.text = self.publisherNames[indexPath.item]
             
-            // (2) Set fullName
-            cell.rpFullName.text! = (self.geocodeUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)
-            
-            // (3) Get and set profile photo
-            // Handle optional chaining
-            if let proPic = self.geocodeUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // (2) Set cover photo
+            if let urlToImage = self.articles[indexPath.item].value(forKey: "urlToImage") as? String {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_addActivityIndicator()
-                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                fCell.storyCover.sd_setImage(with: URL(string: urlToImage)!)
             }
             
-            return cell
+            // (3) Set title
+            if let title = self.articles[indexPath.item].value(forKey: "title") as? String {
+                fCell.storyTitle.text = title
+            }
+            
+            // MARK: - RPHelpers
+            fCell.storyCover.roundAllCorners(sender: fCell.storyCover)
+            fCell.storyTitle.layer.applyShadow(layer: fCell.storyTitle.layer)
+            fCell.publisherName.layer.applyShadow(layer: fCell.publisherName.layer)
+            
+            return fCell
+
+        } else if collectionView.tag == 1 {
+            let pCell = collectionView.dequeueReusableCell(withReuseIdentifier: "promotedCell", for: indexPath) as! PromotedCell
+            
+            // (1) Set user's name
+            if let user = self.promotedPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
+                pCell.rpUsername.text = (user.value(forKey: "username") as! String)
+            }
+
+            
+            // (4) Set mediaPreview or textPreview
+            pCell.textPreview.isHidden = true
+            pCell.mediaPreview.isHidden = true
+            
+            // Promoted Posts
+            if self.promotedPosts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+                pCell.textPreview.text = "\(self.promotedPosts[indexPath.row].value(forKey: "textPost") as! String)"
+                pCell.textPreview.isHidden = false
+            } else if self.promotedPosts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+                pCell.mediaPreview.image = UIImage(named: "CSpacePost")
+                pCell.mediaPreview.isHidden = false
+            } else {
+                if let photo = self.promotedPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                    // MARK: - SDWebImage
+                    pCell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
+                } else if let video = self.promotedPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                    // MARK: - AVPlayer
+                    let player = AVPlayer(url: URL(string: video.url!)!)
+                    let playerLayer = AVPlayerLayer(player: player)
+                    playerLayer.frame = pCell.mediaPreview.bounds
+                    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                    pCell.mediaPreview.contentMode = .scaleAspectFit
+                    pCell.mediaPreview.layer.addSublayer(playerLayer)
+                    player.isMuted = true
+                    player.play()
+                }
+                pCell.mediaPreview.isHidden = false
+            }
+
+            // MARK: - RPExtensions
+            pCell.textPreview.makeCircular(forView: pCell.textPreview, borderWidth: 0, borderColor: UIColor.clear)
+            pCell.mediaPreview.makeCircular(forView: pCell.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
+            
+            return pCell
+            
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
+            let eCell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
             //set contentView frame and autoresizingMask
-            cell.contentView.frame = cell.bounds
+            eCell.contentView.frame = eCell.bounds
             
             // MARK: - RPHelpers extension
-            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            eCell.rpUserProPic.makeCircular(forView: eCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
-            // (1) Set username
-            cell.rpUsername.text! = (self.randomUsers[indexPath.row].value(forKey: "username") as! String).lowercased()
-            
-            // (2) Set fullName
-            cell.rpFullName.text! = (self.randomUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)
-            
-            // (3) Get and set profile photo
-            // Handle optional chaining
-            if let proPic = self.randomUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_addActivityIndicator()
-                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            // SUGGESTED
+            if collectionView.tag == 2 {
+                // (1) Set username
+                eCell.rpUsername.text! = (self.randomUsers[indexPath.item].value(forKey: "username") as! String).lowercased()
+                // (2) Set fullName
+                eCell.rpFullName.text! = (self.randomUsers[indexPath.item].value(forKey: "realNameOfUser") as! String)
+                // (3) Get and set profile photo
+                // Handle optional chaining
+                if let proPic = self.randomUsers[indexPath.item].value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    eCell.rpUserProPic.sd_addActivityIndicator()
+                    eCell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                    eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+                // (4) Get user's bio
+                if let userBio = self.randomUsers[indexPath.item].value(forKey: "userBiography") as? String {
+                    eCell.rpUserBio.textColor = UIColor.black
+                    eCell.rpUserBio.text = userBio
+                } else {
+                    eCell.rpUserBio.textColor = UIColor.lightGray
+                    eCell.rpUserBio.text = "This human doesn't have a bio yet..."
+                }
+            } else {
+            // GEOCODE
+                // (1) Set username
+                eCell.rpUsername.text! = (self.geocodeUsers[indexPath.item].value(forKey: "username") as! String).lowercased()
+                // (2) Set fullName
+                eCell.rpFullName.text! = (self.geocodeUsers[indexPath.item].value(forKey: "realNameOfUser") as! String)
+                // (3) Get and set profile photo
+                // Handle optional chaining
+                if let proPic = self.geocodeUsers[indexPath.item].value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    eCell.rpUserProPic.sd_addActivityIndicator()
+                    eCell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                    eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+                // (4) Get user's bio
+                if let userBio = self.geocodeUsers[indexPath.item].value(forKey: "userBiography") as? String {
+                    eCell.rpUserBio.textColor = UIColor.black
+                    eCell.rpUserBio.text = userBio
+                } else {
+                    eCell.rpUserBio.textColor = UIColor.lightGray
+                    eCell.rpUserBio.text = "This human doesn't have a bio yet..."
+                }
             }
             
-            return cell
+            return eCell
         }
     }
     
+    // MARK: - UICollectionView Delegate Methods
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        if collectionView.tag == 0 {
+            // Track Who Tapped a story
+            Heap.track("TappedSelectedStories", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            
+            let selectedStoriesVC = self.storyboard?.instantiateViewController(withIdentifier: "selectedStoriesVC") as! SelectedStories
+            // Pass data...
+            // (1) Publisher Name
+            selectedStoriesVC.publisherName = self.publisherNames[indexPath.item]
+            // (2) Publisher Logo URL
+            if let publisherLogo = self.sourceObjects[indexPath.item].value(forKey: "photo") as? PFFile {
+                selectedStoriesVC.logoURL = publisherLogo.url!
+            }
+            // (3) NewsApi.org source URL
+            selectedStoriesVC.sourceURL = (self.sourceObjects[indexPath.item].value(forKey: "URL") as! String)
+            
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: selectedStoriesVC)
+            self.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+
+        } else if collectionView.tag == 1 {
+            // PROMOTED
+            
+            // Append object
+            storyObjects.append(self.promotedPosts[indexPath.item])
+            
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let storiesVC = self.storyboard?.instantiateViewController(withIdentifier: "storiesVC") as! Stories
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storiesVC)
+            self.present(UINavigationController(rootViewController: rpPopUpVC), animated: true)
+            
+        } else if collectionView.tag == 2 {
+            // SUGGESTED
+            otherObject.append(self.randomUsers[indexPath.item])
+            otherName.append(self.randomUsers[indexPath.item].value(forKey: "username") as! String)
+            let otherUserVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+            self.navigationController?.pushViewController(otherUserVC, animated: true)
+            
+        } else if collectionView.tag == 3 {
+            // NEAR ME
+            otherObject.append(self.geocodeUsers[indexPath.item])
+            otherName.append(self.geocodeUsers[indexPath.item].value(forKey: "username") as! String)
+            let otherUserVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+            self.navigationController?.pushViewController(otherUserVC, animated: true)
+        }
     }
 }

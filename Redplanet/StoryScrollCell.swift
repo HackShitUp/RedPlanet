@@ -23,6 +23,16 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
     var refresher: UIRefreshControl!
 
     @IBOutlet weak var tableView: UITableView!
+
+    
+    func setTableViewDataSourceDelegate
+        <D: UITableViewDataSource & UITableViewDelegate>
+        (dataSourceDelegate: D, forRow row: Int) {
+        tableView.delegate = dataSourceDelegate
+        tableView.dataSource = dataSourceDelegate
+        tableView.tag = row
+        tableView.reloadData()
+    }
     
     
     func refresh() {

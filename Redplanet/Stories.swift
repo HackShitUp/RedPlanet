@@ -204,7 +204,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-        reactButton.frame.origin.y = self.view.bounds.height - (reactButton.frame.size.height + 10)
+        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
         reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         reactButton.layer.applyShadow(layer: reactButton.layer)
         self.view.addSubview(reactButton)
@@ -392,11 +392,25 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 
         if self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
             print("Video: \(indexPath![1])")
-            print("OBJECTID: \(self.stories[indexPath!.item].objectId!)\n")
         } else {
             print("Not a video: \(indexPath![1])")
         }
     }
 
     
+}
+
+
+
+// MARK: - Stories Extension used to configure StoryScrollCell.swift...
+extension Stories: UITableViewDataSource, UITableViewDelegate {
+    // MARK: - UITableViewData Source Methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        return cell
+    }
 }

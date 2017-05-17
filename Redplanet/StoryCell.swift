@@ -42,16 +42,7 @@ class StoryCell: UITableViewCell {
         let rpPopUpVC = RPPopUpVC()
         let storiesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storiesVC") as! Stories
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storiesVC)
-        let navigator = UINavigationController(rootViewController: rpPopUpVC)
-
-        
-//        var contributeViewController = UIViewController()
-//        var blurEffect = UIBlurEffect(style: .light)
-//        var beView = UIVisualEffectView(effect: blurEffect)
-//        beView.frame = self.delegate!.view.frame
-//        navigator.view.insertSubview(beView, at: 0)
-
-        self.delegate?.present(navigator, animated: true)
+        self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true)
     }
     
     

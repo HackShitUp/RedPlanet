@@ -498,7 +498,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         super.viewWillAppear(animated)
         
         // MARK: - RPExtensions
-        self.navigationController?.view.roundAllCorners(sender: self.navigationController?.view)
+        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Configure UINavigationBar

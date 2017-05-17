@@ -1,5 +1,5 @@
 //
-//  ExploreCell.swift
+//  PromotedCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 5/16/17.
@@ -12,12 +12,11 @@ import ParseUI
 import Bolts
 import KILabel
 
-class ExploreCell: UICollectionViewCell {
-    
-    @IBOutlet weak var rpUserProPic: PFImageView!
-    @IBOutlet weak var rpFullName: UILabel!
+class PromotedCell: UICollectionViewCell {
+    @IBOutlet weak var mediaPreview: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
-    @IBOutlet weak var rpUserBio: KILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var textPreview: KILabel!
     
     
 }
