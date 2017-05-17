@@ -24,11 +24,11 @@ class MomentVideo: UICollectionViewCell {
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
-        rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
-        rpVideoPlayer.setupVideo(videoURL: videoURL!)
-        self.contentView.addSubview(rpVideoPlayer)
-        rpVideoPlayer.autoplays = false
-        rpVideoPlayer.playbackLoops = false
+//        rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
+//        rpVideoPlayer.setupVideo(videoURL: videoURL!)
+//        self.contentView.addSubview(rpVideoPlayer)
+//        rpVideoPlayer.autoplays = false
+//        rpVideoPlayer.playbackLoops = false
 //        rpVideoPlayer.play()
 
         self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)

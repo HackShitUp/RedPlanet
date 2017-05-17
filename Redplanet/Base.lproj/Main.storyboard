@@ -136,7 +136,7 @@
                                     <constraint firstAttribute="width" constant="25" id="apy-MU-XfN"/>
                                     <constraint firstAttribute="height" constant="25" id="hXD-uQ-VsK"/>
                                 </constraints>
-                                <state key="normal" image="Left_100">
+                                <state key="normal" image="Left_50">
                                     <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -1089,6 +1089,9 @@
                             <connections>
                                 <action selector="back:" destination="4CN-4G-udn" id="sQh-ME-FhC"/>
                             </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="PL7-mq-oKN">
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -4506,7 +4509,7 @@
                                     <constraint firstAttribute="width" constant="25" id="xuc-MQ-NpK"/>
                                     <constraint firstAttribute="height" constant="25" id="yZQ-Kj-UWh"/>
                                 </constraints>
-                                <state key="normal" image="Left_100"/>
+                                <state key="normal" image="Left_50"/>
                                 <connections>
                                     <action selector="exit:" destination="cHP-XK-1K8" eventType="touchUpInside" id="qZa-IZ-pc4"/>
                                 </connections>
@@ -4691,7 +4694,6 @@
         <image name="Exit" width="750" height="750"/>
         <image name="FlashOff" width="256" height="256"/>
         <image name="GenderNeutralUser" width="256" height="256"/>
-        <image name="Left_100" width="50" height="50"/>
         <image name="Left_50" width="25" height="25"/>
         <image name="Like" width="53" height="50"/>
         <image name="More" width="25" height="25"/>

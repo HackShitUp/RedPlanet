@@ -50,13 +50,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     @IBOutlet weak var collectionView: UICollectionView!
 
     func fetchStories() {
+        // Fetch stories
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
-//        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE", "qvz1ATrnSO"]        
-//        newsfeeds.whereKey("objectId", containedIn: keys)
         newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
-        newsfeeds.limit = 20
+        newsfeeds.includeKeys(["byUser", "toUser"])
+        newsfeeds.whereKey("contentType", notEqualTo: "tp")
+        newsfeeds.limit = 50
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -64,16 +64,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 self.stories.removeAll(keepingCapacity: false)
                 for object in objects! {
                     // Ephemeral content
-                    let components: NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
+//                    let components: NSCalendar.Unit = .hour
+//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+//                    if difference.hour! < 24 {
 //                        self.stories.append(object)
-                    }
+//                    }
                     self.stories.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
-                if self.stories.count == 0 {
+                if self.stories.count == 1 {
                     self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
                 } else {
                     self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
@@ -86,8 +86,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 self.view.addSubview(self.spb)
                 self.spb.startAnimation()
                 
-                // Reload data
-                self.collectionView!.reloadData()
+                // Reload data in main thread
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -228,6 +230,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         // MARK: - RPExtensions; rpButton
         rpButton.isHidden = false
+        
+        // De-allocate rpVideoPlayer
+        self.rpVideoPlayer?.pause()
+        self.rpVideoPlayer?.player?.replaceCurrentItem(with: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -250,19 +256,46 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         return self.view.bounds.size
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if cell == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
+//            // VideoCell
+//            self.rpVideoPlayer?.pause()
+//        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            self.rpVideoPlayer?.pause()
+//            print("\nEnding Video\n")
+//        }
+//        
+//        
+//        
+        if self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
             self.rpVideoPlayer?.pause()
         }
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let storyScrollCell = cell as? StoryScrollCell else { return }
-        storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
+        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
+        // StoryScrollCell
+            guard let storyScrollCell = cell as? StoryScrollCell else { return }
+            storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
+        }
+        
+        if self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+            print("Called")
+//            self.rpVideoPlayer?.play()
+        }
+        
+//        else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
+//        // VideoCell
+////            self.rpVideoPlayer?.play()
+//        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            self.rpVideoPlayer?.play()
+//            print("\nPlaying Video\n")  // Played video an index BEFORE...
+//        }
     }
     
     
@@ -274,7 +307,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
-        // Text Posts, Profile Photo
+        // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST
         if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
@@ -359,16 +392,32 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             // Scrolled to the left; rewind
             self.spb.rewind()
         }
-
+        
+        
+        // METHOD 1
+//        if self.stories[indexPath!.item].value(forKey: "contentType") as! String == "vi" {
+//            // VideoCell
+//            //            self.rpVideoPlayer?.play()
+//        } else if self.stories[indexPath!.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
+////            self.rpVideoPlayer?.play()
+//            print("\nPlaying Video\n")  // Played video an index BEFORE...
+//        }
+        
+        // METHOD 2
         if self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
-//            print("Video: \(indexPath![1])")
+            print("ObjectId: \(self.stories[indexPath!.item].value(forKey: "contentType") as! String)\n")
+            self.rpVideoPlayer?.play()
         } else {
-//            print("Not a video: \(indexPath![1])")
+            self.rpVideoPlayer?.pause()
         }
+        
+        
     }
-
-    
 }
+
+
+
+
 
 
 
@@ -408,7 +457,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             
             return phCell
             
-        } else {
+        } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "pp" {
         // if self.stories[indexPath.row].value(forKey: "contentType") as! String == "pp" {
         // PROFILE PHOTO
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
@@ -418,10 +467,36 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             ppCell.updateView(postObject: self.stories[tableView.tag])
             
             return ppCell
+        } else {
+        // VIDEO
+            let vCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
+            
+            if let user = self.stories[tableView.tag].value(forKey: "byUser") as? PFUser {
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+            }
+            
+            if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
+                // MARK: - RPVideoPlayerView
+                self.rpVideoPlayer = RPVideoPlayerView(frame: vCell.videoPreview.bounds)
+                self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
+                self.rpVideoPlayer.autoplays = false
+                self.rpVideoPlayer.playbackLoops = false
+                self.rpVideoPlayer?.pause()
+                vCell.videoPreview.addSubview(rpVideoPlayer)
+                vCell.videoPreview.bringSubview(toFront: rpVideoPlayer)
+            }
+            
+            // Set text
+            vCell.textPost.text = "This is a video..."
+            
+            return vCell
         }
     }
     
-    
+    // MARK: - UIScrollView Delegate Method
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.contentOffset.y <= 0 && scrollView.contentOffset.x == 0 {
             self.dismiss(animated: true, completion: nil)

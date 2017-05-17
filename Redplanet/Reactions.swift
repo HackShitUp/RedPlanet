@@ -54,12 +54,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Configure UI
         self.refresher?.endRefreshing()
         self.textView.resignFirstResponder()
-        self.tableView.allowsSelection = false
         // Handle switched TwicketSegmentedControl
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             fetchLikes()
             reactionType = "likes"
+            self.tableView.allowsSelection = true
         case 1:
             fetchComments()
             reactionType = "comments"
@@ -69,9 +69,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             self.tableView.isUserInteractionEnabled = true
             self.tableView.addGestureRecognizer(hold)
             self.tableView.allowsSelection = true
-        case 2:
-            fetchShares()
-            reactionType = "shares"
         default:
             break;
         }
@@ -161,44 +158,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 }
             }
         })
-    }
-
-    // Fetch Shares
-    func fetchShares() {
-        // Fetch Relationships
-        _ = appDelegate.queryRelationships()
-        let shares = PFQuery(className: "Newsfeeds")
-        shares.whereKey("pointObject", equalTo: reactionObject.last!)
-        shares.includeKey("byUser")
-        shares.limit = self.page
-        shares.order(byDescending: "createdAt")
-        shares.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-                self.reactionObjects.removeAll(keepingCapacity: false)
-                // Append objects
-                for object in objects! {
-                    self.reactionObjects.append(object)
-                }
-                
-                // MARK: - DZNEmptyDataSet
-                if self.reactionObjects.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
-                }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showError(withTitle: "Network Error")
-            }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView!.reloadData()
-            }
-        }
     }
     
     // Function to send comment
@@ -517,11 +476,11 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         super.viewDidLoad()
 
         // MARK: - TwicketSegmentedControl
-        let frame = CGRect(x: 5, y: view.frame.height / 2 - 20, width: view.frame.width - 10, height: 40)
+        let frame = CGRect(x: 5, y: view.frame.height/2 - 20, width: view.frame.width - 20, height: 40)
         segmentedControl.frame = frame
         segmentedControl.delegate = self
         segmentedControl.isSliderShadowHidden = false
-        segmentedControl.setSegmentItems(["Likes", "Comments", "Share With"])
+        segmentedControl.setSegmentItems(["Likes", "Comments"])
         segmentedControl.defaultTextColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
@@ -530,21 +489,21 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         self.navigationItem.titleView = segmentedControl
         
         // Configure UITableView
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.tableView.estimatedRowHeight = 65
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView.tableFooterView = UIView()
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.estimatedRowHeight = 65
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        tableView.tableFooterView = UIView()
         // Register NIB
-        self.tableView.register(UINib(nibName: "ReactionsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "ReactionsHeader")
+        tableView.register(UINib(nibName: "ReactionsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "ReactionsHeader")
 
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
-        self.tableView.addSubview(refresher)
+        tableView.addSubview(refresher)
         
         // Implement back swipe method
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
@@ -587,13 +546,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             } else {
                 reactionsHeader.reactButton.setImage(UIImage(named: "Like"), for: .normal)
             }
-        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+        } else {
             reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Comments"
             reactionsHeader.reactButton.isHidden = true
-        } else {
-            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Shares"
-            reactionsHeader.reactButton.isHidden = false
-            reactionsHeader.reactButton.setImage(UIImage(named: "Share"), for: .normal)
         }
         
         return reactionsHeader
@@ -638,9 +593,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 
             return cell
             
-        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+        } else {
         // Comments
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
+            
+            // Set parentVC delegate
+            cell.delegate = self
 
             // Set PFObject
             cell.postObject = self.reactionObjects[indexPath.row]
@@ -672,50 +630,22 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             cell.comment.text = (self.reactionObjects[indexPath.row].value(forKey: "commentOfContent") as! String)
             
             return cell
-            
-        } else {
-        // Shares
-            let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
-            
-            // (1) Get user's data
-            if let user = self.reactionObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
-                // Set user's full name
-                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                // Set user's profile photo
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-                    cell.rpUserProPic.sd_showActivityIndicatorView()
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
-                    // MARK: - RPExtensions
-                    cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-                }
-            }
-            
-            return cell
         }
     }
 
     // MARK: - UITableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Set segmented control
+        // LIKES
         if self.segmentedControl.selectedSegmentIndex == 0 {
             // Append data
             otherObject.append(self.reactionObjects[indexPath.item].value(forKey: "fromUser") as! PFUser)
             otherName.append((self.reactionObjects[indexPath.item].value(forKey: "fromUser") as! PFUser).value(forKey: "username") as! String)
             let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
             self.navigationController?.pushViewController(otherVC, animated: true)
-        } else if self.segmentedControl.selectedSegmentIndex == 1 {
-            // Append data
-            otherObject.append(self.reactionObjects[indexPath.item].value(forKey: "byUser") as! PFUser)
-            otherName.append((self.reactionObjects[indexPath.item].value(forKey: "byUser") as! PFUser).value(forKey: "username") as! String)
-            let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-            self.navigationController?.pushViewController(otherVC, animated: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        // Change color
         tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
     }
     

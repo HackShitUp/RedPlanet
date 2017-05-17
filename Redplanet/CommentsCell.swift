@@ -27,9 +27,31 @@ class CommentsCell: UITableViewCell {
     @IBOutlet weak var comment: KILabel!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var numberOfLikes: UIButton!
+    
+    // Function to show user's profile
+    func showProfile() {
+        otherObject.append(self.postObject!.value(forKey: "byUser") as! PFUser)
+        otherName.append(self.rpUsername.text!)
+        let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        // rpUserProPic tap
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProfile))
+        proPicTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(proPicTap)
+        // rpUsername tap
+        let nameTap = UITapGestureRecognizer(target: self, action: #selector(showProfile))
+        nameTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(nameTap)
+        
+        
+        
         // MARK: - KILabel; @, #, and https://
         // @@@
         comment.userHandleLinkTapHandler = { label, handle, range in

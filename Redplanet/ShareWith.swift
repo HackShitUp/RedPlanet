@@ -190,7 +190,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             
             // MARK: - RPHelpers
             let rpHelpers = RPHelpers()
-            rpHelpers.showSuccess(withTitle: "Successfully Sent")
+            rpHelpers.showSuccess(withTitle: "Sent")
             
             // Deallocate CapturedStill.swift
             let capturedStill = CapturedStill()
