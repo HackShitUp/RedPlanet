@@ -260,17 +260,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-//            // VideoCell
-//            self.rpVideoPlayer?.pause()
-//        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-//            self.rpVideoPlayer?.pause()
-//            print("\nEnding Video\n")
-//        }
-//        
-//        
-//        
-        if self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+        if collectionView.cellForItem(at: indexPath) == collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+            self.rpVideoPlayer?.pause()
+        } else if collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
             self.rpVideoPlayer?.pause()
         }
     }
@@ -284,18 +276,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
         }
         
-        if self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-            print("Called")
+//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
 //            self.rpVideoPlayer?.play()
-        }
-        
-//        else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-//        // VideoCell
-////            self.rpVideoPlayer?.play()
 //        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
 //            self.rpVideoPlayer?.play()
-//            print("\nPlaying Video\n")  // Played video an index BEFORE...
 //        }
+        
+        
     }
     
     
@@ -394,7 +381,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         }
         
         
-        // METHOD 1
+        // METHOD 1: Check for "vi" or "itm" && "vi"
 //        if self.stories[indexPath!.item].value(forKey: "contentType") as! String == "vi" {
 //            // VideoCell
 //            //            self.rpVideoPlayer?.play()
@@ -403,12 +390,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 //            print("\nPlaying Video\n")  // Played video an index BEFORE...
 //        }
         
-        // METHOD 2
+        // METHOD 2: Check if video asset is not nil
         if self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
-            print("ObjectId: \(self.stories[indexPath!.item].value(forKey: "contentType") as! String)\n")
-            self.rpVideoPlayer?.play()
+            print("ObjectId: \(self.stories[indexPath!.item].objectId!)\nContent_Type: \(self.stories[indexPath!.item].value(forKey: "contentType") as! String)\n")
+//            self.rpVideoPlayer?.play()
         } else {
-            self.rpVideoPlayer?.pause()
+//            self.rpVideoPlayer?.pause()
         }
         
         
@@ -478,7 +465,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
                 }
             }
             
-            if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
+            if let video = self.stories[tableView.tag].value(forKey: "videoAsset") as? PFFile {
                 // MARK: - RPVideoPlayerView
                 self.rpVideoPlayer = RPVideoPlayerView(frame: vCell.videoPreview.bounds)
                 self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)

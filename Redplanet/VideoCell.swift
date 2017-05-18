@@ -28,11 +28,11 @@ class VideoCell: UITableViewCell {
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
-        rpVideoPlayer = RPVideoPlayerView(frame: self.videoPreview.bounds)
-        rpVideoPlayer.setupVideo(videoURL: videoURL!)
-        self.videoPreview.addSubview(rpVideoPlayer)
-        rpVideoPlayer.autoplays = false
-        rpVideoPlayer.playbackLoops = false
+//        rpVideoPlayer = RPVideoPlayerView(frame: self.videoPreview.bounds)
+//        rpVideoPlayer.setupVideo(videoURL: videoURL!)
+//        self.videoPreview.addSubview(rpVideoPlayer)
+//        rpVideoPlayer.autoplays = false
+//        rpVideoPlayer.playbackLoops = false
         //        rpVideoPlayer.play()
         
         self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)

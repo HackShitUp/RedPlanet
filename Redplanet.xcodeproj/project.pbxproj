@@ -1101,7 +1101,7 @@
 				7EC5D1B01DB359F300437219 /* OTHERUSER */,
 				7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */,
 				7ED4A91F1DBEBE130016698F /* REACTIONS */,
-				7EECEE6A1E3C7B7E003FA134 /* NIBS */,
+				7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,
@@ -1295,7 +1295,7 @@
 			name = SegmentedProgressBar;
 			sourceTree = "<group>";
 		};
-		7EECEE6A1E3C7B7E003FA134 /* NIBS */ = {
+		7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */ = {
 			isa = PBXGroup;
 			children = (
 				7E85C8721ECCCE3B00D5EF07 /* UserCell */,
@@ -1307,7 +1307,7 @@
 				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
 				7EE697C41EAAC440004F4E24 /* VideoCell */,
 			);
-			name = NIBS;
+			name = NIBS/XIBS;
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {

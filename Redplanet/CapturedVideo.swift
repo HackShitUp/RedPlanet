@@ -231,14 +231,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
         
-//        // Set Audio
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-//                                                            with: [.duckOthers, .defaultToSpeaker])
-//        } catch {
-//            print("[SwiftyCam]: Failed to set background audio preference")
-//        }
-        
         // Set Audio
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,

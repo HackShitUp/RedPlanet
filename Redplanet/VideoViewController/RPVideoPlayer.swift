@@ -6,6 +6,8 @@
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
+import AudioUnit
+import AudioToolbox
 import AVFoundation
 import AVKit
 import UIKit
@@ -240,6 +242,23 @@ open class RPVideoPlayerView: UIView {
         if autoplays {
             play()
         }
+        
+        
+//        do {
+//            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
+//        } catch _ {
+//        }
+        
+        do {
+//            try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
+        } catch _ {
+            
+        }
+        
+    
+        
+        
     }
     
     override open func layoutSubviews() {
