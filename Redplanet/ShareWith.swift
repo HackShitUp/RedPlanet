@@ -22,9 +22,6 @@ var shareWithObject = [PFObject]()
 
 class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
-    // MARK: - Class Variables
-//    open var createdPost: Bool? = false
-    
     // AppDelegate
     let appDelegate = AppDelegate()
     // Array to hold users to share with
@@ -77,24 +74,23 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             self.doneButton.isEnabled = false
             // Save to <Newsfeeds>
             if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                // Save in background
-                shareWithObject.last!.saveInBackground(block: {
+                // Traverse PFObject to get object data...
+                let postObject = shareWithObject.last!
+                postObject.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
                         // Handle nil textPost
-                        if shareWithObject.last!.value(forKey: "textPost") != nil {
+                        if postObject.value(forKey: "textPost") != nil {
                             // MARK: - RPHelpers; check for #'s and @'s
                             let rpHelpers = RPHelpers()
-                            rpHelpers.checkHash(forObject: shareWithObject.last!,
-                                                forText: (shareWithObject.last!.value(forKey: "textPost") as! String))
-                            rpHelpers.checkTags(forObject: shareWithObject.last!,
-                                                forText: (shareWithObject.last!.value(forKey: "textPost") as! String),
-                                                postType: (shareWithObject.last!.value(forKey: "contentType") as! String))
+                            rpHelpers.checkHash(forObject: postObject, forText: (postObject.value(forKey: "textPost") as! String))
+                            rpHelpers.checkTags(forObject: postObject,
+                                                forText: (postObject.value(forKey: "textPost") as! String),
+                                                postType: (postObject.value(forKey: "contentType") as! String))
                         }
-                        
+
                         // Send Notification
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }

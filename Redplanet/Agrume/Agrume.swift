@@ -231,6 +231,9 @@ public final class Agrume: UIViewController {
 
   public override func viewWillAppear(_ animated: Bool) {
     lastUsedOrientation = currentDeviceOrientation()
+    // MODIFIED: - UIStatusBar Configuration
+    UIApplication.shared.isStatusBarHidden = true
+    self.setNeedsStatusBarAppearanceUpdate()
   }
 
   fileprivate func deviceOrientationFromStatusBarOrientation() -> UIDeviceOrientation {

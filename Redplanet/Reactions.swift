@@ -18,13 +18,12 @@ import SDWebImage
 var reactionObject = [PFObject]()
 
 class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
-    
-    // MARK: - Class Variable; Determines what to fetch: Likes, Comments, Shares
-    var reactionType: String?
-    
-    // MARK: - TwicketSegmentedControl
+
+    // MARK: - Initialize TwicketSegmentedControl
     let segmentedControl = TwicketSegmentedControl()
     
+    // Array to hold reactionObjects
+    var reactionObjects = [PFObject]()
     // AppDelegate
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     // Keyboard Frame
@@ -33,18 +32,15 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     var page: Int = 50
     // UIRefreshControl
     var refresher: UIRefreshControl!
-    // Array to hold reactionObjects
-    var reactionObjects = [PFObject]()
     
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentContainer: UIView!
     @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var sendButton: UIButton!
+    
     @IBAction func back(_ sender: Any) {
         // Deallocate class array and variable
         reactionObject.removeAll(keepingCapacity: false)
-        reactionType = ""
         // Pop VC
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -58,11 +54,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             fetchLikes()
-            reactionType = "likes"
             self.tableView.allowsSelection = true
         case 1:
             fetchComments()
-            reactionType = "comments"
             // Add long press method in tableView
             let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleComment))
             hold.minimumPressDuration = 0.40
@@ -74,7 +68,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    // Fetch Likes
+    // FUNCTION - Fetch likes
     func fetchLikes() {
         // Fetch Relationships
         _ = appDelegate.queryRelationships()
@@ -115,7 +109,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    // Fetch Comments
+    // FUNCTION - Fetch comments
     func fetchComments() {
         // Fetch Relationships
         _ = appDelegate.queryRelationships()
@@ -160,7 +154,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         })
     }
     
-    // Function to send comment
+    // FUNCTION - Save comment to server
     func sendComment() {
         if self.textView.text.isEmpty {
             textView.resignFirstResponder()
@@ -229,14 +223,13 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     
-    // Function to handle comments, when segmentedControl's selected index is 2 ONLY
+    // FUNCTION - Handles comment options including Delete, Reply, and Report
     func handleComment(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
-                
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Options", message: nil)
+                let dialogController = AZDialogViewController(title: "Comment", message: "Options")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
@@ -375,7 +368,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     dialogController.addAction(reply)
                     dialogController.addAction(report)
                 }
-                
                 // Show
                 dialogController.show(in: self)
             }
@@ -495,8 +487,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         tableView.tableFooterView = UIView()
-        // Register NIB
+        // Register NIBs
         tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
+        tableView.register(UINib(nibName: "ReactionsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "ReactionsHeader")
 
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
@@ -596,7 +589,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             return cell
             
         } else {
-        // Comments
+        // COMMENTS
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
             
             // Set parentVC delegate

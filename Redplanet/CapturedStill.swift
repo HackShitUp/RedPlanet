@@ -82,6 +82,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             itmPhoto["byUsername"] = PFUser.current()!.username!
             itmPhoto["contentType"] = "itm"
             itmPhoto["saved"] = false
+            itmPhoto["textPost"] = self.textField.text
             itmPhoto["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             // Show ShareWith View Controller
             shareWithObject.append(itmPhoto)
@@ -226,18 +227,16 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {
 
-        // Configure.. 
-        // Times
+        // Configure TIME and DAY
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mma"
-        // Day
         let dayFormatter = DateFormatter()
         dayFormatter.dateFormat = "EEEE"
         let dayOfWeek = dayFormatter.string(from: Date())
         
         // I TIME STAMP
         let time = UILabel(frame: self.view.bounds)
-        time.font = UIFont(name: "Futura-Medium", size: 65)
+        time.font = UIFont(name: "Futura-Medium", size: 60)
         time.textColor = UIColor.white
         time.layer.applyShadow(layer: time.layer)
         time.text = "\(timeFormatter.string(from: NSDate() as Date))"
@@ -249,10 +248,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         // II DAY
         let day = UILabel(frame: self.view.bounds)
-        day.font = UIFont(name: "AvenirNext-Demibold", size: 50)
+        day.font = UIFont(name: "AvenirNext-Medium", size: 50)
         day.textColor = UIColor.white
         day.layer.applyShadow(layer: day.layer)
-        day.text = "\(dayOfWeek)"
+        day.text = "\(dayOfWeek.uppercased())"
         day.textAlignment = .center
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
         day.layer.render(in: UIGraphicsGetCurrentContext()!)
@@ -261,7 +260,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
         // II RED FILTER
         let red = UIView()
-        red.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        red.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         red.alpha = 0.25
         red.frame = self.view.bounds
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
@@ -330,7 +329,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
             // IV AREA: "City, State"
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-            city.font = UIFont(name: "AvenirNext-Bold", size: 50)
+            city.font = UIFont(name: "AvenirNext-Demibold", size: 40)
             city.textColor = UIColor.white
             city.backgroundColor = UIColor.clear
             city.textAlignment = .center

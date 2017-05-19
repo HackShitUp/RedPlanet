@@ -45,6 +45,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var rpVideoPlayer: RPVideoPlayerView!
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
+    // Variabel to hold currentIndex
+    var currentIndex: Int? = 0
     // Array to hold stories/likes
     var stories = [PFObject]()
     var likes = [PFObject]()
