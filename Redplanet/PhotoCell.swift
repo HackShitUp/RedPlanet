@@ -27,7 +27,6 @@ class PhotoCell: UITableViewCell {
     @IBOutlet weak var photo: PFImageView!
     @IBOutlet weak var textPost: KILabel!
     
-    
     // Function to bind data
     func updateView(postObject: PFObject?) {
         // (1) Get user's object
@@ -45,15 +44,6 @@ class PhotoCell: UITableViewCell {
         
         // (2) Set text post
         if let text = postObject!.value(forKey: "textPost") as? String {
-//            // Manipulate font size and color depending on character count
-//            if text.characters.count < 140 {
-//                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 23)
-//                // MARK: - RPExtensions
-//                self.textPost.textColor = UIColor.randomColor()
-//            } else {
-//                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 17)
-//                self.textPost.textColor = UIColor.black
-//            }
             self.textPost.text = text
         }
         
@@ -66,13 +56,46 @@ class PhotoCell: UITableViewCell {
         
         // (4) Set photo
         if let image = postObject!.value(forKey: "photoAsset") as? PFFile {
+            self.photo.translatesAutoresizingMaskIntoConstraints = true
+            self.photo.autoresizingMask = .flexibleBottomMargin
+            self.photo.autoresizingMask = .flexibleHeight
+            self.photo.autoresizingMask = .flexibleRightMargin
+            self.photo.autoresizingMask = .flexibleLeftMargin
+            self.photo.autoresizingMask = .flexibleTopMargin
+            self.photo.autoresizingMask = .flexibleWidth
+            self.photo.contentMode = .scaleAspectFit
+            /*
+             float scaleFactor = MAX(image.size.width/imageView.bounds.size.width, image.size.height/imageView.bounds.size.height);
+             Then do
+             
+             CGRect ivFrame = imageView.frame;
+             ivframe.size.height = image.size.height/scalefactor;
+             ivFrame.size.width = image.size.width/scalefactor;
+             imageView.frame = ivFrame;
+ */
             // MARK: - SDWebImage
             self.photo.sd_setIndicatorStyle(.gray)
             self.photo.sd_showActivityIndicatorView()
             self.photo.sd_setImage(with: URL(string: image.url!)!)
         }
+        
     }
 
+    
+    func imageWithImage (sourceImage: UIImage, scaledToWidth: CGFloat) -> UIImage {
+        let oldWidth = sourceImage.size.width
+        let scaleFactor = scaledToWidth / oldWidth
+        
+        let newHeight = sourceImage.size.height * scaleFactor
+        let newWidth = oldWidth * scaleFactor
+        
+        UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
+        sourceImage.draw(in: CGRect(x:0, y:0, width:newWidth, height:newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()

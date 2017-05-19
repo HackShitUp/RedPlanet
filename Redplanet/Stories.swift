@@ -19,11 +19,16 @@ import AnimatedCollectionViewLayout
 import SwipeNavigationController
 import Reactions
 import SDWebImage
+import VIMVideoPlayer
 
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
+    
+    
+    // MARK: - VIMVideoPlayer
+    var vimPlayerView: VIMVideoPlayerView!
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -261,9 +266,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView.cellForItem(at: indexPath) == collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-            self.rpVideoPlayer?.pause()
+            self.vimPlayerView.player.pause()
         } else if collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-            self.rpVideoPlayer?.pause()
+            self.vimPlayerView.player.pause()
         }
     }
     
@@ -276,24 +281,43 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
         }
         
-//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-//            self.rpVideoPlayer?.play()
-//        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-//            self.rpVideoPlayer?.play()
+//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            print("Fired")
+//            let mvCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+//            if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
+//                // MARK: - VIMVideoPlayer
+//                vimPlayerView = VIMVideoPlayerView(frame: mvCell.contentView.bounds)
+//                vimPlayerView.player.isLooping = true
+//                vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+//                vimPlayerView.player.setURL(URL(string: video.url!)!)
+//                vimPlayerView.player.play()
+//                // Add to subview
+//                mvCell.contentView.addSubview(vimPlayerView)
+//                mvCell.contentView.bringSubview(toFront: vimPlayerView)
+//            }
+//        } else {
+//            print("Not Fired...")
 //        }
         
+//        let a = collectionView.indexPathsForVisibleItems
+//        print("A: \(a)\n")
+        
+        if self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+            print("Should play..")
+            self.vimPlayerView.player.play()
+        } else if self.collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
+            print("Should play..")
+            self.vimPlayerView.player.play()
+        }
         
     }
     
     
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // Configure initial setup for time
-        let from = self.stories[indexPath.item].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
+
         // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST
         if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
@@ -308,51 +332,30 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             
         } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
+            
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.stories[indexPath.item].value(forKey: "byUser") as? PFUser {
-                mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
-            }
-            
-            // (2) MARK: - RPHelpers; Set time
-            mpCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set photo
-            if let photo = self.stories[indexPath.item].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                mpCell.photoMoment.sd_showActivityIndicatorView()
-                mpCell.photoMoment.sd_setIndicatorStyle(.gray)
-                mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!)!)
-            }
-            
+            mpCell.postObject = self.stories[indexPath.item]
+            mpCell.delegate = self
+            mpCell.updateView(withObject: self.stories[indexPath.item])
             return mpCell
             
         } else {
         // MOMENT VIDEO CELL
+            
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.stories[indexPath.row].value(forKey: "byUser") as? PFUser {
-                mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
+            mvCell.postObject = self.stories[indexPath.item]
+            mvCell.delegate = self
+            if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
+                // MARK: - VIMVideoPlayer
+                vimPlayerView = VIMVideoPlayerView(frame: mvCell.contentView.bounds)
+                vimPlayerView.player.isLooping = true
+                vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+                vimPlayerView.player.setURL(URL(string: video.url!)!)
+                vimPlayerView.player.pause()
+                // Add to subview
+                mvCell.contentView.addSubview(vimPlayerView)
             }
-            
-            // (2) MARK: - RPHelpers; Set time
-            mvCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set video
-            if let video = self.stories[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // MARK: - RPVideoPlayerView
-                self.rpVideoPlayer = RPVideoPlayerView(frame: mvCell.contentView.bounds)
-                self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
-                mvCell.contentView.addSubview(rpVideoPlayer)
-                self.rpVideoPlayer.autoplays = false
-                self.rpVideoPlayer.playbackLoops = false
-                self.rpVideoPlayer?.pause()
-                // Update view???
-                mvCell.updateView()
-            }
-            
+            mvCell.updateView(withObject: self.stories[indexPath.item])
             
             return mvCell
         }
@@ -365,41 +368,21 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        // Manipulate SegmentedProgressBar
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb.skip()
+        } else {
+            self.spb.rewind()
+        }
+        
+        // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
         visibleRect.size = self.collectionView!.bounds.size
         let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
-        let indexPath: IndexPath? = self.collectionView?.indexPathForItem(at: visiblePoint)
-        
-        // Scrolled to the right; skip
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            // TODO:: End if last indexPath
-            self.spb.skip()
-        } else {
-            // Scrolled to the left; rewind
-            self.spb.rewind()
-        }
-        
-        
-        // METHOD 1: Check for "vi" or "itm" && "vi"
-//        if self.stories[indexPath!.item].value(forKey: "contentType") as! String == "vi" {
-//            // VideoCell
-//            //            self.rpVideoPlayer?.play()
-//        } else if self.stories[indexPath!.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
-////            self.rpVideoPlayer?.play()
-//            print("\nPlaying Video\n")  // Played video an index BEFORE...
-//        }
-        
-        // METHOD 2: Check if video asset is not nil
-        if self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
-            print("ObjectId: \(self.stories[indexPath!.item].objectId!)\nContent_Type: \(self.stories[indexPath!.item].value(forKey: "contentType") as! String)\n")
-//            self.rpVideoPlayer?.play()
-        } else {
-//            self.rpVideoPlayer?.pause()
-        }
-        
-        
+        let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
     }
+
 }
 
 
@@ -423,62 +406,35 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
         
         if self.stories[tableView.tag].value(forKey: "contentType") as! String == "tp" {
         // TEXT POST
+            
             let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
-            
-            // Set PFObject
-            tpCell.postObject = self.stories[tableView.tag]
-            // Set parent UIViewController
-            tpCell.superDelegate = self
-            // Update UI
-            tpCell.updateView(postObject: self.stories[tableView.tag])
-            
+            tpCell.postObject = self.stories[tableView.tag]                 // Set PFObject
+            tpCell.superDelegate = self                                     // Set parent UIViewController
+            tpCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
             return tpCell
             
         } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "ph" {
         // PHOTO
+            
             let phCell = Bundle.main.loadNibNamed("PhotoCell", owner: self, options: nil)?.first as! PhotoCell
-            
-            phCell.postObject = self.stories[tableView.tag]
-            phCell.superDelegate = self
-            phCell.updateView(postObject: self.stories[tableView.tag])
-            
+            phCell.postObject = self.stories[tableView.tag]                 // Set PFObject
+            phCell.superDelegate = self                                     // Set parent UIViewController
+            phCell.updateView(postObject: self.stories[tableView.tag])      // Update UI
             return phCell
             
         } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "pp" {
-        // if self.stories[indexPath.row].value(forKey: "contentType") as! String == "pp" {
         // PROFILE PHOTO
+            
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
-            
-            ppCell.postObject = self.stories[tableView.tag]
-            ppCell.superDelegate = self
-            ppCell.updateView(postObject: self.stories[tableView.tag])
-            
+            ppCell.postObject = self.stories[tableView.tag]                 // Set PFObject
+            ppCell.superDelegate = self                                     // Set parent UIViewController
+            ppCell.updateView(postObject: self.stories[tableView.tag])      // Update UI
             return ppCell
+            
         } else {
         // VIDEO
+            
             let vCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
-            
-            if let user = self.stories[tableView.tag].value(forKey: "byUser") as? PFUser {
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
-                }
-            }
-            
-            if let video = self.stories[tableView.tag].value(forKey: "videoAsset") as? PFFile {
-                // MARK: - RPVideoPlayerView
-                self.rpVideoPlayer = RPVideoPlayerView(frame: vCell.videoPreview.bounds)
-                self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
-                self.rpVideoPlayer.autoplays = false
-                self.rpVideoPlayer.playbackLoops = false
-                self.rpVideoPlayer?.pause()
-                vCell.videoPreview.addSubview(rpVideoPlayer)
-                vCell.videoPreview.bringSubview(toFront: rpVideoPlayer)
-            }
-            
-            // Set text
-            vCell.textPost.text = "This is a video..."
-            
             return vCell
         }
     }

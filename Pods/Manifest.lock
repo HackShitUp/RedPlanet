@@ -34,6 +34,7 @@ PODS:
   - SnapKit (3.2.0)
   - SwiftyCam (2.2.2)
   - SwipeNavigationController (2.0.2)
+  - VIMVideoPlayer (6.0.1)
 
 DEPENDENCIES:
   - AnimatedCollectionViewLayout
@@ -51,6 +52,7 @@ DEPENDENCIES:
   - SDWebImage
   - SwiftyCam (= 2.2.2)
   - SwipeNavigationController
+  - VIMVideoPlayer
 
 SPEC CHECKSUMS:
   AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
@@ -71,7 +73,8 @@ SPEC CHECKSUMS:
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
+  VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
 
-PODFILE CHECKSUM: ac9ff146ace9126c18ea34991fe12cac16f92f32
+PODFILE CHECKSUM: b1568fdd09f84075a1cd2a8e3d14f7872e90acc6
 
 COCOAPODS: 1.2.1

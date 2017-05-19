@@ -292,10 +292,8 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
             
             // Set PFObject
             tpCell.postObject = self.posts[tableView.tag]
-            // Set parent UIViewController
             tpCell.superDelegate = self
-            // Update UI
-            tpCell.updateView(postObject: self.posts[tableView.tag])
+            tpCell.updateView(withObject: self.posts[tableView.tag])
             
             return tpCell
             

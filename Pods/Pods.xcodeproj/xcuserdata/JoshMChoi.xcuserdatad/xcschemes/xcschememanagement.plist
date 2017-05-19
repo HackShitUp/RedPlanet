@@ -104,6 +104,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>VIMVideoPlayer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -117,12 +122,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1718694BF7280BACD259A8252780ADF4</key>
+		<key>18F78C2A57144B17BD0E66C594BC01E9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2AD3AE29ACC740D4D5109C7348B0690C</key>
+		<key>25DDED7166B3AB57D9AD6BA1F97CC94C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,7 +137,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3F13C6D45D9C61934924570380B7F604</key>
+		<key>3D62CC0F2F920C15780B1E01D93D3E73</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -148,16 +153,6 @@
 			<true/>
 		</dict>
 		<key>6EE458AB7C9239893E5C6E840C0BF9B5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>808B3B977742A6FE0CB6CBBD90C3733C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>82669121AF86E8B32AFD8DF960BC6E45</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,7 +177,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>B0C418051A6B0B5906A15F4186D007B4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B504E813CC170C52F9BECA49AA05651D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C2079E3EEFFF738C2A5FE978A07048D4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C3A41E3DBFAC4B1D6C73F943FE8CDEE8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4469D394DE4E9BA13FBA60F4F871978</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -192,12 +207,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DE44672517DA3479388BEE384D30D68F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EE71DB9668022BC3A858BB9BBB986759</key>
+		<key>D64E90A6EAD329A5BFBE9F6FB0611A31</key>
 		<dict>
 			<key>primary</key>
 			<true/>

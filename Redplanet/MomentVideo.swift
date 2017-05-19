@@ -13,33 +13,55 @@ import AVKit
 import Parse
 import ParseUI
 import Bolts
+import VIMVideoPlayer
 
 class MomentVideo: UICollectionViewCell {
     
-    // MARK: - RPVideoPlayerView
-    var rpVideoPlayer: RPVideoPlayerView!
+    // Initialize PFObject
+    var postObject: PFObject?
+    // Initialize parent UIViewController
+    var delegate: UIViewController?
+    
+    // MARK: - VIMVideoPlayerView
+    var vimPlayerView: VIMVideoPlayerView!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
     
-    func addVideo(videoURL: URL?) {
-        // MARK: - RPVideoPlayerView
-        rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
-        rpVideoPlayer.setupVideo(videoURL: videoURL!)
-        self.contentView.addSubview(rpVideoPlayer)
-        rpVideoPlayer.autoplays = false
-        rpVideoPlayer.playbackLoops = false
-        rpVideoPlayer.play()
+    func updateView(withObject: PFObject?) {
+        // (1) Get and set user's object
+        if let user = withObject!.value(forKey: "byUser") as? PFUser {
+            // Set username
+            self.rpUsername.setTitle("\(user.value(forKey: "username") as! String)", for: .normal)
+        }
+        
+        // (2) Set time
+        let from = withObject!.createdAt!
+        let now = Date()
+        let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        self.time.text = difference.getFullTime(difference: difference, date: from)
 
-        self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
-        self.time.layer.applyShadow(layer: self.time.layer)
-        self.contentView.bringSubview(toFront: self.rpUsername)
-        self.contentView.bringSubview(toFront: self.time)
+        // (4) Configure UI
+        self.contentView.bringSubview(toFront: rpUsername)
+        self.contentView.bringSubview(toFront: time)
+        rpUsername.layer.applyShadow(layer: rpUsername.layer)
+        time.layer.applyShadow(layer: time.layer)
     }
     
-    func updateView() {
-        
+    func addVideo(withObject: PFObject?) {
+//        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
+//            // MARK: - VIMVideoPlayer
+//            vimPlayerView = VIMVideoPlayerView(frame: contentView.bounds)
+//            vimPlayerView.player.isLooping = true
+//            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+//            vimPlayerView.player.setURL(URL(string: video.url!)!)
+//            vimPlayerView.player.play()
+//            // Add to subview
+//            self.contentView.addSubview(vimPlayerView)
+//        }
     }
+    
 
     override func prepareForReuse() {
         super.prepareForReuse()

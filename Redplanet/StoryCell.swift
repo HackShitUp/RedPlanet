@@ -16,7 +16,6 @@ class StoryCell: UITableViewCell {
     
     // Parent VC
     var delegate: UIViewController?
-    
     // PFObject
     var postObject: PFObject?
 
@@ -31,7 +30,7 @@ class StoryCell: UITableViewCell {
         // Save to Views
 //        let views = PFObject(className: "Views")
 //        views["byUser"] = PFUser.current()!
-//        views["username"] = PFUser.current()!.username!
+//        views["byUsername"] = PFUser.current()!.username!
 //        views["forObjectId"] = self.postObject!.objectId!
 //        views.saveInBackground()
         
@@ -67,7 +66,6 @@ class StoryCell: UITableViewCell {
             button.setTitle("CANCEL", for: [])
             return true
         }
-        
         // (1) VIEWS
         let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
             // Dismiss
@@ -81,7 +79,6 @@ class StoryCell: UITableViewCell {
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewsVC)
             dialogController.present(UINavigationController(rootViewController: rpPopUpVC), animated: true)
         })
-        
         // (2) DELETE
         let delete = AZDialogAction(title: "Delete Recent Post", handler: { (dialog) -> (Void) in
             // Dismiss

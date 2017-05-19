@@ -225,8 +225,8 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         
         // Text Posts, Profile Photo
         if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
-            let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
+            let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             // Set PFObject
             scrollCell.postObject = self.stories[indexPath.item]
             // Set parentDelegate
@@ -236,52 +236,14 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
             
         } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
+            
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.stories[indexPath.item].value(forKey: "byUser") as? PFUser {
-                mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
-            }
-            
-            // (2) MARK: - RPHelpers; Set time
-            mpCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set photo
-            if let photo = self.stories[indexPath.item].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                mpCell.photoMoment.sd_showActivityIndicatorView()
-                mpCell.photoMoment.sd_setIndicatorStyle(.gray)
-                mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!)!)
-            }
-            
             return mpCell
             
         } else {
         // MOMENT VIDEO CELL
+            
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.stories[indexPath.row].value(forKey: "byUser") as? PFUser {
-                mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
-            }
-            
-            // (2) MARK: - RPHelpers; Set time
-            mvCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set video
-            if let video = self.stories[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // MARK: - RPVideoPlayerView
-                self.rpVideoPlayer = RPVideoPlayerView(frame: mvCell.contentView.bounds)
-                self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
-                mvCell.contentView.addSubview(rpVideoPlayer)
-                self.rpVideoPlayer.autoplays = false
-                self.rpVideoPlayer.playbackLoops = false
-                self.rpVideoPlayer?.pause()
-                // Update view???
-                mvCell.updateView()
-            }
-            
-            
             return mvCell
         }
     }

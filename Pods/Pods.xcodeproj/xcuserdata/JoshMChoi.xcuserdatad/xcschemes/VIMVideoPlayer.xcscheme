@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '18F78C2A57144B17BD0E66C594BC01E9'
-               BlueprintName = 'Reactions'
+               BlueprintIdentifier = '25DDED7166B3AB57D9AD6BA1F97CC94C'
+               BlueprintName = 'VIMVideoPlayer'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Reactions.framework'>
+               BuildableName = 'VIMVideoPlayer.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -20,6 +20,7 @@ target 'Redplanet' do
 	pod ‘SDWebImage’
 	pod ‘SwiftyCam’, ‘2.2.2’
 	pod 'SwipeNavigationController'
+	pod 'VIMVideoPlayer'
 
   target 'RedplanetTests' do
     inherit! :search_paths

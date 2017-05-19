@@ -127,9 +127,9 @@ class TextPostCell: UITableViewCell {
     
     
     // Function to bind data
-    func updateView(postObject: PFObject?) {
+    func updateView(withObject: PFObject?) {
         // (1) Get user's object
-        if let user = postObject!.value(forKey: "byUser") as? PFUser {
+        if let user = withObject!.value(forKey: "byUser") as? PFUser {
             // Get realNameOfUser
             self.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
             // Set profile photo
@@ -142,7 +142,7 @@ class TextPostCell: UITableViewCell {
         }
         
         // (2) Set text post
-        if let text = self.postObject!.value(forKey: "textPost") as? String {
+        if let text = withObject!.value(forKey: "textPost") as? String {
             // Manipulate font size and color depending on character count
             if text.characters.count < 140 {
                 self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 23)
@@ -173,15 +173,14 @@ class TextPostCell: UITableViewCell {
             }
             */
             
-            
         }
         
         // (3) Set time
-        let from = self.postObject!.createdAt!
+        let from = withObject!.createdAt!
         let now = Date()
         let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        self.time.text = difference.getFullTime(difference: difference, date: from)
+        time.text = difference.getFullTime(difference: difference, date: from)
     }
     
     override func awakeFromNib() {
