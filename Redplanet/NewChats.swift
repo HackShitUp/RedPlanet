@@ -21,9 +21,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     // AppDelegate
     let appDelegate = AppDelegate()
     
-    // Boolean variable to check whether search bar is active
-    var searchActive: Bool = false
-    // Search Bar
+    // Instantiate UISearchBar
     var searchBar = UISearchBar()
 
     // Arry to hold following
@@ -42,7 +40,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     @IBAction func refresh(_ sender: AnyObject) {
         // If search is not active, and searchBar's text is empty
-        if searchActive == false && searchBar.text!.isEmpty {
+        if searchBar.text!.isEmpty {
             // Reload data
             queryFollowing()
         }
@@ -103,14 +101,14 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         queryFollowing()
         
         // Add searchbar to header
-        self.searchBar.delegate = self
-        self.searchBar.sizeToFit()
-        self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        self.searchBar.barTintColor = UIColor.white
-        self.tableView.tableHeaderView = self.searchBar
-        self.tableView.tableHeaderView?.layer.borderWidth = 0.5
-        self.tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
-        self.tableView.tableHeaderView?.clipsToBounds = true
+        searchBar.delegate = self
+        searchBar.sizeToFit()
+        searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        searchBar.barTintColor = UIColor.white
+        tableView.tableHeaderView = self.searchBar
+        tableView.tableHeaderView?.layer.borderWidth = 0.5
+        tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+        tableView.tableHeaderView?.clipsToBounds = true
         
         // Design table view
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
@@ -119,9 +117,12 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Tap to dismiss keyboard
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(scrollViewWillBeginDragging))
         swipe.direction = .down
-        self.tableView!.isUserInteractionEnabled = true
-        self.tableView!.addGestureRecognizer(swipe)
+        tableView.isUserInteractionEnabled = true
+        tableView.addGestureRecognizer(swipe)
 
+        // Register NIB
+        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
+        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -152,9 +153,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         SDImageCache.shared().clearDisk()
     }
     
-    // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.following.count == 0 {
             return true
@@ -194,14 +193,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
 
     // MARK: - UISearchBarDelegate Methods
-    // Begin searching
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Set bool
-        searchActive = true
-    }
-    
-    
-    // Look for users
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Search by username
         let name = PFUser.query()!
@@ -252,7 +243,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if searchActive == true && searchBar.text! != "" {
+        if searchBar.text! != "" {
             return searchObjects.count
         } else {
             return following.count
@@ -262,60 +253,72 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "newChatsCell", for: indexPath) as! NewChatsCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
         
-        // Declare parent VC
-        cell.delegate = self
-        
-        
-        // MARK: - RPHelpers extension
+        // MARK: - RPExtensions
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-
-        if searchActive == true && searchBar.text! != "" {
-        // SEARCH
-            
-            // Set user's object
-            cell.userObject = searchObjects[indexPath.row]
-            
-            // Set username, fullName, and profilePhoto
-            cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-            cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "username") as! String
-            // MARK: - SDWebImage
+        cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+        cell.rpUserProPic.sd_showActivityIndicatorView()
+        
+        // SEARCHED
+        if self.searchBar.text != "" {
+            // (1) Set fullName
+            cell.rpFullName.text = (self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)
+            // (2) Set username
+            cell.rpUsername.text = (self.searchObjects[indexPath.row].value(forKey: "username") as! String)
+            // (3) Get and set userProfilePicture
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
         } else {
         // FOLLOWING
-            
-            // Sort Following in ABC order
-            let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
-            
-            // Set user's object
-            cell.userObject = abcFollowing[indexPath.row]
-            
-            // Set username, fullName, and profilePhoto
-            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
-            cell.rpFullName.text! = abcFollowing[indexPath.row].value(forKey: "username") as! String
-            // MARK: - SDWebImage
-            if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // (1) Set fullName
+            cell.rpFullName.text = (self.following[indexPath.row].value(forKey: "realNameOfUser") as! String)
+            // (2) Set username
+            cell.rpUsername.text = (self.following[indexPath.row].value(forKey: "username") as! String)
+            // (3) Get and set userProfilePicture
+            if let proPic = self.following[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
         }
-
+        
         return cell
     }
     
+    // MARK: - UITableView Delegate Methods
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Append data
+        if self.searchBar.text != "" {
+            chatUserObject.append(self.searchObjects[indexPath.row])
+            chatUsername.append(self.searchObjects[indexPath.row].value(forKey: "username") as! String)
+        } else {
+            chatUserObject.append(self.following[indexPath.row])
+            chatUsername.append(self.following[indexPath.row].value(forKey: "username") as! String)
+        }
+        
+        // Push to VC
+        let rpChatRoomVC = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+        self.navigationController?.pushViewController(rpChatRoomVC, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.groupTableViewBackground
+    }
+    
+    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.white
+    }
 
 
     // MARK: - UIScrollViewDelegate Method
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Clear searchBar
+        self.searchBar.text = ""
         // Resign first responder status
         self.searchBar.resignFirstResponder()
-        // Set Boolean
-        searchActive = false
         // Set tableView background
         self.tableView.backgroundView = UIView()
         // Reload data

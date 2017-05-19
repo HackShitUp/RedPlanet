@@ -79,7 +79,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // Create PFObject
             let itmPhoto = PFObject(className: "Newsfeeds")
             itmPhoto["byUser"] = PFUser.current()!
-            itmPhoto["username"] = PFUser.current()!.username!
+            itmPhoto["byUsername"] = PFUser.current()!.username!
             itmPhoto["contentType"] = "itm"
             itmPhoto["saved"] = false
             itmPhoto["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
@@ -312,9 +312,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         // Append data accordingly
         if currentGeoFence.isEmpty || temperature.isEmpty {
-        // =======================================================================
         // GEOLOCATION DISABLED ==================================================
-        // =======================================================================
             // Append filters
             rpFilters.append(contentsOf:
                             ["nil",
@@ -328,23 +326,21 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             self.data[7].addSticker(SNSticker(frame: self.view.bounds, image: dayStamp!, atZPosition: 0))
             self.data[8].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
         } else {
-        // =======================================================================
         // GEOLOCATION ENABLED ===================================================
-        // =======================================================================
-            
+
             // IV AREA: "City, State"
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-            city.font = UIFont(name: "Noteworthy-Bold", size: 40)
+            city.font = UIFont(name: "AvenirNext-Bold", size: 50)
             city.textColor = UIColor.white
             city.backgroundColor = UIColor.clear
-            city.text = "\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)"
             city.textAlignment = .center
             city.lineBreakMode = .byWordWrapping
             city.numberOfLines = 0
-            city.layer.shadowColor = UIColor.randomColor().cgColor
-            city.layer.shadowOffset = CGSize(width: 1, height: 1)
-            city.layer.shadowRadius = 3
-            city.layer.shadowOpacity = 0.5
+            // Manipulate font size of CLPlacemark's name attribute
+            let formattedString = NSMutableAttributedString()
+            _ = formattedString.bold("\(currentGeoFence.last!.name!)", withFont: UIFont(name: "AvenirNext-Bold", size: 17)).normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)")
+            city.attributedText = formattedString
+            city.layer.applyShadow(layer: city.layer)
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
             city.layer.render(in: UIGraphicsGetCurrentContext()!)
             let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
@@ -362,7 +358,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             temp.layer.render(in: UIGraphicsGetCurrentContext()!)
             let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            
             
             // Append filters
             rpFilters.append(contentsOf: ["nil",

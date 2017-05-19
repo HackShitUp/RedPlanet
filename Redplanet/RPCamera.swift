@@ -152,7 +152,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                         let rpHelpers = RPHelpers()
                         _ = rpHelpers.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
                         
-                        
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()
                     } else {
@@ -277,7 +276,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         // Set Profile Photo
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - RPExtensions
-            self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.50, borderColor: UIColor.white)
+            self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 1, borderColor: UIColor.white)
             // MARK: - SDWebImage
             self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }

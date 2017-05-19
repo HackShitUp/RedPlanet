@@ -223,6 +223,9 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
         tableView.tableHeaderView?.clipsToBounds = true
         
+        // Register NIB
+        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
+        
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
@@ -311,27 +314,31 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
 
         // MARK: - RPExtensions
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // SEARCHED
         if self.searchBar.text! != "" {
-            // Get users' usernames
-            cell.rpUsername.text! = self.searchedObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-            // Set and get user's profile photo
+            // (1) Set rpFullName
+            cell.rpFullName.text! = self.searchedObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            // (2) Set rpUsername
+            cell.rpUsername.text! = self.searchedObjects[indexPath.row].value(forKey: "username") as! String
+            // (3) Get and set userProfilePicture
             if let proPic = self.searchedObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
         } else {
         // FOLLOWERS || FOLLOWING
-            // Sort followers or following in ABC order
+            // (1) Sort users in abcOrder
             let abcUsers = self.userObjects.sorted {($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
-            // Set users' usernames
-            cell.rpUsername.text! = abcUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
-            // Get user's profile photo
+            // (1) Set rpFullName
+            cell.rpFullName.text! = abcUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
+            // (2) Set rpUsername
+            cell.rpUsername.text! = abcUsers[indexPath.row].value(forKey: "username") as! String
+            // (3) Get and set userProfilePicture
             if let proPic = abcUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))

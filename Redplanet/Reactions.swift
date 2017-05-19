@@ -496,7 +496,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         tableView.tableFooterView = UIView()
         // Register NIB
-        tableView.register(UINib(nibName: "ReactionsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "ReactionsHeader")
+        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
 
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
@@ -573,14 +573,16 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if self.segmentedControl.selectedSegmentIndex == 0 {
-        // Likes
-            let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
-            
-            // (1) Get user's data
+        // LIKES
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
+
+            // Get and set user's data
             if let user = self.reactionObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
-                // Set user's full name
-                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                // Set user's profile photo
+                // (1) Set rpFullName
+                cell.rpFullName.text = (user.value(forKey: "realNameOfUser") as! String)
+                // (2) Set rpUsername
+                cell.rpUsername.text = (user.value(forKey: "username") as! String)
+                // (3) Get and set userProfilePicture
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setIndicatorStyle(.gray)
@@ -603,11 +605,11 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             // Set PFObject
             cell.postObject = self.reactionObjects[indexPath.row]
             
-            // (1) Get user's data
+            // Get and set user's data
             if let user = self.reactionObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
-                // Set user's full name
-                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                // Set user's profile photo
+                // (1) Set rpUsername
+                cell.rpUsername.text = (user.value(forKey: "username") as! String)
+                // (2) Get and set userProfilePicture
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setIndicatorStyle(.gray)

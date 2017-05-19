@@ -89,9 +89,11 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         // Fetch blocked users
         fetchBlocked()
         
-        // Design table view
-        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView!.tableFooterView = UIView()
+        // Configure UITableView
+        tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        tableView.tableFooterView = UIView()
+        // Register NIB
+        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
@@ -164,11 +166,16 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // Get users' usernames and user's profile photos
-        cell.rpUsername.text! = self.blockedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (1) Set realNameOfUser
+        cell.rpFullName.text! = self.blockedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (2) Set username
+        cell.rpUsername.text! = self.blockedUsers[indexPath.row].value(forKey: "username") as! String
+        // (3) Get and set userProfilePicture
         if let proPic = self.blockedUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+            cell.rpUserProPic.sd_showActivityIndicatorView()
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         
         return cell

@@ -50,16 +50,16 @@ class MomentVideo: UICollectionViewCell {
     }
     
     func addVideo(withObject: PFObject?) {
-//        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
-//            // MARK: - VIMVideoPlayer
-//            vimPlayerView = VIMVideoPlayerView(frame: contentView.bounds)
-//            vimPlayerView.player.isLooping = true
-//            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-//            vimPlayerView.player.setURL(URL(string: video.url!)!)
+        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
+            // MARK: - VIMVideoPlayer
+            vimPlayerView = VIMVideoPlayerView(frame: contentView.bounds)
+            vimPlayerView.player.isLooping = true
+            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+            vimPlayerView.player.setURL(URL(string: video.url!)!)
 //            vimPlayerView.player.play()
-//            // Add to subview
-//            self.contentView.addSubview(vimPlayerView)
-//        }
+            // Add to subview
+            self.contentView.addSubview(vimPlayerView)
+        }
     }
     
 

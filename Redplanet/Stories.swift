@@ -265,10 +265,17 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if collectionView.cellForItem(at: indexPath) == collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-            self.vimPlayerView.player.pause()
-        } else if collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-            self.vimPlayerView.player.pause()
+//        if collectionView.cellForItem(at: indexPath) == collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+//            self.vimPlayerView.player.pause()
+//        } else if collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
+//            self.vimPlayerView.player.pause()
+//        }
+        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+            guard let mvCell = cell as? MomentVideo else  { return }
+            mvCell.vimPlayerView.player.pause()
+        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+            //            guard let vCell = cell as? MomentVideo else  { return }
+            //            mvCell.vimPlayerView.player.play()
         }
     }
     
@@ -280,36 +287,21 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             guard let storyScrollCell = cell as? StoryScrollCell else { return }
             storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
         }
-        
-//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-//            print("Fired")
-//            let mvCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-//            if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
-//                // MARK: - VIMVideoPlayer
-//                vimPlayerView = VIMVideoPlayerView(frame: mvCell.contentView.bounds)
-//                vimPlayerView.player.isLooping = true
-//                vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-//                vimPlayerView.player.setURL(URL(string: video.url!)!)
-//                vimPlayerView.player.play()
-//                // Add to subview
-//                mvCell.contentView.addSubview(vimPlayerView)
-//                mvCell.contentView.bringSubview(toFront: vimPlayerView)
-//            }
-//        } else {
-//            print("Not Fired...")
+//        } else if self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+//            print("Should play because MomentVideo...")
+//            self.vimPlayerView.player.play()
+//        } else if self.collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
+//            print("Should play because Video...")
+//            self.vimPlayerView.player.play()
 //        }
         
-//        let a = collectionView.indexPathsForVisibleItems
-//        print("A: \(a)\n")
-        
-        if self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-            print("Should play..")
-            self.vimPlayerView.player.play()
-        } else if self.collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-            print("Should play..")
-            self.vimPlayerView.player.play()
+        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+            guard let mvCell = cell as? MomentVideo else  { return }
+            mvCell.vimPlayerView.player.play()
+        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            guard let vCell = cell as? MomentVideo else  { return }
+//            mvCell.vimPlayerView.player.play()
         }
-        
     }
     
     
@@ -345,17 +337,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             mvCell.postObject = self.stories[indexPath.item]
             mvCell.delegate = self
-            if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
-                // MARK: - VIMVideoPlayer
-                vimPlayerView = VIMVideoPlayerView(frame: mvCell.contentView.bounds)
-                vimPlayerView.player.isLooping = true
-                vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-                vimPlayerView.player.setURL(URL(string: video.url!)!)
-                vimPlayerView.player.pause()
-                // Add to subview
-                mvCell.contentView.addSubview(vimPlayerView)
-            }
             mvCell.updateView(withObject: self.stories[indexPath.item])
+            mvCell.addVideo(withObject: self.stories[indexPath.item])
             
             return mvCell
         }

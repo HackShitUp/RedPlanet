@@ -74,6 +74,23 @@ extension UIView {
     }
 }
 
+// MARK: - NSMutableAtrributedString
+extension NSMutableAttributedString {
+    // Bolds range of string
+    func bold(_ text: String, withFont: UIFont?) -> NSMutableAttributedString {
+        let attrs:[String:AnyObject] = [NSFontAttributeName : withFont!]
+        let boldString = NSMutableAttributedString(string:"\(text)", attributes:attrs)
+        self.append(boldString)
+        return self
+    }
+    // Normalizes range of string
+    func normal(_ text: String) -> NSMutableAttributedString {
+        let normal =  NSAttributedString(string: text)
+        self.append(normal)
+        return self
+    }
+}
+
 // MARK: - UINavigationBar design configurations
 extension UINavigationBar {
     /*

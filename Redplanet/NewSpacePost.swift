@@ -552,20 +552,22 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
         
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // Fetch user's objects
-        // (1) Get and set user's profile photo
+        // (1) Set realNameOfUser
+        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (2) Set username
+        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
+        // (3) Get and set userProfilePicture
         if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+            cell.rpUserProPic.sd_showActivityIndicatorView()
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
-        
-        // (2) Set user's fullName
-        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
         
         return cell
     }

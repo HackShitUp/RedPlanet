@@ -209,7 +209,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         for var word in words {
             // #####################
             if word.hasPrefix("@") {
-                
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
@@ -217,24 +216,18 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 // Find the user
                 let fullName = PFUser.query()!
                 fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
                 search.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
-                        
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        
                         for object in objects! {
                             self.userObjects.append(object)
                         }
-                        
-                        
+
                     } else {
                         print(error?.localizedDescription as Any)
                     }
@@ -263,26 +256,21 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
         
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-        
-        // Fetch user's objects
-        userObjects[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Get user's Profile Photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                }
-                // (2) Set username
-                cell.rpUsername.text! = object!["username"] as! String
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+
+        // (1) Set rpFullName
+        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (2) Set rpUsername
+        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
+        // (3) Get and set userProfilePicture
+        if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+            cell.rpUserProPic.sd_showActivityIndicatorView()
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         
         return cell
@@ -348,18 +336,20 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         return .none
     }
 
-    
+    // MARK: - UIView Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
+        // Set first responder
+        self.textPost.becomeFirstResponder()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Stylize title
-        configureView()
-        
-        // Set first responder
-        self.textPost.becomeFirstResponder()
-        
         // Hide tableView
         self.tableView.isHidden = true
+        self.tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
         
         // Add function to save changes tap
         let save = UITapGestureRecognizer(target: self, action: #selector(saveChanges))
@@ -367,22 +357,13 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         self.completeButton.isUserInteractionEnabled = true
         self.completeButton.addGestureRecognizer(save)
         
-        
-        // Make complete button circular
-        self.completeButton.layer.cornerRadius = self.completeButton.frame.size.width/2.0
-        self.completeButton.clipsToBounds = true
-        
+        // MARK: - RPExtensions
+        self.mediaAsset.roundAllCorners(sender: self.mediaAsset)
         
         // Text
         if let text = editObjects.last!.value(forKey: "textPost") as? String {
             self.textPost.text! = text
         }
-        
-        
-        // Add corner radius for thumbnail
-        self.mediaAsset.layer.cornerRadius = 6.00
-        self.mediaAsset.clipsToBounds = true
-        
         
         // Fill in photo
         if editObjects.last!.value(forKey: "photoAsset") != nil {

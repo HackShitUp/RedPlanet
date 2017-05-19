@@ -182,14 +182,15 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
         
         // Extend layouts
         self.extendedLayoutIncludesOpaqueBars = true
-        
-        // Set tablefooter view
-        self.tableView.backgroundColor = UIColor.white
-        self.tableView!.tableFooterView = UIView()
-        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        // Configure UITableView
+        tableView.backgroundColor = UIColor.white
+        tableView.tableFooterView = UIView()
+        tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        // Register NIB
+        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -229,16 +230,21 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
         
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // Fetch user's realNameOfUser and user's profile photos
-        cell.rpUsername.text! = self.viewers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (1) Set realNameOfUser
+        cell.rpFullName.text! = self.viewers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (2) Set username
+        cell.rpUsername.text! = self.viewers[indexPath.row].value(forKey: "username") as! String
+        // (3) Get and set userProfilePicture
         if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+            cell.rpUserProPic.sd_showActivityIndicatorView()
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
 
         return cell
