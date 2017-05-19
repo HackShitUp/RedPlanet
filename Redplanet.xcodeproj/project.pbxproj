@@ -38,6 +38,10 @@
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
 		7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */; };
 		7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */; };
+		7E6D90DD1ECF9AD600F7FD6B /* NewMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */; };
+		7E6D90DF1ECF9BA800F7FD6B /* PhotosVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90DE1ECF9BA800F7FD6B /* PhotosVideos.swift */; };
+		7E6D90E21ECF9D0C00F7FD6B /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */; };
+		7E6D90E31ECF9D0C00F7FD6B /* CollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */; };
 		7E6E24651EBBFC9300D52490 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6E24631EBBFC9300D52490 /* VideoCell.swift */; };
 		7E6E24661EBBFC9300D52490 /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6E24641EBBFC9300D52490 /* VideoCell.xib */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
@@ -238,6 +242,10 @@
 		7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPost.swift; sourceTree = "<group>"; };
 		7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStories.swift; sourceTree = "<group>"; };
 		7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStoriesCell.swift; sourceTree = "<group>"; };
+		7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMedia.swift; sourceTree = "<group>"; };
+		7E6D90DE1ECF9BA800F7FD6B /* PhotosVideos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosVideos.swift; sourceTree = "<group>"; };
+		7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
+		7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionCell.xib; sourceTree = "<group>"; };
 		7E6E24631EBBFC9300D52490 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		7E6E24641EBBFC9300D52490 /* VideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
@@ -497,7 +505,6 @@
 		7E274EBB1E31A828006B2D8B /* Stickers */ = {
 			isa = PBXGroup;
 			children = (
-				7E274EB71E31A80B006B2D8B /* Stickers.swift */,
 				7E274EB91E31A822006B2D8B /* StickersCell.swift */,
 			);
 			name = Stickers;
@@ -577,6 +584,15 @@
 				7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */,
 			);
 			name = NewTextPost;
+			sourceTree = "<group>";
+		};
+		7E6D90E41ECF9D0F00F7FD6B /* CollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */,
+				7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */,
+			);
+			name = CollectionCell;
 			sourceTree = "<group>";
 		};
 		7E6E24BE1EBC5C6800D52490 /* RPCaption */ = {
@@ -987,6 +1003,8 @@
 		7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */ = {
 			isa = PBXGroup;
 			children = (
+				7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */,
+				7E6D90DE1ECF9BA800F7FD6B /* PhotosVideos.swift */,
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7EBDCB251E72251000E319A0 /* Library.swift */,
 				7EBDCB271E72273A00E319A0 /* LibraryCell.swift */,
@@ -1138,6 +1156,7 @@
 				7EC5D1951DB353E000437219 /* Chats.swift */,
 				7EC5D1971DB353F300437219 /* ChatsCell.swift */,
 				7E7037C41DBD5E6400F03E0C /* NewChats.swift */,
+				7E274EB71E31A80B006B2D8B /* Stickers.swift */,
 				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
 				7E274EBB1E31A828006B2D8B /* Stickers */,
 			);
@@ -1287,6 +1306,7 @@
 		7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */ = {
 			isa = PBXGroup;
 			children = (
+				7E6D90E41ECF9D0F00F7FD6B /* CollectionCell */,
 				7E85C8721ECCCE3B00D5EF07 /* UserCell */,
 				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
 				7E8E54091EB29CF100292B8C /* MomentVideo */,
@@ -1473,6 +1493,7 @@
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
 				7EDB846A1EB968F8005E805E /* TextPostCell.xib in Resources */,
+				7E6D90E31ECF9D0C00F7FD6B /* CollectionCell.xib in Resources */,
 				7EE697CF1EAADBC2004F4E24 /* SpaceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1675,6 +1696,7 @@
 				7E9B2E181ECACB48000F1AD2 /* TableCollectionCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
+				7E6D90DD1ECF9AD600F7FD6B /* NewMedia.swift in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
@@ -1714,6 +1736,7 @@
 				7E98E9521DB75057001B7329 /* CLColorPickerView.m in Sources */,
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
+				7E6D90E21ECF9D0C00F7FD6B /* CollectionCell.swift in Sources */,
 				7E41C7A71E4012300025129B /* CurrentUserHeader.swift in Sources */,
 				7E4199251E4C668000EFA065 /* SwipeView.m in Sources */,
 				7E972FDF1EA93E8B0047F4D4 /* StoryCell.swift in Sources */,
@@ -1756,6 +1779,7 @@
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
+				7E6D90DF1ECF9BA800F7FD6B /* PhotosVideos.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,

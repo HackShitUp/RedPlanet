@@ -112,7 +112,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         textPostChat["read"] = false
                         textPostChat["saved"] = false
                         textPostChat["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
-                        textPostChat.saveInBackground()
+                        textPostChat.saveEventually()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
@@ -129,7 +129,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         photoChat["saved"] = false
                         photoChat["contentType"] = "ph"
                         photoChat["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
-                        photoChat.saveInBackground()
+                        photoChat.saveEventually()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
@@ -147,7 +147,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         videoChat["saved"] = false
                         videoChat["contentType"] = "vi"
                         videoChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
-                        videoChat.saveInBackground()
+                        videoChat.saveEventually()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
@@ -168,7 +168,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         } else {
                             momentChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
                         }
-                        momentChat.saveInBackground()
+                        momentChat.saveEventually()
                         
                         // MARK: - RPHelpers; update chatsQueue
                         let rpHelpers = RPHelpers()
@@ -186,7 +186,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             
             // MARK: - RPHelpers
             let rpHelpers = RPHelpers()
-            rpHelpers.showSuccess(withTitle: "Sent")
+            rpHelpers.showSuccess(withTitle: "Shared")
             
             // Deallocate CapturedStill.swift
             let capturedStill = CapturedStill()
@@ -206,7 +206,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         case let x where x == 0 :
             // MARK: - RPHelpers
             let rpHelpers = RPHelpers()
-            rpHelpers.showSuccess(withTitle: "Post or tap on someone to share...")
+            rpHelpers.showSuccess(withTitle: "Post or tap on people to share with...")
             // Resign first responder
             self.searchBar.resignFirstResponder()
             // Vibrate device

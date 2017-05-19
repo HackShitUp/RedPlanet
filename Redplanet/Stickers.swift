@@ -70,7 +70,10 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
-        self.collectionView!.reloadData()
+        collectionView!.reloadData()
+        
+        // Register NIB
+        collectionView!.register(UINib(nibName: "CollectionCell", bundle: nil), forCellWithReuseIdentifier: "CollectionCell")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -93,15 +96,14 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "stickersCell", for: indexPath) as! StickersCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CollectionCell
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
-        
         // LayoutViews
-        cell.stickerImage.layoutIfNeeded()
-        cell.stickerImage.layoutSubviews()
-        cell.stickerImage.setNeedsLayout()
-        cell.stickerImage.image = UIImage(named: self.stickers[indexPath.row])
+        cell.assetPreview.layoutIfNeeded()
+        cell.assetPreview.layoutSubviews()
+        cell.assetPreview.setNeedsLayout()
+        cell.assetPreview.image = UIImage(named: self.stickers[indexPath.row])
         
         return cell
     }

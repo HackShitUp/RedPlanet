@@ -500,12 +500,11 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         super.viewDidLoad()
         
         // Hide tableView on load
-        tableView.isHidden = true
-        tableView.allowsSelection = true
-        tableView.delegate = self
-        tableView.dataSource = self
-        // Register NIB
-        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
+        self.tableView!.isHidden = true
+        self.tableView!.allowsSelection = true
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
+
         
         // add delegate for mediaCaption
         self.mediaCaption.delegate = self
@@ -701,22 +700,20 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-        
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // (1) Set realNameOfUser
-        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-        // (2) Set username
-        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
-        // (3) Get and set userProfilePicture
+        // Fetch user's objects
+        // (1) Get and set user's profile photo
         if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-            cell.rpUserProPic.sd_showActivityIndicatorView()
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
+        
+        // (2) Set user's fullName
+        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
         
         return cell
     }
