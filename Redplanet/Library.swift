@@ -104,12 +104,13 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         configureView()
         // MARK: - RPExtensions; Create corner radius
         self.navigationController?.view.roundAllCorners(sender: navigationController?.view)
-        // Fetch Assets
-        fetchAssets()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Fetch Assets
+        fetchAssets()
+        
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
@@ -151,7 +152,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             newMediaVC.mediaURL = info[UIImagePickerControllerMediaURL] as? URL
             if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeImage {            // IMAGE
                 newMediaVC.mediaType = "image"
-            } else if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeVideo {     // VIDEO
+            } else if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeMovie {     // VIDEO
                 newMediaVC.mediaType = "video"
             }
             self.navigationController?.pushViewController(newMediaVC, animated: true)

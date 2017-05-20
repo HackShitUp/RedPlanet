@@ -18,17 +18,16 @@ import Bolts
 
 import OneSignal
 import SwipeNavigationController
+import VIMVideoPlayer
 
-// Video URL
-var capturedURLS = [URL]()
-
-class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeViewDelegate, SwipeViewDataSource {
+class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
+//, SwipeViewDelegate, SwipeViewDataSource {
     
-    // MARK: - RPVideoPlayer
-    var rpVideoPlayer: RPVideoPlayerView!
+    // MARK: - Class Configuration Variables
+    var capturedURL: URL?
     
-    // MARK: - SwipeView
-    @IBOutlet weak var swipeView: SwipeView!
+    // MARK: - VIMVideoPlayer
+    var vimPlayerView: VIMVideoPlayerView!
     
     // Compressed URL
     var smallVideoData: NSData?
@@ -36,17 +35,15 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
-        if !capturedURLS.isEmpty {
-            capturedURLS.removeLast()
-        }
         // Pop VC
+//        self.dismiss(animated: false, completion: nil)
         _ = self.navigationController?.popViewController(animated: false)
     }
     
     @IBOutlet weak var saveButton: UIButton!
     @IBAction func saveVideo(_ sender: Any) {
         PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: capturedURLS.last!)
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.capturedURL!)
         }) { (saved: Bool, error: Error?) in
             if saved {
                 
@@ -72,7 +69,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
         self.continueButton.isUserInteractionEnabled = false
 
         if chatCamera == false {
-//            print("VIDEODATA: \(smallVideoData)\n")
             // Save to Newsfeeds
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["username"] = PFUser.current()!.username!
@@ -83,14 +79,12 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
             newsfeeds.saveInBackground()
             // Re-enable buttons
             self.continueButton.isUserInteractionEnabled = true
-            // Clear array
-            capturedURLS.removeAll(keepingCapacity: false)
             // Reload data and push to bottom
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             }
-            
+
         } else {
             
             // MARK: - HEAP
@@ -123,8 +117,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
             self.continueButton.isUserInteractionEnabled = true
             // Set bool to false
             chatCamera = false
-            // Clear array
-            capturedURLS.removeAll(keepingCapacity: false)
             // Reload data
             NotificationCenter.default.post(name: rpChat, object: nil)
             // Push to bottom
@@ -136,15 +128,15 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
     
     // Function to mute and turn volume on
     func setMute() {
-        // MUTE
-        if self.rpVideoPlayer.muted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
-            self.rpVideoPlayer.muted = true
+        if self.vimPlayerView.player.isMuted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumenOn") {
+        // VOLUME OFF
+            self.vimPlayerView.player.isMuted = true
             DispatchQueue.main.async {
                 self.muteButton.setImage(UIImage(named: "VolumeOff"), for: .normal)
             }
-        } else if self.rpVideoPlayer.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOff") {
+        } else if self.vimPlayerView.player.isMuted == true && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOff") {
         // VOLUME ON
-            self.rpVideoPlayer.muted = false
+            self.vimPlayerView.player.isMuted = false
             DispatchQueue.main.async {
                 self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
             }
@@ -179,7 +171,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
         //
     }
     
-
+    /*
     // MARK: - SwipeView DataSource
     func numberOfItems(in swipeView: SwipeView) -> Int {
         //return the total number of items in the carousel
@@ -224,27 +216,19 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
     func swipeViewItemSize(_ swipeView: SwipeView) -> CGSize {
         return self.swipeView.bounds.size
     }
+    */
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide statusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        // Set Audio
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: [.duckOthers, .mixWithOthers])
-        } catch {
-            print("[SwiftyCam]: Failed to set background audio preference")
-        }
-        
-        
+
         // Execute if array isn't empty
-        if !capturedURLS.isEmpty {
+        if self.capturedURL != nil {
             DispatchQueue.main.async {
                 let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-                self.compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
+                self.compressVideo(inputURL: self.capturedURL!, outputURL: compressedURL) { (exportSession) in
                     guard let session = exportSession else {
                         return
                     }
@@ -276,22 +260,24 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
     override func viewDidLoad() {
         super.viewDidLoad()
         // Execute code if url array is NOT empty
-        if !capturedURLS.isEmpty {
+        if self.capturedURL != nil {
             
-            // MARK: - RPVideoPlayerView
-            rpVideoPlayer = RPVideoPlayerView(frame: self.view.bounds)
-            rpVideoPlayer.setupVideo(videoURL: capturedURLS.last!)
-            rpVideoPlayer.playbackLoops = true
-            self.view.addSubview(rpVideoPlayer)
+            // MARK: - VIMVideoPlayer
+            vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+            vimPlayerView.player.isLooping = true
+            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+            vimPlayerView.player.setURL(self.capturedURL!)
+            vimPlayerView.player.play()
+            self.view.addSubview(vimPlayerView)
             
-            // MARK: - SwipeView
-            self.swipeView.delegate = self
-            self.swipeView.dataSource = self
-            self.swipeView.alignment = .center
-            self.swipeView.itemsPerPage = 1
-            self.swipeView.isPagingEnabled = true
-            self.swipeView.truncateFinalPage = false
-            self.view.addSubview(self.swipeView)
+//            // MARK: - SwipeView
+//            self.swipeView.delegate = self
+//            self.swipeView.dataSource = self
+//            self.swipeView.alignment = .center
+//            self.swipeView.itemsPerPage = 1
+//            self.swipeView.isPagingEnabled = true
+//            self.swipeView.truncateFinalPage = false
+//            self.view.addSubview(self.swipeView)
         
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
@@ -315,8 +301,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
                 // MARK: - RPExtension
                 (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-                self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
-                self.swipeView.bringSubview(toFront: rpVideoPlayer)
+//                self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
             }
         }
     }

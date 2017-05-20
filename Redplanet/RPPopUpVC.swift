@@ -93,6 +93,8 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override open func viewDidAppear(_ animated: Bool) {

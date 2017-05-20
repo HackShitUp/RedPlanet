@@ -90,9 +90,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
-        capturedURLS.append(url)
         let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
-        self.navigationController?.pushViewController(capturedVideoVC, animated: false)
+        capturedVideoVC.capturedURL = url
+        self.present(capturedVideoVC, animated: false, completion: nil)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
