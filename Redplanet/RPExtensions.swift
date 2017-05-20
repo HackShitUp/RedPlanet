@@ -21,12 +21,11 @@ import Bolts
  MARK: - Used to add UIButton to bottom center of UIView
  Hide rpButton in viewWillAppear and
  show rpButton in viewWillDisappear
- */
+*/
 let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
 
-/*
- MARK: - UIView: Extensions
- */
+
+// MARK: - UIView: Extensions
 extension UIView {
     
     // Function to add rpButton
@@ -93,11 +92,7 @@ extension NSMutableAttributedString {
 
 // MARK: - UINavigationBar design configurations
 extension UINavigationBar {
-    /*
-     'Whitens-out' the UINavigationbar and removes the lower grey line border
-     • Shows the UINavigationBar; Set UIImage() instance as background
-     • Apply UIImage to UINavigationBar; Makes it NOT translucent
-     */
+    // 'Whitens-out' the UINavigationbar and removes the lower grey line border
     func whitenBar(navigator: UINavigationController?) {
         navigator?.setNavigationBarHidden(false, animated: false)
         navigator?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -115,9 +110,7 @@ extension UINavigationBar {
     }
 }
 
-/*
- MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
- */
+// MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
 extension CALayer {
     func applyShadow(layer: CALayer?) {
         layer!.shadowColor = UIColor.black.cgColor
@@ -127,9 +120,7 @@ extension CALayer {
     }
 }
 
-/*
- MARK: - Function to generate random colors
- */
+// MARK: - Function to generate random colors
 extension CGFloat {
     static func random() -> CGFloat {
         return CGFloat(arc4random()) / CGFloat(UInt32.max)
@@ -145,9 +136,7 @@ extension UIColor {
     }
 }
 
-/*
- MARK: - Extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
- */
+// MARK: - Extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
 extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffles the contents of given collection.
     mutating func shuffle() {
@@ -175,7 +164,7 @@ extension Sequence {
  MARK: - DateComponents Time Display
  • getFullTime() = calculate time with full text
  • getShortTime() = calculate time with shortened text
- */
+*/
 extension DateComponents {
     
     // Get Full Time

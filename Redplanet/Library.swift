@@ -104,6 +104,8 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         configureView()
         // MARK: - RPExtensions; Create corner radius
         self.navigationController?.view.roundAllCorners(sender: navigationController?.view)
+        // Fetch Assets
+        fetchAssets()
     }
     
     override func viewDidLoad() {
@@ -141,22 +143,17 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     
     // MARK: - UIImagePickerController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
-        // Instantiate NewMedia
-        let newMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "newMediaVC") as! NewMedia
-        // IMAGE
-        if pickerMedia == kUTTypeImage {
-            newMediaVC.mediaType = "image"
-        } else if pickerMedia == kUTTypeVideo {
-            // VIDEO
-            newMediaVC.mediaType = "video"
-        }
-        // Pass image/video url to NewMedia
-        if let mediaURL = info[UIImagePickerControllerMediaURL] as? URL {
-            newMediaVC.mediaURL = mediaURL
-        }
-        // Dismiss and show newMediaVC
+        // Dismiss and show NewMedia
         self.imagePicker.dismiss(animated: true) {
+            // Instantiate NewMedia and pass IMAGE or VIDEO to NewMedia
+            let newMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "newMediaVC") as! NewMedia
+            newMediaVC.selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage
+            newMediaVC.mediaURL = info[UIImagePickerControllerMediaURL] as? URL
+            if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeImage {            // IMAGE
+                newMediaVC.mediaType = "image"
+            } else if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeVideo {     // VIDEO
+                newMediaVC.mediaType = "video"
+            }
             self.navigationController?.pushViewController(newMediaVC, animated: true)
         }
     }
@@ -178,14 +175,10 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CollectionCell
         
-        // Configure assetPreview
-        cell.assetPreview.layoutIfNeeded()
-        cell.assetPreview.layoutSubviews()
-        cell.assetPreview.setNeedsLayout()
-        cell.assetPreview.contentMode = .scaleAspectFill
-        
         // Set bounds
         cell.contentView.frame = cell.contentView.frame
+        // Configure contentMode
+        cell.assetPreview.contentMode = .scaleAspectFill
         
         // MARK: - PHImageRequestOptions; Call synchronously to return high quality assets
         let imageOptions = PHImageRequestOptions()
@@ -204,13 +197,12 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
                                                 // Configure Assets's design depending on mediaType
                                                 if self.allAssets[indexPath.row].mediaType == .image {
                                                     cell.assetPreview.layer.cornerRadius = 2.00
+                                                    cell.assetPreview.clipsToBounds = true
                                                 } else {
-                                                    cell.assetPreview.layer.cornerRadius = cell.assetPreview.frame.size.width/2
+                                                    cell.assetPreview.makeCircular(forView: cell.assetPreview, borderWidth: 0, borderColor: UIColor.clear)
                                                 }
         }
-        
-        // Clip to bounds
-        cell.assetPreview.clipsToBounds = true
+
     
         return cell
     }
