@@ -14,21 +14,19 @@ import MobileCoreServices
 import Photos
 import PhotosUI
 
-import SwipeNavigationController
-
 import Parse
 import ParseUI
 import Bolts
-
+import SwipeNavigationController
 
 class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    // Initialize image picker
-    var imagePicker: UIImagePickerController!
     // Array to hold all PHAssets
     var allAssets = [PHAsset]()
     
-    // Refresher
+    // Initialized UIImagePickerController
+    var imagePicker: UIImagePickerController!
+    // Initialized UIRefreshControl
     var refresher: UIRefreshControl!
     
     // Function to refresh
@@ -37,14 +35,13 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         self.refresher.endRefreshing()
     }
     
-    
     @IBAction func camera(_ sender: Any) {
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
     @IBAction func picker(_ sender: Any) {
-        // Instnatiate UIImagePickerController
+        // MARK: - UIImagePickerController
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
@@ -54,59 +51,10 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-        // Present UIImagePickerController
-        self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
+        navigationController?.present(self.imagePicker, animated: true, completion: nil)
     }
     
-    
-    // UIImagePickercontroller Delegate Method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
-        
-        
-        if pickerMedia == kUTTypeImage {
-            // Edited image
-            if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
-                // Append PHAsset
-                shareImageAssets.append(image)
-            }
-            
-            mediaType = "photo"
-            
-            // Dismiss
-            self.imagePicker.dismiss(animated: true, completion: nil)
-            
-            // Push VC
-            let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-            self.navigationController!.pushViewController(shareMediaVC, animated: true)
-        }
-        
-        if pickerMedia == kUTTypeMovie {
-            // Selected image
-            if let video = info[UIImagePickerControllerMediaURL] as? URL {
-                instanceVideoData = video
-            }
-            
-            mediaType = "video"
-            
-            // Dismiss
-            self.imagePicker.dismiss(animated: true, completion: nil)
-            
-            // Push VC
-            let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-            self.navigationController!.pushViewController(shareMediaVC, animated: true)
-        }
-    }
-    
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // Dsimiss image picker
-        self.imagePicker.dismiss(animated: true, completion: nil)
-    }
-
-    
-    // Function to fetch assets
+    // FUNCTION - Fetch all PHAssets
     func fetchAssets() {
         // Clear assets array
         self.allAssets.removeAll(keepingCapacity: false)
@@ -122,13 +70,13 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             self.allAssets.append(asset)
         })
         
-        // Reload data
-        self.collectionView!.reloadData()
+        // Reload data in main thread
+        DispatchQueue.main.async {
+            self.collectionView!.reloadData()
+        }
     }
-    
-    
-    
-    // Function to stylize and set title of navigation bar
+
+    // FUNCTION - Stylize and set title of UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
@@ -142,7 +90,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         
         // Configure UINavigationBar
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
@@ -152,31 +100,31 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     // MARK: UIViewLifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Stylize navigation bar
+        // Stylize UINavigationBar
         configureView()
-        // Create corner radiuss
-        self.navigationController?.view.layer.cornerRadius = 8.00
-        self.navigationController?.view.clipsToBounds = true
+        // MARK: - RPExtensions; Create corner radius
+        self.navigationController?.view.roundAllCorners(sender: navigationController?.view)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Pull to refresh action
+        // Configure UIRefreshControl
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.collectionView!.addSubview(refresher)
+        collectionView!.addSubview(refresher)
         
-        // Do any additional setup after loading the view, typically from a nib.
+        // Configure UICollectionFlowLayout
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
-        // Fetch Assets
-        fetchAssets()
+        
+        // Register NIBS
+        collectionView!.register(UINib(nibName: "CollectionCell", bundle: nil), forCellWithReuseIdentifier: "CollectionCell")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -190,29 +138,56 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
     }
+    
+    // MARK: - UIImagePickerController
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
+        // Instantiate NewMedia
+        let newMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "newMediaVC") as! NewMedia
+        // IMAGE
+        if pickerMedia == kUTTypeImage {
+            newMediaVC.mediaType = "image"
+        } else if pickerMedia == kUTTypeVideo {
+            // VIDEO
+            newMediaVC.mediaType = "video"
+        }
+        // Pass image/video url to NewMedia
+        if let mediaURL = info[UIImagePickerControllerMediaURL] as? URL {
+            newMediaVC.mediaURL = mediaURL
+        }
+        // Dismiss and show newMediaVC
+        self.imagePicker.dismiss(animated: true) {
+            self.navigationController?.pushViewController(newMediaVC, animated: true)
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // Dimiss
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
 
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionView Data Source Methods
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         return self.allAssets.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "libraryCell", for: indexPath) as! LibraryCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CollectionCell
         
-        // Configure cell
-        cell.thumbnail.layoutIfNeeded()
-        cell.thumbnail.layoutSubviews()
-        cell.thumbnail.setNeedsLayout()
+        // Configure assetPreview
+        cell.assetPreview.layoutIfNeeded()
+        cell.assetPreview.layoutSubviews()
+        cell.assetPreview.setNeedsLayout()
+        cell.assetPreview.contentMode = .scaleAspectFill
+        
+        // Set bounds
         cell.contentView.frame = cell.contentView.frame
         
-        // Set PHImageRequestOptions
-        // To high quality; cancel pixelation
-        // Synchronously called
+        // MARK: - PHImageRequestOptions; Call synchronously to return high quality assets
         let imageOptions = PHImageRequestOptions()
         imageOptions.deliveryMode = .highQualityFormat
         imageOptions.isSynchronous = true
@@ -224,41 +199,35 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
                                                 (img, _) -> Void in
                                                 
                                                 // Set cell's image to photo
-                                                cell.thumbnail.image = img
+                                                cell.assetPreview.image = img
                                                 
                                                 // Configure Assets's design depending on mediaType
                                                 if self.allAssets[indexPath.row].mediaType == .image {
-                                                    cell.thumbnail.layer.cornerRadius = 2.00
+                                                    cell.assetPreview.layer.cornerRadius = 2.00
                                                 } else {
-                                                    cell.thumbnail.layer.cornerRadius = cell.thumbnail.frame.size.width/2
+                                                    cell.assetPreview.layer.cornerRadius = cell.assetPreview.frame.size.width/2
                                                 }
         }
         
         // Clip to bounds
-        cell.thumbnail.clipsToBounds = true
+        cell.assetPreview.clipsToBounds = true
     
         return cell
     }
 
-    // MARK: UICollectionViewDelegate
+    // MARK: - UICollectionView Delegate Method
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        if self.allAssets[indexPath.row].mediaType == .image {
-        // PHOTO
-            mediaType = "photo"
-            // Append PHAsset
-            shareMediaAsset.append(self.allAssets[indexPath.item])
-            
-        } else {
-        // VIDEO
-            mediaType = "video"
-            // Append PHAsset
-            shareMediaAsset.append(self.allAssets[indexPath.item])
+        // Instnatiate NewMedia
+        let newMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "newMediaVC") as! NewMedia
+        if allAssets[indexPath.item].mediaType == .image {
+            newMediaVC.mediaType = "image"
+        } else if allAssets[indexPath.item].mediaType == .video {
+            newMediaVC.mediaType = "video"
         }
-        
-        // Push VC
-        let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-        self.navigationController?.pushViewController(shareMediaVC, animated: true)
+        newMediaVC.mediaAsset = allAssets[indexPath.item]
+        self.navigationController?.pushViewController(newMediaVC, animated: true)
     }
 
+    
+    
 }

@@ -15,7 +15,6 @@
 		7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */; };
 		7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A12281EA813CB00663207 /* RPHelpers.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
-		7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB91E31A822006B2D8B /* StickersCell.swift */; };
 		7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3066461E90F7D800CDEABD /* CurrentUser.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
@@ -39,7 +38,6 @@
 		7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */; };
 		7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */; };
 		7E6D90DD1ECF9AD600F7FD6B /* NewMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */; };
-		7E6D90DF1ECF9BA800F7FD6B /* PhotosVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90DE1ECF9BA800F7FD6B /* PhotosVideos.swift */; };
 		7E6D90E21ECF9D0C00F7FD6B /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */; };
 		7E6D90E31ECF9D0C00F7FD6B /* CollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */; };
 		7E6E24651EBBFC9300D52490 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6E24631EBBFC9300D52490 /* VideoCell.swift */; };
@@ -144,7 +142,6 @@
 		7EB40B5B1EC6618A0034E8AF /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5A1EC6618A0034E8AF /* Story.swift */; };
 		7EB40B5D1EC690520034E8AF /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5C1EC690520034E8AF /* ShareWith.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
-		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
 		7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */; };
 		7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EC5D1361DB2FE4F00437219 /* Main.storyboard */; };
@@ -211,7 +208,6 @@
 		7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
 		7E1A12281EA813CB00663207 /* RPHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPHelpers.swift; sourceTree = "<group>"; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
-		7E274EB91E31A822006B2D8B /* StickersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCell.swift; sourceTree = "<group>"; };
 		7E3066461E90F7D800CDEABD /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
@@ -243,7 +239,6 @@
 		7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStories.swift; sourceTree = "<group>"; };
 		7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStoriesCell.swift; sourceTree = "<group>"; };
 		7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMedia.swift; sourceTree = "<group>"; };
-		7E6D90DE1ECF9BA800F7FD6B /* PhotosVideos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosVideos.swift; sourceTree = "<group>"; };
 		7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 		7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionCell.xib; sourceTree = "<group>"; };
 		7E6E24631EBBFC9300D52490 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
@@ -395,7 +390,6 @@
 		7EB40B5A1EC6618A0034E8AF /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		7EB40B5C1EC690520034E8AF /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
-		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
 		7EC5D12F1DB2FE4F00437219 /* Redplanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redplanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -500,14 +494,6 @@
 				7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */,
 			);
 			name = StoryScrollCell;
-			sourceTree = "<group>";
-		};
-		7E274EBB1E31A828006B2D8B /* Stickers */ = {
-			isa = PBXGroup;
-			children = (
-				7E274EB91E31A822006B2D8B /* StickersCell.swift */,
-			);
-			name = Stickers;
 			sourceTree = "<group>";
 		};
 		7E3E4FBF1DC2E7F800A7B5FC /* ProfileEditing */ = {
@@ -692,8 +678,6 @@
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
 				7E9351DC1EBAE2E60045DA48 /* Stories.swift */,
 				7EB40B5A1EC6618A0034E8AF /* Story.swift */,
-				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
-				7EE697C61EAACABE004F4E24 /* StoryCell */,
 			);
 			name = HOME/STORIES;
 			sourceTree = "<group>";
@@ -1004,10 +988,8 @@
 			isa = PBXGroup;
 			children = (
 				7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */,
-				7E6D90DE1ECF9BA800F7FD6B /* PhotosVideos.swift */,
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7EBDCB251E72251000E319A0 /* Library.swift */,
-				7EBDCB271E72273A00E319A0 /* LibraryCell.swift */,
 			);
 			name = "Photos&Videos";
 			sourceTree = "<group>";
@@ -1158,7 +1140,6 @@
 				7E7037C41DBD5E6400F03E0C /* NewChats.swift */,
 				7E274EB71E31A80B006B2D8B /* Stickers.swift */,
 				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
-				7E274EBB1E31A828006B2D8B /* Stickers */,
 			);
 			name = CHATS;
 			sourceTree = "<group>";
@@ -1306,6 +1287,8 @@
 		7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */ = {
 			isa = PBXGroup;
 			children = (
+				7EE697C61EAACABE004F4E24 /* StoryCell */,
+				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 				7E6D90E41ECF9D0F00F7FD6B /* CollectionCell */,
 				7E85C8721ECCCE3B00D5EF07 /* UserCell */,
 				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
@@ -1666,7 +1649,6 @@
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
-				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7EBDCB261E72251000E319A0 /* Library.swift in Sources */,
@@ -1779,7 +1761,6 @@
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
-				7E6D90DF1ECF9BA800F7FD6B /* PhotosVideos.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,
@@ -1797,7 +1778,6 @@
 				7E80352E1EB4102700C9BA63 /* Home.swift in Sources */,
 				7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
-				7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */,
 				7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */,
 				7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */,
 				7EDB84691EB968F8005E805E /* TextPostCell.swift in Sources */,

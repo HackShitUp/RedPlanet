@@ -24,6 +24,7 @@ class NewMedia: UIViewController {
     // MARK: - Class Variables
     var mediaType = String()
     var mediaAsset = PHAsset()
+    var mediaURL: URL?
     
     
     

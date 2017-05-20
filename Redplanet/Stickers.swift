@@ -99,12 +99,9 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CollectionCell
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
-        // LayoutViews
-        cell.assetPreview.layoutIfNeeded()
-        cell.assetPreview.layoutSubviews()
-        cell.assetPreview.setNeedsLayout()
+        // Set image
         cell.assetPreview.image = UIImage(named: self.stickers[indexPath.row])
-        
+        cell.assetPreview.contentMode = .scaleAspectFit
         return cell
     }
     
