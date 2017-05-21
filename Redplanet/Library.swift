@@ -220,7 +220,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         newMediaVC.mediaAsset = allAssets[indexPath.item]
         self.navigationController?.pushViewController(newMediaVC, animated: true)
     }
+    
 
-    
-    
 }
+

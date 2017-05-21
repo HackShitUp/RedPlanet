@@ -17,13 +17,15 @@ import OneSignal
 import SDWebImage
 import SwipeNavigationController
 
-// UIImage to hold captured photo
-var stillImages = [UIImage]()
+
 // Array to hold user's location
 var currentGeoFence = [CLPlacemark]()
 var temperature = [String]()
 
 class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate {
+    
+    // MARK: - Class Variable
+    var stillImage: UIImage?
 
     // MARK: - SnapSliderFilters
     let filterView = SNSlider(frame: UIScreen.main.bounds)
@@ -37,12 +39,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     @IBOutlet weak var leaveButton: UIButton!
     
     @IBAction func dismissVC(_ sender: Any) {
-        // Remove last
-        if !stillImages.isEmpty {
-            stillImages.removeLast()
+        self.dismiss(animated: false) { 
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
-        // Pop VC
-        _ = self.navigationController?.popViewController(animated: false)
     }
     
     @IBOutlet weak var saveButton: UIButton!
@@ -137,7 +137,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     }
         
     open func clearArrays() {
-        stillImages.removeAll(keepingCapacity: false)
         currentGeoFence.removeAll(keepingCapacity: false)
         temperature.removeAll(keepingCapacity: false)
     }
@@ -213,8 +212,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     func setupSlider() {
         // Setup slider
-        self.stillPhoto.image = stillImages.last!
-        self.createData(stillImages.last!)
+        self.stillPhoto.image = self.stillImage!
+        self.createData(self.stillImage!)
         self.filterView.dataSource = self
         self.filterView.isUserInteractionEnabled = true
         self.filterView.isMultipleTouchEnabled = false

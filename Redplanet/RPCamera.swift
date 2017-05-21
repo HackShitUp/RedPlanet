@@ -61,15 +61,19 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
-        stillImages.append(photo)
         let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
-        self.navigationController?.pushViewController(stillVC, animated: false)
+        stillVC.stillImage = photo
+        self.present(stillVC, animated: false, completion: nil)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
+        // Hide UIButtons
         self.libraryButton.isHidden = true
         self.newTextButton.isHidden = true
         self.rpUserProPic.isHidden = true
+        self.searchButton.isHidden = true
+        self.flashButton.isHidden = true
+        self.swapCameraButton.isHidden = true
         
         // MARK: - SegmentedProgressBar
         spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)

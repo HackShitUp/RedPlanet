@@ -20,7 +20,7 @@ import OneSignal
 import SwipeNavigationController
 import VIMVideoPlayer
 
-class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
+class CapturedVideo: UIViewController {
 //, SwipeViewDelegate, SwipeViewDataSource {
     
     // MARK: - Class Configuration Variables
@@ -35,9 +35,11 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
-        // Pop VC
-//        self.dismiss(animated: false, completion: nil)
-        _ = self.navigationController?.popViewController(animated: false)
+        // Dismiss VC
+        self.dismiss(animated: false) {
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+        }
     }
     
     @IBOutlet weak var saveButton: UIButton!
@@ -159,65 +161,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
         }
     }
     
-    
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        if position == .bottom {
-            _ = self.navigationController?.popViewController(animated: false)
-        }
-    }
-    
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-        //
-    }
-    
-    /*
-    // MARK: - SwipeView DataSource
-    func numberOfItems(in swipeView: SwipeView) -> Int {
-        //return the total number of items in the carousel
-        return 4
-    }
-    
-    func swipeView(_ swipeView: SwipeView, viewForItemAt index: Int, reusing view: UIView) -> UIView? {
-        /*
-        if index == 0 {
-            view.alpha = 1.0
-            view.backgroundColor = UIColor.clear
-        } else if index == 1 {
-            // Configure time
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-            time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
-            time.textColor = UIColor.white
-            time.layer.shadowColor = UIColor.black.cgColor
-            time.layer.shadowOffset = CGSize(width: 1, height: 1)
-            time.layer.shadowRadius = 3
-            time.layer.shadowOpacity = 0.5
-            time.text = "\(timeFormatter.string(from: NSDate() as Date))"
-            time.textAlignment = .center
-            UIGraphicsBeginImageContextWithOptions(self.view.frame.size, false, 0.0)
-            time.layer.render(in: UIGraphicsGetCurrentContext()!)
-            let img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            view.alpha = 1.0
-            view.backgroundColor = UIColor(patternImage: img!)
-        } else if index == 2 {
-            view.alpha = 0.1
-            view.backgroundColor = UIColor.red
-        } else if index == 3 {
-            view.alpha = 0.1
-            view.backgroundColor = UIColor.yellow
-        }
-        */
-        return view
-    }
-    
-    func swipeViewItemSize(_ swipeView: SwipeView) -> CGSize {
-        return self.swipeView.bounds.size
-    }
-    */
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide statusBar
@@ -269,22 +212,12 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
             vimPlayerView.player.setURL(self.capturedURL!)
             vimPlayerView.player.play()
             self.view.addSubview(vimPlayerView)
-            
-//            // MARK: - SwipeView
-//            self.swipeView.delegate = self
-//            self.swipeView.dataSource = self
-//            self.swipeView.alignment = .center
-//            self.swipeView.itemsPerPage = 1
-//            self.swipeView.isPagingEnabled = true
-//            self.swipeView.truncateFinalPage = false
-//            self.view.addSubview(self.swipeView)
         
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false
+            self.containerSwipeNavigationController?.shouldShowCenterViewController = false
             self.containerSwipeNavigationController?.shouldShowBottomViewController = false
-            self.containerSwipeNavigationController?.shouldShowTopViewController = false
-            self.containerSwipeNavigationController?.delegate = self
 
             // Mute and Volume-On
             let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
@@ -301,7 +234,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
                 // MARK: - RPExtension
                 (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-//                self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
             }
         }
     }

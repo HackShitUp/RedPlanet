@@ -199,8 +199,10 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             if self.navigationController?.viewControllers.count == 3 {
                 let viewControllers = self.navigationController!.viewControllers as [UIViewController]
                 _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: false)
+//                print("Popped Three")
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
+//                print("Popped One")
             }
             
         case let x where x == 0 :

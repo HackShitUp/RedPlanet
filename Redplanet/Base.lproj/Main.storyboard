@@ -2911,6 +2911,9 @@
                                         <rect key="frame" x="317" y="5" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="ShareOP"/>
+                                        <connections>
+                                            <action selector="shareAction:" destination="hE9-es-U9A" eventType="touchUpInside" id="XT3-pp-Cb8"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayU-eD-qsS">
                                         <rect key="frame" x="8" y="15" width="46" height="30"/>
@@ -4719,7 +4722,7 @@
         <image name="Contacts" width="25" height="25"/>
         <image name="Delete_50" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>
-        <image name="FlashOff" width="256" height="256"/>
+        <image name="FlashOff" width="45" height="45"/>
         <image name="GenderNeutralUser" width="256" height="256"/>
         <image name="Left_50" width="25" height="25"/>
         <image name="Like" width="53" height="50"/>

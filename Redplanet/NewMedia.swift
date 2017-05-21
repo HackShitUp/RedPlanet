@@ -52,15 +52,102 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         tool?.title = "Emoji"
         self.present(editor!, animated: true, completion: nil)
     }
-    
-    @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
     @IBAction func moreAction(_ sender: Any) {
+    }
+    
+    @IBOutlet weak var shareButton: UIButton!
+    @IBAction func shareAction(_ sender: Any) {
+        // Handle caption
+        if self.textPost.text != "Say something about this photo..." || self.textPost.text != "Say something about this video..." {
+            self.textPost.text = ""
+        }
+        
+        // Share Photo or Video
+        if self.mediaType == "image" {
+            
+        } else if self.mediaType == "video" {
+            processVideo()
+        }
         
     }
     
+    
+    // FUNCTION - Share photo
+    func sharePhoto() {
+        // Create PFObject
+        let photo = PFObject(className: "Newsfeeds")
+        photo["byUser"] = PFUser.current()!
+        photo["byUsername"] = PFUser.current()!.username!.lowercased()
+        photo["contentType"] = "ph"
+        photo["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 1)!)
+        photo["textPost"] = self.textPost.text
+        photo["saved"] = false
+        
+        // Append PFObject
+        shareWithObject.append(photo)
+        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+        self.navigationController?.pushViewController(shareWithVC, animated: true)
+    }
+    
+    // FUNCTION - Process video
+    open func processVideo() {
+        // URL to compress; passed either mediaURL or PHAsset's Asset URL
+        var compressiveURL: URL?
+        // Compressed URL
+        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+        // mediaURL
+        if self.mediaURL != nil {
+            compressiveURL = self.mediaURL
+        } else if self.mediaAsset != nil {
+        // PHAsset
+            let videoOptions = PHVideoRequestOptions()
+            videoOptions.deliveryMode = .automatic
+            videoOptions.isNetworkAccessAllowed = true
+            videoOptions.version = .current
+            PHCachingImageManager().requestAVAsset(forVideo: self.mediaAsset!,
+                                                   options: videoOptions,
+                                                   resultHandler: {(asset: AVAsset?,
+                                                    audioMix: AVAudioMix?,
+                                                    info: [AnyHashable : Any]?) -> Void in
+                                                    /* This result handler is performed on a random thread but
+                                                     we want to do some UI work so let's switch to the main thread */
+                                                    if let asset = asset as? AVURLAsset {
+                                                        compressiveURL = asset.url
+                                                    }
+            })
+        }
+        
+        // Compress Video
+        self.compressVideo(inputURL: compressiveURL!, outputURL: compressedURL) { (exportSession) in
+            if exportSession?.status == .completed {
+                print("Completed...")
+                // Throw
+                guard let compressedData = NSData(contentsOf: compressedURL) else {
+                    return
+                }
+                let parseFile = PFFile(name: "video.mp4", data: compressedData as Data)
+                // Create PFObject
+                let videoObject = PFObject(className: "Newsfeeds")
+                videoObject["byUser"] = PFUser.current()!
+                videoObject["byUsername"] = PFUser.current()!.username!.lowercased()
+                videoObject["contentType"] = "vi"
+                videoObject["videoAsset"] = parseFile
+                videoObject["saved"] = false
+                videoObject["textPost"] = self.textPost.text
+                // Add created PFObject to ShareWithVC...
+                shareWithObject.append(videoObject)
+                let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                self.navigationController?.pushViewController(shareWithVC, animated: true)
+            } else {
+                print("Processing...")
+            }
+        }
+    }
+    
+    
     // GLOBAL FUNCTION - Compress video file (open to process video before view loads...)
-    open func compressVideo(inputURL: URL, outputURL: URL, handler: @escaping (_ exportSession: AVAssetExportSession?) -> Void) {
+    func compressVideo(inputURL: URL, outputURL: URL, handler: @escaping (_ exportSession: AVAssetExportSession?) -> Void) {
         DispatchQueue.main.async {
             let urlAsset = AVURLAsset(url: inputURL, options: nil)
             guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
@@ -215,6 +302,8 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // MARK: - UIView Life cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+
         // Add observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
