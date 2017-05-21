@@ -368,7 +368,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource {
             let fCell = collectionView.dequeueReusableCell(withReuseIdentifier: "featuredCell", for: indexPath) as! FeaturedCell
             
             // Set background color
-            fCell.storyCover.backgroundColor = UIColor.groupTableViewBackground
+            fCell.storyCover.backgroundColor = UIColor.randomColor()
             
             // (1) Set publisher's name
             fCell.publisherName.text = self.publisherNames[indexPath.item]
@@ -377,6 +377,8 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource {
             if let urlToImage = self.articles[indexPath.item].value(forKey: "urlToImage") as? String {
                 // MARK: - SDWebImage
                 fCell.storyCover.sd_setImage(with: URL(string: urlToImage)!)
+            } else {
+                fCell.storyCover.backgroundColor = UIColor.randomColor()
             }
             
             // (3) Set title

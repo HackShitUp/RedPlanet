@@ -150,14 +150,21 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
             cell.coverPhoto.sd_showActivityIndicatorView()
             cell.coverPhoto.sd_setIndicatorStyle(.gray)
             cell.coverPhoto.sd_setImage(with: URL(string: urlToImage)!)
+            cell.storyStatus.text = "Tap anywhere to read the full story..."
+        } else {
+            cell.coverPhoto.backgroundColor = UIColor.randomColor()
+            cell.storyStatus.text = "💩 There's no cover photo for this story..."
         }
-        // (3) Set author
+        // MARK: - RPExtensions
+        cell.storyStatus.layer.applyShadow(layer: cell.storyStatus.layer)
+        
+        // (3) Set author and story description
         if let author = self.articleObjects[indexPath.item].value(forKey: "author") as? String {
-            cell.author.text = "By \(author)"
-        }
-        // (4) Set Description
-        if let description = self.articleObjects[indexPath.item].value(forKey: "description") as? String {
-            cell.storyDescription.text = "\(description)"
+            let formattedString = NSMutableAttributedString()
+            _ = formattedString.bold("By \(author)\n", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(self.articleObjects[indexPath.item].value(forKey: "description") as! String)")
+            cell.storyDescription.attributedText = formattedString
+        } else {
+            cell.storyDescription.text = (self.articleObjects[indexPath.item].value(forKey: "description") as! String)
         }
         
         return cell

@@ -24,7 +24,6 @@ import Bolts
 */
 let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
 
-
 // MARK: - UIView: Extensions
 extension UIView {
     
@@ -223,7 +222,6 @@ extension DateComponents {
     }
 }
 
-
+// MARK: - RPExtensions
 class RPExtensions: NSObject {
-
 }
