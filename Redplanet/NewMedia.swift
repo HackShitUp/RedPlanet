@@ -135,7 +135,6 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                 let rpHelpers = RPHelpers()
                 rpHelpers.showProgress(withTitle: "Exporting Video...")
             case .completed:
-                print("4")
                 do {
                     let videoData = try Data(contentsOf: compressedURL)
                     // Create PFObject
@@ -146,9 +145,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                     video["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
                     video["textPost"] = self.textPost.text
                     video["saved"] = false
-                    print("created...")
                     DispatchQueue.main.async(execute: {
-                        print("pushing...")
                         // Append PFObject
                         shareWithObject.append(video)
                         let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
