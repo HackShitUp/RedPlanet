@@ -65,13 +65,12 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Share Photo or Video
         if self.mediaType == "image" {
-            
+            sharePhoto()
         } else if self.mediaType == "video" {
             processVideo()
         }
         
     }
-    
     
     // FUNCTION - Share photo
     func sharePhoto() {
@@ -122,6 +121,10 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         self.compressVideo(inputURL: compressiveURL!, outputURL: compressedURL) { (exportSession) in
             if exportSession?.status == .completed {
                 print("Completed...")
+                
+                // TOODO::
+                // Handle Video compression... If not compressed, figure out how to handle it...
+                
                 // Throw
                 guard let compressedData = NSData(contentsOf: compressedURL) else {
                     return
@@ -139,8 +142,6 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 shareWithObject.append(videoObject)
                 let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                 self.navigationController?.pushViewController(shareWithVC, animated: true)
-            } else {
-                print("Processing...")
             }
         }
     }

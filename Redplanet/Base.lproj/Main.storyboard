@@ -2274,7 +2274,6 @@
                             <constraint firstAttribute="trailing" secondItem="1ED-Xk-6kr" secondAttribute="trailing" constant="16" id="dHS-Dz-Dd7"/>
                             <constraint firstItem="qGZ-do-DnD" firstAttribute="centerX" secondItem="6Vs-cd-kLD" secondAttribute="centerX" id="dJe-ua-BZt"/>
                             <constraint firstItem="o4Q-Hr-vWy" firstAttribute="centerX" secondItem="6Vs-cd-kLD" secondAttribute="centerX" id="gln-aF-bza"/>
-                            <constraint firstItem="o4Q-Hr-vWy" firstAttribute="top" secondItem="ois-FC-Dcs" secondAttribute="bottom" constant="460" id="mDm-3z-kzS"/>
                             <constraint firstAttribute="trailing" secondItem="GJn-fd-qj5" secondAttribute="trailing" constant="16" id="nhd-tq-L3Q"/>
                             <constraint firstItem="GJn-fd-qj5" firstAttribute="top" secondItem="EZ9-4T-5Hn" secondAttribute="bottom" constant="10" id="q3n-VP-HWB"/>
                         </constraints>
@@ -2907,17 +2906,23 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e9I-V9-0Id">
                                 <rect key="frame" x="0.0" y="543" width="375" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0Z-jX-e4h">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0Z-jX-e4h">
                                         <rect key="frame" x="317" y="5" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="QAP-kS-BA3"/>
+                                            <constraint firstAttribute="width" constant="50" id="jfk-cV-sDx"/>
+                                        </constraints>
                                         <state key="normal" image="ShareOP"/>
                                         <connections>
                                             <action selector="shareAction:" destination="hE9-es-U9A" eventType="touchUpInside" id="XT3-pp-Cb8"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayU-eD-qsS">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayU-eD-qsS">
                                         <rect key="frame" x="8" y="15" width="46" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="0EP-V4-kfH"/>
+                                            <constraint firstAttribute="height" constant="30" id="miB-vL-qDM"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <state key="normal" title="OOO">
                                             <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2927,10 +2932,16 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="y0Z-jX-e4h" secondAttribute="trailing" constant="8" id="2ON-oc-aTf"/>
+                                    <constraint firstItem="y0Z-jX-e4h" firstAttribute="top" secondItem="e9I-V9-0Id" secondAttribute="top" constant="5" id="CiA-RT-FJC"/>
+                                    <constraint firstAttribute="bottom" secondItem="y0Z-jX-e4h" secondAttribute="bottom" constant="5" id="MQd-DZ-Gjr"/>
+                                    <constraint firstAttribute="bottom" secondItem="ayU-eD-qsS" secondAttribute="bottom" constant="15" id="PIh-oH-FOH"/>
+                                    <constraint firstItem="ayU-eD-qsS" firstAttribute="top" secondItem="e9I-V9-0Id" secondAttribute="top" constant="15" id="WgX-gL-h59"/>
                                     <constraint firstAttribute="width" constant="375" id="ZFc-1T-oob"/>
                                     <constraint firstAttribute="height" constant="60" id="iDR-Gv-aAa"/>
+                                    <constraint firstItem="ayU-eD-qsS" firstAttribute="leading" secondItem="e9I-V9-0Id" secondAttribute="leading" constant="8" id="ku6-MZ-bKn"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jpd-0v-UGT">
