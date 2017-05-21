@@ -18,7 +18,6 @@
 		7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3066461E90F7D800CDEABD /* CurrentUser.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
-		7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4065F71DC56589001E0C9C /* ShareMedia.swift */; };
 		7E4199251E4C668000EFA065 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4199241E4C668000EFA065 /* SwipeView.m */; };
 		7E41C7A51E4006380025129B /* CurrentUserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E41C7A41E4006380025129B /* CurrentUserHeader.xib */; };
 		7E41C7A71E4012300025129B /* CurrentUserHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7A61E4012300025129B /* CurrentUserHeader.swift */; };
@@ -212,7 +211,6 @@
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
-		7E4065F71DC56589001E0C9C /* ShareMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMedia.swift; sourceTree = "<group>"; };
 		7E4199201E4C64A400EFA065 /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = "../../Library/Developer/Redplanet-cycwfppcruraxnagqhlxgeaqvwaw/Build/Products/Debug-iphoneos/GPUImage.framework"; sourceTree = "<group>"; };
 		7E4199231E4C668000EFA065 /* SwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeView.h; sourceTree = "<group>"; };
 		7E4199241E4C668000EFA065 /* SwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeView.m; sourceTree = "<group>"; };
@@ -988,7 +986,6 @@
 			isa = PBXGroup;
 			children = (
 				7E6D90DC1ECF9AD600F7FD6B /* NewMedia.swift */,
-				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7EBDCB251E72251000E319A0 /* Library.swift */,
 			);
 			name = "Photos&Videos";
@@ -1682,7 +1679,6 @@
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
-				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
 				7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */,
 				7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */,

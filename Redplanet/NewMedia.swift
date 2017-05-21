@@ -17,16 +17,19 @@ import ParseUI
 import Bolts
 
 import OneSignal
+import SDWebImage
 import SwipeNavigationController
 import VIMVideoPlayer
 
-class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
+class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
     // MARK: - Class Variables
     var mediaType = String()
+    // Selected PHAsset and assetURL to pass selectedURL or PHAsset's URL to...
     var mediaAsset: PHAsset?
-    // data passed via UIImagePickerController
-    var mediaURL: URL?
+    var assetURL: URL?
+    // Data passed from UIImagePickerController
+    var selectedURL: URL?
     var selectedImage: UIImage?
     
     // Initialized CGRect for keyboard frame
@@ -54,22 +57,43 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
     }
     @IBOutlet weak var moreButton: UIButton!
     @IBAction func moreAction(_ sender: Any) {
+        if mediaType == "image" {
+            // Photo to Share
+            let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.textPost.text!)\nhttps://redplanetapp.com/download/"
+            let objectsToShare = [textToShare, self.mediaPreview.image!] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
+        } else if mediaType == "video" {
+            // Traverse video url to DATA
+            let textToShare = "@\(PFUser.current()!.username!)'s Video on Redplanet: \(self.textPost.text!)\nhttps://redplanetapp.com/download/"
+            let videoData = NSData(contentsOf: self.assetURL!)
+            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+            let docDirectory = paths[0]
+            let filePath = "\(docDirectory)/tmpVideo.mov"
+            videoData?.write(toFile: filePath, atomically: true)
+            let videoLink = NSURL(fileURLWithPath: filePath)
+            let objectsToShare = [textToShare, videoLink] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            activityVC.setValue("Video", forKey: "subject")
+            self.present(activityVC, animated: true, completion: nil)
+        }
     }
     
     @IBOutlet weak var shareButton: UIButton!
     @IBAction func shareAction(_ sender: Any) {
         // Handle caption
-        if self.textPost.text != "Say something about this photo..." || self.textPost.text != "Say something about this video..." {
+        if self.textPost.text == "Say something about this photo..." || self.textPost.text == "Say something about this video..." {
             self.textPost.text = ""
         }
-        
         // Share Photo or Video
         if self.mediaType == "image" {
             sharePhoto()
         } else if self.mediaType == "video" {
-            processVideo()
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Compressing Video...")
+            shareVideo()
         }
-        
     }
     
     // FUNCTION - Share photo
@@ -82,72 +106,101 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         photo["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 1)!)
         photo["textPost"] = self.textPost.text
         photo["saved"] = false
-        
         // Append PFObject
         shareWithObject.append(photo)
         let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.navigationController?.pushViewController(shareWithVC, animated: true)
     }
     
-    // FUNCTION - Process video
-    open func processVideo() {
-        // URL to compress; passed either mediaURL or PHAsset's Asset URL
-        var compressiveURL: URL?
-        // Compressed URL
+    
+    // FUNCTION - Share video
+    func shareVideo() {
+        // Create temporary URL path to store video
         let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-        // mediaURL
-        if self.mediaURL != nil {
-            compressiveURL = self.mediaURL
-        } else if self.mediaAsset != nil {
-        // PHAsset
-            let videoOptions = PHVideoRequestOptions()
-            videoOptions.deliveryMode = .automatic
-            videoOptions.isNetworkAccessAllowed = true
-            videoOptions.version = .current
-            PHCachingImageManager().requestAVAsset(forVideo: self.mediaAsset!,
-                                                   options: videoOptions,
-                                                   resultHandler: {(asset: AVAsset?,
-                                                    audioMix: AVAudioMix?,
-                                                    info: [AnyHashable : Any]?) -> Void in
-                                                    /* This result handler is performed on a random thread but
-                                                     we want to do some UI work so let's switch to the main thread */
-                                                    if let asset = asset as? AVURLAsset {
-                                                        compressiveURL = asset.url
-                                                    }
-            })
-        }
-        
-        // Compress Video
-        self.compressVideo(inputURL: compressiveURL!, outputURL: compressedURL) { (exportSession) in
-            if exportSession?.status == .completed {
-                print("Completed...")
-                
-                // TOODO::
-                // Handle Video compression... If not compressed, figure out how to handle it...
-                
-                // Throw
-                guard let compressedData = NSData(contentsOf: compressedURL) else {
-                    return
+        self.compressVideo(inputURL: self.assetURL!, outputURL: compressedURL) { (exportSession) in
+            guard let session = exportSession else {
+                return
+            }
+            switch session.status {
+            case .unknown:
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Unknown Error...")
+            case .waiting:
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showProgress(withTitle: "Compressing Video...")
+            case .exporting:
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showProgress(withTitle: "Exporting Video...")
+            case .completed:
+                print("4")
+                do {
+                    let videoData = try Data(contentsOf: compressedURL)
+                    // Create PFObject
+                    let video = PFObject(className: "Newsfeeds")
+                    video["byUser"] = PFUser.current()!
+                    video["byUsername"] = PFUser.current()!.username!.lowercased()
+                    video["contentType"] = "vi"
+                    video["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
+                    video["textPost"] = self.textPost.text
+                    video["saved"] = false
+                    print("created...")
+                    DispatchQueue.main.async(execute: {
+                        print("pushing...")
+                        // Append PFObject
+                        shareWithObject.append(video)
+                        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                        self.navigationController?.pushViewController(shareWithVC, animated: true)
+                    })
+                    
+                } catch let error {
+                    print(error.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Failed to Compress Video...")
                 }
-                let parseFile = PFFile(name: "video.mp4", data: compressedData as Data)
-                // Create PFObject
-                let videoObject = PFObject(className: "Newsfeeds")
-                videoObject["byUser"] = PFUser.current()!
-                videoObject["byUsername"] = PFUser.current()!.username!.lowercased()
-                videoObject["contentType"] = "vi"
-                videoObject["videoAsset"] = parseFile
-                videoObject["saved"] = false
-                videoObject["textPost"] = self.textPost.text
-                // Add created PFObject to ShareWithVC...
-                shareWithObject.append(videoObject)
-                let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-                self.navigationController?.pushViewController(shareWithVC, animated: true)
+            case .failed:
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Failed to Compress Video...")
+            case .cancelled:
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Failed to Compress Video...")
             }
         }
     }
+ 
+    
+    // MARK: - Interactive Functions; Zoom Photo or Play Video
+    // FUNCTION - Zoom into Photo
+    func zoomPhoto() {
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.mediaPreview.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+        agrume.showFrom(self)
+    }
+    
+    // FUNCTION - Play Video
+    func playVideo() {
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
+        let viewController = UIViewController()
+        // MARK: - VIMVideoPlayer
+        let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+        vimPlayerView.player.isLooping = true
+        vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+        vimPlayerView.player.setURL(self.assetURL!)
+        vimPlayerView.player.play()
+        viewController.view.addSubview(vimPlayerView)
+        viewController.view.bringSubview(toFront: vimPlayerView)
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+        self.present(rpPopUpVC, animated: true, completion: nil)
+    }
     
     
-    // GLOBAL FUNCTION - Compress video file (open to process video before view loads...)
+    // FUNCTION - Compress video file (open to process video before view loads...)
     func compressVideo(inputURL: URL, outputURL: URL, handler: @escaping (_ exportSession: AVAssetExportSession?) -> Void) {
         DispatchQueue.main.async {
             let urlAsset = AVURLAsset(url: inputURL, options: nil)
@@ -164,117 +217,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
     }
     
-    
-    
-    // FUNCTION - Play Video
-    func playVideo() {
-        // MARK: - RPPopUpVC
-        let rpPopUpVC = RPPopUpVC()
-        let viewController = UIViewController()
-        // Get URL
-        if mediaURL != nil {
-            // MARK: - VIMVideoPlayer
-            let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
-            vimPlayerView.player.isLooping = true
-            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-            vimPlayerView.player.setURL(self.mediaURL!)
-            vimPlayerView.player.play()
-            viewController.view.addSubview(vimPlayerView)
-            viewController.view.bringSubview(toFront: vimPlayerView)
-            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-            self.present(rpPopUpVC, animated: true, completion: nil)
-        } else {
-        // Get PHAsset
-            let videoOptions = PHVideoRequestOptions()
-            videoOptions.deliveryMode = .automatic
-            videoOptions.isNetworkAccessAllowed = true
-            videoOptions.version = .current
-            PHCachingImageManager().requestAVAsset(forVideo: self.mediaAsset!,
-                                                   options: videoOptions,
-                                                   resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
-                                                    /* This result handler is performed on a random thread but
-                                                     we want to do some UI work so let's switch to the main thread */
-                                                    DispatchQueue.main.async(execute: {
-                                                        /* Did we get the URL to the video? */
-                                                        if let asset = asset as? AVURLAsset{
-                                                            
-                                                            // MARK: - VIMVideoPlayer
-                                                            let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
-                                                            vimPlayerView.player.isLooping = true
-                                                            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-                                                            vimPlayerView.player.setURL(asset.url)
-                                                            vimPlayerView.player.play()
-                                                            viewController.view.addSubview(vimPlayerView)
-                                                            viewController.view.bringSubview(toFront: vimPlayerView)
-                                                            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-                                                            self.present(rpPopUpVC, animated: true, completion: nil)
-                                                            
-                                                        }
-                                                    })
-            })
-        }
-    }
-    
-    // FUNCTION - Zoom into Photo
-    func zoomPhoto() {
-        // Mark: - Agrume
-        let agrume = Agrume(image: self.mediaPreview.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
-        agrume.showFrom(self)
-    }
-    
-    
-    // FUNCTION - Configure IMAGE or VIDEO; Get and set, and add zoom or play video methods...
-    func configureAsset() {
-        // (1) Configure mediaPreview
-        // NOT via UIImagePickerController
-        if self.mediaAsset != nil {
-            // Set PHImageRequestOptions
-            let imageOptions = PHImageRequestOptions()
-            imageOptions.deliveryMode = .highQualityFormat
-            imageOptions.resizeMode = .exact
-            imageOptions.isSynchronous = true
-            let targetSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
-            // Fetch PHImageManager
-            PHImageManager.default().requestImage(for: self.mediaAsset!,
-                                                  targetSize: targetSize,
-                                                  contentMode: .aspectFill,
-                                                  options: nil) {
-                                                    (img, _) -> Void in
-                                                    self.mediaPreview.image = img
-            }
-        } else {
-            // Via UIImagePickerController
-            // PHOTO
-            if selectedImage != nil {
-                self.mediaPreview.image = selectedImage
-            } else {
-                // VIDEO
-                let player = AVPlayer(url: self.mediaURL!)
-                let playerLayer = AVPlayerLayer(player: player)
-                playerLayer.frame = self.mediaPreview.bounds
-                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                self.mediaPreview.contentMode = .scaleAspectFit
-                self.mediaPreview.layer.addSublayer(playerLayer)
-            }
-        }
-        
-        // (2) Add tap methods and configure editButton
-        if self.mediaType == "image" {
-            self.editButton.isEnabled = true
-            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoomPhoto))
-            zoomTap.numberOfTapsRequired = 1
-            mediaPreview.isUserInteractionEnabled = true
-            mediaPreview.addGestureRecognizer(zoomTap)
-        } else if self.mediaType == "video" {
-            self.editButton.isEnabled = false
-            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
-            playTap.numberOfTapsRequired = 1
-            mediaPreview.isUserInteractionEnabled = true
-            mediaPreview.addGestureRecognizer(playTap)
-        }
-    }
-    
-    // FUNCTION - Stylize UINavigationBar
+    // FUNCTION - Stylize UINavigationBar, and configure UI
     func configureView() {
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: navBarFont]
@@ -288,7 +231,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 self.title = "New Video"
                 self.textPost.text! = "Say something about this video..."
                 // MARK: - RPExtensions
-                self.mediaPreview.makeCircular(forView: self.mediaPreview, borderWidth: 0.5, borderColor: UIColor.white)
+                self.mediaPreview.makeCircular(forView: self.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
             }
         }
         // MARK: - RPExtensions
@@ -303,8 +246,8 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // MARK: - UIView Life cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-
+        // Configure View
+        configureView()
         // Add observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -317,14 +260,34 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         tableView.isHidden = true
         tableView.dataSource = self
         tableView.delegate = self
+        
+        // Set UITextView delegate
+        textPost.delegate = self
+        
+        // Implement back swipe method
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Configure View
-        configureView()
-        // Configure Assets
-        configureAsset()
+        if selectedImage != nil {
+        // IMAGE via UIImagePickerController
+            self.mediaPreview.image = self.selectedImage
+            configureImageTap()
+        } else if self.selectedURL != nil {
+        // Video via UIImagePickerController
+            manageVideoAsset(withURL: self.selectedURL!)
+        } else {
+        // PHAsset
+            if self.mediaType == "image" {
+                manageImageAsset()
+            } else if self.mediaType == "video" {
+                manageVideoAsset(withURL: nil)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -341,6 +304,8 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         PFQuery.clearAllCachedResults()
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -370,15 +335,16 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
     }
 
     
-    // MARK: - UITextViewDelegate Method
+    
+    // MARK: - UITextView Delegate Methods
     func textViewDidBeginEditing(_ textView: UITextView) {
         if self.textPost.text! == "Say something about this photo..." || self.textPost.text! == "Say something about this video..." {
             self.textPost.text! = ""
+            self.textPost.textColor = UIColor.black
         }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
         let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         // Define word
         for var word in words {
@@ -417,7 +383,9 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         return true
     }
     
-    // MARK: - UITableView Data Source methods
+    
+    
+    // MARK: - UITableView DataSource methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.userObjects.count
     }
@@ -432,15 +400,17 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // Fetch user's objects
-        // (1) Get and set user's profile photo
+        // (1) Set realNameOfUser
+        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (2) Set username
+        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
+        // (3) Get and set userProfilePicture
         if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+            cell.rpUserProPic.sd_showActivityIndicatorView()
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
-        
-        // (2) Set user's fullName
-        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
         
         return cell
     }
@@ -467,4 +437,84 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITableViewDat
 
 
 
+}
+
+
+
+
+// MARK: - NewMedia; Class extensions to get PHAsset and show previews...
+extension NewMedia {
+    // FUNCTION - Get image from PHAsset
+    func manageImageAsset() {
+        // Set up PHImageRequestOptions
+        let imageOptions = PHImageRequestOptions()
+        imageOptions.deliveryMode = .highQualityFormat
+        imageOptions.resizeMode = .exact
+        imageOptions.isSynchronous = true
+        let targetSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
+        // Fetch image
+        PHImageManager.default().requestImage(for: self.mediaAsset!, targetSize: targetSize, contentMode: .aspectFill,
+                                              options: nil) {
+                                                (assetImage, _) -> Void in
+                                                self.mediaPreview.image = assetImage
+        }
+        // Add tap method to zoom into photo
+        self.configureImageTap()
+    }
+    
+    // FUNCTION - Add tap methods to zoom into photo
+    func configureImageTap() {
+        // Configure editButton
+        self.editButton.isEnabled = true
+        // Add tap method to zoom
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoomPhoto))
+        zoomTap.numberOfTapsRequired = 1
+        mediaPreview.isUserInteractionEnabled = true
+        mediaPreview.addGestureRecognizer(zoomTap)
+    }
+    
+    
+    // FUNCTION - Get video from PHAsset
+    func manageVideoAsset(withURL: URL?) {
+        if withURL != nil {
+            self.assetURL = withURL!
+            // MARK: - AVPlayer
+            let player = AVPlayer(url: self.selectedURL!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.mediaPreview.bounds
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.mediaPreview.contentMode = .scaleAspectFit
+            self.mediaPreview.layer.addSublayer(playerLayer)
+        } else {
+            // Set up PHVideoRequestOptions
+            let videoOptions = PHVideoRequestOptions()
+            videoOptions.deliveryMode = .automatic
+            videoOptions.isNetworkAccessAllowed = true
+            videoOptions.version = .original
+            PHCachingImageManager().requestAVAsset(forVideo: self.mediaAsset!, options: videoOptions,
+                                                   resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
+                                                    /* Did we get the URL to the video? */
+                                                    // Execute in configuration in main thread to minimize wait time...
+                                                    DispatchQueue.main.async(execute: {
+                                                        if let asset = asset as? AVURLAsset{
+                                                            self.assetURL = asset.url
+                                                            let player = AVPlayer(url: self.assetURL!)
+                                                            let playerLayer = AVPlayerLayer(player: player)
+                                                            playerLayer.frame = self.mediaPreview.bounds
+                                                            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                                                            self.mediaPreview.contentMode = .scaleAspectFit
+                                                            self.mediaPreview.layer.addSublayer(playerLayer)
+                                                        }
+                                                    })
+            })
+        }
+        // Disable editButton
+        self.editButton.isEnabled = false
+        // Add tap method to play video
+        let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+        playTap.numberOfTapsRequired = 1
+        mediaPreview.isUserInteractionEnabled = true
+        mediaPreview.addGestureRecognizer(playTap)
+    }
+    
 }

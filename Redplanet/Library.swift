@@ -18,6 +18,7 @@ import Parse
 import ParseUI
 import Bolts
 import SwipeNavigationController
+import SDWebImage
 
 class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -58,7 +59,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     func fetchAssets() {
         // Clear assets array
         self.allAssets.removeAll(keepingCapacity: false)
-
+        
         // Options for fetching assets
         let options = PHFetchOptions()
         options.includeAllBurstAssets = true
@@ -69,12 +70,14 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             // append PHAsset
             self.allAssets.append(asset)
         })
-        
+
         // Reload data in main thread
         DispatchQueue.main.async {
             self.collectionView!.reloadData()
         }
     }
+    
+    
 
     // FUNCTION - Stylize and set title of UINavigationBar
     func configureView() {
@@ -142,14 +145,14 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         URLCache.shared.removeAllCachedResponses()
     }
     
-    // MARK: - UIImagePickerController
+    // MARK: - UIImagePickerController Delegate Methods
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         // Dismiss and show NewMedia
         self.imagePicker.dismiss(animated: true) {
             // Instantiate NewMedia and pass IMAGE or VIDEO to NewMedia
             let newMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "newMediaVC") as! NewMedia
             newMediaVC.selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage
-            newMediaVC.mediaURL = info[UIImagePickerControllerMediaURL] as? URL
+            newMediaVC.selectedURL = info[UIImagePickerControllerMediaURL] as? URL
             if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeImage {            // IMAGE
                 newMediaVC.mediaType = "image"
             } else if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeMovie {     // VIDEO
@@ -203,24 +206,22 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
                                                     cell.assetPreview.makeCircular(forView: cell.assetPreview, borderWidth: 0, borderColor: UIColor.clear)
                                                 }
         }
-
     
         return cell
     }
 
     // MARK: - UICollectionView Delegate Method
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Instnatiate NewMedia
+        // Instantiate NewMedia
         let newMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "newMediaVC") as! NewMedia
-        if allAssets[indexPath.item].mediaType == .image {
+        newMediaVC.mediaAsset = self.allAssets[indexPath.item]
+        if self.allAssets[indexPath.item].mediaType == .image {
             newMediaVC.mediaType = "image"
-        } else if allAssets[indexPath.item].mediaType == .video {
+        } else if self.allAssets[indexPath.item].mediaType == .video {
             newMediaVC.mediaType = "video"
         }
-        newMediaVC.mediaAsset = allAssets[indexPath.item]
+        // Push to VC
         self.navigationController?.pushViewController(newMediaVC, animated: true)
     }
-    
 
 }
-

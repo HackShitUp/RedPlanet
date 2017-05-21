@@ -196,7 +196,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         configureView()
         // Set placeholder
         self.textView.textColor = UIColor.darkGray
-        
         let randomInt = arc4random()
         if randomInt % 2 == 0 {
             // Even
@@ -205,7 +204,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             // Odd
             self.textView.text! = "Thoughts are preludes to revoltuionary movements..."
         }
-        
         
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
@@ -256,6 +254,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         PFQuery.clearAllCachedResults()
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     
