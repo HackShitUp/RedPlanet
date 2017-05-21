@@ -29,17 +29,12 @@ class CapturedVideo: UIViewController {
     // MARK: - VIMVideoPlayer
     var vimPlayerView: VIMVideoPlayerView!
     
-    // Compressed URL
-    var smallVideoData: NSData?
     
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
-        // Dismiss VC
-        self.dismiss(animated: false) {
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-        }
+        // Pop VC
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBOutlet weak var saveButton: UIButton!
@@ -48,17 +43,18 @@ class CapturedVideo: UIViewController {
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.capturedURL!)
         }) { (saved: Bool, error: Error?) in
             if saved {
-                
-                UIView.animate(withDuration: 0.5) { () -> Void in
-                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
-                }
-                
-                UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
-                }, completion: nil)
-                
+                DispatchQueue.main.async(execute: {
+                    UIView.animate(withDuration: 0.5) { () -> Void in
+                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                    }
+                    UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
+                    }, completion: nil)
+                })
             } else {
-                
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showProgress(withTitle: "Saving video...")
             }
         }
     }
@@ -66,137 +62,184 @@ class CapturedVideo: UIViewController {
     
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func share(_ sender: Any) {
-        
+        // MARK: - HEAP
+        Heap.track("SharedMoment", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"])
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
-
+        // POST
         if chatCamera == false {
-            // Save to Newsfeeds
-            let newsfeeds = PFObject(className: "Newsfeeds")
-            newsfeeds["username"] = PFUser.current()!.username!
-            newsfeeds["byUser"] = PFUser.current()!
-            newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData! as Data)
-            newsfeeds["contentType"] = "itm"
-            newsfeeds["saved"] = false
-            newsfeeds.saveInBackground()
-            // Re-enable buttons
-            self.continueButton.isUserInteractionEnabled = true
-            // Reload data and push to bottom
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
-                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-            }
-
+            postVideo()
         } else {
-            
-            // MARK: - HEAP
-            Heap.track("SharedMoment", withProperties:
-                ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"])
-            
-            // Send Chats
-            let chats = PFObject(className: "Chats")
-            chats["sender"] = PFUser.current()!
-            chats["senderUsername"] = PFUser.current()!.username!
-            chats["receiver"] = chatUserObject.last!
-            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chats["read"] = false
-            chats["saved"] = false
-            chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData! as Data)
-            chats["contentType"] = "itm"
-            chats.saveInBackground()
-            
-            /*
-            MARK: - RPHelpers
-            Helper to update <ChatsQueue>
-            Helper to send push notification
-            */
-            let rpHelpers = RPHelpers()
-            rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-            rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-
-            // Re-enable buttons
-            self.continueButton.isUserInteractionEnabled = true
-            // Set bool to false
-            chatCamera = false
-            // Reload data
-            NotificationCenter.default.post(name: rpChat, object: nil)
-            // Push to bottom
-            DispatchQueue.main.async {
-                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+        // CHATS
+            sendVideoChat()
+        }
+    }
+    
+    
+    // FUNCTION - Post video
+    func postVideo() {
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        // Create temporary URL path to store video
+        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+        // Compress video
+        compressVideo(inputURL: self.capturedURL!, outputURL: compressedURL) { (exportSession) in
+            guard let session = exportSession else {
+                return
+            }
+            switch session.status {
+            case .unknown:
+                rpHelpers.showError(withTitle: "An unknown error occurred...")
+            case .waiting:
+                rpHelpers.showProgress(withTitle: "Compressing video...")
+            case .exporting:
+                rpHelpers.showProgress(withTitle: "Exporting video...")
+            case .completed:
+                do {
+                    // Traverse file URL to Data()
+                    let videoData = try Data(contentsOf: compressedURL)
+                    
+                    // Create PFObject
+                    let video = PFObject(className: "Newsfeeds")
+                    video["byUser"] = PFUser.current()!
+                    video["byUsername"] = PFUser.current()!.username!
+                    video["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
+                    video["contentType"] = "itm"
+                    video["saved"] = false
+                    // Re-enable button
+                    self.continueButton.isUserInteractionEnabled = true
+                    
+                    // Execute in main thread to minimize wait time...
+                    DispatchQueue.main.async(execute: {
+                        // Pause VIMPlayerView's AVPlayer
+                        self.vimPlayerView.player?.pause()
+                        // Append PFObject
+                        shareWithObject.append(video)
+                        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                        self.navigationController?.pushViewController(shareWithVC, animated: true)
+                    })
+                    
+                } catch let error {
+                    print(error.localizedDescription as Any)
+                    rpHelpers.showError(withTitle: "Failed to compress video...")
+                }
+            case .failed:
+                rpHelpers.showError(withTitle: "Failed to compress video...")
+            case .cancelled:
+                rpHelpers.showError(withTitle: "Cancelled video compression...")
             }
         }
     }
     
-    // Function to mute and turn volume on
-    func setMute() {
-        if self.vimPlayerView.player.isMuted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumenOn") {
-        // VOLUME OFF
-            self.vimPlayerView.player.isMuted = true
-            DispatchQueue.main.async {
-                self.muteButton.setImage(UIImage(named: "VolumeOff"), for: .normal)
+    
+    // FUNCTION - Send video chat...
+    func sendVideoChat() {
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        // Create temporary URL path to store video
+        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+        // Compress video
+        compressVideo(inputURL: self.capturedURL!, outputURL: compressedURL) { (exportSession) in
+            guard let session = exportSession else {
+                return
             }
-        } else if self.vimPlayerView.player.isMuted == true && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOff") {
-        // VOLUME ON
-            self.vimPlayerView.player.isMuted = false
-            DispatchQueue.main.async {
-                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
+            switch session.status {
+            case .unknown:
+                rpHelpers.showError(withTitle: "An unknown error occurred...")
+            case .waiting:
+                rpHelpers.showProgress(withTitle: "Compressing video...")
+            case .exporting:
+                rpHelpers.showProgress(withTitle: "Exporting video...")
+            case .completed:
+                do {
+                    // Traverse file URL to Data()
+                    let videoData = try Data(contentsOf: compressedURL)
+                    
+                    // Create PFObject, and save
+                    let chats = PFObject(className: "Chats")
+                    chats["sender"] = PFUser.current()!
+                    chats["senderUsername"] = PFUser.current()!.username!
+                    chats["receiver"] = chatUserObject.last!
+                    chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+                    chats["read"] = false
+                    chats["saved"] = false
+                    chats["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
+                    chats["contentType"] = "itm"
+                    chats.saveInBackground()
+                    // Re-enable button
+                    self.continueButton.isUserInteractionEnabled = true
+
+                    // Execute in main thread to minimize wait time...
+                    DispatchQueue.main.async(execute: {
+                        // Pause VIMPlayerView's AVPlayer
+                        self.vimPlayerView.removeFromSuperview()
+                        /*
+                         MARK: - RPHelpers
+                         Helper to update <ChatsQueue>
+                         Helper to send push notification
+                        */
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                        rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
+                        // Re-enable buttons
+                        self.continueButton.isUserInteractionEnabled = true
+                        // Set bool to false
+                        chatCamera = false
+                        // Reload data
+                        NotificationCenter.default.post(name: rpChat, object: nil)
+                        // MARK: - SwipeNavigationController
+                        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+                    })
+                } catch let error {
+                    print(error.localizedDescription as Any)
+                    rpHelpers.showError(withTitle: "Failed to compress video...")
+                }
+            case .failed:
+                rpHelpers.showError(withTitle: "Failed to compress video...")
+            case .cancelled:
+                rpHelpers.showError(withTitle: "Cancelled video compression...")
             }
         }
     }
-
-    // Compress video
-    func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
-        let urlAsset = AVURLAsset(url: inputURL, options: nil)
-        guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
-            handler(nil)
-            return
+    
+    
+    
+    // FUNCTION - Toggle volume on/off
+    func configureVolume() {
+        switch self.vimPlayerView.player.isMuted {
+        case true:
+            // VOLUME OFF
+            DispatchQueue.main.async(execute: {
+                self.vimPlayerView.player.isMuted = false
+                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
+            })
+        case false:
+            // VOLUME ON
+            DispatchQueue.main.async(execute: {
+                self.vimPlayerView.player.isMuted = true
+                self.muteButton.setImage(UIImage(named: "VolumeOff"), for: .normal)
+            })
         }
-        
-        exportSession.outputURL = outputURL
-        exportSession.outputFileType = AVFileTypeQuickTimeMovie
-        exportSession.shouldOptimizeForNetworkUse = true
-        exportSession.exportAsynchronously { () -> Void in
-            handler(exportSession)
+    }
+    
+    // FUNCTION - Play and pause video
+    func togglePlayPause() {
+        if self.vimPlayerView.player.isPlaying {
+            self.vimPlayerView.player.pause()
+        } else {
+            self.vimPlayerView.player.play()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide statusBar
+        // Hide UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
-
-        // Execute if array isn't empty
-        if self.capturedURL != nil {
-            DispatchQueue.main.async {
-                let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-                self.compressVideo(inputURL: self.capturedURL!, outputURL: compressedURL) { (exportSession) in
-                    guard let session = exportSession else {
-                        return
-                    }
-                    switch session.status {
-                    case .unknown:
-                        break
-                    case .waiting:
-                        break
-                    case .exporting:
-                        break
-                    case .completed:
-                        // Enable buttons
-                        self.continueButton.isUserInteractionEnabled = true
-                        guard let compressedData = NSData(contentsOf: compressedURL) else {
-                            return
-                        }
-                        self.smallVideoData = compressedData
-                    case .failed:
-                        break
-                    case .cancelled:
-                        break
-                    }
-                }
-            }
-        }
+        // Hide UINavigationBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
 
@@ -219,11 +262,17 @@ class CapturedVideo: UIViewController {
             self.containerSwipeNavigationController?.shouldShowCenterViewController = false
             self.containerSwipeNavigationController?.shouldShowBottomViewController = false
 
-            // Mute and Volume-On
-            let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
+            // UITapGestureRecognizer method to toggle volume
+            let muteTap = UITapGestureRecognizer(target: self, action: #selector(configureVolume))
             muteTap.numberOfTapsRequired = 1
             self.muteButton.isUserInteractionEnabled = true
             self.muteButton.addGestureRecognizer(muteTap)
+            
+            // UILongPressGestureRecognizer method to play and pause
+            let playPausePress = UILongPressGestureRecognizer(target: self, action: #selector(togglePlayPause))
+            playPausePress.minimumPressDuration = 0.15
+            vimPlayerView.isUserInteractionEnabled = true
+            vimPlayerView.addGestureRecognizer(playPausePress)
             
             // Add shadows to buttons and bring to front of view
             let buttons = [self.muteButton,
@@ -249,5 +298,26 @@ class CapturedVideo: UIViewController {
         PFQuery.clearAllCachedResults()
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
+    }
+}
+
+
+
+extension CapturedVideo {
+    // FUNCTION - Compress video file (open to process video before view loads...)
+    func compressVideo(inputURL: URL, outputURL: URL, handler: @escaping (_ exportSession: AVAssetExportSession?) -> Void) {
+        DispatchQueue.main.async {
+            let urlAsset = AVURLAsset(url: inputURL, options: nil)
+            guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
+                handler(nil)
+                return
+            }
+            exportSession.outputURL = outputURL
+            exportSession.outputFileType = AVFileTypeQuickTimeMovie
+            exportSession.shouldOptimizeForNetworkUse = true
+            exportSession.exportAsynchronously { () -> Void in
+                handler(exportSession)
+            }
+        }
     }
 }

@@ -47,7 +47,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     @IBOutlet weak var saveButton: UIButton!
     @IBAction func saveButton(_ sender: Any) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async(execute: {
             // Save photo
             UIView.animate(withDuration: 0.5) { () -> Void in
                 self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
@@ -56,7 +56,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                 self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
             }, completion: nil)
             UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.stillPhoto)!, self, nil, nil)
-        }
+        })
     }
     
     @IBOutlet weak var drawButton: UIButton!

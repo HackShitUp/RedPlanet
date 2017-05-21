@@ -18,15 +18,15 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e8d-5E-pSz" customClass="PFImageView">
-                        <rect key="frame" x="2" y="2" width="121" height="121"/>
+                        <rect key="frame" x="1" y="1" width="123" height="123"/>
                     </imageView>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="e8d-5E-pSz" secondAttribute="bottom" constant="2" id="MfF-I9-EhG"/>
-                <constraint firstItem="e8d-5E-pSz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="kcS-eS-qT9"/>
-                <constraint firstItem="e8d-5E-pSz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="uc8-8Y-0c6"/>
-                <constraint firstAttribute="trailing" secondItem="e8d-5E-pSz" secondAttribute="trailing" constant="2" id="uwi-QH-kdN"/>
+                <constraint firstAttribute="bottom" secondItem="e8d-5E-pSz" secondAttribute="bottom" constant="1" id="MfF-I9-EhG"/>
+                <constraint firstItem="e8d-5E-pSz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="1" id="kcS-eS-qT9"/>
+                <constraint firstItem="e8d-5E-pSz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="1" id="uc8-8Y-0c6"/>
+                <constraint firstAttribute="trailing" secondItem="e8d-5E-pSz" secondAttribute="trailing" constant="1" id="uwi-QH-kdN"/>
             </constraints>
             <connections>
                 <outlet property="assetPreview" destination="e8d-5E-pSz" id="bKl-GL-v8t"/>

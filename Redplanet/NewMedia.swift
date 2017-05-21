@@ -117,22 +117,19 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     func shareVideo() {
         // Create temporary URL path to store video
         let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-        self.compressVideo(inputURL: self.assetURL!, outputURL: compressedURL) { (exportSession) in
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        // Compress video
+        compressVideo(inputURL: self.assetURL!, outputURL: compressedURL) { (exportSession) in
             guard let session = exportSession else {
                 return
             }
             switch session.status {
             case .unknown:
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Unknown Error...")
             case .waiting:
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
                 rpHelpers.showProgress(withTitle: "Compressing Video...")
             case .exporting:
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
                 rpHelpers.showProgress(withTitle: "Exporting Video...")
             case .completed:
                 do {
@@ -154,17 +151,11 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                     
                 } catch let error {
                     print(error.localizedDescription as Any)
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
                     rpHelpers.showError(withTitle: "Failed to Compress Video...")
                 }
             case .failed:
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Failed to Compress Video...")
             case .cancelled:
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Failed to Compress Video...")
             }
         }

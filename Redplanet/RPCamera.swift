@@ -63,7 +63,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
         stillVC.stillImage = photo
-        self.present(stillVC, animated: false, completion: nil)
+        self.navigationController?.pushViewController(stillVC, animated: false)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
@@ -85,9 +85,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
-        self.libraryButton.isHidden = false
-        self.newTextButton.isHidden = false
-        self.rpUserProPic.isHidden = false
         // MARK: - SegmentedProgressBar
         self.spb.isPaused = true
         self.spb.removeFromSuperview()
@@ -96,7 +93,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
         let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
         capturedVideoVC.capturedURL = url
-        self.present(capturedVideoVC, animated: false, completion: nil)
+        self.navigationController?.pushViewController(capturedVideoVC, animated: false)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
@@ -314,8 +311,12 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             newTextButton.isHidden = true
             libraryButton.isHidden = true
         } else {
-            newTextButton.isHidden = false
-            libraryButton.isHidden = false
+            self.libraryButton.isHidden = false
+            self.newTextButton.isHidden = false
+            self.rpUserProPic.isHidden = false
+            self.searchButton.isHidden = false
+            self.flashButton.isHidden = false
+            self.swapCameraButton.isHidden = false
         }
         
         // Tap button to take photo
