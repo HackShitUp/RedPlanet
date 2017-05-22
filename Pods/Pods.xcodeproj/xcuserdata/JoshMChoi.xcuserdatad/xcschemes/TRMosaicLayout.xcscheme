@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'CAECE019E6CB1C24059C8002831DFC5E'
-               BlueprintName = 'ReadabilityKit'
+               BlueprintIdentifier = '99F389EB480D92E4E498E1183AB3EB76'
+               BlueprintName = 'TRMosaicLayout'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'ReadabilityKit.framework'>
+               BuildableName = 'TRMosaicLayout.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

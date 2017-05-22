@@ -17,8 +17,9 @@ import PhotosUI
 import Parse
 import ParseUI
 import Bolts
-import SwipeNavigationController
 import SDWebImage
+import SwipeNavigationController
+import TRMosaicLayout
 
 class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -116,18 +117,15 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         collectionView!.addSubview(refresher)
         
-        // Configure UICollectionFlowLayout
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        collectionView!.collectionViewLayout = layout
+        // MARK: - TRMosaicLayout
+        let mosaicLayout = TRMosaicLayout()
+        mosaicLayout.delegate = self
+        collectionView!.collectionViewLayout = mosaicLayout
         
         // Register NIBS
         collectionView!.register(UINib(nibName: "CollectionCell", bundle: nil), forCellWithReuseIdentifier: "CollectionCell")
@@ -181,6 +179,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         
         // Set bounds
         cell.contentView.frame = cell.contentView.frame
+        cell.assetPreview.frame = cell.contentView.frame
         // Configure contentMode
         cell.assetPreview.contentMode = .scaleAspectFill
         
@@ -223,5 +222,22 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         // Push to VC
         self.navigationController?.pushViewController(newMediaVC, animated: true)
     }
+}
 
+
+
+// MARK: - Library Class Extensions, TRMosaicLayoutDelegate
+extension Library: TRMosaicLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, mosaicCellSizeTypeAtIndexPath indexPath: IndexPath) -> TRMosaicCellType {
+        // I recommend setting every third cell as .Big to get the best layout
+        return indexPath.item % 3 == 0 ? TRMosaicCellType.big : TRMosaicCellType.small
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: TRMosaicLayout, insetAtSection: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+    }
+    
+    func heightForSmallMosaicCell() -> CGFloat {
+        return (UIScreen.main.bounds.size.width/3)
+    }
 }

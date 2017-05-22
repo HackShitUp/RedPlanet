@@ -20,6 +20,7 @@ target 'Redplanet' do
 	pod ‘SDWebImage’
 	pod ‘SwiftyCam’, ‘2.2.2’
 	pod 'SwipeNavigationController'
+	pod 'TRMosaicLayout'
 	pod 'VIMVideoPlayer'
 
   target 'RedplanetTests' do

@@ -116,18 +116,20 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
             switch reactionSelector.selectedReaction!.id {
-                case "More":    // MORE
+                case "More":
+                    // MORE
                     self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-                case "Like":    // LIKE
+                case "Like":
+                    // LIKE
                     self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "LikeFilled", title: "", color: .lightGray, icon: UIImage(named: "LikeFilled")!)
-                case "Comment": // COMMENT
-                    // Comment
+                case "Comment":
+                    // COMMENT
                     self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
                     reactionObject.append(self.stories[self.currentIndex!])
                     let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
                     self.navigationController?.pushViewController(reactionsVC, animated: true)
-                case "Share":   // SHARE
-                    // Share
+                case "Share":
+                    // SHARE
                     self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
                     shareWithObject.append(self.stories[self.currentIndex!])
                     let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
@@ -306,7 +308,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         } else if self.stories[indexPath.item].value(forKey: "videoAsset") != nil && self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell {
         // UITableViewCell
             if self.stories[indexPath.item].value(forKey: "contentType") as! String == "sp" {
-//                let spCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
             } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
                 
             }

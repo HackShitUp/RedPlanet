@@ -48,7 +48,6 @@ class MomentVideo: UICollectionViewCell {
     }
     
     func addVideo(withObject: PFObject?) {
-        print("Fired...")
         if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
             // MARK: - VIMVideoPlayer
             let vimPlayerView = VIMVideoPlayerView(frame: self.contentView.bounds)
@@ -56,8 +55,6 @@ class MomentVideo: UICollectionViewCell {
             vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
             vimPlayerView.player.setURL(URL(string: video.url!)!)
             vimPlayerView.player.play()
-            // Add to subview
-            self.contentView.addSubview(vimPlayerView)
         }
     }
     

@@ -46,29 +46,8 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     @IBAction func doneAction(_ sender: Any) {
         switch self.usersToShareWith.count {
         case let x where x > 7:
-            // Vibrate device
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            // MARK: - AZDialogViewController
-            let dialogController = AZDialogViewController(title: "💩\nExceeded Maximum Number of Shares",
-                                                          message: "Sorry, you can only share posts with a maximum of 7 people...")
-            dialogController.dismissDirection = .bottom
-            dialogController.dismissWithOutsideTouch = true
-            dialogController.showSeparator = true
-            // Configure style
-            dialogController.buttonStyle = { (button,height,position) in
-                button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
-                button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                button.layer.masksToBounds = true
-            }
-            // Add Skip and verify button
-            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
-                // Dismiss
-                dialog.dismiss()
-            }))
-            // Show
-            dialogController.show(in: self)
-
+            // Show Alert
+            self.showAlert(withStatus: "Exceeded")
         case let x where x > 0:
             // Disable button
             self.doneButton.isEnabled = false
@@ -76,14 +55,14 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 // Traverse PFObject to get object data...
                 let postObject = shareWithObject.last!
-                postObject.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
+                postObject.saveInBackground(block: { (success: Bool, error: Error?) in
                     if success {
                         // Handle nil textPost
                         if postObject.value(forKey: "textPost") != nil {
                             // MARK: - RPHelpers; check for #'s and @'s
                             let rpHelpers = RPHelpers()
-                            rpHelpers.checkHash(forObject: postObject, forText: (postObject.value(forKey: "textPost") as! String))
+                            rpHelpers.checkHash(forObject: postObject,
+                                                forText: (postObject.value(forKey: "textPost") as! String))
                             rpHelpers.checkTags(forObject: postObject,
                                                 forText: (postObject.value(forKey: "textPost") as! String),
                                                 postType: (postObject.value(forKey: "contentType") as! String))
@@ -93,6 +72,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
                     } else {
                         print(error?.localizedDescription as Any)
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error...")
                     }
                 })
             }
@@ -103,7 +85,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                     // Switch Statement...
                     switch shareWithObject.last!.value(forKey: "contentType") as! String {
                     case "tp":
-                        // TEXT POST
+                    // TEXT POST
                         let textPostChat = PFObject(className: "Chats")
                         textPostChat["sender"] = PFUser.current()!
                         textPostChat["senderUsername"] = PFUser.current()!.username!
@@ -112,22 +94,11 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         textPostChat["read"] = false
                         textPostChat["saved"] = false
                         textPostChat["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
-                        textPostChat.saveInBackground(block: { (success: Bool, error: Error?) in
-                            if success {
-                                // MARK: - RPHelpers; update chatsQueue; and send push notification
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.updateQueue(chatQueue: textPostChat, userObject: user)
-                                rpHelpers.pushNotification(toUser: user, activityType: "from")
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // MARK: - RPHelpers
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.showError(withTitle: "Error Sharing Text Post...")
-                            }
-                        })
+                        // Update "ChatsQueue"
+                        self.updateChats(withObject: textPostChat, user: user)
                         
                     case "ph":
-                        // PHOTO
+                    // PHOTO
                         let photoChat = PFObject(className: "Chats")
                         photoChat["sender"] = PFUser.current()!
                         photoChat["senderUsername"] = PFUser.current()!.username!
@@ -137,23 +108,11 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         photoChat["saved"] = false
                         photoChat["contentType"] = "ph"
                         photoChat["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
-                        photoChat.saveInBackground(block: { (success: Bool, error: Error?) in
-                            if success {
-                                // MARK: - RPHelpers; update chatsQueue; and send push notification
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.updateQueue(chatQueue: photoChat, userObject: user)
-                                rpHelpers.pushNotification(toUser: user, activityType: "from")
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // MARK: - RPHelpers
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.showError(withTitle: "Error sharing Photo...")
-                            }
-                        })
-                        
+                        // Update "ChatsQueue"
+                        self.updateChats(withObject: photoChat, user: user)
                         
                     case "vi":
-                        // VIDEO
+                    // VIDEO
                         let videoChat = PFObject(className: "Chats")
                         videoChat["sender"] = PFUser.current()!
                         videoChat["senderUsername"] = PFUser.current()!.username!
@@ -163,22 +122,11 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         videoChat["saved"] = false
                         videoChat["contentType"] = "vi"
                         videoChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
-                        videoChat.saveInBackground(block: { (success: Bool, error: Error?) in
-                            if success {
-                                // MARK: - RPHelpers; update chatsQueue; and send push notification
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.updateQueue(chatQueue: videoChat, userObject: user)
-                                rpHelpers.pushNotification(toUser: user, activityType: "from")
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // MARK: - RPHelpers
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.showError(withTitle: "Error Sharing Video...")
-                            }
-                        })
+                        // Update "ChatsQueue"
+                        self.updateChats(withObject: videoChat, user: user)
 
                     case "itm":
-                        // MOMENT
+                    // MOMENT
                         let momentChat = PFObject(className: "Chats")
                         momentChat["sender"] = PFUser.current()!
                         momentChat["senderUsername"] = PFUser.current()!.username!
@@ -192,19 +140,8 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         } else {
                             momentChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
                         }
-                        momentChat.saveInBackground(block: { (success: Bool, error: Error?) in
-                            if success {
-                                // MARK: - RPHelpers; update chatsQueue; and send push notification
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.updateQueue(chatQueue: momentChat, userObject: user)
-                                rpHelpers.pushNotification(toUser: user, activityType: "from")
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // MARK: - RPHelpers
-                                let rpHelpers = RPHelpers()
-                                rpHelpers.showError(withTitle: "Error Sharing Moment...")
-                            }
-                        })
+                        // Update "ChatsQueue"
+                        self.updateChats(withObject: momentChat, user: user)
                         
                     default:
                         break
@@ -227,28 +164,77 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             if self.navigationController?.viewControllers.count == 3 {
                 let viewControllers = self.navigationController!.viewControllers as [UIViewController]
                 _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: false)
-//                print("Popped Three")
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
-//                print("Popped One")
             }
             
         case let x where x == 0 :
-            // MARK: - RPHelpers
-            let rpHelpers = RPHelpers()
-            rpHelpers.showSuccess(withTitle: "Post or tap on people to share with...")
-            // Resign first responder
-            self.searchBar.resignFirstResponder()
-            // Vibrate device
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            
+            // Show alert
+            self.showAlert(withStatus: "None")
         default:
             break;
         }
     }
     
     
-    // Function to fetch following
+    // FUNCTION - MARK: - RPHelpers; update "chatsQueue" and send push notification
+    fileprivate func updateChats(withObject: PFObject?, user: PFObject?) {
+        withObject!.saveInBackground(block: { (success: Bool, error: Error?) in
+            if success {
+                // MARK: - RPHelpers; update chatsQueue; and send push notification
+                let rpHelpers = RPHelpers()
+                rpHelpers.updateQueue(chatQueue: withObject!, userObject: user)
+                rpHelpers.pushNotification(toUser: user, activityType: "from")
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Error Sharing...")
+            }
+        })
+    }
+    
+    // FUNCTION - Show status alert
+    func showAlert(withStatus: String) {
+        // Vibrate device
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        // Resign first responder
+        self.searchBar.resignFirstResponder()
+        
+        // Instantiate message variable to show in alert
+        var title: String?
+        var message: String?
+        if withStatus == "Exceeded" {
+            title = "Exceeded Maximum Number of Shares"
+            message = "You can only share posts with a maximum of 7 people..."
+        } else if withStatus == "None" {
+            title = "Post or share with friends..."
+            message = "You're not sharing with anyone. Sharing is caring!"
+        }
+        
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "💩\n\(title!)", message: "\(message!)")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+            button.layer.masksToBounds = true
+        }
+        // Add OK button
+        dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+        }))
+        // Show
+        dialogController.show(in: self)
+    }
+    
+    
+    // FUNCTION - Fetch following
     func fetchFollowing() {
         // MARK: - AppDelegate; queryRelationships
         _ = appDelegate.queryRelationships()
@@ -282,7 +268,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         }
     }
     
-    // Stylize UINavigationBar
+    // FUNCTION - Stylize UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
