@@ -19,8 +19,9 @@ import Parse
 import ParseUI
 import Bolts
 
-import SDWebImage
 import OneSignal
+import SDWebImage
+import VIMVideoPlayer
 
 class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
@@ -617,11 +618,14 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         // MARK: - RPPopUpVC
         let rpPopUpVC = RPPopUpVC()
         let viewController = UIViewController()
-        // MARK: - RPVideoPlayerView
-        let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
-        rpVideoPlayer.setupVideo(videoURL: spaceVideoData!)
-        rpVideoPlayer.playbackLoops = true
-        viewController.view.addSubview(rpVideoPlayer)
+        // MARK: - VIMVideoPlayer
+        let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+        vimPlayerView.player.isLooping = true
+        vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+        vimPlayerView.player.setURL(spaceVideoData)
+        vimPlayerView.player.play()
+        viewController.view.addSubview(vimPlayerView)
+        viewController.view.bringSubview(toFront: vimPlayerView)
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
         self.present(rpPopUpVC, animated: true, completion: nil)
     }

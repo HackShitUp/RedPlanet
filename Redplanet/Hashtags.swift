@@ -250,15 +250,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             
             // (3) Set video
             if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-//                // MARK: - RPVideoPlayerView
-//                self.rpVideoPlayer = RPVideoPlayerView(frame: mvCell.contentView.bounds)
-//                self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
-//                mvCell.contentView.addSubview(rpVideoPlayer)
-//                self.rpVideoPlayer.autoplays = false
-//                self.rpVideoPlayer.playbackLoops = false
-//                self.rpVideoPlayer?.pause()
-//                // Update view???
-//                mvCell.updateView()
+                // TODO::
             }
             
             

@@ -13,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import VIMVideoPlayer
+
 class RPChatMediaCell: UITableViewCell {
     
     
@@ -41,18 +43,19 @@ class RPChatMediaCell: UITableViewCell {
     // Video --> "vi" --> Function to play video
     func playVideo() {
         if let video = mediaObject!.value(forKey: "videoAsset") as? PFFile {
-            // Traverse video url
-            let videoUrl = URL(string: video.url!)
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
             let viewController = UIViewController()
-            // MARK: - RPVideoPlayerView
-            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
-            rpVideoPlayer.setupVideo(videoURL: videoUrl!)
-            rpVideoPlayer.playbackLoops = true
-            viewController.view.addSubview(rpVideoPlayer)
+            // MARK: - VIMVideoPlayer
+            let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+            vimPlayerView.player.isLooping = true
+            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+            vimPlayerView.player.setURL(URL(string: video.url!)!)
+            vimPlayerView.player.play()
+            viewController.view.addSubview(vimPlayerView)
+            viewController.view.bringSubview(toFront: vimPlayerView)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-            self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+            self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
         }
     }
     

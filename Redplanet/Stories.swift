@@ -16,7 +16,6 @@ import ParseUI
 import Bolts
 
 import AnimatedCollectionViewLayout
-import SwipeNavigationController
 import Reactions
 import SDWebImage
 import VIMVideoPlayer
@@ -24,31 +23,20 @@ import VIMVideoPlayer
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
-
-
-class UserStories {
-    var userObject = PFObject()
-    var postObjects = [PFObject]()
-    init(userObject: PFObject, posts: [PFObject]) {
-        self.userObject = userObject
-        self.postObjects = posts
-    }
-}
-
-
-
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
     
+    // Array to hold stories
+    var stories = [PFObject]()
+    // Used for skipping/rewinding segments
+    var lastOffSet: CGPoint?
+    // Variabel to hold currentIndex
+    var currentIndex: Int? = 0
     
-    // MARK: - Class configuration variables
-    var forUsers = [PFObject]()
-    var startStoryIndex: Int? = 0
-    var locationRect: CGRect!
-    
+    // ScrollSets for database <contentType>
+    let scrollSets = ["tp", "ph", "pp", "vi", "sp"]
     
     // MARK: - VIMVideoPlayer
     var vimPlayerView: VIMVideoPlayerView!
-    
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     
@@ -60,67 +48,55 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                      Reaction(id: "Comment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
                      Reaction(id: "Share", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)]
     
-    // MARK: - RPVideoPlayerView
-    var rpVideoPlayer: RPVideoPlayerView!
-    // Used for skipping/rewinding segments
-    var lastOffSet: CGPoint?
-    // Variabel to hold currentIndex
-    var currentIndex: Int? = 0
-    // Array to hold stories/likes
-    var stories = [PFObject]()
-    var likes = [PFObject]()
-    
-    // ScrollSets
-    let scrollSets = ["tp", "ph", "pp", "vi", "sp"]
-    
     @IBOutlet weak var collectionView: UICollectionView!
 
+    // FUNCTION - Fetch user's stories...
     func fetchStories() {
         // Fetch stories
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
-        newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.limit = 50
+        newsfeeds.order(byDescending: "createdAt")
+//        newsfeeds.limit = 500
+        newsfeeds.limit = 10
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
                 self.stories.removeAll(keepingCapacity: false)
-                for object in objects! {
+                // Reverse chronology
+                for object in objects!.reversed() {
                     // Ephemeral content
-//                    let components: NSCalendar.Unit = .hour
-//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if difference.hour! < 24 {
+                    let components: NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
 //                        self.stories.append(object)
-//                    }
-                    self.stories.append(object)
+                    }
+                     self.stories.append(object)
                 }
-                
-                // MARK: - SegmentedProgressBar
-                if self.stories.count == 1 {
-                    self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
-                } else {
-                    self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
-                }
-                self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
-                self.spb.topColor = UIColor.white
-                self.spb.layer.applyShadow(layer: self.spb.layer)
-                self.spb.padding = 2
-                self.spb.delegate = self
-                self.view.addSubview(self.spb)
-                self.spb.startAnimation()
+
                 
                 // Reload data in main thread
-                DispatchQueue.main.async {
+                DispatchQueue.main.async(execute: {
                     self.collectionView.reloadData()
-                }
+                    self.currentIndex = 0
+                    // MARK: - SegmentedProgressBar
+                    self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
+                    self.spb.frame = CGRect(x: 8, y: 4, width: self.view.frame.width - 16, height: 3)
+                    self.spb.topColor = UIColor.white
+                    self.spb.layer.applyShadow(layer: self.spb.layer)
+                    self.spb.padding = 2
+                    self.spb.delegate = self
+                    self.view.addSubview(self.spb)
+                    self.spb.startAnimation()
+                })
                 
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
     }
+    
     
     
     // MARK: - SegmentedProgressBar Delegate Methods
@@ -134,39 +110,31 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    // MARK: - Reactions
+    // MARK: - Reactions Delegate Method
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
-            // More
-            if reactionSelector.selectedReaction?.id == "More" {
-                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-                
-            } else if reactionSelector.selectedReaction?.id == "Like" {
-                // Like
-                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "LikeFilled", title: "", color: .lightGray, icon: UIImage(named: "LikeFilled")!)
-                
-            } else if reactionSelector.selectedReaction?.id == "Comment" {
-                // Comment
-                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-                
-                reactionObject.append(self.stories.last!)
-                let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
-                self.navigationController?.pushViewController(reactionsVC, animated: true)
-                
-            } else if reactionSelector.selectedReaction?.id == "Share" {
-                // Share
-                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-                
-                shareWithObject.append(self.stories.last!)
-                let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-                self.navigationController?.pushViewController(shareWithVC, animated: true)
+            switch reactionSelector.selectedReaction!.id {
+                case "More":    // MORE
+                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                case "Like":    // LIKE
+                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "LikeFilled", title: "", color: .lightGray, icon: UIImage(named: "LikeFilled")!)
+                case "Comment": // COMMENT
+                    // Comment
+                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                    reactionObject.append(self.stories.last!)
+                    let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+                    self.navigationController?.pushViewController(reactionsVC, animated: true)
+                case "Share":   // SHARE
+                    // Share
+                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                    shareWithObject.append(self.stories.last!)
+                    let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                    self.navigationController?.pushViewController(shareWithVC, animated: true)
+            default:
+                break;
             }
         } else {
-            // Share
+            // RESET
             self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
         }
     }
@@ -174,43 +142,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - RPButton
-        rpButton.isHidden = true
-        // Hide UIStatusBar
-        UIApplication.shared.isStatusBarHidden = true
-        self.setNeedsStatusBarAppearanceUpdate()
-        // MARK: - RPExtensions
-        self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
-        // Hide UITabBar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Fetch Stories
-        fetchStories()
-        
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
-        
-        // MARK: - AnimatedCollectionViewLayout; configure UICollectionView
-        let layout = AnimatedCollectionViewLayout()
-        layout.scrollDirection = .horizontal
-        layout.animator = ParallaxAttributesAnimator()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.estimatedItemSize = self.view.bounds.size
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        // Configure UICollectionView
-        collectionView!.dataSource = self
-        collectionView!.delegate = self
-        collectionView!.isPagingEnabled = true
-        collectionView!.collectionViewLayout = layout
-        collectionView!.frame = self.view.bounds
-        collectionView!.backgroundColor = UIColor.black
-        collectionView!.showsHorizontalScrollIndicator = false
-
         // MARK: - Reactions
         // (2) Create ReactionSelector and add Reactions from <1>
         reactionSelector.feedbackDelegate = self
@@ -235,38 +166,45 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
         reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         reactButton.layer.applyShadow(layer: reactButton.layer)
-        self.view.addSubview(reactButton)
-        self.view.bringSubview(toFront: reactButton)
+        view.addSubview(reactButton)
+        view.bringSubview(toFront: reactButton)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        // Fetch Stories
+        fetchStories()
+        
+        // MARK: - AnimatedCollectionViewLayout
+        let layout = AnimatedCollectionViewLayout()
+        layout.scrollDirection = .horizontal
+        layout.animator = ParallaxAttributesAnimator()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.estimatedItemSize = self.view.bounds.size
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        // Configure UICollectionView
+        collectionView!.dataSource = self
+        collectionView!.delegate = self
+        collectionView!.isPagingEnabled = true
+        collectionView!.collectionViewLayout = layout
+        collectionView!.frame = self.view.bounds
+        collectionView!.backgroundColor = UIColor.black
+        collectionView!.showsHorizontalScrollIndicator = false
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
-
-        let aTap = UITapGestureRecognizer(target: self, action: #selector(handleGesture))
-        aTap.numberOfTapsRequired = 1
-        aTap.delegate = self
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(aTap)
-
-        // Location Rect...
-        self.locationRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/3, height: UIScreen.main.bounds.size.height)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
-        // MARK: - RPExtensions; rpButton
-        rpButton.isHidden = false
-        // De-allocate rpVideoPlayer
-        self.rpVideoPlayer?.pause()
-        self.rpVideoPlayer?.player?.replaceCurrentItem(with: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -278,19 +216,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SDImageCache.shared().clearDisk()
     }
 
-    func handleGesture(_ gestureRecognizer: UIGestureRecognizer) {
-        if locationRect.contains(gestureRecognizer.location(in: self.view)) {
-            print("Backwards.")
-        } else {
-            print("Forwards.")
-        }
-    }
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    
     
     // MARK: UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -298,6 +223,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Returning: \(self.stories.count) cells...")
         return self.stories.count
     }
     
@@ -306,49 +232,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if collectionView.cellForItem(at: indexPath) == collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-//            self.vimPlayerView.player.pause()
-//        } else if collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-//            self.vimPlayerView.player.pause()
-//        }
-        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-            guard let mvCell = cell as? MomentVideo else  { return }
-            mvCell.vimPlayerView.player.pause()
-        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-            //            guard let vCell = cell as? MomentVideo else  { return }
-            //            mvCell.vimPlayerView.player.play()
-        }
-    }
-    
-    
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
-        // StoryScrollCell
-            guard let storyScrollCell = cell as? StoryScrollCell else { return }
-            storyScrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
-        }
-//        } else if self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-//            print("Should play because MomentVideo...")
-//            self.vimPlayerView.player.play()
-//        } else if self.collectionView.cellForItem(at: indexPath) == Bundle.main.loadNibNamed("StoryScrollCell", owner: self, options: nil)?.first as! StoryScrollCell && self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-//            print("Should play because Video...")
-//            self.vimPlayerView.player.play()
-//        }
         
-//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-//            guard let mvCell = cell as? MomentVideo else  { return }
-//            mvCell.vimPlayerView.player.play()
-//        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-//            guard let vCell = cell as? MomentVideo else  { return }
-//            mvCell.vimPlayerView.player.play()
-//        }
     }
-    
-    
-    
-    
-    
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST
@@ -357,57 +247,62 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             
             // Set PFObject
             scrollCell.postObject = self.stories[indexPath.item]
-            // Set parentDelegate
+            // Set parent UIViewController
             scrollCell.delegate = self
+            // Set UITableView Data Source and Delegates
             scrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
-            
             return scrollCell
             
         } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
             
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
-            mpCell.postObject = self.stories[indexPath.item]
-            mpCell.delegate = self
-            mpCell.updateView(withObject: self.stories[indexPath.item])
+            mpCell.postObject = self.stories[indexPath.item]                // Set PFObject
+            mpCell.delegate = self                                          // Set parent UIViewController
+            mpCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
             return mpCell
             
         } else {
-        // MOMENT VIDEO CELL
+        // MOMENT VIDEO
             
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-            mvCell.postObject = self.stories[indexPath.item]
-            mvCell.delegate = self
-            mvCell.updateView(withObject: self.stories[indexPath.item])
-            mvCell.addVideo(withObject: self.stories[indexPath.item])
+            mvCell.postObject = self.stories[indexPath.item]                // Set PFObject
+            mvCell.delegate = self                                          // Set parent UIViewController
+            mvCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
+            mvCell.addVideo(withObject: self.stories[indexPath.item])       // Add video...
+            // TODO:: ^^^
             
             return mvCell
         }
     }
     
     
-    // MARK: - UIScrollView Delegate Method
+    // MARK: - UIScrollView Delegate Methods
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         self.lastOffSet = scrollView.contentOffset
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        // Manipulate SegmentedProgressBar
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb.skip()
-        } else {
-            self.spb.rewind()
-        }
-        
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
         visibleRect.size = self.collectionView!.bounds.size
         let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
+        
+        // Manipulate SegmentedProgressBar
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb.skip()
+        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
+            self.spb.rewind()
+        }
     }
-
 }
+
+
+
+
+
 
 
 
@@ -459,6 +354,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
         // VIDEO
             
             let vCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
+            // TODO::
             return vCell
         }
     }

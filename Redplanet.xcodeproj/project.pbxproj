@@ -24,7 +24,6 @@
 		7E41C7B81E4056870025129B /* OtherUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7B71E4056870025129B /* OtherUser.swift */; };
 		7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E41C7B91E4056C90025129B /* OtherUserHeader.xib */; };
 		7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7BB1E4057000025129B /* OtherUserHeader.swift */; };
-		7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307801DD021A100AA2413 /* TimelineView.swift */; };
 		7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */; };
 		7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A98031DDCFFFA006DA985 /* FullName.swift */; };
 		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
@@ -62,7 +61,6 @@
 		7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */; };
 		7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E54051EB29CAE00292B8C /* MomentVideo.swift */; };
 		7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* MomentVideo.xib */; };
-		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
 		7E9351DD1EBAE2E70045DA48 /* Stories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9351DC1EBAE2E60045DA48 /* Stories.swift */; };
 		7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9351DE1EBAE9430045DA48 /* Reactions.swift */; };
 		7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */; };
@@ -219,7 +217,6 @@
 		7E41C7B71E4056870025129B /* OtherUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUser.swift; sourceTree = "<group>"; };
 		7E41C7B91E4056C90025129B /* OtherUserHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherUserHeader.xib; sourceTree = "<group>"; };
 		7E41C7BB1E4057000025129B /* OtherUserHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserHeader.swift; sourceTree = "<group>"; };
-		7E4307801DD021A100AA2413 /* TimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		7E44F8AC1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		7E44F8AD1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoom.swift; sourceTree = "<group>"; };
@@ -261,7 +258,6 @@
 		7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		7E8E54051EB29CAE00292B8C /* MomentVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentVideo.swift; sourceTree = "<group>"; };
 		7E8E54061EB29CAE00292B8C /* MomentVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentVideo.xib; sourceTree = "<group>"; };
-		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
 		7E9351DC1EBAE2E60045DA48 /* Stories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stories.swift; sourceTree = "<group>"; };
 		7E9351DE1EBAE9430045DA48 /* Reactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
 		7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhotoCell.swift; sourceTree = "<group>"; };
@@ -519,16 +515,6 @@
 				7E4199241E4C668000EFA065 /* SwipeView.m */,
 			);
 			path = SwipeView;
-			sourceTree = "<group>";
-		};
-		7E43077F1DD021A100AA2413 /* RPVideoPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */,
-				7E4307801DD021A100AA2413 /* TimelineView.swift */,
-			);
-			name = RPVideoPlayer;
-			path = VideoViewController;
 			sourceTree = "<group>";
 		};
 		7E43833F1DD9139300337007 /* Hashtags/SelectedStories */ = {
@@ -1221,7 +1207,6 @@
 				7EDB846B1EB96D41005E805E /* RPExtensions.swift */,
 				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
 				7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */,
-				7E43077F1DD021A100AA2413 /* RPVideoPlayer */,
 				7E6E24BE1EBC5C6800D52490 /* RPCaption */,
 			);
 			name = RPCustomClasses;
@@ -1284,10 +1269,10 @@
 		7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */ = {
 			isa = PBXGroup;
 			children = (
-				7EE697C61EAACABE004F4E24 /* StoryCell */,
-				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 				7E6D90E41ECF9D0F00F7FD6B /* CollectionCell */,
 				7E85C8721ECCCE3B00D5EF07 /* UserCell */,
+				7EE697C61EAACABE004F4E24 /* StoryCell */,
+				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
 				7E8E54091EB29CF100292B8C /* MomentVideo */,
 				7E972FED1EA97D810047F4D4 /* TextPostCell */,
@@ -1667,7 +1652,6 @@
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7EDB846C1EB96D41005E805E /* RPExtensions.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
-				7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
 				7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
@@ -1685,7 +1669,6 @@
 				7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
-				7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
 				7EE35EAF1EB0073300C14FAD /* RPPopUpVC.swift in Sources */,

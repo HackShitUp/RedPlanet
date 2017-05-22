@@ -27,8 +27,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     
-    // MARK: - RPVideoPlayerView
-    var rpVideoPlayer: RPVideoPlayerView!
+    
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
     // Array to hold stories/likes

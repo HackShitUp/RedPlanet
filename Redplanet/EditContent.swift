@@ -16,8 +16,9 @@ import Parse
 import ParseUI
 import Bolts
 
-import SDWebImage
 import OneSignal
+import SDWebImage
+import VIMVideoPlayer
 
 // Array 
 var editObjects = [PFObject]()
@@ -316,15 +317,17 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     func playVideo(sender: AnyObject) {
         // Fetch video data
         if let video = editObjects.last!.value(forKey: "videoAsset") as? PFFile {
-            let videoUrl = URL(string: video.url!)
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
             let viewController = UIViewController()
-            // MARK: - RPVideoPlayerView
-            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
-            rpVideoPlayer.setupVideo(videoURL: videoUrl!)
-            rpVideoPlayer.playbackLoops = true
-            viewController.view.addSubview(rpVideoPlayer)
+            // MARK: - VIMVideoPlayer
+            let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+            vimPlayerView.player.isLooping = true
+            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+            vimPlayerView.player.setURL(URL(string: video.url!)!)
+            vimPlayerView.player.play()
+            viewController.view.addSubview(vimPlayerView)
+            viewController.view.bringSubview(toFront: vimPlayerView)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
             self.present(rpPopUpVC, animated: true, completion: nil)
         }

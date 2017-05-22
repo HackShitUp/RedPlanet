@@ -13,8 +13,6 @@ import Parse
 import ParseUI
 import Bolts
 
-
-
 class ActivityCell: UITableViewCell {
 
     // Instantiate parent view controller
@@ -29,7 +27,7 @@ class ActivityCell: UITableViewCell {
     @IBOutlet weak var activity: UILabel!
     @IBOutlet weak var time: UILabel!
     
-    // Function to go to user's profile
+    // FUNCTION - Navigate to user's profile
     func goUser() {
         // Append user's object
         otherObject.append(self.userObject!)
@@ -41,7 +39,19 @@ class ActivityCell: UITableViewCell {
         delegate?.navigationController?.pushViewController(otherVC, animated: true)
     }
     
+    // FUNCTION - Show single story
+    func showStory(withObject: PFObject?) {
+        // Create storyVC, distinguish chatOrStory, and initialize PFObject
+        let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+        storyVC.chatOrStory = "Story"
+        storyVC.singleStory = withObject!
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+        self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+    }
     
+    // FUNCTION - Manage which single story to show
     func viewPost() {
         DispatchQueue.main.async {
             // -------------------- L I K E ----------------------------------------------------------------------------------
@@ -61,14 +71,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -93,14 +96,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             // Check Photos
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                             
                         } else {
@@ -124,14 +120,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -156,14 +145,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                             
                         } else {
@@ -189,14 +171,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -221,14 +196,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -347,14 +315,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -379,14 +340,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -407,14 +361,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -435,14 +382,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                             
                         } else {
@@ -467,14 +407,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                             
                         } else {
@@ -495,22 +428,12 @@ class ActivityCell: UITableViewCell {
                     newsfeeds.findObjectsInBackground(block: {
                         (objects: [PFObject]?, error: Error?) in
                         if error == nil {
-                            
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
-                            
                         } else {
                             print(error?.localizedDescription as Any)
                             // Re-enable buttons
@@ -542,16 +465,8 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -574,16 +489,8 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -606,16 +513,8 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -638,16 +537,8 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -671,16 +562,8 @@ class ActivityCell: UITableViewCell {
                             // Re-enable buttons
                             self.activity.isUserInteractionEnabled = true
                             self.activity.isEnabled = true
-                            
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -702,14 +585,7 @@ class ActivityCell: UITableViewCell {
                         if error == nil {
                             // Find Content
                             for object in objects! {
-                                // Create storyVC, distinguish chatOrStory, and initialize PFObject
-                                let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-                                storyVC.chatOrStory = "Story"
-                                storyVC.singleStory = object
-                                // MARK: - RPPopUpVC
-                                let rpPopUpVC = RPPopUpVC()
-                                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-                                self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+                                self.showStory(withObject: object)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -719,8 +595,6 @@ class ActivityCell: UITableViewCell {
                         }
                     })
                 }
-                
-                
             }
 
             // -------------------- R E L A T I O N S H I P S ----------------------------------------------------------------
@@ -775,7 +649,6 @@ class ActivityCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         // Add username tap
         let nameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         nameTap.numberOfTapsRequired = 1
@@ -793,7 +666,7 @@ class ActivityCell: UITableViewCell {
         postTap.numberOfTapsRequired = 1
         self.activity.isUserInteractionEnabled = true
         self.activity.addGestureRecognizer(postTap)
-        
+        // Configure UILabel
         self.activity.sizeToFit()
         self.activity.numberOfLines = 0
     }

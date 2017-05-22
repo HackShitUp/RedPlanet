@@ -91,10 +91,17 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         initScrollView()
     }
 
+    // MARK: - UIView Life Cycle
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // MARK: - RPExtensions; Hide rpButton and straighten corners
+        rpButton.isHidden = true
+        self.view.straightenCorners(sender: self.view)
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
+        // Configure UINavigationBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override open func viewDidAppear(_ animated: Bool) {
@@ -109,6 +116,8 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // MARK: - RPExtensions; Show rpButton
+        rpButton.isHidden = false
     }
     
     override open func viewDidDisappear(_ animated: Bool) {
@@ -270,5 +279,4 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 }

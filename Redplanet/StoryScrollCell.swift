@@ -13,6 +13,7 @@ import Bolts
 import SDWebImage
 
 class StoryScrollCell: UICollectionViewCell, UIScrollViewDelegate {
+
     // PFObject; used to determine post type
     var postObject: PFObject?
     // Parent UIViewController
@@ -20,6 +21,7 @@ class StoryScrollCell: UICollectionViewCell, UIScrollViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
 
+    
     // MARK: - StoryScrollCell Protocol Function; sets datasource and delegate methods
     func setTableViewDataSourceDelegate
         <D: UITableViewDataSource & UITableViewDelegate>
@@ -31,21 +33,8 @@ class StoryScrollCell: UICollectionViewCell, UIScrollViewDelegate {
         tableView.delegate = dataSourceDelegate
         tableView.dataSource = dataSourceDelegate
         tableView.tag = row
+        tableView.alwaysBounceVertical = false
         tableView.reloadData()
     }
 
-    // MARK: - UICollectionView Life Cycle
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        // Configure UIRefreshControl
-        let refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.clear
-        tableView.addSubview(refresher)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
 }
