@@ -157,7 +157,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         }
         // MARK: - RPExtensions
         cell.storyStatus.layer.applyShadow(layer: cell.storyStatus.layer)
-        
         // (3) Set author and story description
         if let author = self.articleObjects[indexPath.item].value(forKey: "author") as? String {
             let formattedString = NSMutableAttributedString()

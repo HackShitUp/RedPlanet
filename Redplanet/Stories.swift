@@ -24,6 +24,17 @@ import VIMVideoPlayer
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
+
+class UserStories {
+    var userObject = PFObject()
+    var postObjects = [PFObject]()
+    
+    init(userObject: PFObject, posts: [PFObject]) {
+        self.userObject = userObject
+        self.postObjects = posts
+    }
+}
+
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
     
     
@@ -62,7 +73,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.whereKey("contentType", notEqualTo: "tp")
         newsfeeds.limit = 50
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -224,6 +234,18 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
+    
+        
+        
+        
+        let forwardTap = UITapGestureRecognizer(target: self, action: #selector(forward))
+        forwardTap.numberOfTapsRequired = 1
+        
+        
+    
+        
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -251,6 +273,17 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
+    
+    
+    func forward() {
+        print("Forwarded")
+    }
+    
+    
+    func rewind() {
+        print("Rewinded")
+    }
+    
     
     
     // MARK: UICollectionViewDataSource
@@ -297,13 +330,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 //            self.vimPlayerView.player.play()
 //        }
         
-        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-            guard let mvCell = cell as? MomentVideo else  { return }
-            mvCell.vimPlayerView.player.play()
-        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            guard let mvCell = cell as? MomentVideo else  { return }
+//            mvCell.vimPlayerView.player.play()
+//        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
 //            guard let vCell = cell as? MomentVideo else  { return }
 //            mvCell.vimPlayerView.player.play()
-        }
+//        }
     }
     
     

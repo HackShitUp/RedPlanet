@@ -4626,7 +4626,7 @@
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
         <image name="PhotosRoll" width="90" height="90"/>
-        <image name="RPLogo" width="50" height="50"/>
+        <image name="RPLogo" width="300" height="300"/>
         <image name="SLRCamera" width="17" height="20"/>
         <image name="SaveWhite" width="261" height="256"/>
         <image name="Search" width="25" height="25"/>
