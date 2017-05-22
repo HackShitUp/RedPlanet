@@ -39,10 +39,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     @IBOutlet weak var leaveButton: UIButton!
     
     @IBAction func dismissVC(_ sender: Any) {
-        self.dismiss(animated: false) { 
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-        }
+        // Pop VC
+        _ = self.navigationController?.popViewController(animated: false)
     }
     
     @IBOutlet weak var saveButton: UIButton!
@@ -161,11 +159,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         tapGesture.addTarget(self, action: #selector(handleTap))
 
         // MARK:- SwipeNavigationController
+        self.containerSwipeNavigationController?.delegate = self
         self.containerSwipeNavigationController?.shouldShowRightViewController = false
         self.containerSwipeNavigationController?.shouldShowLeftViewController = false
         self.containerSwipeNavigationController?.shouldShowBottomViewController = false
-        self.containerSwipeNavigationController?.shouldShowTopViewController = false
-        self.containerSwipeNavigationController?.delegate = self
         
         // Hide buttons
         self.undoButton.isHidden = true
@@ -178,11 +175,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                        self.leaveButton,
                        self.completeButton] as [Any]
         for b in buttons {
-            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3
-            (b as AnyObject).layer.shadowOpacity = 0.5
-            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+            // MARK: - RPExtensions
+            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
             self.stillPhoto.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.filterView.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
@@ -328,7 +322,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
             // IV AREA: "City, State"
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-            city.font = UIFont(name: "AvenirNext-Demibold", size: 40)
             city.textColor = UIColor.white
             city.backgroundColor = UIColor.clear
             city.textAlignment = .center
@@ -336,7 +329,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             city.numberOfLines = 0
             // Manipulate font size of CLPlacemark's name attribute
             let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("\(currentGeoFence.last!.name!)", withFont: UIFont(name: "AvenirNext-Bold", size: 17)).normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)")
+            _ = formattedString.bold("\(currentGeoFence.last!.name!)", withFont: UIFont(name: "AvenirNext-Bold", size: 17)).normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 40))
             city.attributedText = formattedString
             city.layer.applyShadow(layer: city.layer)
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
@@ -419,4 +412,3 @@ extension CapturedStill: UIGestureRecognizerDelegate {
         self.textField.handleTap()
     }
 }
-

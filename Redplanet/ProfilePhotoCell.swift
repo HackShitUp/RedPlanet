@@ -32,8 +32,15 @@ class ProfilePhotoCell: UITableViewCell {
     @IBOutlet weak var textPost: KILabel!
     
     
-    // Function to go to user's profile
-    func visitProfile(sender: UIButton) {
+    // FUNCTION - Zoom into photo
+    func zoom(sender: AnyObject) {
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.largeProPic.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+        agrume.showFrom(self.superDelegate!.self)
+    }
+    
+    // FUNCTION - Navigate to user's profile
+    func visitProfile(sender: AnyObject) {
         otherObject.append(self.postObject?.value(forKey: "byUser") as! PFUser)
         otherName.append(self.postObject?.value(forKey: "username") as! String)
         let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
@@ -41,10 +48,10 @@ class ProfilePhotoCell: UITableViewCell {
     }
 
     
-    // Function to update view
-    func updateView(postObject: PFObject?) {
+    // FUNCTION - Update UI
+    func updateView(withObject: PFObject?) {
         // (1) Get user's object
-        if let user = postObject?.value(forKey: "byUser") as? PFUser {
+        if let user = withObject?.value(forKey: "byUser") as? PFUser {
             // Set username
             self.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
             // Set profile photo
@@ -60,18 +67,25 @@ class ProfilePhotoCell: UITableViewCell {
             }
         }
         
-        // (2) Set textPost
-        if let textPost = postObject?.value(forKey: "textPost") as? String {
-            self.textPost.text = textPost
-        }
-        
-        // (3) Set time
-        let from = postObject!.createdAt!
+        // (2) Set time
+        let from = withObject!.createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        // MARK: - RPHelpers
+        // MARK: - RPExtensions
         self.time.text = "Updated their profile photo \(difference.getFullTime(difference: difference, date: from))"
+
+        // (3) Set text post
+        if let text = withObject!.value(forKey: "textPost") as? String {
+            // MARK: - RPExtensions
+            let formattedString = NSMutableAttributedString()
+            _ = formattedString.bold("\((withObject!.value(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+            if withObject!.value(forKey: "textPost") as! String != "" {
+                self.textPost.attributedText = formattedString
+            } else {
+                self.textPost.isHidden = true
+            }
+        }
     }
     
     override func awakeFromNib() {
@@ -86,6 +100,11 @@ class ProfilePhotoCell: UITableViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
+        // Zoom Tap
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+        zoomTap.numberOfTapsRequired = 1
+        self.largeProPic.isUserInteractionEnabled = true
+        self.largeProPic.addGestureRecognizer(zoomTap)
     }
 
 }

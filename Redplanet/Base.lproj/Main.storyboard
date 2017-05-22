@@ -117,7 +117,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2982" y="-5414"/>
+            <point key="canvasLocation" x="-2994" y="-3913"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="10P-Wq-oF8">
@@ -263,7 +263,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7s-GP-bla" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1980" y="-5412"/>
+            <point key="canvasLocation" x="-1992" y="-3911"/>
         </scene>
         <!--Birthday-->
         <scene sceneID="nq9-hu-UHJ">
@@ -354,7 +354,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jwi-lT-03O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-567" y="-5411"/>
+            <point key="canvasLocation" x="-579" y="-3910"/>
         </scene>
         <!--New User-->
         <scene sceneID="KNr-53-jdP">
@@ -422,7 +422,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Sv-8G-mIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-80" y="-5412"/>
+            <point key="canvasLocation" x="-92" y="-3911"/>
         </scene>
         <!--Follow Accounts-->
         <scene sceneID="jNS-Gc-fXv">
@@ -534,7 +534,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="huQ-g7-VvB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="442" y="-5412"/>
+            <point key="canvasLocation" x="431" y="-3911"/>
         </scene>
         <!--Full Name-->
         <scene sceneID="I6i-Hh-hNm">
@@ -639,7 +639,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jSc-ij-ZWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1520" y="-5412"/>
+            <point key="canvasLocation" x="-1532" y="-3911"/>
         </scene>
         <!--MasterUI-->
         <scene sceneID="CMz-wu-l20">
@@ -3095,7 +3095,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s65-ak-j9e">
-                                <rect key="frame" x="20" y="20" width="25" height="25"/>
+                                <rect key="frame" x="16" y="20" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="1x2-zL-Rw4"/>
                                     <constraint firstAttribute="width" constant="25" id="zfS-ey-Pqq"/>
@@ -3106,7 +3106,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KuK-8b-F8c">
-                                <rect key="frame" x="305" y="597" width="50" height="50"/>
+                                <rect key="frame" x="309" y="597" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="VyE-Lp-pm2"/>
                                     <constraint firstAttribute="height" constant="50" id="gxv-KQ-2cG"/>
@@ -3117,7 +3117,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
-                                <rect key="frame" x="285" y="20" width="25" height="25"/>
+                                <rect key="frame" x="267" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Pen"/>
                                 <connections>
@@ -3125,7 +3125,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fui-fV-1S5">
-                                <rect key="frame" x="191" y="15" width="46" height="30"/>
+                                <rect key="frame" x="213" y="15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="Done">
@@ -3133,7 +3133,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YwU-Wf-DIY">
-                                <rect key="frame" x="137" y="15" width="46" height="30"/>
+                                <rect key="frame" x="159" y="15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="Undo">
@@ -3171,8 +3171,8 @@
                             <constraint firstItem="Fbn-Va-JDg" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" constant="16" id="AMU-wE-vyM"/>
                             <constraint firstItem="IHD-kG-Qo1" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" id="CAN-jT-s30"/>
                             <constraint firstItem="s65-ak-j9e" firstAttribute="top" secondItem="k0n-4m-K7z" secondAttribute="bottom" constant="20" id="DiQ-D4-5IM"/>
-                            <constraint firstAttribute="trailing" secondItem="KuK-8b-F8c" secondAttribute="trailing" constant="20" id="Jxy-7e-msK"/>
-                            <constraint firstItem="s65-ak-j9e" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" constant="20" id="QY3-Vc-Nui"/>
+                            <constraint firstAttribute="trailing" secondItem="KuK-8b-F8c" secondAttribute="trailing" constant="16" id="Jxy-7e-msK"/>
+                            <constraint firstItem="s65-ak-j9e" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" constant="16" id="QY3-Vc-Nui"/>
                             <constraint firstAttribute="trailing" secondItem="IHD-kG-Qo1" secondAttribute="trailing" id="YwZ-Eo-d8h"/>
                             <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="Fbn-Va-JDg" secondAttribute="bottom" constant="30" id="bQs-rN-8iy"/>
                             <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="IHD-kG-Qo1" secondAttribute="bottom" id="nHY-SK-d0E"/>
@@ -3196,7 +3196,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tBN-kT-UdW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-81" y="-2865"/>
+            <point key="canvasLocation" x="-81.5" y="-2865.5"/>
         </scene>
         <!--Settings-->
         <scene sceneID="1MV-Fw-ahe">
@@ -4229,7 +4229,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hGq-vG-vr5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3462" y="-5413"/>
+            <point key="canvasLocation" x="-3474" y="-3912"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T7U-Wu-kR3">
@@ -4549,7 +4549,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgc-Zu-Y30" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2464" y="-5412"/>
+            <point key="canvasLocation" x="-2476" y="-3911"/>
         </scene>
         <!--Home-->
         <scene sceneID="KwM-L7-tM4">

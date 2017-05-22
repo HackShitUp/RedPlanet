@@ -295,7 +295,7 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
             
             phCell.postObject = self.posts[tableView.tag]
             phCell.superDelegate = self
-            phCell.updateView(postObject: self.posts[tableView.tag])
+            phCell.updateView(withObject: self.posts[tableView.tag])
             
             return phCell
             
@@ -306,7 +306,7 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
             
             ppCell.postObject = self.posts[tableView.tag]
             ppCell.superDelegate = self
-            ppCell.updateView(postObject: self.posts[tableView.tag])
+            ppCell.updateView(withObject: self.posts[tableView.tag])
             
             return ppCell
         }

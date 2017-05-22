@@ -160,7 +160,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // (3) Set author and story description
         if let author = self.articleObjects[indexPath.item].value(forKey: "author") as? String {
             let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("By \(author)\n", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(self.articleObjects[indexPath.item].value(forKey: "description") as! String)")
+            _ = formattedString.bold("By \(author)\n", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(self.articleObjects[indexPath.item].value(forKey: "description") as! String)", withFont: UIFont(name: "AvenirNext-Medium", size: 17))
             cell.storyDescription.attributedText = formattedString
         } else {
             cell.storyDescription.text = (self.articleObjects[indexPath.item].value(forKey: "description") as! String)

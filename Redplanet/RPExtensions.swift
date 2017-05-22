@@ -40,6 +40,11 @@ extension UIView {
     
     // Function to round ALL corners of UIView
     func roundAllCorners(sender: UIView?) {
+        sender!.layoutIfNeeded()
+        sender!.layoutSubviews()
+        sender!.setNeedsLayout()
+        sender!.layer.cornerRadius = 0
+        sender!.clipsToBounds = true
         sender!.layer.cornerRadius = 8.00
         sender!.clipsToBounds = true
     }
@@ -50,12 +55,20 @@ extension UIView {
         shape.bounds = sender!.frame
         shape.position = sender!.center
         shape.path = UIBezierPath(roundedRect: sender!.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 8, height: 8)).cgPath
+        sender!.layoutIfNeeded()
+        sender!.layoutSubviews()
+        sender!.setNeedsLayout()
+        sender!.layer.cornerRadius = 0
+        sender!.clipsToBounds = true
         sender!.layer.mask = shape
         sender!.clipsToBounds = true
     }
     
     // Function to straighten corners of UIView
     func straightenCorners(sender: UIView?) {
+        sender!.layoutIfNeeded()
+        sender!.layoutSubviews()
+        sender!.setNeedsLayout()
         sender!.layer.cornerRadius = 0
         sender!.clipsToBounds = true
     }
@@ -76,14 +89,15 @@ extension UIView {
 extension NSMutableAttributedString {
     // Bolds range of string
     func bold(_ text: String, withFont: UIFont?) -> NSMutableAttributedString {
-        let attrs:[String:AnyObject] = [NSFontAttributeName : withFont!]
-        let boldString = NSMutableAttributedString(string:"\(text)", attributes:attrs)
+        let attrs: [String: AnyObject] = [NSFontAttributeName : withFont!]
+        let boldString = NSMutableAttributedString(string:"\(text)", attributes: attrs)
         self.append(boldString)
         return self
     }
     // Normalizes range of string
-    func normal(_ text: String) -> NSMutableAttributedString {
-        let normal =  NSAttributedString(string: text)
+    func normal(_ text: String, withFont: UIFont?) -> NSMutableAttributedString {
+        let attrs: [String: AnyObject] = [NSFontAttributeName : withFont!]
+        let normal = NSMutableAttributedString(string: text, attributes: attrs)
         self.append(normal)
         return self
     }

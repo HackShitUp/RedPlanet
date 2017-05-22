@@ -31,9 +31,8 @@ class TextPostCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var textPost: KILabel!
     
-    
     // FUNCTION - Navigates to user's profile
-    func visitProfile(sender: UIButton) {
+    func visitProfile(sender: AnyObject) {
         otherObject.append(self.postObject?.value(forKey: "byUser") as! PFUser)
         otherName.append(self.postObject?.value(forKey: "username") as! String)
         let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
@@ -86,7 +85,6 @@ class TextPostCell: UITableViewCell {
                 }
             }
             */
-            
         }
         
         // (3) Set time

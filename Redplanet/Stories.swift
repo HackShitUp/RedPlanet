@@ -58,7 +58,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
 //        newsfeeds.limit = 500
-        newsfeeds.limit = 10
+        newsfeeds.limit = 30
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -78,8 +78,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    self.collectionView.reloadData()
-                    self.currentIndex = 0
                     // MARK: - SegmentedProgressBar
                     self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
                     self.spb.frame = CGRect(x: 8, y: 4, width: self.view.frame.width - 16, height: 3)
@@ -89,6 +87,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     self.spb.delegate = self
                     self.view.addSubview(self.spb)
                     self.spb.startAnimation()
+                    // Reload data
+                    self.collectionView.reloadData()
+                    // Set currentIndex
+                    self.currentIndex = 0
                 })
                 
             } else {
@@ -223,7 +225,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Returning: \(self.stories.count) cells...")
         return self.stories.count
     }
     
@@ -236,7 +237,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -253,16 +253,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             scrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
             return scrollCell
             
-        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
-        // MOMENT PHOTO
-            
-            let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
-            mpCell.postObject = self.stories[indexPath.item]                // Set PFObject
-            mpCell.delegate = self                                          // Set parent UIViewController
-            mpCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
-            return mpCell
-            
-        } else {
+        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil && self.currentIndex == indexPath.item {
         // MOMENT VIDEO
             
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
@@ -273,6 +264,15 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             // TODO:: ^^^
             
             return mvCell
+            
+        } else {
+        // MOMENT PHOTO
+            
+            let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
+            mpCell.postObject = self.stories[indexPath.item]                // Set PFObject
+            mpCell.delegate = self                                          // Set parent UIViewController
+            mpCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
+            return mpCell
         }
     }
     
@@ -289,6 +289,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         visibleRect.size = self.collectionView!.bounds.size
         let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
+        
+        // Set currentIndex
+        self.currentIndex = indexPath.item
         
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
@@ -338,7 +341,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             let phCell = Bundle.main.loadNibNamed("PhotoCell", owner: self, options: nil)?.first as! PhotoCell
             phCell.postObject = self.stories[tableView.tag]                 // Set PFObject
             phCell.superDelegate = self                                     // Set parent UIViewController
-            phCell.updateView(postObject: self.stories[tableView.tag])      // Update UI
+            phCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
             return phCell
             
         } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "pp" {
@@ -347,7 +350,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
             ppCell.postObject = self.stories[tableView.tag]                 // Set PFObject
             ppCell.superDelegate = self                                     // Set parent UIViewController
-            ppCell.updateView(postObject: self.stories[tableView.tag])      // Update UI
+            ppCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
             return ppCell
             
         } else {
