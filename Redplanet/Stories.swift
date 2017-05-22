@@ -123,13 +123,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 case "Comment": // COMMENT
                     // Comment
                     self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-                    reactionObject.append(self.stories.last!)
+                    reactionObject.append(self.stories[self.currentIndex!])
                     let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
                     self.navigationController?.pushViewController(reactionsVC, animated: true)
                 case "Share":   // SHARE
                     // Share
                     self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-                    shareWithObject.append(self.stories.last!)
+                    shareWithObject.append(self.stories[self.currentIndex!])
                     let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                     self.navigationController?.pushViewController(shareWithVC, animated: true)
             default:
@@ -144,32 +144,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - Reactions
-        // (2) Create ReactionSelector and add Reactions from <1>
-        reactionSelector.feedbackDelegate = self
-        reactionSelector.setReactions(reactions, sizeToFit: true)
-        // (3) Configure ReactionSelector
-        reactionSelector.config = ReactionSelectorConfig {
-            $0.spacing = 12
-            $0.iconSize = 35
-            $0.stickyReaction = true
-        }
-        // (4) Set ReactionSelector
-        reactButton.reactionSelector = reactionSelector
-        // (5) Configure reactButton
-        reactButton.config = ReactionButtonConfig() {
-            $0.iconMarging = 8
-            $0.spacing = 8
-            $0.alignment = .centerLeft
-            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
-            $0.neutralTintColor = UIColor.black
-        }
-        reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
-        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
-        reactButton.layer.applyShadow(layer: reactButton.layer)
-        view.addSubview(reactButton)
-        view.bringSubview(toFront: reactButton)
+        // MARK: - RPExtensions
+        self.view.straightenCorners(sender: self.view)
     }
     
     override func viewDidLoad() {
@@ -199,6 +175,34 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
+        
+        
+        // MARK: - Reactions
+        // (2) Create ReactionSelector and add Reactions from <1>
+        reactionSelector.feedbackDelegate = self
+        reactionSelector.setReactions(reactions, sizeToFit: true)
+        // (3) Configure ReactionSelector
+        reactionSelector.config = ReactionSelectorConfig {
+            $0.spacing = 12
+            $0.iconSize = 35
+            $0.stickyReaction = true
+        }
+        // (4) Set ReactionSelector
+        reactButton.reactionSelector = reactionSelector
+        // (5) Configure reactButton
+        reactButton.config = ReactionButtonConfig() {
+            $0.iconMarging = 8
+            $0.spacing = 8
+            $0.alignment = .centerLeft
+            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
+            $0.neutralTintColor = UIColor.black
+        }
+        reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
+        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
+        reactButton.layer.applyShadow(layer: reactButton.layer)
+        view.addSubview(reactButton)
+        view.bringSubview(toFront: reactButton)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -292,6 +296,21 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Set currentIndex
         self.currentIndex = indexPath.item
+        // Add video for "sp", "vi", and ("itm" && "vi")...
+        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+        // UICollectionViewCell
+            let mvCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+            // Add video
+            mvCell.addVideo(withObject: self.stories[indexPath.item])
+            
+        } else if self.stories[indexPath.item].value(forKey: "videoAsset") != nil && self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell {
+        // UITableViewCell
+            if self.stories[indexPath.item].value(forKey: "contentType") as! String == "sp" {
+//                let spCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
+            } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
+                
+            }
+        }
         
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {

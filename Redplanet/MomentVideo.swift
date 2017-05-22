@@ -21,13 +21,11 @@ class MomentVideo: UICollectionViewCell {
     var postObject: PFObject?
     // Initialize parent UIViewController
     var delegate: UIViewController?
-    
-    // MARK: - VIMVideoPlayerView
-    var vimPlayerView: VIMVideoPlayerView!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
     
+    // FUNCTION - Update UI
     func updateView(withObject: PFObject?) {
         // (1) Get and set user's object
         if let user = withObject!.value(forKey: "byUser") as? PFUser {
@@ -50,13 +48,14 @@ class MomentVideo: UICollectionViewCell {
     }
     
     func addVideo(withObject: PFObject?) {
+        print("Fired...")
         if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
             // MARK: - VIMVideoPlayer
-            vimPlayerView = VIMVideoPlayerView(frame: contentView.bounds)
+            let vimPlayerView = VIMVideoPlayerView(frame: self.contentView.bounds)
             vimPlayerView.player.isLooping = true
             vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
             vimPlayerView.player.setURL(URL(string: video.url!)!)
-//            vimPlayerView.player.play()
+            vimPlayerView.player.play()
             // Add to subview
             self.contentView.addSubview(vimPlayerView)
         }

@@ -112,11 +112,19 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         textPostChat["read"] = false
                         textPostChat["saved"] = false
                         textPostChat["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
-                        textPostChat.saveEventually()
-                        
-                        // MARK: - RPHelpers; update chatsQueue
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: textPostChat, userObject: user)
+                        textPostChat.saveInBackground(block: { (success: Bool, error: Error?) in
+                            if success {
+                                // MARK: - RPHelpers; update chatsQueue; and send push notification
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.updateQueue(chatQueue: textPostChat, userObject: user)
+                                rpHelpers.pushNotification(toUser: user, activityType: "from")
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Error Sharing Text Post...")
+                            }
+                        })
                         
                     case "ph":
                         // PHOTO
@@ -129,11 +137,19 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         photoChat["saved"] = false
                         photoChat["contentType"] = "ph"
                         photoChat["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
-                        photoChat.saveEventually()
-                        
-                        // MARK: - RPHelpers; update chatsQueue
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: photoChat, userObject: user)
+                        photoChat.saveInBackground(block: { (success: Bool, error: Error?) in
+                            if success {
+                                // MARK: - RPHelpers; update chatsQueue; and send push notification
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.updateQueue(chatQueue: photoChat, userObject: user)
+                                rpHelpers.pushNotification(toUser: user, activityType: "from")
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Error sharing Photo...")
+                            }
+                        })
                         
                         
                     case "vi":
@@ -147,11 +163,19 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         videoChat["saved"] = false
                         videoChat["contentType"] = "vi"
                         videoChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
-                        videoChat.saveEventually()
-                        
-                        // MARK: - RPHelpers; update chatsQueue
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: videoChat, userObject: user)
+                        videoChat.saveInBackground(block: { (success: Bool, error: Error?) in
+                            if success {
+                                // MARK: - RPHelpers; update chatsQueue; and send push notification
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.updateQueue(chatQueue: videoChat, userObject: user)
+                                rpHelpers.pushNotification(toUser: user, activityType: "from")
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Error Sharing Video...")
+                            }
+                        })
 
                     case "itm":
                         // MOMENT
@@ -168,19 +192,23 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         } else {
                             momentChat["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
                         }
-                        momentChat.saveEventually()
-                        
-                        // MARK: - RPHelpers; update chatsQueue
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.updateQueue(chatQueue: momentChat, userObject: user)
+                        momentChat.saveInBackground(block: { (success: Bool, error: Error?) in
+                            if success {
+                                // MARK: - RPHelpers; update chatsQueue; and send push notification
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.updateQueue(chatQueue: momentChat, userObject: user)
+                                rpHelpers.pushNotification(toUser: user, activityType: "from")
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Error Sharing Moment...")
+                            }
+                        })
                         
                     default:
                         break
                     }
-                    
-                    // MARK: - RPHelpers; send push notification
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.pushNotification(toUser: user, activityType: "from")
                 }
             }
             

@@ -21,16 +21,12 @@ class ProfilePhotoCell: UITableViewCell {
     var postObject: PFObject?
     // StoryScrollCell's "parentDelegate"
     var superDelegate: UIViewController?
-    // Array to hold likes
-    var likes = [PFObject]()
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var largeProPic: PFImageView!
     @IBOutlet weak var textPost: KILabel!
-    
     
     // FUNCTION - Zoom into photo
     func zoom(sender: AnyObject) {
@@ -46,7 +42,6 @@ class ProfilePhotoCell: UITableViewCell {
         let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.superDelegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
-
     
     // FUNCTION - Update UI
     func updateView(withObject: PFObject?) {
@@ -106,5 +101,7 @@ class ProfilePhotoCell: UITableViewCell {
         self.largeProPic.isUserInteractionEnabled = true
         self.largeProPic.addGestureRecognizer(zoomTap)
     }
+
+
 
 }

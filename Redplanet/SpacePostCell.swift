@@ -109,9 +109,10 @@ class SpacePostCell: UITableViewCell {
             // TODO::
             // ADD VIDEO....
         }
-
-
     }
+    
+    
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -133,6 +134,38 @@ class SpacePostCell: UITableViewCell {
         toUsernameTap.numberOfTapsRequired = 1
         toUsername.isUserInteractionEnabled = true
         toUsername.addGestureRecognizer(toUsernameTap)
+        
+        // MARK: - KILabel; @, #, and https://
+        // @@@
+        self.textPost.userHandleLinkTapHandler = { label, handle, range in
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: String(handle.characters.dropFirst()).lowercased())
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        // Append data
+                        otherName.append(String(handle.characters.dropFirst()).lowercased())
+                        otherObject.append(object)
+                        // Push VC
+                        let otherUser = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+                        self.superDelegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        // ###
+        self.textPost.hashtagLinkTapHandler = { label, handle, range in
+            // Show #'s
+            let hashtagsVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! Hashtags
+            hashtagsVC.hashtagString = String(handle.characters.dropFirst()).lowercased()
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: hashtagsVC)
+            self.superDelegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

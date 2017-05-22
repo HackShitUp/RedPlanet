@@ -54,7 +54,15 @@ class TextPostCell: UITableViewCell {
             }
         }
         
-        // (2) Set text post
+        // (2) Set time
+        let from = withObject!.createdAt!
+        let now = Date()
+        let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        // MARK: - RPExtensions
+        time.text = difference.getFullTime(difference: difference, date: from)
+        
+        // (3) Set text post
         if let text = withObject!.value(forKey: "textPost") as? String {
             // Manipulate font size and color depending on character count
             if text.characters.count < 140 {
@@ -86,13 +94,6 @@ class TextPostCell: UITableViewCell {
             }
             */
         }
-        
-        // (3) Set time
-        let from = withObject!.createdAt!
-        let now = Date()
-        let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        time.text = difference.getFullTime(difference: difference, date: from)
     }
 
     
@@ -109,7 +110,6 @@ class TextPostCell: UITableViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
-        
         
         // MARK: - KILabel; @, #, and https://
         // @@@
