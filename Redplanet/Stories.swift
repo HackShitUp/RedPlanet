@@ -25,17 +25,25 @@ import VIMVideoPlayer
 var storyObjects = [PFObject]()
 
 
+
 class UserStories {
     var userObject = PFObject()
     var postObjects = [PFObject]()
-    
     init(userObject: PFObject, posts: [PFObject]) {
         self.userObject = userObject
         self.postObjects = posts
     }
 }
 
-class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
+
+
+class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
+    
+    
+    // MARK: - Class configuration variables
+    var forUsers = [PFObject]()
+    var startStoryIndex: Int? = 0
+    var locationRect: CGRect!
     
     
     // MARK: - VIMVideoPlayer
@@ -234,18 +242,15 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
-    
-        
-        
-        
-        let forwardTap = UITapGestureRecognizer(target: self, action: #selector(forward))
-        forwardTap.numberOfTapsRequired = 1
-        
-        
-    
-        
-        
-        
+
+        let aTap = UITapGestureRecognizer(target: self, action: #selector(handleGesture))
+        aTap.numberOfTapsRequired = 1
+        aTap.delegate = self
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(aTap)
+
+        // Location Rect...
+        self.locationRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width/3, height: UIScreen.main.bounds.size.height)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -259,7 +264,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         // MARK: - RPExtensions; rpButton
         rpButton.isHidden = false
-        
         // De-allocate rpVideoPlayer
         self.rpVideoPlayer?.pause()
         self.rpVideoPlayer?.player?.replaceCurrentItem(with: nil)
@@ -273,15 +277,17 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-    
-    
-    func forward() {
-        print("Forwarded")
+
+    func handleGesture(_ gestureRecognizer: UIGestureRecognizer) {
+        if locationRect.contains(gestureRecognizer.location(in: self.view)) {
+            print("Backwards.")
+        } else {
+            print("Forwards.")
+        }
     }
-    
-    
-    func rewind() {
-        print("Rewinded")
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     
