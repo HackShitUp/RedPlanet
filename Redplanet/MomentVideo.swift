@@ -23,7 +23,7 @@ class MomentVideo: UICollectionViewCell {
     var delegate: UIViewController?
     
     // MARK: - VIMVideoPlayerView
-    var vimPlayerView: VIMVideoPlayerView!
+    open var vimVideoPlayerView: VIMVideoPlayerView!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -44,17 +44,17 @@ class MomentVideo: UICollectionViewCell {
         self.time.text = difference.getFullTime(difference: difference, date: from)
         
         // (3) Add video
-//        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
+        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
             // MARK: - VIMVideoPlayer
-//            vimPlayerView = VIMVideoPlayerView(frame: self.contentView.bounds)
-//            vimPlayerView.player.isLooping = true
-//            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
-//            vimPlayerView.player.setURL(URL(string: video.url!)!)
-//            self.contentView.addSubview(vimPlayerView)
-//            self.contentView.bringSubview(toFront: vimPlayerView)
-//            vimPlayerView.player.isMuted = true
-//            vimPlayerView.player.play()
-//        }
+            vimVideoPlayerView = VIMVideoPlayerView(frame: self.contentView.bounds)
+            vimVideoPlayerView.player.isLooping = true
+            vimVideoPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+            vimVideoPlayerView.player.setURL(URL(string: video.url!)!)
+            self.contentView.addSubview(vimVideoPlayerView)
+            self.contentView.bringSubview(toFront: vimVideoPlayerView)
+            vimVideoPlayerView.player.isMuted = false
+            // Play video in parent UIViewController
+        }
         
         // (4) Configure UI
         self.contentView.bringSubview(toFront: rpUsername)
@@ -63,27 +63,22 @@ class MomentVideo: UICollectionViewCell {
         rpUsername.layer.applyShadow(layer: rpUsername.layer)
         time.layer.applyShadow(layer: time.layer)
         
-//        // (5) Add VolumeTap
-//        let volumeTap = UITapGestureRecognizer(target: self, action: #selector(toggleVolume))
-//        volumeTap.numberOfTapsRequired = 1
-//        self.vimPlayerView.isUserInteractionEnabled = true
-//        self.vimPlayerView.addGestureRecognizer(volumeTap)
+        // (5) Add VolumeTap
+        let volumeTap = UITapGestureRecognizer(target: self, action: #selector(toggleVolume))
+        volumeTap.numberOfTapsRequired = 1
+        self.vimVideoPlayerView.isUserInteractionEnabled = true
+        self.vimVideoPlayerView.addGestureRecognizer(volumeTap)
     }
     
     // FUNCTION - Tap to unmute
     func toggleVolume(sender: AnyObject) {
-        if self.vimPlayerView.player.isMuted {
-            print("IS MUTED?: \(self.vimPlayerView.player.isMuted)\n")
-            self.vimPlayerView.player.fadeInVolume()
-            self.vimPlayerView.player.isMuted = false
+        if self.vimVideoPlayerView.player.isMuted {
+            self.vimVideoPlayerView.player.fadeInVolume()
+            self.vimVideoPlayerView.player.isMuted = false
         } else {
-            print("IS___MUTED?: \(self.vimPlayerView.player.isMuted)\n")
-            self.vimPlayerView.player.fadeOutVolume()
-            self.vimPlayerView.player.isMuted = true
+            self.vimVideoPlayerView.player.fadeOutVolume()
+            self.vimVideoPlayerView.player.isMuted = true
         }
-    }
-    
-    func addVideo(withObject: PFObject?) {
     }
 
     override func awakeFromNib() {

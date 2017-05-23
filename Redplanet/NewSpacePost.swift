@@ -30,10 +30,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     // Initialize UIImagePickerController
     var imagePicker: UIImagePickerController!
-    
     // String variable to determine mediaType
     var spaceMediaType: String?
-    
     // Initialize variable to playVideo if selected
     var spaceVideoData: URL?
     
@@ -343,7 +341,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
+//        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
+        imagePicker.mediaTypes = [(kUTTypeImage as String)]
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.allowsEditing = true
@@ -351,7 +350,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         
         // Present UIImagePickerController
-        self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
+        self.navigationController?.present(self.imagePicker, animated: true, completion: nil)
     }
     
     
