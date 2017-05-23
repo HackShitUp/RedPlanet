@@ -20,7 +20,6 @@ class StoryScrollCell: UICollectionViewCell, UIScrollViewDelegate {
     var delegate: UIViewController?
 
     @IBOutlet weak var tableView: UITableView!
-
     
     // MARK: - StoryScrollCell Protocol Function; sets datasource and delegate methods
     func setTableViewDataSourceDelegate

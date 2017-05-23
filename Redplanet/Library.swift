@@ -51,7 +51,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.allowsEditing = true
-        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         navigationController?.present(self.imagePicker, animated: true, completion: nil)
     }
@@ -75,6 +75,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         // Reload data in main thread
         DispatchQueue.main.async {
             self.collectionView!.reloadData()
+            self.collectionView!.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
     
@@ -99,8 +100,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
-    
+
     // MARK: UIViewLifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

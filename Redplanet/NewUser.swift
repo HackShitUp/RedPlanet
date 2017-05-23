@@ -74,7 +74,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                     let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: "Continue") { () -> Void in
                         
                         // Load Things to Follow interface
-                        let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
+                        let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onboardingVC") as! Onboarding
                         self.navigationController?.pushViewController(onBoardVC, animated: true)
                     }
                     

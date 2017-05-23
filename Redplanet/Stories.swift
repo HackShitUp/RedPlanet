@@ -37,6 +37,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     // MARK: - VIMVideoPlayer
     var vimPlayerView: VIMVideoPlayerView!
+    
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     
@@ -72,7 +73,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     if difference.hour! < 24 {
 //                        self.stories.append(object)
                     }
-                     self.stories.append(object)
+                    self.stories.append(object)
                 }
 
                 
@@ -89,8 +90,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     self.spb.startAnimation()
                     // Reload data
                     self.collectionView.reloadData()
-                    // Set currentIndex
-                    self.currentIndex = 0
                 })
                 
             } else {
@@ -225,6 +224,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     
+    
     // MARK: UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -236,13 +236,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return self.view.bounds.size
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-    }
-
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -259,19 +252,20 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             scrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
             return scrollCell
             
-        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil && self.currentIndex == indexPath.item {
+        }
+        
+        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
         // MOMENT VIDEO
             
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             mvCell.postObject = self.stories[indexPath.item]                // Set PFObject
             mvCell.delegate = self                                          // Set parent UIViewController
             mvCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
-            mvCell.addVideo(withObject: self.stories[indexPath.item])       // Add video...
-            // TODO:: ^^^
-            
+
             return mvCell
-            
-        } else {
+        }
+        
+        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
             
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
@@ -280,7 +274,74 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             mpCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
             return mpCell
         }
+        
+        let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "", for: indexPath)
+        return cell
     }
+    
+    // MARK: - UICollectionView Delegate Methods
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            switch self.stories[indexPath.item].value(forKey: "contentType") as! String {
+//            case "itm":
+//                print("ITM: \(indexPath.item)\n")
+//                let mvCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+//                // (3) Add video
+//                if let video = self.stories[indexPath.item].value(forKey: "videoAsset") as? PFFile {
+//                    // MARK: - VIMVideoPlayer
+//                    vimPlayerView = VIMVideoPlayerView(frame: mvCell.contentView.bounds)
+//                    vimPlayerView.player.isLooping = true
+//                    vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+//                    vimPlayerView.player.setURL(URL(string: video.url!)!)
+//                    mvCell.contentView.addSubview(vimPlayerView)
+//                    mvCell.contentView.bringSubview(toFront: vimPlayerView)
+//                    vimPlayerView.player.isMuted = true
+//                    vimPlayerView.player.play()
+//                }
+//            case "vi":
+//                print("VI: \(indexPath.item)\n")
+//            case "sp":
+//                print("SP: \(indexPath.item)\n")
+//            default:
+//                break;
+//            }
+//        }
+        let mvCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+        let scrollCell = collectionView.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
+        
+        if collectionView.cellForItem(at: indexPath) == mvCell {
+            print("MVCELL")
+        }
+        
+        if collectionView.cellForItem(at: indexPath) == scrollCell {
+            print("SSCELL")
+//            if scrollCell.tableView.tag == indexPath.item {
+//                if scrollCell.tableView.cellForRow(at: IndexPath(item: 0, section: 1) == Bundle.main.loadNibNamed("SpacePostCell", owner: self, options: nil) {
+//                    
+//                }
+//            }
+        }
+        
+        
+
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        let mvCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+////        mvCell.vimPlayerView?.player.play()
+//        if self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+//            switch self.stories[indexPath.item].value(forKey: "contentType") as! String {
+//                case "itm":
+//                print("ITM: \(indexPath.item)\n")
+//                case "vi":
+//                print("VI: \(indexPath.item)\n")
+//                case "sp":
+//                print("SP: \(indexPath.item)\n")
+//                default:
+//                break;
+//            }
+//        }
+//    }
     
     
     // MARK: - UIScrollView Delegate Methods
@@ -298,21 +359,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Set currentIndex
         self.currentIndex = indexPath.item
-        // Add video for "sp", "vi", and ("itm" && "vi")...
-        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
-        // UICollectionViewCell
-            let mvCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-            // Add video
-            mvCell.addVideo(withObject: self.stories[indexPath.item])
-            
-        } else if self.stories[indexPath.item].value(forKey: "videoAsset") != nil && self.collectionView.cellForItem(at: indexPath) == self.collectionView.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell {
-        // UITableViewCell
-            if self.stories[indexPath.item].value(forKey: "contentType") as! String == "sp" {
-            } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" {
-                
-            }
-        }
         
+//        let cCell = self.collectionView.cellForItem(at: indexPath)
+//        print("Current_Cell: \(cCell)\n")
+
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb.skip()
@@ -327,14 +377,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 
 
 
-
-
-
-
-
-
 // MARK: - Stories Extension used to configure StoryScrollCell.swift...
 extension Stories: UITableViewDataSource, UITableViewDelegate {
+    
     // MARK: - UITableViewData Source Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -345,7 +390,6 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if self.stories[tableView.tag].value(forKey: "contentType") as! String == "tp" {
         // TEXT POST
             
@@ -380,6 +424,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             // TODO::
             return vCell
         }
+    
     }
     
     // MARK: - UIScrollView Delegate Method
@@ -387,5 +432,6 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
         if scrollView.contentOffset.y <= 0 && scrollView.contentOffset.x == 0 {
             self.dismiss(animated: true, completion: nil)
         }
+    
     }
 }

@@ -335,10 +335,12 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
-            
-            // (2) Set rpUsername
-            if let fullName = user.value(forKey: "realNameOfUser") as? String{
-                cell.rpUsername.text = fullName
+
+            // (2) Set realNameOfUser or username depending on user objects
+            if self.segmentedControl.selectedSegmentIndex == 0 {
+                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
+            } else {
+                cell.rpUsername.text = (user.value(forKey: "username") as! String)
             }
         }
         
@@ -378,8 +380,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
             cell.mediaPreview.isHidden = false
         }
         // MARK: - RPHelpers
-//        cell.textPreview.roundAllCorners(sender: cell.textPreview)
-//        cell.mediaPreview.roundAllCorners(sender: cell.mediaPreview)
         cell.textPreview.makeCircular(forView: cell.textPreview, borderWidth: 0, borderColor: UIColor.clear)
         cell.mediaPreview.makeCircular(forView: cell.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
         

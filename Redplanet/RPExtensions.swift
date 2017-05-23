@@ -125,11 +125,23 @@ extension UINavigationBar {
 
 // MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
 extension CALayer {
+    // Add regular shadow
     func applyShadow(layer: CALayer?) {
         layer!.shadowColor = UIColor.black.cgColor
         layer!.shadowOffset = CGSize(width: 1, height: 1)
         layer!.shadowRadius = 3
         layer!.shadowOpacity = 0.5
+    }
+    
+    // Add drop shadow
+    func dropShadow(layer: CALayer?) {
+        layer!.masksToBounds = false
+        layer!.shadowColor = UIColor.black.cgColor
+        layer!.shadowOpacity = 0.5
+        layer!.shadowOffset = CGSize(width: -1, height: 1)
+        layer!.shadowRadius = 1
+        layer!.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer!.shouldRasterize = true
     }
 }
 

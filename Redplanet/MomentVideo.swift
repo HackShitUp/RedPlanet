@@ -21,6 +21,9 @@ class MomentVideo: UICollectionViewCell {
     var postObject: PFObject?
     // Initialize parent UIViewController
     var delegate: UIViewController?
+    
+    // MARK: - VIMVideoPlayerView
+    var vimPlayerView: VIMVideoPlayerView!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -39,30 +42,50 @@ class MomentVideo: UICollectionViewCell {
         let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         self.time.text = difference.getFullTime(difference: difference, date: from)
-
+        
+        // (3) Add video
+//        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
+            // MARK: - VIMVideoPlayer
+//            vimPlayerView = VIMVideoPlayerView(frame: self.contentView.bounds)
+//            vimPlayerView.player.isLooping = true
+//            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+//            vimPlayerView.player.setURL(URL(string: video.url!)!)
+//            self.contentView.addSubview(vimPlayerView)
+//            self.contentView.bringSubview(toFront: vimPlayerView)
+//            vimPlayerView.player.isMuted = true
+//            vimPlayerView.player.play()
+//        }
+        
         // (4) Configure UI
         self.contentView.bringSubview(toFront: rpUsername)
         self.contentView.bringSubview(toFront: time)
+        // MARK: - RPExtensions
         rpUsername.layer.applyShadow(layer: rpUsername.layer)
         time.layer.applyShadow(layer: time.layer)
+        
+//        // (5) Add VolumeTap
+//        let volumeTap = UITapGestureRecognizer(target: self, action: #selector(toggleVolume))
+//        volumeTap.numberOfTapsRequired = 1
+//        self.vimPlayerView.isUserInteractionEnabled = true
+//        self.vimPlayerView.addGestureRecognizer(volumeTap)
     }
     
-    func addVideo(withObject: PFObject?) {
-        if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
-            // MARK: - VIMVideoPlayer
-            let vimPlayerView = VIMVideoPlayerView(frame: self.contentView.bounds)
-            vimPlayerView.player.isLooping = true
-            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-            vimPlayerView.player.setURL(URL(string: video.url!)!)
-            vimPlayerView.player.play()
+    // FUNCTION - Tap to unmute
+    func toggleVolume(sender: AnyObject) {
+        if self.vimPlayerView.player.isMuted {
+            print("IS MUTED?: \(self.vimPlayerView.player.isMuted)\n")
+            self.vimPlayerView.player.fadeInVolume()
+            self.vimPlayerView.player.isMuted = false
+        } else {
+            print("IS___MUTED?: \(self.vimPlayerView.player.isMuted)\n")
+            self.vimPlayerView.player.fadeOutVolume()
+            self.vimPlayerView.player.isMuted = true
         }
     }
     
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
+    func addVideo(withObject: PFObject?) {
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }

@@ -94,9 +94,9 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     // MARK: - UIView Life Cycle
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - RPExtensions; Hide rpButton and straighten corners
-        rpButton.isHidden = true
+        // MARK: - RPExtensions
         self.view.straightenCorners(sender: self.view)
+        self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
@@ -108,6 +108,9 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         accomodateScrollView()
         scrollView.isHidden = false
         moveToView(mainView)
+        // MARK: - RPExtensions
+        self.view.straightenCorners(sender: self.view)
+        self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
     }
     
     override open func viewDidLoad() {
@@ -116,8 +119,6 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // MARK: - RPExtensions; Show rpButton
-        rpButton.isHidden = false
     }
     
     override open func viewDidDisappear(_ animated: Bool) {

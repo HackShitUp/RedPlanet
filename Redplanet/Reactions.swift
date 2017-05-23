@@ -45,7 +45,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    // Function to query objects based on Switch Case...
+    // FUNCTION - Query objects based on Switch Case...
     func handleCase() {
         // Configure UI
         self.refresher?.endRefreshing()
