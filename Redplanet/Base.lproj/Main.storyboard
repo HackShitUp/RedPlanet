@@ -4663,7 +4663,7 @@
         <image name="PhotosRoll" width="90" height="90"/>
         <image name="RPLogo" width="50" height="50"/>
         <image name="SLRCamera" width="17" height="20"/>
-        <image name="SaveWhite" width="261" height="256"/>
+        <image name="SaveWhite" width="85" height="85"/>
         <image name="Search" width="25" height="25"/>
         <image name="Settings" width="24" height="24"/>
         <image name="ShareOP" width="70" height="70"/>
@@ -4671,7 +4671,7 @@
         <image name="SwapCamera" width="100" height="100"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="User_48" width="24" height="24"/>
-        <image name="VolumeOn" width="50" height="50"/>
+        <image name="VolumeOn" width="57" height="57"/>
         <image name="iOSPhotos" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

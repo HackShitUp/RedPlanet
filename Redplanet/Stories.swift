@@ -36,7 +36,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     let scrollSets = ["tp", "ph", "pp", "sp"]
     
     // MARK: - VIMVideoPlayer
-    var vimVideoPlayerView: VIMVideoPlayerView!
+    var vimVideoPlayerView: VIMVideoPlayerView?
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -79,15 +79,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    // MARK: - SegmentedProgressBar
-                    self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
-                    self.spb.frame = CGRect(x: 8, y: 4, width: self.view.frame.width - 16, height: 3)
-                    self.spb.topColor = UIColor.white
-                    self.spb.layer.applyShadow(layer: self.spb.layer)
-                    self.spb.padding = 2
-                    self.spb.delegate = self
-                    self.view.addSubview(self.spb)
-                    self.spb.startAnimation()
+                    // Configure view
+                    self.configureView()
                     // Reload data
                     self.collectionView.reloadData()
                 })
@@ -99,11 +92,61 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     
+    // FUNCTION - Configure view
+    func configureView() {
+        // MARK: - SegmentedProgressBar
+        self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
+        self.spb.frame = CGRect(x: 8, y: 4, width: self.view.frame.width - 16, height: 3)
+        self.spb.topColor = UIColor.white
+        self.spb.layer.applyShadow(layer: self.spb.layer)
+        self.spb.padding = 2
+        self.spb.delegate = self
+        self.view.addSubview(self.spb)
+        self.spb.startAnimation()
+        
+        // MARK: - Reactions
+        // (2) Create ReactionSelector and add Reactions from <1>
+        reactionSelector.feedbackDelegate = self
+        reactionSelector.setReactions(reactions, sizeToFit: true)
+        // (3) Configure ReactionSelector
+        reactionSelector.config = ReactionSelectorConfig {
+            $0.spacing = 12
+            $0.iconSize = 35
+            $0.stickyReaction = true
+        }
+        // (4) Set ReactionSelector
+        reactButton.reactionSelector = reactionSelector
+        // (5) Configure reactButton
+        reactButton.config = ReactionButtonConfig() {
+            $0.iconMarging = 8
+            $0.spacing = 8
+            $0.alignment = .centerLeft
+            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
+            $0.neutralTintColor = UIColor.black
+        }
+        reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
+        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
+        reactButton.layer.applyShadow(layer: reactButton.layer)
+        view.addSubview(reactButton)
+        view.bringSubview(toFront: reactButton)
+    }
+    
+    
+    // FUNCTION - Reload UICollectionView at specific indexPaths
+    func reloadTrios(atIndex: Int) {
+        if atIndex != 0 && atIndex != self.stories.count && self.stories[atIndex].value(forKey: "videoAsset") != nil {
+            self.collectionView.reloadItems(at: [IndexPath(item: atIndex - 1, section: 0)])
+            self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
+            self.collectionView.reloadItems(at: [IndexPath(item: atIndex + 1, section: 0)])
+        }
+    }
+    
     
     // MARK: - SegmentedProgressBar Delegate Methods
     func segmentedProgressBarChangedIndex(index: Int) {
-        let indexPath = IndexPath(item: index, section: 0)
-        self.collectionView!.scrollToItem(at: indexPath, at: .right, animated: true)
+        self.collectionView!.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: true)
+        self.reloadTrios(atIndex: index)
     }
     
     func segmentedProgressBarFinished() {
@@ -155,6 +198,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Fetch Stories
         fetchStories()
         
+        // MARK: - VIMVideoPlayerView
+        vimVideoPlayerView = VIMVideoPlayerView()
+        
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
@@ -175,35 +221,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
+        self.collectionView?.register(UINib(nibName: "VideoCell", bundle: nil), forCellWithReuseIdentifier: "VideoCell")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
-        
-        
-        // MARK: - Reactions
-        // (2) Create ReactionSelector and add Reactions from <1>
-        reactionSelector.feedbackDelegate = self
-        reactionSelector.setReactions(reactions, sizeToFit: true)
-        // (3) Configure ReactionSelector
-        reactionSelector.config = ReactionSelectorConfig {
-            $0.spacing = 12
-            $0.iconSize = 35
-            $0.stickyReaction = true
-        }
-        // (4) Set ReactionSelector
-        reactButton.reactionSelector = reactionSelector
-        // (5) Configure reactButton
-        reactButton.config = ReactionButtonConfig() {
-            $0.iconMarging = 8
-            $0.spacing = 8
-            $0.alignment = .centerLeft
-            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
-            $0.neutralTintColor = UIColor.black
-        }
-        reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
-        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
-        reactButton.layer.applyShadow(layer: reactButton.layer)
-        view.addSubview(reactButton)
-        view.bringSubview(toFront: reactButton)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -212,6 +231,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // MARK: - VIMVideoPlayerView; de-allocate AVPlayer's currentItem
+        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -240,7 +265,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST
+        // TEXT POST, PHOTO, PROFILE PHOTO, SPACE POST
         if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
@@ -257,17 +282,53 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // MOMENT VIDEO
             
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+            
+            // Add and play || pause video when visible
             if self.currentIndex == indexPath.item {
-                mvCell.postObject = self.stories[indexPath.item]                // Set PFObject
-                mvCell.delegate = self                                          // Set parent UIViewController
-                mvCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
-                mvCell.vimVideoPlayerView?.player.play()                        // Play video when visible
-            } else {
-                mvCell.vimVideoPlayerView?.player.pause()
+                // Set PFObject, parent UIViewController, update UI, and play video
+                mvCell.postObject = self.stories[indexPath.item]
+                mvCell.delegate = self
+                mvCell.updateView(withObject: self.stories[indexPath.item], videoPlayer: self.vimVideoPlayerView)
+                self.vimVideoPlayerView?.player.play()
             }
+            
+//            else {
+//                // Pass new AVPlayerItem
+//                if let videoFile = self.stories[self.currentIndex!].value(forKey: "videoAsset") as? PFFile {
+//                    let playerItem = AVPlayerItem(url: URL(string: videoFile.url!)!)
+//                    self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
+//                }
+//                self.vimVideoPlayerView?.player.pause()
+//            }
             
             return mvCell
         }
+        
+        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+        // VIDEO
+            let videoCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as! VideoCell
+            // Add and play || pause video when visible
+            if self.currentIndex == indexPath.item {
+                // Set PFObject, parent UIViewController, update UI, and play video
+                videoCell.postObject = self.stories[indexPath.item]
+                videoCell.delegate = self
+                videoCell.updateView(withObject: self.stories[indexPath.item], videoPlayer: self.vimVideoPlayerView)
+                self.vimVideoPlayerView?.player.play()
+            }
+            
+//            else {
+//                // Pass new AVPlayerItem
+//                if let videoFile = self.stories[self.currentIndex!].value(forKey: "videoAsset") as? PFFile {
+//                    let playerItem = AVPlayerItem(url: URL(string: videoFile.url!)!)
+//                    self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
+//                }
+//                self.vimVideoPlayerView?.player.isPlaying = false
+//                self.vimVideoPlayerView?.player.pause()
+//            }
+            
+            return videoCell
+        }
+        
         
         if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
@@ -283,15 +344,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         return cell
     }
     
-    // MARK: - UICollectionView Delegate Methods
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-    }
-    
     
     // MARK: - UIScrollView Delegate Methods
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
@@ -299,6 +351,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
@@ -323,8 +376,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Set currentIndex
         self.currentIndex = indexPath.item
         // Reload data to prevent previous or next video player from playing
-        self.collectionView.reloadData()
-
+        self.reloadTrios(atIndex: indexPath.item)
+        
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb.skip()
@@ -336,8 +389,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     
 }
-
-
 
 
 
