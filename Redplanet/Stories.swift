@@ -66,7 +66,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 // Clear array
                 self.stories.removeAll(keepingCapacity: false)
                 // Reverse chronology
-                for object in objects!.reversed() {
+                for object in objects! {
+//                    .reversed() {
                     // Ephemeral content
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
@@ -133,11 +134,52 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     
+    // FUNCTION - More option for post
+    func showOption(sender: Any) {
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: nil)
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        
+        // (1) Show Views for post
+        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
+            
+        })
+    
+        // (2) Delete Post
+        let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // TODO
+        })
+        
+        // (3) Edit Post
+        let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
+            // TODO
+        })
+        
+        
+        dialogController.show(in: self)
+    }
+    
+    // FUNCTION - Like Post
+    func like(sender: Any) {
+        
+    }
+    
+    
     // FUNCTION - Reload UICollectionView at specific indexPaths
     func reloadTrios(atIndex: Int) {
+         self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
         if atIndex != 0 && atIndex != self.stories.count && self.stories[atIndex].value(forKey: "videoAsset") != nil {
             self.collectionView.reloadItems(at: [IndexPath(item: atIndex - 1, section: 0)])
-            self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
             self.collectionView.reloadItems(at: [IndexPath(item: atIndex + 1, section: 0)])
         }
     }
@@ -157,22 +199,21 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions Delegate Method
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
+            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
             switch reactionSelector.selectedReaction!.id {
                 case "More":
                     // MORE
-                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                    self.showOption(sender: self)
                 case "Like":
                     // LIKE
-                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "LikeFilled", title: "", color: .lightGray, icon: UIImage(named: "LikeFilled")!)
+                    self.like(sender: self)
                 case "Comment":
                     // COMMENT
-                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
                     reactionObject.append(self.stories[self.currentIndex!])
                     let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
                     self.navigationController?.pushViewController(reactionsVC, animated: true)
                 case "Share":
                     // SHARE
-                    self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
                     shareWithObject.append(self.stories[self.currentIndex!])
                     let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                     self.navigationController?.pushViewController(shareWithVC, animated: true)
@@ -436,6 +477,9 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
         } else {
         // SPACE POST
             let spCell = Bundle.main.loadNibNamed("SpacePostCell", owner: self, options: nil)?.first as! SpacePostCell
+            spCell.postObject = self.stories[tableView.tag]                 // Set PFObject
+            spCell.superDelegate = self                                     // Set parent UIViewController
+            spCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
             return spCell
         }
     

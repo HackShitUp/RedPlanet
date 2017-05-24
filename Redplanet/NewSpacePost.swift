@@ -31,11 +31,11 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // Initialize UIImagePickerController
     var imagePicker: UIImagePickerController!
     // String variable to determine mediaType
-    var spaceMediaType: String?
+    var spaceMediaType: String? = ""
     // Initialize variable to playVideo if selected
-    var spaceVideoData: URL?
+    var spaceVideoURL: URL?
     
-    @IBOutlet weak var mediaAsset: PFImageView!
+    @IBOutlet weak var mediaPreview: PFImageView!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var moreButton: UIButton!
@@ -50,41 +50,33 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     }
     
     @IBAction func editAction(_ sender: Any) {
-        // If photo exists
-        if self.mediaAsset.image != nil {
-            // MARK: - CLImageEditor
-            let editor = CLImageEditor(image: self.mediaAsset.image!)
-            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-            editor?.delegate = self
-            let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
-            tool?.title = "Emoji"
-            self.present(editor!, animated: true, completion: nil)
-        }
+        // MARK: - CLImageEditor
+        let editor = CLImageEditor(image: self.mediaPreview.image!)
+        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+        editor?.delegate = self
+        let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+        tool?.title = "Emoji"
+        self.present(editor!, animated: true, completion: nil)
     }
     
-    // Function to share
-    func postSpace(sender: UIButton) {
-        // (1) PHOTO or VIDEO
-        if self.mediaAsset.image != nil {
-            // MARK: - RPHelpers
-            let rpHelpers = RPHelpers()
-            rpHelpers.showProgress(withTitle: "Sharing...")
-            if spaceMediaType == "photo" {
-            // PHOTO
-                self.sharePhoto()
-            } else if spaceMediaType == "video" {
-            // VIDEO
-                self.shareVideo()
-            }
-        } else {
-            // Check if text is empty
-            if self.textView!.text!.isEmpty || self.textView!.text! == "" && mediaAsset.image == nil {
+    @IBAction func postSpace(_ sender: Any) {
+        // Disable button
+        self.postButton.isUserInteractionEnabled = false
+        if spaceMediaType == "photo" {
+        // PHOTO
+            self.sharePhoto()
+        } else if spaceMediaType == "video" {
+        // VIDEO
+            self.shareVideo()
+        } else if spaceMediaType == "" {
+        // TEXT POST
+            if self.textView!.text!.isEmpty || self.textView!.text! == "" && mediaPreview.image == nil {
                 // MARK: - AudioToolBox; Vibrate Device
                 AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                 
                 // MARK: - AZDialogViewController
                 let dialogController = AZDialogViewController(title: "💩\nSpace Post Failed",
-                                                              message: "Please say something about this Space Post.")
+                                                              message: "Please share something in \(otherName.last!)'s Space.")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
@@ -102,7 +94,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 }))
                 
                 dialogController.show(in: self)
-                
             } else {
                 // TEXT POST
                 self.shareText()
@@ -110,222 +101,158 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         }
     }
     
-    // Function to share text post
+    
+    // FUNCTION - Share Text Post
     func shareText() {
+        // Create object
+        let textSpace = PFObject(className: "Newsfeeds")
+        textSpace["byUser"] = PFUser.current()!
+        textSpace["byUsername"] = PFUser.current()!.username!
+        textSpace["contentType"] = "sp"
+        textSpace["saved"] = false
+        textSpace["textPost"] = self.textView.text!
+        textSpace["toUser"] = otherObject.last!
+        textSpace["toUsername"] = otherName.last!
+        // Save final object
+        self.saveFinalObject(object: textSpace)
+    }
+    
+    // FUNCTION - Create PFObject w Photo
+    func sharePhoto() {
+        // Create PFObject
+        let photoSpace = PFObject(className: "Newsfeeds")
+        photoSpace["byUser"] = PFUser.current()!
+        photoSpace["byUsername"] = PFUser.current()!.username!
+        photoSpace["contentType"] = "sp"
+        photoSpace["saved"] = false
+        photoSpace["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 0.5)!)
+        photoSpace["textPost"] = self.textView.text
+        photoSpace["toUser"] = otherObject.last!
+        photoSpace["toUsername"] = otherName.last!
+        // Save Object
+        self.saveFinalObject(object: photoSpace)
+    }
+    
+    // FUNCTION - Create PFObject w Video
+    func shareVideo() {
+        // Create temporary URL path to store video
+        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
         // MARK: - RPHelpers
         let rpHelpers = RPHelpers()
-        rpHelpers.showProgress(withTitle: "Sharing...")
-        // (1) Save Space Post to Newsfeeds
-        let space = PFObject(className: "Newsfeeds")
-        space["byUser"] = PFUser.current()!
-        space["username"] = PFUser.current()!.username!
-        space["contentType"] = "sp"
-        space["saved"] = false
-        space["textPost"] = self.textView.text!
-        space["toUser"] = otherObject.last!
-        space["toUsername"] = otherName.last!
-        space.saveInBackground {
-            (success: Bool, error: Error?) in
-            if success {
-                print("Successfully shared Space Post: \(space)")
-                
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showSuccess(withTitle: "Shared")
-                // Check for Tags
-                rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
-                rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
-                
-                // (2) Send Notification
-                let notifications = PFObject(className: "Notifications")
-                notifications["fromUser"] = PFUser.current()!
-                notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = otherObject.last!
-                notifications["to"] = otherName.last!
-                notifications["type"] = "space"
-                notifications["forObjectId"] = space.objectId!
-                notifications.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
-                    if error == nil {
-                        print("Sent Notification: \(notifications)")
-                        
-                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                        
-                        // Send Notification to otherUser's Profile
-                        NotificationCenter.default.post(name: otherNotification, object: nil)
-                        // Send Notification to News Feeds
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
-                        // Pop View Controller
-                        _ = self.navigationController?.popViewController(animated: true)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showError(withTitle: "Network Error")
-            }
-        }
-    }
-    
-    // Function to share photo
-    func sharePhoto() {
-        // (1) Save Space Post to Newsfeeds
-        let space = PFObject(className: "Newsfeeds")
-        space["byUser"] = PFUser.current()!
-        space["username"] = PFUser.current()!.username!
-        space["contentType"] = "sp"
-        space["saved"] = false
-        space["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)!)
-        // Save textPost
-        if self.textView.text! != "" {
-            // Set textPost
-            space["textPost"] = self.textView.text!
-        }
-        space["toUser"] = otherObject.last!
-        space["toUsername"] = otherName.last!
-        space.saveInBackground {
-            (success: Bool, error: Error?) in
-            if success {
-                print("Successfully shared Space Post: \(space)")
-                
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showSuccess(withTitle: "Shared Space Post")
-                // Check for #'s and @'s
-                rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
-                rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
-                
-                // (2) Send Notification
-                let notifications = PFObject(className: "Notifications")
-                notifications["fromUser"] = PFUser.current()!
-                notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = otherObject.last!
-                notifications["to"] = otherName.last!
-                notifications["type"] = "space"
-                notifications["forObjectId"] = space.objectId!
-                notifications.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
-                    if error == nil {
-                        print("Sent Notification: \(notifications)")
-                        
-                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                        
-                        // Send Notification to otherUser's Profile
-                        NotificationCenter.default.post(name: otherNotification, object: nil)
-                        // Send Notification to News Feeds
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
-                        // Pop View Controller
-                        _ = self.navigationController?.popViewController(animated: true)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showError(withTitle: "Network Error")
-            }
-        }
-    }
-    
-    // Function to share video
-    func shareVideo() {
         // Compress video
-        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-        // Call video compression function
-        self.compressVideo(inputURL: spaceVideoData!, outputURL: compressedURL) { (exportSession) in
+        compressVideo(inputURL: self.spaceVideoURL!, outputURL: compressedURL) { (exportSession) in
             guard let session = exportSession else {
                 return
             }
             switch session.status {
             case .unknown:
-                break
+                rpHelpers.showError(withTitle: "Unknown error exporting video...")
             case .waiting:
-                break
+                rpHelpers.showError(withTitle: "Exporting video...")
             case .exporting:
-                break
+                rpHelpers.showProgress(withTitle: "Exporting video...")
             case .completed:
-                // Throw
-                guard let compressedData = NSData(contentsOf: compressedURL) else {
-                    return
-                }
-                // (1) Save Space Post to Newsfeeds
-                let space = PFObject(className: "Newsfeeds")
-                space["byUser"] = PFUser.current()!
-                space["username"] = PFUser.current()!.username!
-                space["contentType"] = "sp"
-                space["saved"] = false
-                space["videoAsset"] = PFFile(name: "video.mp4", data: compressedData as Data)
-                // Save textPost
-                if self.textView.text! != "" {
-                    // Set textPost
-                    space["textPost"] = self.textView.text!
-                }
-                space["toUser"] = otherObject.last!
-                space["toUsername"] = otherName.last!
-                space.saveInBackground {
-                    (success: Bool, error: Error?) in
-                    if success {
-                        print("Successfully shared Space Post: \(space)")
-                        
-                        // Send Notification
-                        let notifications = PFObject(className: "Notifications")
-                        notifications["fromUser"] = PFUser.current()!
-                        notifications["from"] = PFUser.current()!.username!
-                        notifications["toUser"] = otherObject.last!
-                        notifications["to"] = otherName.last!
-                        notifications["type"] = "space"
-                        notifications["forObjectId"] = space.objectId!
-                        notifications.saveInBackground()
-                        
-                        // MARK: - RPHelpers; show banner, check for #'s, check for @'s, and send push notification!
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.showSuccess(withTitle: "Shared")
-                        rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
-                        rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
-                        rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                        
-                        // Send Notification to otherUser's Profile
-                        NotificationCenter.default.post(name: otherNotification, object: nil)
-                        // Send Notification to News Feeds
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
-                        // Pop View Controller
-                        _ = self.navigationController?.popViewController(animated: true)
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // MARK: - RPHelpers
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.showError(withTitle: "Network Error")
-                    }
+                // Throw and compress video data
+                do {
+                    let videoData = try Data(contentsOf: compressedURL)
+                    // Create PFObject
+                    let videoSpace = PFObject(className: "Newsfeeds")
+                    videoSpace["byUser"] = PFUser.current()!
+                    videoSpace["byUsername"] = PFUser.current()!.username!
+                    videoSpace["contentType"] = "sp"
+                    videoSpace["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
+                    videoSpace["saved"] = false
+                    videoSpace["textPost"] = self.textView.text!
+                    videoSpace["toUser"] = otherObject.last!
+                    videoSpace["toUsername"] = otherName.last!
+                    DispatchQueue.main.async(execute: {
+                        self.saveFinalObject(object: videoSpace)
+                    })
+                    
+                } catch let error {
+                    print(error.localizedDescription as Any)
+                    rpHelpers.showError(withTitle: "Failed to compress video...")
                 }
             case .failed:
-                break
+                rpHelpers.showError(withTitle: "Failed to compress video...")
             case .cancelled:
-                break
+                rpHelpers.showError(withTitle: "Cancelled video compression...")
             }
         }
     }
     
-    // Function to compress video data
-    func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
+    // FUNCTION - Save final object
+    func saveFinalObject(object: PFObject) {
+        object.saveInBackground { (success: Bool, error: Error?) in
+            if success {
+                // Send Notification
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = otherObject.last!
+                notifications["to"] = otherName.last!
+                notifications["type"] = "space"
+                notifications["forObjectId"] = object.objectId!
+                notifications.saveInBackground()
+                
+                // MARK: - RPHelpers; show banner, check for #'s, check for @'s, and send push notification!
+                let rpHelpers = RPHelpers()
+                rpHelpers.showSuccess(withTitle: "Shared")
+                rpHelpers.checkHash(forObject: object, forText: self.textView.text!)
+                rpHelpers.checkTags(forObject: object, forText: self.textView.text!, postType: "sp")
+                rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
+                
+                // Re-enable button
+                self.postButton.isUserInteractionEnabled = true
+                
+                // Send Notification to otherUser's Profile
+                NotificationCenter.default.post(name: otherNotification, object: nil)
+                // Send Notification to News Feeds
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
+                // Pop View Controller
+                _ = self.navigationController?.popViewController(animated: true)
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
+            }
+        }
+    }
+    
+    // FUNCTION - Zoom into photo
+    func zoom(sender: AnyObject) {
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.mediaPreview.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+        agrume.showFrom(self)
+    }
+    
+    // FUNCTION - Play video
+    func playVideo() {
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
+        let viewController = UIViewController()
+        // MARK: - VIMVideoPlayer
+        let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+        vimPlayerView.player.isLooping = true
+        vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+        vimPlayerView.player.setURL(spaceVideoURL)
+        vimPlayerView.player.play()
+        viewController.view.addSubview(vimPlayerView)
+        viewController.view.bringSubview(toFront: vimPlayerView)
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+        self.present(rpPopUpVC, animated: true, completion: nil)
+    }
+    
+    // FUNCTION - Compress video file (open to process video before view loads...)
+    func compressVideo(inputURL: URL, outputURL: URL, handler: @escaping (_ exportSession: AVAssetExportSession?) -> Void) {
         DispatchQueue.main.async {
             let urlAsset = AVURLAsset(url: inputURL, options: nil)
             guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
                 handler(nil)
                 return
             }
-            
             exportSession.outputURL = outputURL
             exportSession.outputFileType = AVFileTypeQuickTimeMovie
             exportSession.shouldOptimizeForNetworkUse = true
@@ -334,142 +261,37 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             }
         }
     }
-    
-    // Function to choose photo
-    func choosePhoto(sender: UIButton) {
-        // Instnatiate UIImagePickerController
+
+    @IBAction func selectAsset(_ sender: Any) {
+        // Create UIImagePickerController
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
-//        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
-        imagePicker.mediaTypes = [(kUTTypeImage as String)]
+        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-        
         // Present UIImagePickerController
         self.navigationController?.present(self.imagePicker, animated: true, completion: nil)
     }
     
-    
-    // Function to show more sharing options
-    func doMore(sender: UIButton) {
-
+    @IBAction func moreAction(_ sender: Any) {
         let textToShare = "@\(PFUser.current()!.username!)'s Space Post on Redplanet: \(self.textView.text!)\nhttps://redplanetapp.com/download/"
-        
-        if self.mediaAsset.image != nil {
-            let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
+        if self.mediaPreview.image != nil {
+            let objectsToShare = [textToShare, self.mediaPreview.image!] as [Any]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             self.present(activityVC, animated: true, completion: nil)
-
+            
         } else {
             let objectsToShare = [textToShare]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             self.present(activityVC, animated: true, completion: nil)
         }
     }
-    
-    
-    // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        
-        let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
-        
-        
-        if pickerMedia == kUTTypeImage {
-            // Enable button
-            self.editButton.isEnabled = true
-            
-            // Set String
-            spaceMediaType = "photo"
-            
-            // Set image
-            self.mediaAsset.image = info[UIImagePickerControllerOriginalImage] as? UIImage
-            
-            // Dismiss view controller
-            self.dismiss(animated: true, completion: nil)
-            
-            // MARK: - CLImageEditor
-            let editor = CLImageEditor(image: self.mediaAsset.image!)
-            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-            editor?.delegate = self
-            let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
-            tool?.title = "Emoji"
-            self.present(editor!, animated: true, completion: nil)
-        }
-        
-        if pickerMedia == kUTTypeMovie {
-            
-            // Disable button
-            self.editButton.isEnabled = false
-            
-            // Set String
-            spaceMediaType = "video"
-            
-            // Selected Video
-            let video = info[UIImagePickerControllerMediaURL] as! URL
-            // Instantiate spaceVideoData
-            self.spaceVideoData = video
-            
-            do {
-                let asset = AVURLAsset(url: spaceVideoData!, options: nil)
-                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                imgGenerator.appliesPreferredTrackTransform = true
-                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                self.mediaAsset.image = UIImage(cgImage: cgImage)
-            } catch let error {
-                print("*** Error generating thumbnail: \(error.localizedDescription)")
-            }
-            
-            // Dismiss
-            self.dismiss(animated: true, completion: nil)
-        }
-        
-        // Layout Tap
-        self.layoutTaps()
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        
-        // Determine if there is no photo or thumbnail
-        if self.mediaAsset.image == nil {
-            // Disable button
-            self.editButton.isEnabled = false
-        } else {
-            // Enable button
-            self.editButton.isEnabled = true
-        }
-        
-        // Dismiss VC
-        self.dismiss(animated: true, completion: nil)
-    }
 
-    
-    // MARK: - CLImageEditor delegate methods
-    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
-        // Set image
-        self.mediaAsset.image = image
-        
-        // Dismiss view controller
-        editor.dismiss(animated: true, completion: { _ in })
-        
-        // Enable editButton
-        self.editButton.isEnabled = true
-    }
-    
-    func imageEditorDidCancel(_ editor: CLImageEditor) {
-        // Dismiss view controller
-        editor.dismiss(animated: true, completion: { _ in })
-
-        // Enable editButton
-        self.editButton.isEnabled = true
-    }
-
-    
-    // Function to stylize and set title of navigation bar
+    // FUNCTION - Stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
@@ -482,25 +304,163 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         }
     }
     
+    // MARK: - CLImageEditor Delegate Methods
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        // Set image
+        self.mediaPreview.image = image
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in
+            // Enable editButton
+            self.editButton.isEnabled = true
+        })
+    }
     
-    // MARK: - UITextView delegate methods
+    func imageEditorDidCancel(_ editor: CLImageEditor) {
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in
+            // Enable editButton
+            self.editButton.isEnabled = true
+        })
+    }
+
+    
+    // MARK: - UIView Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide tab bar controller
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Hide tab bar controller
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // MARK: - RPHelpers; Hide rpButton
+        rpButton.isHidden = true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Disable editButton
+        self.editButton.isEnabled = false
+        
+        // Become firstResponder
+        self.textView.becomeFirstResponder()
+        
+        // Hide UITableView
+        self.tableView.isHidden = true
+        
+        // MARK: - RPExtensions
+        self.mediaPreview.roundAllCorners(sender: self.mediaPreview)
+        self.mediaPreview.layer.borderColor = UIColor.white.cgColor
+        self.mediaPreview.layer.borderWidth = 0.5
+        
+        // Draw corner radius for photosButton
+        self.photosButton.layer.cornerRadius = 10.00
+        self.photosButton.clipsToBounds = true
+        
+        // Stylize title
+        configureView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - RPHelpers; Show rpButton
+        rpButton.isHidden = false
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
+    }
+    
+    // MARK: - UIImagePickerController Delegate method
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeImage {
+            // Enable button
+            self.editButton.isEnabled = true
+            // Set String
+            spaceMediaType = "photo"
+            // Set image
+            self.mediaPreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+            // Dismiss view controller
+            self.dismiss(animated: true, completion: nil)
+            // MARK: - CLImageEditor
+            let editor = CLImageEditor(image: self.mediaPreview.image!)
+            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+            editor?.delegate = self
+            let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+            tool?.title = "Emoji"
+            // Present
+            self.present(editor!, animated: true, completion: {
+            // PHOTO; Add tap to zoom into photo
+                let zoomTap = UITapGestureRecognizer(target: self, action: #selector(self.zoom))
+                zoomTap.numberOfTapsRequired = 1
+                self.mediaPreview.isUserInteractionEnabled = true
+                self.mediaPreview.addGestureRecognizer(zoomTap)
+            })
+            
+        } else if info[UIImagePickerControllerMediaType] as! NSString == kUTTypeMovie {
+            // Disable button
+            self.editButton.isEnabled = false
+            // Set String
+            spaceMediaType = "video"
+            // Pass URL to instantiated variable
+            self.spaceVideoURL = (info[UIImagePickerControllerMediaURL] as! URL)
+            // MARK: - AVPlayer; Add video preview
+            let player = AVPlayer(url: self.spaceVideoURL!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.mediaPreview.bounds
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.mediaPreview.contentMode = .scaleAspectFit
+            self.mediaPreview.layer.addSublayer(playerLayer)
+            player.isMuted = true
+            player.play()
+            // Dismiss
+            self.dismiss(animated: true, completion: { 
+            // VIDEO; Add tap to play video
+                let playTap = UITapGestureRecognizer(target: self, action: #selector(self.playVideo))
+                playTap.numberOfTapsRequired = 1
+                self.mediaPreview.isUserInteractionEnabled = true
+                self.mediaPreview.addGestureRecognizer(playTap)
+            })
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // Determine if there is no photo or thumbnail
+        if self.mediaPreview.image == nil {
+            // Disable button
+            self.editButton.isEnabled = false
+        } else {
+            // Enable button
+            self.editButton.isEnabled = true
+        }
+        // Dismiss VC
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - UIPopOverPresentation Delegate Method
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    // MARK: - UITextView Delegate Methods
     func textViewDidBeginEditing(_ textView: UITextView) {
         if self.textView!.text! == "What are you doing?" {
             self.textView.text! = ""
         }
     }
     
-
-    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-        
         // Define word
-        for var word in words {
+        for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // #####################
             if word.hasPrefix("@") {
-                
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
@@ -508,39 +468,35 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 // Find the user
                 let fullName = PFUser.query()!
                 fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
                 search.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
-                        
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        
                         for object in objects! {
                             self.userObjects.append(object)
                         }
-                        
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
-                // show table view and reload data
-                self.tableView!.isHidden = false
-                self.tableView!.reloadData()
+                // Show UITableView and reload data in main thead
+                DispatchQueue.main.async(execute: {
+                    self.tableView.isHidden = false
+                    self.tableView.reloadData()
+                })
             } else {
-                self.tableView!.isHidden = true
+                // Hide UITableView
+                self.tableView.isHidden = true
             }
         }
         
         return true
     }
-
+    
     
     // MARK: - UITableView Data Source methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -553,10 +509,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-        
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-        
         // (1) Set realNameOfUser
         cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
         // (2) Set username
@@ -568,7 +522,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             cell.rpUserProPic.sd_showActivityIndicatorView()
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
-        
         return cell
     }
     
@@ -596,129 +549,4 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.tableView!.isHidden = true
     }
     
-    
-    
-    // MARK: - UIPopOverPresentation Delegate Method
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
-    
-    
-    // Function to zoom
-    func zoom(sender: AnyObject) {
-        // Mark: - Agrume
-        let agrume = Agrume(image: self.mediaAsset.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
-        agrume.showFrom(self)
-    }
-    
-    
-    // Function to play video
-    func playVideo() {
-        // MARK: - RPPopUpVC
-        let rpPopUpVC = RPPopUpVC()
-        let viewController = UIViewController()
-        // MARK: - VIMVideoPlayer
-        let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
-        vimPlayerView.player.isLooping = true
-        vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
-        vimPlayerView.player.setURL(spaceVideoData)
-        vimPlayerView.player.play()
-        viewController.view.addSubview(vimPlayerView)
-        viewController.view.bringSubview(toFront: vimPlayerView)
-        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-        self.present(rpPopUpVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    // Function to layout method taps dependednt on whether mediaType is "photo" or "video"
-    func layoutTaps() {
-        if spaceMediaType == "photo" {
-        // PHOTO
-            // Add tap to zoom into photo
-            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
-            zoomTap.numberOfTapsRequired = 1
-            self.mediaAsset.isUserInteractionEnabled = true
-            self.mediaAsset.addGestureRecognizer(zoomTap)
-        } else if spaceMediaType == "video" {
-        // VIDEO
-            // Add tap to play video
-            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
-            playTap.numberOfTapsRequired = 1
-            self.mediaAsset.isUserInteractionEnabled = true
-            self.mediaAsset.addGestureRecognizer(playTap)
-        }
-    }
-    
-    
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Disable edit button
-        self.editButton.isEnabled = false
-        
-        // Set first responder
-        self.textView.becomeFirstResponder()
-        
-        // Hide tableView
-        self.tableView.isHidden = true
-        
-        // Set mediaAsset's cornerRadius
-        self.mediaAsset.layer.cornerRadius = 4.00
-        self.mediaAsset.layer.borderColor = UIColor.white.cgColor
-        self.mediaAsset.layer.borderWidth = 0.5
-        self.mediaAsset.clipsToBounds = true
-        
-        // Draw corner radius for photosButton
-        self.photosButton.layer.cornerRadius = 10.00
-        self.photosButton.clipsToBounds = true
-        
-        // Stylize title
-        configureView()
-        
-        // (1) Add button tap
-        let spaceTap = UITapGestureRecognizer(target: self, action: #selector(postSpace))
-        spaceTap.numberOfTapsRequired = 1
-        self.postButton.isUserInteractionEnabled = true
-        self.postButton.addGestureRecognizer(spaceTap)
-        
-        // (2) Add photo button tap
-        let photoTap = UITapGestureRecognizer(target: self, action: #selector(choosePhoto))
-        photoTap.numberOfTapsRequired = 1
-        self.photosButton.isUserInteractionEnabled = true
-        self.photosButton.addGestureRecognizer(photoTap)
-        
-        // (3) Add more button tap
-        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
-        moreTap.numberOfTapsRequired = 1
-        self.moreButton.isUserInteractionEnabled = true
-        self.moreButton.addGestureRecognizer(moreTap)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Hide tab bar controller
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // Hide tab bar controller
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        PFQuery.clearAllCachedResults()
-        PFFile.clearAllCachedDataInBackground()
-        URLCache.shared.removeAllCachedResponses()
-        SDImageCache.shared().clearMemory()
-        SDImageCache.shared().clearDisk()
-    }
-
-
 }

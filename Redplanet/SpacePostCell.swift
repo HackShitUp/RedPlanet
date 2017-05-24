@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -15,6 +17,7 @@ import Bolts
 
 import KILabel
 import SDWebImage
+import VIMVideoPlayer
 
 class SpacePostCell: UITableViewCell {
     
@@ -32,13 +35,48 @@ class SpacePostCell: UITableViewCell {
     @IBOutlet weak var textPost: KILabel!
     @IBOutlet weak var mediaPreview: PFImageView!
     
+    
+    // FUNCTION - Zoom into photo
+    func zoom(sender: AnyObject) {
+        // MARK: - Agrume
+        let agrume = Agrume(image: self.mediaPreview.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+        agrume.showFrom(self.superDelegate!.self)
+    }
+    
+    // FUNCTION - Play video
+    func playVideo(sender: AnyObject) {
+        if let video = self.postObject!.value(forKey: "videoAsset") as? PFFile {
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let viewController = UIViewController()
+            // MARK: - VIMVideoPlayer
+            let vimPlayerView = VIMVideoPlayerView(frame: UIScreen.main.bounds)
+            vimPlayerView.player.isLooping = true
+            vimPlayerView.setVideoFillMode(AVLayerVideoGravityResizeAspectFill)
+            vimPlayerView.player.setURL(URL(string: video.url!)!)
+            vimPlayerView.player.play()
+            viewController.view.addSubview(vimPlayerView)
+            viewController.view.bringSubview(toFront: vimPlayerView)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+            self.superDelegate?.present(rpPopUpVC, animated: true, completion: nil)
+        }
+    }
+    
     // FUNCTION - Navigates to sender's profile
-    func visitProfile(sender: AnyObject) {
+    func visitSender(sender: AnyObject) {
         // Traverse user's object
         if let byUser = self.postObject?.value(forKey: "byUser") as? PFUser {
             otherObject.append(byUser)
             otherName.append(byUser.username!)
-        } else if let toUser = self.postObject?.value(forKey: "toUser") as? PFUser {
+        }
+        let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        self.superDelegate?.navigationController?.pushViewController(otherUserVC, animated: true)
+    }
+    
+    // FUNCTION - Navigate to receivers profile
+    func visitReceiver(sender: AnyObject) {
+        // Traverse user's object
+        if let toUser = self.postObject?.value(forKey: "toUser") as? PFUser {
             otherObject.append(toUser)
             otherName.append(toUser.username!)
         }
@@ -81,14 +119,15 @@ class SpacePostCell: UITableViewCell {
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         // MARK: - RPExtensions
-        self.time.text = "Updated their profile photo \(difference.getFullTime(difference: difference, date: from))"
+        self.time.text = "shared in \(self.toUsername.text!)'s Space \(difference.getFullTime(difference: difference, date: from))"
+        self.time.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         
         // (4) Set text post
         if let text = withObject!.value(forKey: "textPost") as? String {
             // MARK: - RPExtensions
             let formattedString = NSMutableAttributedString()
             _ = formattedString.bold("\((withObject!.value(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
-            if withObject!.value(forKey: "textPost") as! String != "" {
+            if text != "" {
                 self.textPost.attributedText = formattedString
             } else {
                 self.textPost.isHidden = true
@@ -100,37 +139,60 @@ class SpacePostCell: UITableViewCell {
         self.mediaPreview.sd_setIndicatorStyle(.gray)
         self.mediaPreview.sd_showActivityIndicatorView()
         // Traverse asset to PFFile
+        
         if let photo = withObject?.value(forKey: "photoAsset") as? PFFile {
             // MARK: - SDWebImage
             self.mediaPreview.sd_setImage(with: URL(string: photo.url!))
             // MARK: - RPExtensions
             self.mediaPreview.roundAllCorners(sender: self.mediaPreview)
-        } else if let video = withObject?.value(forKey: "videoAsset") as? PFFile {
-            // TODO::
-            // ADD VIDEO....
+            
+            // Add Zoom Tap
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.mediaPreview.isUserInteractionEnabled = true
+            self.mediaPreview.addGestureRecognizer(zoomTap)
+            
+        }else if let video = withObject?.value(forKey: "videoAsset") as? PFFile {
+            // MARK: - AVPlayer
+            let player = AVPlayer(url: URL(string: video.url!)!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.mediaPreview.bounds
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.mediaPreview.contentMode = .scaleAspectFit
+            self.mediaPreview.layer.addSublayer(playerLayer)
+            player.isMuted = true
+            player.play()
+            
+            // MARK: - RPExtensions
+            self.mediaPreview.makeCircular(forView: self.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
+            
+            // Add Play Tap
+            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+            playTap.numberOfTapsRequired = 1
+            self.mediaPreview.isUserInteractionEnabled = true
+            self.mediaPreview.addGestureRecognizer(playTap)
         }
     }
-    
     
     
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Set byUser's Profile Tap
-        let byUserProPicTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile(sender:)))
+        let byUserProPicTap = UITapGestureRecognizer(target: self, action: #selector(visitSender(sender:)))
         byUserProPicTap.numberOfTapsRequired = 1
         byUserProPic.isUserInteractionEnabled = true
         byUserProPic.addGestureRecognizer(byUserProPicTap)
-        let byUsername = UITapGestureRecognizer(target: self, action: #selector(visitProfile(sender:)))
-        byUsername.numberOfTapsRequired = 1
-        byUserProPic.isUserInteractionEnabled = true
-        byUserProPic.addGestureRecognizer(byUserProPicTap)
+        let byUsernameTap = UITapGestureRecognizer(target: self, action: #selector(visitSender(sender:)))
+        byUsernameTap.numberOfTapsRequired = 1
+        byUsername.isUserInteractionEnabled = true
+        byUsername.addGestureRecognizer(byUsernameTap)
         // Set toUser's Profile Tap
-        let toUserProPicTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile(sender:)))
+        let toUserProPicTap = UITapGestureRecognizer(target: self, action: #selector(visitReceiver(sender:)))
         toUserProPicTap.numberOfTapsRequired = 1
         toUserProPic.isUserInteractionEnabled = true
         toUserProPic.addGestureRecognizer(toUserProPicTap)
-        let toUsernameTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile(sender:)))
+        let toUsernameTap = UITapGestureRecognizer(target: self, action: #selector(visitReceiver(sender:)))
         toUsernameTap.numberOfTapsRequired = 1
         toUsername.isUserInteractionEnabled = true
         toUsername.addGestureRecognizer(toUsernameTap)

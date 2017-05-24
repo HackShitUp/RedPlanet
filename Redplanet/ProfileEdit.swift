@@ -229,7 +229,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         // New Profile Photo
                         let newsfeeds = PFObject(className: "Newsfeeds")
                         newsfeeds["byUser"] = PFUser.current()!
-                        newsfeeds["username"] = PFUser.current()!.username!
+                        newsfeeds["byUsername"] = PFUser.current()!.username!
                         newsfeeds["photoAsset"] = proPicFile
                         newsfeeds["contentType"] = "pp"
                         newsfeeds["saved"] = false

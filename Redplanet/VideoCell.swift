@@ -98,7 +98,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             
             // MARK: - VIMVideoPlayer
             videoPlayer!.frame = self.videoPreview.bounds
-            videoPlayer!.player.isLooping = true
+            videoPlayer!.player.isLooping = false
             videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
             videoPlayer!.player.setURL(URL(string: video.url!)!)
             videoPlayer!.player.isMuted = false

@@ -136,7 +136,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             // Create PFObject
             let textPost = PFObject(className: "Newsfeeds")
             textPost["byUser"]  = PFUser.current()!
-            textPost["username"] = PFUser.current()!.username!
+            textPost["byUsername"] = PFUser.current()!.username!
             textPost["textPost"] = self.textView!.text!
             textPost["contentType"] = "tp"
             textPost["saved"] = false
