@@ -102,10 +102,10 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
             videoPlayer!.player.setURL(URL(string: video.url!)!)
             videoPlayer!.player.isMuted = false
+            videoPlayer!.delegate = self
             self.videoPreview.addSubview(videoPlayer!)
             self.videoPreview.bringSubview(toFront: videoPlayer!)
             /* Play video in parent UIViewController */
-            
         }
         
         // (4) Set text post
@@ -244,6 +244,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     }
     
     func videoPlayerViewPlaybackLikely(toKeepUp videoPlayerView: VIMVideoPlayerView!) {
+        
     }
     
 
