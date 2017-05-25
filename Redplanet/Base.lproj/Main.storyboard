@@ -4364,7 +4364,7 @@
         <!--Navigation Controller-->
         <scene sceneID="oi9-oC-N6K">
             <objects>
-                <navigationController storyboardIdentifier="right" automaticallyAdjustsScrollViewInsets="NO" id="LL0-7I-9zN" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="right" storyboardIdentifier="right" automaticallyAdjustsScrollViewInsets="NO" id="LL0-7I-9zN" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -4509,7 +4509,7 @@
         <!--Left-->
         <scene sceneID="9sc-XW-8Ol">
             <objects>
-                <navigationController storyboardIdentifier="left" automaticallyAdjustsScrollViewInsets="NO" id="eP7-jj-gut" customClass="Left" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="left" storyboardIdentifier="left" automaticallyAdjustsScrollViewInsets="NO" id="eP7-jj-gut" customClass="Left" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="IiN-09-HzO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

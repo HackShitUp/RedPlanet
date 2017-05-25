@@ -20,7 +20,7 @@ import SwipeNavigationController
 // Array to hold share object
 var shareWithObject = [PFObject]()
 
-class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
+class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SwipeNavigationControllerDelegate {
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -160,14 +160,14 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             // Clear arrays
             self.usersToShareWith.removeAll(keepingCapacity: false)
         
-            // Pop 3 VC's and push to bot || pop 1 VC
-            if self.navigationController?.viewControllers.count == 3 {
-                let viewControllers = self.navigationController!.viewControllers as [UIViewController]
-                _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: false)
+            // Show center, or pop VC
+            if self.navigationController?.restorationIdentifier == "right" || self.navigationController?.restorationIdentifier == "left" {
+                // MARK: - SwipeNavigationController; show center VC
+                self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }
-            
+
         case let x where x == 0 :
             // Show alert
             self.showAlert(withStatus: "None")
@@ -297,6 +297,24 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
+    // MARK: - SwipeNavigationControllerDelegate Method
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        let vcCount = self.navigationController?.viewControllers.count
+        // If position is center
+        if position == .center {
+            // Pop 2 VC's and push to bot || pop 1 VC
+            if self.navigationController?.viewControllers.count == vcCount {
+                let viewControllers = self.navigationController!.viewControllers as [UIViewController]
+                _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - vcCount!], animated: false)
+            } else {
+                _ = self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+    }
+    
     
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -309,6 +327,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SwipeNavigationControllerDelegate
+        self.containerSwipeNavigationController?.delegate = self
 
         // Configure UISearchBar
         searchBar.delegate = self
