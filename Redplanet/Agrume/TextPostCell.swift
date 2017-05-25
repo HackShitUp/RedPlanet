@@ -64,7 +64,6 @@ class TextPostCell: UITableViewCell {
         
         // (3) Set text post
         if let text = withObject!.value(forKey: "textPost") as? String {
-            print("Fired...")
             // Manipulate font size and color depending on character count
             if text.characters.count < 140 {
                 self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 23)
