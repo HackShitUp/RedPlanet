@@ -17,11 +17,13 @@ import PhotosUI
 import Parse
 import ParseUI
 import Bolts
+
+import DZNEmptyDataSet
 import SDWebImage
 import SwipeNavigationController
 import TRMosaicLayout
 
-class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // Array to hold all PHAssets
     var allAssets = [PHAsset]()
@@ -72,10 +74,16 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             self.allAssets.append(asset)
         })
 
-        // Reload data in main thread
-        DispatchQueue.main.async {
-            self.collectionView?.reloadData()
-            self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        if self.allAssets.count != 0 {
+            // Reload data in main thread
+            DispatchQueue.main.async(execute: {
+                self.collectionView?.reloadData()
+                self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            })
+        } else {
+            // MARK: - DZNEmptyDataSet
+            self.collectionView?.emptyDataSetSource = self
+            self.collectionView?.emptyDataSetDelegate = self
         }
     }
     
@@ -100,6 +108,83 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
+    
+    
+    // MARK: DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.allAssets.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "💩\nAccess to your Photos are currently denied."
+        let font = UIFont(name: "AvenirNext-Medium", size: 30)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Allow Access"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1),
+            NSFontAttributeName: font!
+        ]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) in
+            switch status{
+            case .authorized:
+                print("Authorized")
+                // Fetch Assets
+                self.fetchAssets()
+                
+                break
+            case .denied:
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Photos Access Denied",
+                                                              message: "Please allow Redplanet access your Photos.")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
+                
+                // Add settings button
+                dialogController.addAction(AZDialogAction(title: "Settings", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Show Settings
+                    UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                }))
+                
+                // Cancel
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
+                }
+                dialogController.show(in: self)
+                break
+            default:
+                break;
+            }
+        })
+    }
+    
 
     // MARK: UIViewLifeCycle
     override func viewWillAppear(_ animated: Bool) {

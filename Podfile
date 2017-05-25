@@ -18,6 +18,7 @@ target 'Redplanet' do
 	pod 'Reactions'
 	pod 'ReadabilityKit'
 	pod ‘SDWebImage’
+	pod ’SVProgressHUD’
 	pod ‘SwiftyCam’, ‘2.2.2’
 	pod 'SwipeNavigationController'
 	pod 'TRMosaicLayout'

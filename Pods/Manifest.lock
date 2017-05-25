@@ -32,6 +32,7 @@ PODS:
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
   - SnapKit (3.2.0)
+  - SVProgressHUD (2.1.2)
   - SwiftyCam (2.2.2)
   - SwipeNavigationController (2.0.2)
   - TRMosaicLayout (1.0.0)
@@ -51,6 +52,7 @@ DEPENDENCIES:
   - Reactions
   - ReadabilityKit
   - SDWebImage
+  - SVProgressHUD
   - SwiftyCam (= 2.2.2)
   - SwipeNavigationController
   - TRMosaicLayout
@@ -73,11 +75,12 @@ SPEC CHECKSUMS:
   ReadabilityKit: 49c26a2da9708ae3b355854d5bee6a7edee2dfee
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
 
-PODFILE CHECKSUM: c00e7e5b5a6f82732f8202cac3bc29f4e76a430b
+PODFILE CHECKSUM: 2957594e04c6eab24262a50e4b1335f53fbb6e59
 
 COCOAPODS: 1.2.1

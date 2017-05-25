@@ -18,6 +18,7 @@ import Bolts
 import AnimatedCollectionViewLayout
 import Reactions
 import SDWebImage
+import SVProgressHUD
 import VIMVideoPlayer
 
 // Array to hold storyObjects
@@ -104,6 +105,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
+        // MARK: - SVProgressHUD
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
+        SVProgressHUD.setForegroundColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
+        SVProgressHUD.show()
+        
         // Fetch stories
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
@@ -114,6 +120,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+                
                 // Clear array
                 self.stories.removeAll(keepingCapacity: false)
                 // Reverse chronology
@@ -138,15 +147,25 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         }
     }
     
     // FUNCTION - Reload UICollectionView at specific indexPaths
     func reloadTrios(atIndex: Int) {
-        self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
-        if atIndex != 0 && atIndex != self.stories.count && self.stories[atIndex].value(forKey: "videoAsset") != nil {
+        if self.stories[atIndex].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
+        } else if atIndex != 0 && self.stories[atIndex - 1].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: atIndex - 1, section: 0)])
+        } else if atIndex != self.stories.count && self.stories[atIndex + 1].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: atIndex + 1, section: 0)])
         }
     }
@@ -154,8 +173,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     // MARK: - SegmentedProgressBar Delegate Methods
     func segmentedProgressBarChangedIndex(index: Int) {
-        self.collectionView!.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: true)
-        self.reloadTrios(atIndex: index)
+        self.collectionView?.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: true)
     }
     
     func segmentedProgressBarFinished() {
@@ -247,6 +265,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         super.viewDidDisappear(animated)
         // MARK: - VIMVideoPlayerView; de-allocate AVPlayer's currentItem
         self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+        // MARK: - SVProgressHUD
+        SVProgressHUD.dismiss()
     }
     
     override func didReceiveMemoryWarning() {
@@ -357,7 +377,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         }
         
         // Reload data to prevent previous or next video player from playing
-        reloadTrios(atIndex: indexPath.item)
+        reloadTrios(atIndex: self.currentIndex!)
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
     }
@@ -445,7 +465,7 @@ extension Stories {
                 views["screenshotted"] = false
                 views.saveInBackground()
             } else {
-                print(error?.localizedDescription as Any)
+                print("Error: \(error?.localizedDescription as Any)")
             }
         }
     }

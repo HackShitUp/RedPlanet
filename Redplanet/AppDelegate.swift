@@ -187,30 +187,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             }
         }
         
-        
-    
-        // MARK: - HEAP Analytics
-        if PFUser.current() != nil {
-            // Set App ID
-            Heap.setAppId("3455525110");
-            // Track Who Opens the App
-            Heap.track("AppOpen", withProperties:
-                ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                ])
-            // Attach a unique identifier to user
-            Heap.identify("\(PFUser.current()!.objectId!)")
-            Heap.addUserProperties([
-                "UserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
-                "Email": "\(PFUser.current()!.email!)"
-                ])
-            
-            #if DEBUG
-                Heap.enableVisualizer();
-            #endif
-        }
-        
         // Call Login Function
         // Which also calls queryRelationships()
         login()
@@ -220,10 +196,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
 
     
     
-    // MARK: - OneSignal
     /*
-     Called when the user changes Notifications Access from "off" --> "on"
-     REQUIRED
+    // MARK: - OneSignal; REQUIRED
+    Called when the user changes Notifications Access from "off" --> "on"
     */
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
         if !stateChanges.from.subscribed && stateChanges.to.subscribed {
@@ -249,8 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             }
         }
     }
-    /**/
-    
+    // end OneSignal
     
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
@@ -293,17 +267,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-
-        //        self.saveContext()
     }
     
     
-    // MARK: - Redplanet VIP Functions
-    // (1) Login ---- Uses iPhone disk CoreData and UserDefaults to check whether is currently logged in or not.
+    
+    // FUNCTION - Login; Uses iPhone disk CoreData and UserDefaults to check whether is currently logged in or not.
     func login() {
         // Remember user's login
         // By setting their username
         if PFUser.current() != nil {
+            
+            // MARK: - HEAP
+            // Set App ID
+            Heap.setAppId("3455525110");
+            // Track Who Opens the App
+            Heap.track("AppOpen", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            // Attach a unique identifier to user
+            Heap.identify("\(PFUser.current()!.objectId!)")
+            Heap.addUserProperties([
+                "UserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                "Email": "\(PFUser.current()!.email!)"
+                ])
+            
+            #if DEBUG
+                Heap.enableVisualizer();
+            #endif
+            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             // MARK: - SwipeNavigationController
             let cameraVC = storyboard.instantiateViewController(withIdentifier: "center") as! UINavigationController
@@ -328,7 +321,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
     }
     
     
-    // Query Relationships --- Checks all of the current user's friends, followers, and followings, and blocked users
+    // FUNCTION - Query Relationships; Checks all of the current user's friends, followers, and followings, and blocked users
     func queryRelationships() {
         // (1) Query Following
         // && Users you've requested to Follow
@@ -356,6 +349,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                 
             } else {
                 print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.contains("invalid session token"))! {
+                    self.logout()
+                }
             }
         })
 
@@ -385,6 +381,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                 
             } else {
                 print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.contains("invalid session token"))! {
+                    self.logout()
+                }
             }
         })
         
@@ -412,7 +411,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                 }
             } else {
                 print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.contains("invalid session token"))! {
+                    self.logout()
+                }
             }
         }
     }
+    
+    
+    // FUNCTION - Logout
+    func logout() {
+        // Remove logged in user from app memory
+        PFUser.logOutInBackground(block: { (error: Error?) in
+            if error == nil {
+                DispatchQueue.main.async(execute: {
+                    // Login or Sign Up
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let login = storyboard.instantiateViewController(withIdentifier:"initialVC") as! UINavigationController
+                    self.window?.makeKeyAndVisible()
+                    self.window?.rootViewController = login
+                })
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
+            }
+        })
+    }
+    
 }
