@@ -52,7 +52,7 @@ import Parse
 import ParseUI
 import Bolts
 
- import NotificationBannerSwift
+import NotificationBannerSwift
 import OneSignal
 import SwipeNavigationController
 import SDWebImage

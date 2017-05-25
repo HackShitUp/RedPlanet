@@ -74,8 +74,8 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
 
         // Reload data in main thread
         DispatchQueue.main.async {
-            self.collectionView!.reloadData()
-            self.collectionView!.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            self.collectionView?.reloadData()
+            self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
     
