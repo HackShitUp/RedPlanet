@@ -116,7 +116,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
 //        newsfeeds.limit = 500
-        newsfeeds.limit = 30
+        newsfeeds.limit = 10
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
