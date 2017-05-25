@@ -19,36 +19,70 @@ import DZNEmptyDataSet
 class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Class configurable variable
-    var viewObject: PFObject?
+    var fetchObject: PFObject?
+    var viewsOrLikes: String?
     
     // Array of users who viewed a post
     var viewers = [PFObject]()
+    // Array of users who liked a comment
+    var likers = [PFObject]()
     // PFQuery; Pipeline method
     var page: Int = 50
+    // Refresher
+    var refresher: UIRefreshControl!
     
     @IBAction func back(_ sender: Any) {
-        // Pop VC
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func refresh(_ sender: Any) {
-        
+    // FUNCTION - Reload data
+    func refresh() {
+        if self.viewsOrLikes == "Views" {
+            queryViews(completionHandler: { (Int) in})
+        } else {
+            queryLikes()
+        }
+    }
+    
+    // FUNCTION - Query Likes
+    func queryLikes() {
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
+        likes.includeKeys(["byUser", "fromUser"])
+        likes.order(byDescending: "createdAt")
+        likes.limit = self.page
+        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.likers.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    self.likers.append(object.object(forKey: "fromUser") as! PFUser)
+                }
+                
+                // Reload data in main thread
+                DispatchQueue.main.async(execute: {
+                    self.tableView.reloadData()
+                })
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
     }
     
     // FUNCTION - Query Views
     func queryViews(completionHandler: @escaping (_ count: Int) -> ()) {
+        // TOOD:: UPDATE QUERY KEYS AFTER DATABASE is re-configured
         let views = PFQuery(className: "Views")
-        views.whereKey("forObjectId", equalTo: self.viewObject!.objectId!)
+        views.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
         views.includeKey("byUser")
         views.order(byDescending: "createdAt")
         views.limit = self.page
         views.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear array
                 self.viewers.removeAll(keepingCapacity: false)
-                
                 // Append objects
                 for object in objects! {
                     if self.viewers.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) || (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
@@ -65,6 +99,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 DispatchQueue.main.async(execute: {
                     self.tableView.reloadData()
                 })
+                
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - RPHelpers
@@ -77,7 +112,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if self.viewers.count == 0 {
+        if self.viewers.count == 0 || self.likers.count == 0 {
             return true
         } else {
             return false
@@ -85,7 +120,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🙈\nNo Views Yet"
+        let str = "🙈\nNo \(self.viewsOrLikes!) Yet"
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
@@ -106,17 +141,23 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         
+        
+        if self.viewsOrLikes! == "Views" {
         // Query Views
-        queryViews(completionHandler: { (count) in
-            if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17) {
-                let navBarAttributesDictionary: [String: AnyObject]? = [
-                    NSForegroundColorAttributeName: UIColor.black,
-                    NSFontAttributeName: navBarFont
-                ]
-                self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-                self.title = "\(count) Views"
-            }
-        })
+            queryViews(completionHandler: { (count) in
+                if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17) {
+                    let navBarAttributesDictionary: [String: AnyObject]? = [
+                        NSForegroundColorAttributeName: UIColor.black,
+                        NSFontAttributeName: navBarFont
+                    ]
+                    self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                    self.title = "\(count) Views"
+                }
+            })
+        } else {
+        // Query Likes
+            queryLikes()
+        }
         
     }
 
@@ -127,6 +168,13 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         self.tableView.rowHeight = 50
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorColor = UIColor.groupTableViewBackground
+        
+        // Configure UIRefreshControl
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refresher)
         
         // MARK: - DZNEmptyDataSet
         self.tableView.emptyDataSetSource = self
@@ -163,7 +211,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
-        
         // (1) Set username
         cell.rpUsername.text = (self.viewers[indexPath.row].value(forKey: "username") as! String)
         // (2) Get and set userProfilePicture
@@ -173,7 +220,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             // MARK: - RPExtensions
             cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         }
-
         return cell
     }
 
@@ -195,13 +241,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             if page <= self.viewers.count {
                 // Increase page size to load more posts
                 page = page + 50
-                // Query friends
-                queryViews { (Void) in}
-                
-                queryViews(completionHandler: { (count) in})
-                
+                if self.viewsOrLikes == "Views" {
+                    // Query Views
+                    queryViews(completionHandler: { (count) in})
+                } else {
+                    // Query Likes
+                    queryLikes()
+                }
             }
         }
     }
-
+    
+    
 }

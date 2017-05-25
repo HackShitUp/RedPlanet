@@ -28,10 +28,14 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     // Array to hold user's objects
     var userObjects = [PFObject]()
     
+    // Initialized CGRect for keyboard frame
+    var keyboard = CGRect()
+    
     @IBOutlet weak var textPost: UITextView!
     @IBOutlet weak var mediaPreview: PFImageView!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var menuView: UIView!
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
@@ -228,6 +232,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         configureView()
         // Set first responder
         self.textPost.becomeFirstResponder()
+        // Add observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -292,6 +299,13 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
 
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Remove observers
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // Reload data
@@ -305,6 +319,32 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         URLCache.shared.removeAllCachedResponses()
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
+    }
+    
+    // MARK: - UIKeyboard Notification
+    func keyboardWillShow(notification: NSNotification) {
+        // Define keyboard frame size
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        // Move UI up
+        UIView.animate(withDuration: 0.4) { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            if self.menuView.frame.origin.y == self.menuView.frame.origin.y {
+                // Move UITextView up
+                self.textPost.frame.size.height -= self.keyboard.height
+                // Move menuView up
+                self.menuView.frame.origin.y -= self.keyboard.height
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        // Define keyboard frame size
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        if self.menuView!.frame.origin.y != self.view.frame.size.height - self.menuView.frame.size.height {
+            // Move menuView down
+            self.menuView.frame.origin.y += self.keyboard.height
+        }
     }
 
     // MARK: - UITextView Delegate Methods

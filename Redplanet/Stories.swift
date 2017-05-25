@@ -91,6 +91,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         view.addSubview(reactButton)
         view.bringSubview(toFront: reactButton)
     }
+    
+    // FUNCTION - Update Reactions
+    func updateReactions() {
+        self.reactionSelector.setReactions(
+            [Reaction(id: "rpLike", title: "LIKE", color: .lightGray, icon: UIImage(named: "Like")!),
+             Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
+             Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
+             Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)
+            ])
+    }
 
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
@@ -465,7 +475,8 @@ extension Stories {
             dialog.dismiss()
             // Views VC
             let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            viewsVC.viewObject = self.stories[self.currentIndex!]
+            viewsVC.fetchObject = self.stories[self.currentIndex!]
+            viewsVC.viewsOrLikes = "Views"
             self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
@@ -592,7 +603,73 @@ extension Stories {
     
     // *** FUNCTION - Like Post ***
     func like(sender: Any) {
-        
+        /*
+        // Like PFObject
+        let likes = PFObject(className: "Likes")
+        likes["byUser"] = PFUser.current()!
+        likes["byUsername"] = PFUser.current()!.username!
+        likes["toUser"] = self.stories[currentIndex!].object(forKey: "byUser") as! PFUser
+        likes["toUsername"] = (self.stories[currentIndex!].object(forKey: "byUser") as! PFUser).username!
+        likes["forObjectId"] = self.stories[currentIndex!].objectId!
+        likes.saveInBackground(block: { (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved object: \(likes)")
+                
+//                // Re-enable button
+//                activeButton!.isUserInteractionEnabled = true
+//                
+//                // Change button
+//                activeButton!.setImage(UIImage(named: "LikeFilled"), for: .normal)
+//                
+//                // Animate like button
+//                UIView.animate(withDuration: 0.6 ,
+//                               animations: { activeButton!.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
+//                               completion: { finish in
+//                                UIView.animate(withDuration: 0.5) {
+//                                    activeButton!.transform = CGAffineTransform.identity
+//                                }
+//                })
+                
+                // Save to Notification in Background
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser
+                notifications["to"] = (self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                notifications["forObjectId"] = self.stories[self.currentIndex!].objectId!
+                notifications["type"] = "like \(self.stories[self.currentIndex!].value(forKey: "contentType") as! String)"
+                notifications.saveInBackground()
+                
+                // MARK: - RPHelpers; send pushNotification
+                let rpHelpers = RPHelpers()
+                switch self.stories[self.currentIndex!].value(forKey: "contentType") as! String {
+                    case "tp":
+                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Text Post")
+                    case "ph":
+                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Photo")
+                    case "pp":
+                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Profile Photo")
+                    case "vi":
+                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Video")
+                    case "sp":
+                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Space Post")
+                    case "itm":
+                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Moment")
+                default:
+                    break;
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+        */
     }
     
 }
