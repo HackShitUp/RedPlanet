@@ -95,28 +95,40 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     // FUNCTION - Update Reactions
     func updateReactions() {
-        self.reactionSelector.setReactions(
-            [Reaction(id: "rpLike", title: "LIKE", color: .lightGray, icon: UIImage(named: "Like")!),
-             Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
-             Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
-             Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)
-            ])
+//        self.reactionSelector.setReactions(
+//            [Reaction(id: "rpLike", title: "LIKE", color: .lightGray, icon: UIImage(named: "Like")!),
+//             Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
+//             Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
+//             Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)
+//            ])
+        
+//        let likes = PFQuery(className: "Likes")
+//        likes.whereKey("forObjectId", equalTo: self.stories[currentIndex!].objectId!)
+//        likes.countObjectsInBackground { (count: Int32, error: Error?) in
+//            if error == nil {
+//                if count != 0 {
+//                    self.reactionSelector.setReactions(
+//                        [Reaction(id: "rpLiked", title: "UNLIKE", color: .lightGray, icon: UIImage(named: "LikeFilled")!),
+//                         Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
+//                         Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
+//                         Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)
+//                        ])
+//                }
+//            } else {
+//                print(error?.localizedDescription as Any)
+//            }
+//        }
     }
 
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
-        // MARK: - SVProgressHUD
-        SVProgressHUD.setBackgroundColor(UIColor.clear)
-        SVProgressHUD.setForegroundColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
-        SVProgressHUD.show()
-        
         // Fetch stories
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
 //        newsfeeds.limit = 500
-        newsfeeds.limit = 10
+        newsfeeds.limit = 30
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -155,21 +167,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
-    
-    // FUNCTION - Reload UICollectionView at specific indexPaths
-    func reloadTrios(atIndex: Int) {
-        if self.stories[atIndex].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
-        } else if atIndex != 0 && self.stories[atIndex - 1].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: atIndex - 1, section: 0)])
-        } else if atIndex != self.stories.count && self.stories[atIndex + 1].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: atIndex + 1, section: 0)])
-        }
-    }
-    
     
     // MARK: - SegmentedProgressBar Delegate Methods
     func segmentedProgressBarChangedIndex(index: Int) {
@@ -222,6 +219,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SVProgressHUD
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
+        SVProgressHUD.setForegroundColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
+        SVProgressHUD.show()
+        SVProgressHUD.show(withStatus: "\((storyObjects.last!.value(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String)")
         
         // Fetch Stories
         fetchStories()
@@ -359,6 +362,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        // Manipulate SegmentedProgressBar
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb.skip()
+        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
+            self.spb.rewind()
+        }
+        
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
@@ -368,18 +378,24 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Set currentIndex
         self.currentIndex = indexPath.item
-
-        // Manipulate SegmentedProgressBar
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb.skip()
-        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
-            self.spb.rewind()
-        }
-        
-        // Reload data to prevent previous or next video player from playing
-        reloadTrios(atIndex: self.currentIndex!)
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
+        
+//        self.collectionView!.reloadData()
+
+        // Reload data
+        if self.stories[self.currentIndex!].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+        } else if self.currentIndex! != 0 && self.stories[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
+        } else if self.currentIndex! != self.stories.count && self.stories[self.currentIndex!].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
+        }
+        
+        
     }
 }
 

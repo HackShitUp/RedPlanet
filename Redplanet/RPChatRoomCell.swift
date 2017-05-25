@@ -19,15 +19,62 @@ import KILabel
 
 class RPChatRoomCell: UITableViewCell {
     
-    
-    // Initialize Parent View Controller
+    // Initialize PFObject
+    var postObject: PFObject?
+    // Initialize Parent UIViewController
     var delegate: UIViewController?
-    
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var message: KILabel!
+    
+    // FUNCTION - Update UI
+    func updateView(withObject: PFObject) {
+        // MARK: - RPHelpers extension
+        self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        
+        // (1) Set usernames depending on who sent what
+        if (withObject.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            // Set Current user's username
+            self.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
+        } else {
+            // Set username
+            self.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
+        }
+        
+        // Fetch Objects
+        // (2) Get and set user's profile photos
+        // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
+        if (withObject.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (withObject.object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
+            
+            // Get and set profile photo
+            if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            }
+        }
+        // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
+        if (withObject.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (withObject.object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
+            
+            // Get and set Profile Photo
+            if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            }
+        }
+        
+        // (3) Set message
+        self.message.text! = withObject.value(forKey: "Message") as! String
+        
+        // (4) Set time
+        let from = withObject.createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        // MARK: - RPHelpers
+        self.time.text = "\(difference.getFullTime(difference: difference, date: from))"
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,13 +115,6 @@ class RPChatRoomCell: UITableViewCell {
             let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: false)
             self.delegate?.present(webVC, animated: true, completion: nil)
         }
-    }
-
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

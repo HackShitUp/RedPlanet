@@ -2086,7 +2086,7 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="container" destination="Cb6-eo-3eO" id="iIX-tg-vg0"/>
-                                            <outlet property="rpMediaAsset" destination="hRK-cw-UWm" id="UE1-bG-2rT"/>
+                                            <outlet property="rpMediaPreview" destination="hRK-cw-UWm" id="ok2-aG-1yw"/>
                                             <outlet property="rpUserProPic" destination="tik-rD-NTg" id="DME-ap-Pia"/>
                                             <outlet property="rpUsername" destination="MfU-Cc-fSH" id="c1t-B2-qZO"/>
                                             <outlet property="time" destination="Y2O-2C-gHK" id="1bg-SZ-eUO"/>

@@ -488,6 +488,10 @@
 			children = (
 				7E01A51E1EB81C8100CD7FBF /* StoryScrollCell.swift */,
 				7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */,
+				7E972FED1EA97D810047F4D4 /* TextPostCell */,
+				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
+				7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */,
+				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 			);
 			name = StoryScrollCell;
 			sourceTree = "<group>";
@@ -1288,17 +1292,13 @@
 		7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */ = {
 			isa = PBXGroup;
 			children = (
+				7EE697C61EAACABE004F4E24 /* StoryCell */,
 				7E6D90E41ECF9D0F00F7FD6B /* CollectionCell */,
 				7E85C8721ECCCE3B00D5EF07 /* UserCell */,
-				7EE697C61EAACABE004F4E24 /* StoryCell */,
-				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
 				7EE697C41EAAC440004F4E24 /* VideoCell */,
 				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
 				7E8E54091EB29CF100292B8C /* MomentVideo */,
 				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
-				7E972FED1EA97D810047F4D4 /* TextPostCell */,
-				7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */,
-				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 			);
 			name = NIBS/XIBS;
 			sourceTree = "<group>";
