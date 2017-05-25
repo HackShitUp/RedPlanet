@@ -125,6 +125,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     // MARK: - SwipeNavigationController
     func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        // Pop View Controller
         if position == .bottom {
             _ = self.navigationController?.popViewController(animated: false)
         }
@@ -186,7 +187,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         super.viewWillDisappear(animated)
         clearArrays()
         NotificationCenter.default.removeObserver(textField)
-        UIView.setAnimationsEnabled(true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

@@ -20,7 +20,7 @@ import OneSignal
 import SwipeNavigationController
 import VIMVideoPlayer
 
-class CapturedVideo: UIViewController {
+class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
 //, SwipeViewDelegate, SwipeViewDataSource {
     
     // MARK: - Class Configuration Variables
@@ -205,34 +205,20 @@ class CapturedVideo: UIViewController {
     }
     
     
-    
-    // FUNCTION - Toggle volume on/off
-    func configureVolume() {
-        switch self.vimPlayerView.player.isMuted {
-        case true:
-            // VOLUME OFF
-            DispatchQueue.main.async(execute: {
-                self.vimPlayerView.player.isMuted = false
-                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
-            })
-        case false:
-            // VOLUME ON
-            DispatchQueue.main.async(execute: {
-                self.vimPlayerView.player.isMuted = true
-                self.muteButton.setImage(UIImage(named: "VolumeOff"), for: .normal)
-            })
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        // Pop View Controller
+        if position == .bottom {
+            _ = self.navigationController?.popViewController(animated: false)
         }
     }
     
-    // FUNCTION - Play and pause video
-    func togglePlayPause() {
-        if self.vimPlayerView.player.isPlaying {
-            self.vimPlayerView.player.pause()
-        } else {
-            self.vimPlayerView.player.play()
-        }
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        // Delegate
     }
     
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide UIStatusBar
@@ -257,6 +243,7 @@ class CapturedVideo: UIViewController {
             self.view.addSubview(vimPlayerView)
         
             // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.delegate = self
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false
             self.containerSwipeNavigationController?.shouldShowCenterViewController = false
@@ -303,7 +290,35 @@ class CapturedVideo: UIViewController {
 
 
 
+// MARK: - CapturedVideo Extensions; used to manage video asset
 extension CapturedVideo {
+    // FUNCTION - Toggle volume on/off
+    func configureVolume() {
+        switch self.vimPlayerView.player.isMuted {
+        case true:
+            // VOLUME OFF
+            DispatchQueue.main.async(execute: {
+                self.vimPlayerView.player.isMuted = false
+                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
+            })
+        case false:
+            // VOLUME ON
+            DispatchQueue.main.async(execute: {
+                self.vimPlayerView.player.isMuted = true
+                self.muteButton.setImage(UIImage(named: "VolumeOff"), for: .normal)
+            })
+        }
+    }
+    
+    // FUNCTION - Play and pause video
+    func togglePlayPause() {
+        if self.vimPlayerView.player.isPlaying {
+            self.vimPlayerView.player.pause()
+        } else {
+            self.vimPlayerView.player.play()
+        }
+    }
+    
     // FUNCTION - Compress video file (open to process video before view loads...)
     func compressVideo(inputURL: URL, outputURL: URL, handler: @escaping (_ exportSession: AVAssetExportSession?) -> Void) {
         DispatchQueue.main.async {

@@ -91,6 +91,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
+        // Show UIButtons
+        self.libraryButton.isHidden = false
+        self.newTextButton.isHidden = false
+        self.rpUserProPic.isHidden = false
+        self.searchButton.isHidden = false
+        self.flashButton.isHidden = false
+        self.swapCameraButton.isHidden = false
+        
         let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
         capturedVideoVC.capturedURL = url
         self.navigationController?.pushViewController(capturedVideoVC, animated: false)
@@ -313,10 +321,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         } else {
             self.libraryButton.isHidden = false
             self.newTextButton.isHidden = false
-            self.rpUserProPic.isHidden = false
-            self.searchButton.isHidden = false
-            self.flashButton.isHidden = false
-            self.swapCameraButton.isHidden = false
         }
         
         // Tap button to take photo
