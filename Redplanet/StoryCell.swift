@@ -69,15 +69,7 @@ class StoryCell: UITableViewCell {
         // (1) VIEWS
         let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
             // Dismiss
-            dialog.dismiss()
-            // Append object
-            viewsObject.append(self.postObject!)
-
-            // MARK: - RPPopUpVC
-            let rpPopUpVC = RPPopUpVC()
-            let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewsVC)
-            dialogController.present(UINavigationController(rootViewController: rpPopUpVC), animated: true)
+            
         })
         // (2) DELETE
         let delete = AZDialogAction(title: "Delete Recent Post", handler: { (dialog) -> (Void) in

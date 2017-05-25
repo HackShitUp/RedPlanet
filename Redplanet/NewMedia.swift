@@ -230,6 +230,12 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
+    // MARK: - CLImageEditorDelegate
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        editor.dismiss(animated: true) {
+            self.mediaPreview.image = image
+        }
+    }
     
     // MARK: - UIView Life cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -243,6 +249,23 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Configure mediaPreview
+        if selectedImage != nil {
+        // IMAGE via UIImagePickerController
+            self.mediaPreview.image = self.selectedImage
+            configureImageTap()
+        } else if self.selectedURL != nil {
+        // Video via UIImagePickerController
+            manageVideoAsset(withURL: self.selectedURL!)
+        } else {
+        // PHAsset
+            if self.mediaType == "image" {
+                manageImageAsset()
+            } else if self.mediaType == "video" {
+                manageVideoAsset(withURL: nil)
+            }
+        }
         
         // Configure UITableView
         tableView.isHidden = true
@@ -261,21 +284,6 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if selectedImage != nil {
-        // IMAGE via UIImagePickerController
-            self.mediaPreview.image = self.selectedImage
-            configureImageTap()
-        } else if self.selectedURL != nil {
-        // Video via UIImagePickerController
-            manageVideoAsset(withURL: self.selectedURL!)
-        } else {
-        // PHAsset
-            if self.mediaType == "image" {
-                manageImageAsset()
-            } else if self.mediaType == "video" {
-                manageVideoAsset(withURL: nil)
-            }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -504,5 +512,4 @@ extension NewMedia {
         mediaPreview.isUserInteractionEnabled = true
         mediaPreview.addGestureRecognizer(playTap)
     }
-    
 }

@@ -30,6 +30,8 @@
 		7E480E431ED3672200B9F469 /* SpacePostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E480E411ED3672200B9F469 /* SpacePostCell.xib */; };
 		7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */; };
 		7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A98031DDCFFFA006DA985 /* FullName.swift */; };
+		7E607DBE1ED64D320029292D /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E607DBD1ED64D320029292D /* ViewsCell.swift */; };
+		7E607DC01ED64EC70029292D /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E607DBF1ED64EC70029292D /* Views.swift */; };
 		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
 		7E6A12E81E4D524C00CF108B /* Agrume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A12E31E4D524C00CF108B /* Agrume.swift */; };
 		7E6A12E91E4D524C00CF108B /* AgrumeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A12E41E4D524C00CF108B /* AgrumeCell.swift */; };
@@ -45,7 +47,6 @@
 		7E6D90E21ECF9D0C00F7FD6B /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */; };
 		7E6D90E31ECF9D0C00F7FD6B /* CollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
-		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E79483E1EB5BD9D002DD324 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E79483D1EB5BD9D002DD324 /* Explore.swift */; };
@@ -228,6 +229,8 @@
 		7E5A98031DDCFFFA006DA985 /* FullName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullName.swift; sourceTree = "<group>"; };
 		7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		7E607DBD1ED64D320029292D /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
+		7E607DBF1ED64EC70029292D /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E6113D41DD157C2001CE98C /* EditContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
 		7E6A12E31E4D524C00CF108B /* Agrume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Agrume.swift; sourceTree = "<group>"; };
 		7E6A12E41E4D524C00CF108B /* AgrumeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgrumeCell.swift; sourceTree = "<group>"; };
@@ -243,7 +246,6 @@
 		7E6D90E01ECF9D0C00F7FD6B /* CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 		7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionCell.xib; sourceTree = "<group>"; };
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
-		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E79483D1EB5BD9D002DD324 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
 		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
@@ -544,6 +546,15 @@
 				7EA45CC91DB6A1B900A466D9 /* NewUser.swift */,
 			);
 			name = NewUserInfo;
+			sourceTree = "<group>";
+		};
+		7E607DC11ED64ECE0029292D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E607DBF1ED64EC70029292D /* Views.swift */,
+				7E607DBD1ED64D320029292D /* ViewsCell.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		7E6A12E21E4D524C00CF108B /* Agrume */ = {
@@ -1201,10 +1212,9 @@
 		7ED4A91F1DBEBE130016698F /* REACTIONS */ = {
 			isa = PBXGroup;
 			children = (
-				7EDFB8EC1EC95EF20019F2E0 /* REACTIONS */,
-				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
-				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
+				7EDFB8EC1EC95EF20019F2E0 /* REACTIONS */,
+				7E607DC11ED64ECE0029292D /* Views */,
 			);
 			name = REACTIONS;
 			sourceTree = "<group>";
@@ -1226,6 +1236,7 @@
 				7E9351DE1EBAE9430045DA48 /* Reactions.swift */,
 				7EA570B71EC02C4A00A57C70 /* ReactionsHeader.swift */,
 				7EA570B91EC02C5400A57C70 /* ReactionsHeader.xib */,
+				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
 			);
 			name = REACTIONS;
 			sourceTree = "<group>";
@@ -1657,7 +1668,7 @@
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7E95F5511ECBFAF4007E4507 /* PhotoCell.swift in Sources */,
 				7EC7690B1EB6655B00507911 /* FeaturedCell.swift in Sources */,
-				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
+				7E607DBE1ED64D320029292D /* ViewsCell.swift in Sources */,
 				7EDB846C1EB96D41005E805E /* RPExtensions.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
@@ -1675,6 +1686,7 @@
 				7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */,
 				7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */,
 				7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */,
+				7E607DC01ED64EC70029292D /* Views.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
 				7E6ACC4E1ED4E557005D107B /* VideoCell.swift in Sources */,

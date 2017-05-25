@@ -826,9 +826,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
-        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
-        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         
         // Pull to refresh action
         refresher = UIRefreshControl()

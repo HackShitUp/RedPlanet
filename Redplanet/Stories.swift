@@ -25,15 +25,15 @@ var storyObjects = [PFObject]()
 
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
     
+    // ScrollSets for database <contentType>
+    let scrollSets = ["tp", "ph", "pp", "sp"]
+    
     // Array to hold stories
     var stories = [PFObject]()
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
-    
-    // ScrollSets for database <contentType>
-    let scrollSets = ["tp", "ph", "pp", "sp"]
     
     // MARK: - VIMVideoPlayer
     var vimVideoPlayerView: VIMVideoPlayerView?
@@ -44,60 +44,18 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     let reactionSelector = ReactionSelector()
-    let reactions = [Reaction(id: "More", title: "More", color: .lightGray, icon: UIImage(named: "MoreBlack")!),
-                     Reaction(id: "Like", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
-                     Reaction(id: "Comment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
-                     Reaction(id: "Share", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)]
+    let reactions = [Reaction(id: "rpLike", title: "LIKE", color: .lightGray, icon: UIImage(named: "Like")!),
+                     Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
+                     Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
+                     Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
     
     @IBOutlet weak var collectionView: UICollectionView!
-
-    // FUNCTION - Fetch user's stories...
-    func fetchStories() {
-        // Fetch stories
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
-        newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.order(byDescending: "createdAt")
-//        newsfeeds.limit = 500
-        newsfeeds.limit = 30
-        newsfeeds.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-                self.stories.removeAll(keepingCapacity: false)
-                // Reverse chronology
-                for object in objects! {
-//                    .reversed() {
-                    // Ephemeral content
-                    let components: NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-//                        self.stories.append(object)
-                    }
-                    self.stories.append(object)
-                }
-
-                
-                // Reload data in main thread
-                DispatchQueue.main.async(execute: {
-                    // Configure view
-                    self.configureView()
-                    // Reload data
-                    self.collectionView.reloadData()
-                })
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-    }
-    
     
     // FUNCTION - Configure view
     func configureView() {
         // MARK: - SegmentedProgressBar
         self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
-        self.spb.frame = CGRect(x: 8, y: 4, width: self.view.frame.width - 16, height: 3)
+        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
         self.spb.topColor = UIColor.white
         self.spb.layer.applyShadow(layer: self.spb.layer)
         self.spb.padding = 2
@@ -108,7 +66,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // MARK: - Reactions
         // (2) Create ReactionSelector and add Reactions from <1>
         reactionSelector.feedbackDelegate = self
-        reactionSelector.setReactions(reactions, sizeToFit: true)
+        reactionSelector.setReactions(reactions)
+
         // (3) Configure ReactionSelector
         reactionSelector.config = ReactionSelectorConfig {
             $0.spacing = 12
@@ -125,59 +84,57 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
             $0.neutralTintColor = UIColor.black
         }
-        reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+        reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
         reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         reactButton.layer.applyShadow(layer: reactButton.layer)
         view.addSubview(reactButton)
         view.bringSubview(toFront: reactButton)
     }
-    
-    
-    // FUNCTION - More option for post
-    func showOption(sender: Any) {
-        // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: nil)
-        dialogController.dismissDirection = .bottom
-        dialogController.dismissWithOutsideTouch = true
-        dialogController.showSeparator = true
-        
-        // Configure style
-        dialogController.buttonStyle = { (button,height,position) in
-            button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-            button.layer.masksToBounds = true
+
+    // FUNCTION - Fetch user's stories...
+    func fetchStories() {
+        // Fetch stories
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
+        newsfeeds.includeKeys(["byUser", "toUser"])
+        newsfeeds.order(byDescending: "createdAt")
+//        newsfeeds.limit = 500
+        newsfeeds.limit = 30
+        newsfeeds.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.stories.removeAll(keepingCapacity: false)
+                // Reverse chronology
+                for object in objects!.reversed() {
+                    // Ephemeral content
+                    let components: NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
+//                        self.stories.append(object)
+                    }
+                    self.stories.append(object)
+                }
+                
+                
+                // Reload data in main thread
+                DispatchQueue.main.async(execute: {
+                    // Configure view
+                    self.configureView()
+                    // Reload data
+                    self.collectionView.reloadData()
+                })
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
         }
-        
-        // (1) Show Views for post
-        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
-            
-        })
-    
-        // (2) Delete Post
-        let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
-            // TODO
-        })
-        
-        // (3) Edit Post
-        let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
-            // TODO
-        })
-        
-        
-        dialogController.show(in: self)
     }
-    
-    // FUNCTION - Like Post
-    func like(sender: Any) {
-        
-    }
-    
     
     // FUNCTION - Reload UICollectionView at specific indexPaths
     func reloadTrios(atIndex: Int) {
-         self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
+        self.collectionView.reloadItems(at: [IndexPath(item: atIndex, section: 0)])
         if atIndex != 0 && atIndex != self.stories.count && self.stories[atIndex].value(forKey: "videoAsset") != nil {
             self.collectionView.reloadItems(at: [IndexPath(item: atIndex - 1, section: 0)])
             self.collectionView.reloadItems(at: [IndexPath(item: atIndex + 1, section: 0)])
@@ -199,21 +156,22 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions Delegate Method
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
-            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+            // Pause SegmentedProgressBar
+            self.spb.isPaused = true
             switch reactionSelector.selectedReaction!.id {
-                case "More":
-                    // MORE
+                case "rpMore":
+                // MORE
                     self.showOption(sender: self)
-                case "Like":
-                    // LIKE
+                case "rpLike":
+                // LIKE
                     self.like(sender: self)
-                case "Comment":
-                    // COMMENT
+                case "rpComment":
+                // COMMENT
                     reactionObject.append(self.stories[self.currentIndex!])
                     let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
                     self.navigationController?.pushViewController(reactionsVC, animated: true)
-                case "Share":
-                    // SHARE
+                case "rpShare":
+                // SHARE
                     shareWithObject.append(self.stories[self.currentIndex!])
                     let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                     self.navigationController?.pushViewController(shareWithVC, animated: true)
@@ -221,9 +179,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 break;
             }
         } else {
-            // RESET
-            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+            self.spb.isPaused = false
         }
+        // Reset ReactButton
+        self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
     }
     
     // MARK: - UIView Life Cycle
@@ -323,7 +282,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // MOMENT VIDEO
             
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-            
             // Add and play || pause video when visible
             if self.currentIndex == indexPath.item {
                 // Set PFObject, parent UIViewController, update UI, and play video
@@ -332,16 +290,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 mvCell.updateView(withObject: self.stories[indexPath.item], videoPlayer: self.vimVideoPlayerView)
                 self.vimVideoPlayerView?.player.play()
             }
-            
-//            else {
-//                // Pass new AVPlayerItem
-//                if let videoFile = self.stories[self.currentIndex!].value(forKey: "videoAsset") as? PFFile {
-//                    let playerItem = AVPlayerItem(url: URL(string: videoFile.url!)!)
-//                    self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
-//                }
-//                self.vimVideoPlayerView?.player.pause()
-//            }
-            
             return mvCell
         }
         
@@ -356,17 +304,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 videoCell.updateView(withObject: self.stories[indexPath.item], videoPlayer: self.vimVideoPlayerView)
                 self.vimVideoPlayerView?.player.play()
             }
-            
-//            else {
-//                // Pass new AVPlayerItem
-//                if let videoFile = self.stories[self.currentIndex!].value(forKey: "videoAsset") as? PFFile {
-//                    let playerItem = AVPlayerItem(url: URL(string: videoFile.url!)!)
-//                    self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
-//                }
-//                self.vimVideoPlayerView?.player.isPlaying = false
-//                self.vimVideoPlayerView?.player.pause()
-//            }
-            
             return videoCell
         }
         
@@ -392,7 +329,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
@@ -400,37 +336,22 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
         
-        let views = PFObject(className: "Views")
-        views["byUser"] = PFUser.current()!
-        views["byUsername"] = PFUser.current()!.username!
-        views["forObject"] = self.stories[indexPath.item]
-        views["screenshotted"] = false
-//        views.saveInBackground()
-//        views.saveInBackground { (success: Bool, error: Error?) in
-//            if success {
-//                print("Successfully saved...")
-//            } else {
-//                print(error?.localizedDescription as Any)
-//            }
-//        }
-        
         // Set currentIndex
         self.currentIndex = indexPath.item
-        // Reload data to prevent previous or next video player from playing
-        self.reloadTrios(atIndex: indexPath.item)
-        
+
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb.skip()
         } else if self.lastOffSet!.x > scrollView.contentOffset.x {
             self.spb.rewind()
         }
+        
+        // Reload data to prevent previous or next video player from playing
+        reloadTrios(atIndex: indexPath.item)
+        // SAVE to Views
+        saveViews(withIndex: indexPath.item)
     }
-    
-    
-    
 }
-
 
 
 
@@ -491,4 +412,187 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
             self.dismiss(animated: true, completion: nil)
         }
     }
+}
+
+
+
+// MARK: - Stories; Interactive functions go here...
+extension Stories {
+    
+    // *** FUNCTION - Save Views ***
+    func saveViews(withIndex: Int) {
+        // Save to Views
+        let views = PFQuery(className: "Views")
+        views.whereKey("forObject", equalTo: self.stories[withIndex])
+        views.whereKey("byUser", equalTo: PFUser.current()!)
+        views.countObjectsInBackground { (count: Int32, error: Error?) in
+            if error == nil && count == 0 {
+                // MARK: - Save PFObject
+                let views = PFObject(className: "Views")
+                views["byUser"] = PFUser.current()!
+                views["byUsername"] = PFUser.current()!.username!
+                views["forObject"] = self.stories[withIndex]
+                views["screenshotted"] = false
+                views.saveInBackground()
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
+    // *** FUNCTION - More options for post ***
+    func showOption(sender: Any) {
+        // Set edit-able contentType's
+        let editTypes = ["tp", "ph", "pp", "sp", "vi"]
+        
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: nil)
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.layer.masksToBounds = true
+        }
+        
+        // (1) Show Views for post
+        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Views VC
+            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+            viewsVC.viewObject = self.stories[self.currentIndex!]
+            self.navigationController?.pushViewController(viewsVC, animated: true)
+        })
+        
+        // (2) Delete Post
+        let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // Query post
+            let posts = PFQuery(className: "Newsfeeds")
+            posts.whereKey("objectId", equalTo: self.stories[self.currentIndex!].objectId!)
+            posts.whereKey("byUser", equalTo: PFUser.current()!)
+            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object.deleteInBackground()
+                        
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Deleted")
+                        
+                        // Reload data
+                        self.stories.remove(at: self.currentIndex!)
+                        self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        if self.currentIndex! == 0 {
+                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
+                                                             at: .right, animated: true)
+                        } else if self.currentIndex! == self.stories.count {
+                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
+                                                             at: .right, animated: true)
+                        }
+                        
+                        // Dismiss
+                        dialog.dismiss()
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                }
+            })
+        })
+        
+        // (3) Edit Post
+        let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Show EditVC
+            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+            editVC.editObject = self.stories[self.currentIndex!]
+            self.navigationController?.pushViewController(editVC, animated: true)
+        })
+        
+        // (4) Report
+        let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            // MARK: - UIAlertController
+            let alert = UIAlertController(title: "Report Post",
+                                          message: "Please provide your reason for reporting this Post",
+                                          preferredStyle: .alert)
+            let report = UIAlertAction(title: "Report", style: .destructive) {
+                [unowned self, alert] (action: UIAlertAction!) in
+                let answer = alert.textFields![0]
+                // REPORTED
+                let report = PFObject(className: "Reported")
+                report["byUsername"] = PFUser.current()!.username!
+                report["byUser"] = PFUser.current()!
+                report["to"] = self.stories[self.currentIndex!].value(forKey: "username") as! String
+                report["toUser"] = self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                report["forObjectId"] = self.stories[self.currentIndex!].objectId!
+                report["reason"] = answer.text!
+                report.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved report: \(report)")
+                        // Dismiss
+                        dialog.dismiss()
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Dismiss
+                        dialog.dismiss()
+                    }
+                })
+            }
+            
+            let cancel = UIAlertAction(title: "Cancel",
+                                       style: .cancel,
+                                       handler: { (alertAction: UIAlertAction!) in
+                                        // Dismiss
+                                        dialog.dismiss()
+            })
+            alert.addTextField(configurationHandler: nil)
+            alert.addAction(report)
+            alert.addAction(cancel)
+            alert.view.tintColor = UIColor.black
+            dialog.present(alert, animated: true, completion: nil)
+        })
+        
+        // (5) CANCEL
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.setTitle("CANCEL", for: [])
+            return true
+        }
+        
+        if (self.stories[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            // Views, Delete, Edit
+            if editTypes.contains(self.stories[self.currentIndex!].value(forKey: "contentType") as! String) {
+                dialogController.addAction(views)
+                dialogController.addAction(delete)
+                dialogController.addAction(edit)
+                dialogController.show(in: self)
+            } else {
+            // Views and delete
+                dialogController.addAction(views)
+                dialogController.addAction(delete)
+                dialogController.show(in: self)
+            }
+        } else {
+            // Report
+            dialogController.addAction(report)
+            dialogController.show(in: self)
+        }
+    }
+    
+    
+    
+    // *** FUNCTION - Like Post ***
+    func like(sender: Any) {
+        
+    }
+    
 }

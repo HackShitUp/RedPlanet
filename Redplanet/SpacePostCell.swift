@@ -120,7 +120,6 @@ class SpacePostCell: UITableViewCell {
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         // MARK: - RPExtensions
         self.time.text = "shared in \(self.toUsername.text!)'s Space \(difference.getFullTime(difference: difference, date: from))"
-        self.time.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         
         // (4) Set text post
         if let text = withObject!.value(forKey: "textPost") as? String {
@@ -152,7 +151,7 @@ class SpacePostCell: UITableViewCell {
             self.mediaPreview.isUserInteractionEnabled = true
             self.mediaPreview.addGestureRecognizer(zoomTap)
             
-        }else if let video = withObject?.value(forKey: "videoAsset") as? PFFile {
+        } else if let video = withObject?.value(forKey: "videoAsset") as? PFFile {
             // MARK: - AVPlayer
             let player = AVPlayer(url: URL(string: video.url!)!)
             let playerLayer = AVPlayerLayer(player: player)
