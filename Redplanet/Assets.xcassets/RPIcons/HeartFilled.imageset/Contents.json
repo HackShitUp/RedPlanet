@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "LikeFilled.png",
+      "filename" : "HeartFilled.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "LikeFilled-1.png",
+      "filename" : "HeartFilled-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "LikeFilled-2.png",
+      "filename" : "HeartFilled-2.png",
       "scale" : "3x"
     }
   ],

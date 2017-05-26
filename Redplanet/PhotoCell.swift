@@ -23,7 +23,6 @@ class PhotoCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var resizingView: UIView!
     @IBOutlet weak var photo: PFImageView!
     @IBOutlet weak var textPost: KILabel!
     
@@ -78,14 +77,10 @@ class PhotoCell: UITableViewCell {
         
         // (4) Set photo
         if let image = withObject!.value(forKey: "photoAsset") as? PFFile {
-            self.photo.translatesAutoresizingMaskIntoConstraints = true
-            self.photo.autoresizingMask = .flexibleBottomMargin
-            self.photo.autoresizingMask = .flexibleHeight
-            self.photo.autoresizingMask = .flexibleRightMargin
-            self.photo.autoresizingMask = .flexibleLeftMargin
-            self.photo.autoresizingMask = .flexibleTopMargin
-            self.photo.autoresizingMask = .flexibleWidth
-            self.photo.contentMode = .scaleAspectFit
+//            self.photo.translatesAutoresizingMaskIntoConstraints = true
+//            self.photo.autoresizingMask = .flexibleBottomMargin
+//            self.photo.autoresizingMask = .flexibleHeight
+//            self.photo.contentMode = .scaleAspectFit
 
             // MARK: - SDWebImage
             self.photo.sd_setIndicatorStyle(.gray)

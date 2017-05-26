@@ -16,6 +16,7 @@ import ParseUI
 import Bolts
 
 import AnimatedCollectionViewLayout
+import NotificationBannerSwift
 import Reactions
 import SDWebImage
 import SVProgressHUD
@@ -45,10 +46,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     let reactionSelector = ReactionSelector()
-    let reactions = [Reaction(id: "rpLike", title: "LIKE", color: .lightGray, icon: UIImage(named: "Like")!),
-                     Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
-                     Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
-                     Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
+    let reactions = [Reaction(id: "rpLike", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
+                     Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
+                     Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!),
+                     Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -91,33 +92,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         reactButton.layer.applyShadow(layer: reactButton.layer)
         view.addSubview(reactButton)
         view.bringSubview(toFront: reactButton)
-    }
-    
-    // FUNCTION - Update Reactions
-    func updateReactions() {
-//        self.reactionSelector.setReactions(
-//            [Reaction(id: "rpLike", title: "LIKE", color: .lightGray, icon: UIImage(named: "Like")!),
-//             Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
-//             Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
-//             Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)
-//            ])
-        
-//        let likes = PFQuery(className: "Likes")
-//        likes.whereKey("forObjectId", equalTo: self.stories[currentIndex!].objectId!)
-//        likes.countObjectsInBackground { (count: Int32, error: Error?) in
-//            if error == nil {
-//                if count != 0 {
-//                    self.reactionSelector.setReactions(
-//                        [Reaction(id: "rpLiked", title: "UNLIKE", color: .lightGray, icon: UIImage(named: "LikeFilled")!),
-//                         Reaction(id: "rpComment", title: "COMMENT", color: .lightGray, icon: UIImage(named: "Comment")!),
-//                         Reaction(id: "rpShare", title: "SHARE", color: .lightGray, icon: UIImage(named: "Share")!),
-//                         Reaction(id: "rpMore", title: "MORE", color: .lightGray, icon: UIImage(named: "MoreButton")!)
-//                        ])
-//                }
-//            } else {
-//                print(error?.localizedDescription as Any)
-//            }
-//        }
     }
 
     // FUNCTION - Fetch user's stories...
@@ -222,8 +196,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // MARK: - SVProgressHUD
         SVProgressHUD.setBackgroundColor(UIColor.clear)
-        SVProgressHUD.setForegroundColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
-        SVProgressHUD.show()
+        SVProgressHUD.setForegroundColor(UIColor.groupTableViewBackground)
+        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 15))
         SVProgressHUD.show(withStatus: "\((storyObjects.last!.value(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String)")
         
         // Fetch Stories
@@ -381,7 +355,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
         
-//        self.collectionView!.reloadData()
+        // Reload data
+        self.collectionView!.reloadData()
 
         // Reload data
         if self.stories[self.currentIndex!].value(forKey: "videoAsset") != nil {
@@ -394,8 +369,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
         }
-        
-        
     }
 }
 
@@ -639,73 +612,104 @@ extension Stories {
     
     // *** FUNCTION - Like Post ***
     func like(sender: Any) {
-        /*
-        // Like PFObject
-        let likes = PFObject(className: "Likes")
-        likes["byUser"] = PFUser.current()!
-        likes["byUsername"] = PFUser.current()!.username!
-        likes["toUser"] = self.stories[currentIndex!].object(forKey: "byUser") as! PFUser
-        likes["toUsername"] = (self.stories[currentIndex!].object(forKey: "byUser") as! PFUser).username!
-        likes["forObjectId"] = self.stories[currentIndex!].objectId!
-        likes.saveInBackground(block: { (success: Bool, error: Error?) in
-            if success {
-                print("Successfully saved object: \(likes)")
-                
-//                // Re-enable button
-//                activeButton!.isUserInteractionEnabled = true
-//                
-//                // Change button
-//                activeButton!.setImage(UIImage(named: "LikeFilled"), for: .normal)
-//                
-//                // Animate like button
-//                UIView.animate(withDuration: 0.6 ,
-//                               animations: { activeButton!.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
-//                               completion: { finish in
-//                                UIView.animate(withDuration: 0.5) {
-//                                    activeButton!.transform = CGAffineTransform.identity
-//                                }
-//                })
-                
-                // Save to Notification in Background
-                let notifications = PFObject(className: "Notifications")
-                notifications["fromUser"] = PFUser.current()!
-                notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser
-                notifications["to"] = (self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
-                notifications["forObjectId"] = self.stories[self.currentIndex!].objectId!
-                notifications["type"] = "like \(self.stories[self.currentIndex!].value(forKey: "contentType") as! String)"
-                notifications.saveInBackground()
-                
-                // MARK: - RPHelpers; send pushNotification
-                let rpHelpers = RPHelpers()
-                switch self.stories[self.currentIndex!].value(forKey: "contentType") as! String {
-                    case "tp":
-                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
-                                               activityType: "liked your Text Post")
-                    case "ph":
-                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
-                                               activityType: "liked your Photo")
-                    case "pp":
-                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
-                                               activityType: "liked your Profile Photo")
-                    case "vi":
-                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
-                                               activityType: "liked your Video")
-                    case "sp":
-                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
-                                               activityType: "liked your Space Post")
-                    case "itm":
-                    rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].object(forKey: "byUser") as! PFUser,
-                                               activityType: "liked your Moment")
-                default:
-                    break;
+
+        // Query likes
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: self.stories[self.currentIndex!].objectId!)
+        likes.whereKey("fromUser", equalTo: PFUser.current()!)
+        likes.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                if objects!.isEmpty {
+                // LIKE POST
+                    let likes = PFObject(className: "Likes")
+                    likes["fromUser"] = PFUser.current()!
+                    likes["from"] = PFUser.current()!.username!
+                    likes["forObjectId"] = self.stories[self.currentIndex!].objectId!
+                    likes["toUser"] = self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                    likes["to"] = (self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
+                    likes.saveInBackground(block: { (success: Bool, error: Error?) in
+                        if error == nil {
+                            print("Successfully liked post: \(likes)")
+                            
+                            // MARK: - NotificationBannerSwift
+                            let banner = NotificationBanner(title: "", subtitle: nil, rightView: UIImageView(image: UIImage(named: "HeartFilled")!))
+                            banner.backgroundColor = UIColor.clear
+                            banner.duration = 0.20
+                            banner.show()
+                            
+                            // Save to Notifications
+                            let notifications = PFObject(className: "Notifications")
+                            notifications["fromUser"] = PFUser.current()!
+                            notifications["from"] = PFUser.current()!.username!
+                            notifications["toUser"] = self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                            notifications["to"] = (self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
+                            notifications["forObjectId"] = self.stories[self.currentIndex!].objectId!
+                            notifications["type"] = "like \(self.stories[self.currentIndex!].value(forKey: "contentType") as! String)"
+                            notifications.saveInBackground()
+                            
+                            // MARK: - RPHelpers; pushNotification
+                            let rpHelpers = RPHelpers()
+                            switch self.stories[self.currentIndex!].value(forKey: "contentType") as! String {
+                            case "tp":
+                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Text Post")
+                            case "ph":
+                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Photo")
+                            case "pp":
+                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Profile Photo")
+                            case "vi":
+                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Video")
+                            case "sp":
+                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Space Post")
+                            case "itm":
+                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Moment")
+                            default:
+                                break;
+                            }
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                } else {
+                // UNLIKE POST
+                    for object in objects! {
+                        object.deleteInBackground(block: { (success: Bool, error: Error?) in
+                            if error == nil {
+                                print("Deleted from <Likes>: \(object)")
+
+                                // MARK: - NotificationBannerSwift
+                                let banner = NotificationBanner(title: "", subtitle: nil, rightView: UIImageView(image: UIImage(named: "HeartBroken")!))
+                                banner.backgroundColor = UIColor.clear
+                                banner.duration = 0.20
+                                banner.show()
+                                
+                                // Delete from Notifications
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("type", equalTo: "like \(self.stories[self.currentIndex!].value(forKey: "contentType") as! String)")
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.whereKey("forObjectId", equalTo: self.stories[self.currentIndex!].objectId!)
+                                notifications.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground()
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
                 }
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
-        })
-        */
+        }
     }
     
 }

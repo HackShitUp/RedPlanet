@@ -161,7 +161,7 @@ class RPHelpers: NSObject {
     // MARK: -  Parse; Function to like object and save notification
     open func likeObject(forObject: PFObject?, notificationType: String?, activeButton: UIButton?) {
         // Disable button
-        activeButton!.isUserInteractionEnabled = false
+        activeButton?.isUserInteractionEnabled = false
         
         let likes = PFObject(className: "Likes")
         likes["fromUser"] = PFUser.current()!
@@ -174,10 +174,9 @@ class RPHelpers: NSObject {
                 print("Successfully saved object: \(likes)")
                 
                 // Re-enable button
-                activeButton!.isUserInteractionEnabled = true
-                
+                activeButton?.isUserInteractionEnabled = true
                 // Change button
-                activeButton!.setImage(UIImage(named: "LikeFilled"), for: .normal)
+                activeButton?.setImage(UIImage(named: "HeartFilled"), for: .normal)
                 
                 // Animate like button
                 UIView.animate(withDuration: 0.6 ,
@@ -207,7 +206,7 @@ class RPHelpers: NSObject {
     // MARK: - Parse; Function to unlike object and remove notification
     open func unlikeObject(forObject: PFObject?, activeButton: UIButton?) {
         // Disable button
-        activeButton!.isUserInteractionEnabled = false
+        activeButton?.isUserInteractionEnabled = false
         
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: forObject!.objectId!)
@@ -218,11 +217,9 @@ class RPHelpers: NSObject {
                     object.deleteInBackground()
                     
                     // Re-enable button
-                    activeButton!.isUserInteractionEnabled = true
-                    
+                    activeButton?.isUserInteractionEnabled = true
                     // Set Button Image
-                    activeButton!.setImage(UIImage(named: "Like"), for: .normal)
-                    
+                    activeButton?.setImage(UIImage(named: "Like"), for: .normal)
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
                                    animations: { activeButton!.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
@@ -253,12 +250,7 @@ class RPHelpers: NSObject {
         })
     }
     
-    // MARK: - Parse; Function to set likes, comments, and shares for PFObject
-    func setInteractions(forObject: PFObject?, activeButton: UIButton?) {
-        
-    }
-    
-    
+
     // MARK: - Parse; Function to update <ChatsQueue>
     open func updateQueue(chatQueue: PFObject?, userObject: PFObject?) {
         let frontChat = PFQuery(className: "ChatsQueue")

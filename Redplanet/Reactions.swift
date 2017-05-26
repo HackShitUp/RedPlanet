@@ -535,7 +535,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Likes"
             reactionsHeader.reactButton.isHidden = false
             if reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                reactionsHeader.reactButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
+                reactionsHeader.reactButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
             } else {
                 reactionsHeader.reactButton.setImage(UIImage(named: "Like"), for: .normal)
             }
