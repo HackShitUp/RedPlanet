@@ -26,16 +26,16 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     let appDelegate = AppDelegate()
     // Array to hold users to share with
     var usersToShareWith = [PFObject]()
-    // Array to hold following
-    var following = [PFObject]()
     
-    // Array to hold searched
-    var searchedUsers = [PFObject]()
     // Initialize UISearchBar
     var searchBar = UISearchBar()
-    
     // PFQuery limit; pipline method initialization
     var page: Int = 50
+    
+    // Array to hold following
+    var abcFollowing = [PFObject]()
+    // Array to hold searched
+    var searchedUsers = [PFObject]()
     
     @IBAction func backAction(_ sender: Any) {
         // Pop VC
@@ -248,22 +248,27 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // Create array
+                var following = [PFObject]()
                 // Clear array
-                self.following.removeAll(keepingCapacity: false)
+                following.removeAll(keepingCapacity: false)
                 for object in objects! {
                     if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "following") as! PFUser).objectId!}) {
-                        self.following.append(object.object(forKey: "following") as! PFUser)
+                        following.append(object.object(forKey: "following") as! PFUser)
                     }
                 }
+                
+                // Reload data in main thread
+                DispatchQueue.main.async(execute: {
+                    self.abcFollowing = following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+                    self.tableView.reloadData()
+                })
+                
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
-            }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
             }
         }
     }
@@ -313,6 +318,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     }
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        // EMPTY
     }
     
     
@@ -394,7 +400,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 // Clear arrays
                 self.searchedUsers.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    if self.following.contains(where: {$0.objectId! == object.objectId!}) {
+                    if self.abcFollowing.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchedUsers.append(object)
                     }
                 }
@@ -432,7 +438,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             if section == 0 {
                 return 1
             } else {
-                return self.following.count
+                return self.abcFollowing.count
             }
         }
     }
@@ -443,7 +449,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         header.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         header.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
         header.textAlignment = .left
-        
         if self.tableView.numberOfSections == 1 {
             header.text = "   Searched..."
         } else {
@@ -476,54 +481,51 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "shareWithCell") as! ShareWithCell
-        
-        // Set selection tintColor
+        // Configure UITableViewCell's accessory tintColor
         cell.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-        cell.selectionStyle = .none
-        
+    
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        
         switch self.tableView.numberOfSections {
         case 2:
-        // FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
-            // Everyone -- Post
+            // POST
+                
                 cell.rpUserProPic.image = UIImage(named: "ShareOP")
                 cell.rpFullName.text! = "Post"
                 // Configure selected state
                 if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                    cell.contentView.backgroundColor = UIColor.groupTableViewBackground
                     cell.accessoryType = .checkmark
                 } else {
+                    cell.contentView.backgroundColor = UIColor.white
                     cell.accessoryType = .none
                 }
                 
             } else {
-                
-            // One - Many Person(s)
-                // Sort following in abcOrder
-                let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
-                
+            // FOLLOWING
+
                 // (1) Set name
-                cell.rpFullName.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+                cell.rpFullName.text! = self.abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
                 // (2) Set Profile Photo
-                if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                if let proPic = self.abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
-                
                 // (3) Configure selected state
-                if self.usersToShareWith.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
+                if self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
+                    cell.contentView.backgroundColor = UIColor.groupTableViewBackground
                     cell.accessoryType = .checkmark
                 } else {
+                    cell.contentView.backgroundColor = UIColor.white
                     cell.accessoryType = .none
                 }
             }
             
         case 1:
         // SEARCHED
-            
+
             // (1) Set name
             cell.rpFullName.text! = self.searchedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
             // (2) Set Profile Photo
@@ -531,9 +533,14 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
-            // (3) Set selected state to none
-            cell.accessoryType = .none
-            
+            // (3) Configure selected state
+            if self.usersToShareWith.contains(where: {$0.objectId! == self.searchedUsers[indexPath.row].objectId!}) {
+                cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+                cell.accessoryType = .checkmark
+            } else {
+                cell.contentView.backgroundColor = UIColor.white
+                cell.accessoryType = .none
+            }
         default:
             break
         }
@@ -547,9 +554,11 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         // Append object to array
         switch self.tableView.numberOfSections {
         case 1:
+        // SEARCHED
             // Append searched object
-            if !self.searchedUsers.contains(where: {$0.objectId! == self.searchedUsers[indexPath.row].objectId!}) {
-                self.searchedUsers.append(self.searchedUsers[indexPath.row])
+            if !self.usersToShareWith.contains(where: {$0.objectId! == self.searchedUsers[indexPath.row].objectId!}) {
+                self.usersToShareWith.append(self.searchedUsers[indexPath.row])
+                print("Appeneding: \(self.usersToShareWith)")
             }
             // Resign first responder
             self.searchBar.resignFirstResponder()
@@ -559,23 +568,25 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             fetchFollowing()
 
         case 2:
+        // POST: Append current user's object
             if indexPath.section == 0 && indexPath.row == 0 && !self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}){
-                // Append current user's object
                 self.usersToShareWith.append(PFUser.current()!)
                 
             } else {
-                // Sort Following in ABC-Order
-                let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+        // FOLLOWING: Sort Following in ABC-Order
                 // Append following object
-                if !self.usersToShareWith.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
-                    self.usersToShareWith.append(abcFollowing[indexPath.row])
+                if !self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
+                    self.usersToShareWith.append(self.abcFollowing[indexPath.row])
                 }
             }
         default:
             break;
         }
         // Configure selected state
-        tableView.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
+        if let cell = tableView.cellForRow(at: indexPath) {
+            cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+            cell.accessoryType = .checkmark
+        }
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -594,23 +605,27 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 // Remove: PFUser.current()!
                 self.usersToShareWith.remove(at: self.usersToShareWith.index(of: PFUser.current()!)!)
             } else {
-                // Sort Following
-                let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
-                // Remove: Following
-                self.usersToShareWith.remove(at: self.usersToShareWith.index(of: abcFollowing[indexPath.row])!)
+                // Remove object at index
+                if let removalIndex = self.usersToShareWith.index(of: self.abcFollowing[indexPath.row]) {
+                    self.usersToShareWith.remove(at: removalIndex)
+                }
             }
         default:
             break;
         }
         // Configure selected state
-        tableView.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
+        if let cell = tableView.cellForRow(at: indexPath) {
+            cell.contentView.backgroundColor = UIColor.white
+            cell.accessoryType = .none
+        }
+        
     }
     
     // MARK: - UIScrollView Delegate Method
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             // If posts on server are > than shown
-            if page <= self.following.count {
+            if page <= self.abcFollowing.count {
                 // Increase page size to load more posts
                 page = page + 50
                 // Query friends

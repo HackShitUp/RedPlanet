@@ -129,10 +129,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    // Configure view
-                    self.configureView()
                     // Reload data
                     self.collectionView.reloadData()
+                    // Configure view
+                    self.configureView()
                 })
                 
             } else {
@@ -197,7 +197,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // MARK: - SVProgressHUD
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor.groupTableViewBackground)
-        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 15))
+        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 21))
         SVProgressHUD.show(withStatus: "\((storyObjects.last!.value(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String)")
         
         // Fetch Stories

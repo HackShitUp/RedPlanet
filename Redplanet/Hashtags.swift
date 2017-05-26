@@ -14,9 +14,9 @@ import Bolts
 
 import AnimatedCollectionViewLayout
 import SDWebImage
+import DZNEmptyDataSet
 
-
-class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate {
+class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Class Variable
     var hashtagString = String()
@@ -109,7 +109,8 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                             }
                         } else {
                             // MARK: - DZNEmptyDataSet
-                            // TODO::
+                            self.collectionView.emptyDataSetSource = self
+                            self.collectionView.emptyDataSetDelegate = self
                         }
                         
                     } else {
@@ -143,12 +144,12 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
-        layout.animator = LinearCardAttributesAnimator()
+        layout.animator = CubeAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         collectionView!.collectionViewLayout = layout
         collectionView!.frame = self.view.bounds
         collectionView!.isPagingEnabled = true
