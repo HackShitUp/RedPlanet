@@ -18,25 +18,30 @@ import DZNEmptyDataSet
 
 class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // MARK: - Class Variable
+    // MARK: - Class Configureable Variable
     var hashtagString = String()
+    
+    
+    // ScrollSets for database <contentType>
+    let scrollSets = ["tp", "ph", "pp", "sp"]
+    // AppDelegate
+    let appDelegate = AppDelegate()
     
     // Array to hold # PFObject ids...
     var hashtagIds = [String]()
     // Public users
     var publicUsers = [PFObject]()
-    // Posts/Skipped
+    // Posts
     var posts = [PFObject]()
-    var skipped = [PFObject]()
+    // Used for skipping/rewinding segments
+    var lastOffSet: CGPoint?
+    // Variabel to hold currentIndex
+    var currentIndex: Int? = 0
     
-    let scrollSets = ["tp", "ph", "pp", "vi", "sp"]
-    
-    // AppDelegate
-    let appDelegate = AppDelegate()
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    // Function to fetch hashtags
+    // FUNCTION - Fetch hashtags
     func fetchHastags() {
         let hashtags = PFQuery(className: "Hashtags")
         hashtags.whereKey("hashtag", equalTo: hashtagString)
@@ -49,18 +54,15 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                 for object in objects! {
                     self.hashtagIds.append(object.value(forKey: "forObjectId") as! String)
                 }
-                
                 // Fetch posts
                 self.fetchPosts()
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
-
     }
     
-    // Function to fetch hashtag posts
+    // FUNCTION - Fetch hashtag Posts
     func fetchPosts() {
         // Get blocked users
         _ = appDelegate.queryRelationships()
@@ -96,8 +98,6 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
 //                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
 //                            if difference.hour! < 24 {
 //                                self.posts.append(object)
-//                            } else {
-//                                self.skipped.append(object)
 //                            }
                             self.posts.append(object)
                         }
@@ -107,23 +107,50 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                             DispatchQueue.main.async {
                                 self.collectionView.reloadData()
                             }
-                        } else {
-                            // MARK: - DZNEmptyDataSet
-                            self.collectionView.emptyDataSetSource = self
-                            self.collectionView.emptyDataSetDelegate = self
                         }
                         
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
-        
+    }
+    
+    
+    
+    
+    
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.posts.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let font = UIFont(name: "AvenirNext-Medium", size: 25)
+        let attributeDictionary: [String: AnyObject]? = [ NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!]
+        return NSAttributedString(string: "💩\nUh oh, we couldn't find\n#\(self.hashtagString.uppercased())\n...",
+            attributes: attributeDictionary)
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "OK"
+        let font = UIFont(name: "AvenirNext-Bold", size: 17)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!
+        ]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - UIView Life Cycle
@@ -142,6 +169,10 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         // Fetch hastags
         fetchHastags()
         
+        // MARK: - DZNEmptyDataSet
+        self.collectionView!.emptyDataSetSource = self
+        self.collectionView!.emptyDataSetDelegate = self
+        
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.animator = CubeAttributesAnimator()
@@ -153,7 +184,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         collectionView!.collectionViewLayout = layout
         collectionView!.frame = self.view.bounds
         collectionView!.isPagingEnabled = true
-        collectionView!.backgroundColor = UIColor.white
+        collectionView!.backgroundColor = UIColor.black
     
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
@@ -172,7 +203,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
 
     
     
-    // MARK: UICollectionViewDataSource
+    // MARK: UICollectionView DataSource Methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -278,42 +309,45 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if self.posts[tableView.tag].value(forKey: "contentType") as! String == "tp" {
             // TEXT POST
+            
             let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
-            
-            // Set PFObject
-            tpCell.postObject = self.posts[tableView.tag]
-            tpCell.superDelegate = self
-            tpCell.updateView(withObject: self.posts[tableView.tag])
-            
+            tpCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            tpCell.superDelegate = self                                   // Set parent UIViewController
+            tpCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return tpCell
             
         } else if self.posts[tableView.tag].value(forKey: "contentType") as! String == "ph" {
             // PHOTO
+            
             let phCell = Bundle.main.loadNibNamed("PhotoCell", owner: self, options: nil)?.first as! PhotoCell
-            
-            phCell.postObject = self.posts[tableView.tag]
-            phCell.superDelegate = self
-            phCell.updateView(withObject: self.posts[tableView.tag])
-            
+            phCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            phCell.superDelegate = self                                   // Set parent UIViewController
+            phCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return phCell
             
-        } else {
-            // if self.stories[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+        } else if self.posts[tableView.tag].value(forKey: "contentType") as! String == "pp" {
             // PROFILE PHOTO
+            
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
-            
-            ppCell.postObject = self.posts[tableView.tag]
-            ppCell.superDelegate = self
-            ppCell.updateView(withObject: self.posts[tableView.tag])
-            
+            ppCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            ppCell.superDelegate = self                                   // Set parent UIViewController
+            ppCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return ppCell
+            
+        } else {
+            // SPACE POST
+            let spCell = Bundle.main.loadNibNamed("SpacePostCell", owner: self, options: nil)?.first as! SpacePostCell
+            spCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            spCell.superDelegate = self                                   // Set parent UIViewController
+            spCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
+            return spCell
         }
+        
     }
     
-    
+    // MARK: - UIScrollView Delegate Method
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.contentOffset.y <= 0 && scrollView.contentOffset.x == 0 {
             self.dismiss(animated: true, completion: nil)

@@ -30,21 +30,18 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // ScrollSets for database <contentType>
     let scrollSets = ["tp", "ph", "pp", "sp"]
     
-    // Array to hold stories
-    var stories = [PFObject]()
+    // Array to hold posts
+    var posts = [PFObject]()
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
     
     
-    
-    
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     // MARK: - VIMVideoPlayer
     var vimVideoPlayerView: VIMVideoPlayerView?
-    
     
     
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
@@ -60,7 +57,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // FUNCTION - Configure view
     func configureView() {
         // MARK: - SegmentedProgressBar
-        self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
+        self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
         self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
         self.spb.topColor = UIColor.white
         self.spb.layer.applyShadow(layer: self.spb.layer)
@@ -114,7 +111,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 SVProgressHUD.dismiss()
                 
                 // Clear array
-                self.stories.removeAll(keepingCapacity: false)
+                self.posts.removeAll(keepingCapacity: false)
                 // Reverse chronology
                 for object in objects!.reversed() {
                     // Ephemeral content
@@ -123,7 +120,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     if difference.hour! < 24 {
 //                        self.stories.append(object)
                     }
-                    self.stories.append(object)
+                    self.posts.append(object)
                 }
                 
                 
@@ -168,12 +165,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     self.like(sender: self)
                 case "rpComment":
                 // COMMENT
-                    reactionObject.append(self.stories[self.currentIndex!])
+                    reactionObject.append(self.posts[self.currentIndex!])
                     let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
                     self.navigationController?.pushViewController(reactionsVC, animated: true)
                 case "rpShare":
                 // SHARE
-                    shareWithObject.append(self.stories[self.currentIndex!])
+                    shareWithObject.append(self.posts[self.currentIndex!])
                     let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                     self.navigationController?.pushViewController(shareWithVC, animated: true)
             default:
@@ -271,7 +268,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.stories.count
+        return self.posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -281,11 +278,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         // TEXT POST, PHOTO, PROFILE PHOTO, SPACE POST
-        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
+        if self.scrollSets.contains(self.posts[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
             // Set PFObject
-            scrollCell.postObject = self.stories[indexPath.item]
+            scrollCell.postObject = self.posts[indexPath.item]
             // Set parent UIViewController
             scrollCell.delegate = self
             // Set UITableView Data Source and Delegates
@@ -293,43 +290,43 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             return scrollCell
         }
         
-        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
         // MOMENT VIDEO
             
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             // Add and play || pause video when visible
             if self.currentIndex == indexPath.item {
                 // Set PFObject, parent UIViewController, update UI, and play video
-                mvCell.postObject = self.stories[indexPath.item]
+                mvCell.postObject = self.posts[indexPath.item]
                 mvCell.delegate = self
-                mvCell.updateView(withObject: self.stories[indexPath.item], videoPlayer: self.vimVideoPlayerView)
+                mvCell.updateView(withObject: self.posts[indexPath.item], videoPlayer: self.vimVideoPlayerView)
                 self.vimVideoPlayerView?.player.play()
             }
             return mvCell
         }
         
-        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.stories[indexPath.item].value(forKey: "videoAsset") != nil {
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
         // VIDEO
             let videoCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as! VideoCell
             // Add and play || pause video when visible
             if self.currentIndex == indexPath.item {
                 // Set PFObject, parent UIViewController, update UI, and play video
-                videoCell.postObject = self.stories[indexPath.item]
+                videoCell.postObject = self.posts[indexPath.item]
                 videoCell.delegate = self
-                videoCell.updateView(withObject: self.stories[indexPath.item], videoPlayer: self.vimVideoPlayerView)
+                videoCell.updateView(withObject: self.posts[indexPath.item], videoPlayer: self.vimVideoPlayerView)
                 self.vimVideoPlayerView?.player.play()
             }
             return videoCell
         }
         
         
-        if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
             
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
-            mpCell.postObject = self.stories[indexPath.item]                // Set PFObject
+            mpCell.postObject = self.posts[indexPath.item]                // Set PFObject
             mpCell.delegate = self                                          // Set parent UIViewController
-            mpCell.updateView(withObject: self.stories[indexPath.item])     // Update UI
+            mpCell.updateView(withObject: self.posts[indexPath.item])     // Update UI
             return mpCell
         }
         
@@ -367,13 +364,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView!.reloadData()
 
         // Reload data
-        if self.stories[self.currentIndex!].value(forKey: "videoAsset") != nil {
+        if self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-        } else if self.currentIndex! != 0 && self.stories[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
+        } else if self.currentIndex! != 0 && self.posts[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
-        } else if self.currentIndex! != self.stories.count && self.stories[self.currentIndex!].value(forKey: "videoAsset") != nil {
+        } else if self.currentIndex! != self.posts.count && self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
         }
@@ -395,42 +392,42 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if self.stories[tableView.tag].value(forKey: "contentType") as! String == "tp" {
-        // TEXT POST
+        if self.posts[tableView.tag].value(forKey: "contentType") as! String == "tp" {
+            // TEXT POST
             
             let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
-            tpCell.postObject = self.stories[tableView.tag]                 // Set PFObject
-            tpCell.superDelegate = self                                     // Set parent UIViewController
-            tpCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
+            tpCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            tpCell.superDelegate = self                                   // Set parent UIViewController
+            tpCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return tpCell
             
-        } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "ph" {
-        // PHOTO
+        } else if self.posts[tableView.tag].value(forKey: "contentType") as! String == "ph" {
+            // PHOTO
             
             let phCell = Bundle.main.loadNibNamed("PhotoCell", owner: self, options: nil)?.first as! PhotoCell
-            phCell.postObject = self.stories[tableView.tag]                 // Set PFObject
-            phCell.superDelegate = self                                     // Set parent UIViewController
-            phCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
+            phCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            phCell.superDelegate = self                                   // Set parent UIViewController
+            phCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return phCell
             
-        } else if self.stories[tableView.tag].value(forKey: "contentType") as! String == "pp" {
-        // PROFILE PHOTO
+        } else if self.posts[tableView.tag].value(forKey: "contentType") as! String == "pp" {
+            // PROFILE PHOTO
             
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
-            ppCell.postObject = self.stories[tableView.tag]                 // Set PFObject
-            ppCell.superDelegate = self                                     // Set parent UIViewController
-            ppCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
+            ppCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            ppCell.superDelegate = self                                   // Set parent UIViewController
+            ppCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return ppCell
             
         } else {
-        // SPACE POST
+            // SPACE POST
             let spCell = Bundle.main.loadNibNamed("SpacePostCell", owner: self, options: nil)?.first as! SpacePostCell
-            spCell.postObject = self.stories[tableView.tag]                 // Set PFObject
-            spCell.superDelegate = self                                     // Set parent UIViewController
-            spCell.updateView(withObject: self.stories[tableView.tag])      // Update UI
+            spCell.postObject = self.posts[tableView.tag]                 // Set PFObject
+            spCell.superDelegate = self                                   // Set parent UIViewController
+            spCell.updateView(withObject: self.posts[tableView.tag])      // Update UI
             return spCell
         }
-    
+        
     }
     
     // MARK: - UIScrollView Delegate Method
@@ -446,11 +443,38 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
 // MARK: - Stories; Interactive functions go here...
 extension Stories {
     
-    // *** FUNCTION - Save Views ***
+    // FUNCTION - Like Post
+    func like(sender: Any) {
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        // Query likes
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        likes.whereKey("fromUser", equalTo: PFUser.current()!)
+        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                if objects!.isEmpty {
+                    // LIKE POST
+                    rpHelpers.reactLike(forPostObject: self.posts[self.currentIndex!])
+                } else {
+                    // UNLIKE POST
+                    for object in objects! {
+                        rpHelpers.reactUnlike(forLikeObject: object, forPostObject: self.posts[self.currentIndex!])
+                    }
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+                // Show Error
+                rpHelpers.showError(withTitle: "Network Error")
+            }
+        }
+    }
+    
+    // FUNCTION - Save Views
     func saveViews(withIndex: Int) {
         // Save to Views
         let views = PFQuery(className: "Views")
-        views.whereKey("forObject", equalTo: self.stories[withIndex])
+        views.whereKey("forObject", equalTo: self.posts[withIndex])
         views.whereKey("byUser", equalTo: PFUser.current()!)
         views.countObjectsInBackground { (count: Int32, error: Error?) in
             if error == nil && count == 0 {
@@ -458,7 +482,7 @@ extension Stories {
                 let views = PFObject(className: "Views")
                 views["byUser"] = PFUser.current()!
                 views["byUsername"] = PFUser.current()!.username!
-                views["forObject"] = self.stories[withIndex]
+                views["forObject"] = self.posts[withIndex]
                 views["screenshotted"] = false
                 views.saveInBackground()
             } else {
@@ -467,7 +491,7 @@ extension Stories {
         }
     }
     
-    // *** FUNCTION - More options for post ***
+    // FUNCTION - More options for post ***
     func showOption(sender: Any) {
         // Set edit-able contentType's
         let editTypes = ["tp", "ph", "pp", "sp", "vi"]
@@ -492,7 +516,7 @@ extension Stories {
             dialog.dismiss()
             // Views VC
             let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            viewsVC.fetchObject = self.stories[self.currentIndex!]
+            viewsVC.fetchObject = self.posts[self.currentIndex!]
             viewsVC.viewsOrLikes = "Views"
             self.navigationController?.pushViewController(viewsVC, animated: true)
         })
@@ -501,24 +525,24 @@ extension Stories {
         let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
             // Query post
             let posts = PFQuery(className: "Newsfeeds")
-            posts.whereKey("objectId", equalTo: self.stories[self.currentIndex!].objectId!)
+            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
             posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
+                        // Delete object
                         object.deleteInBackground()
-                        
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Deleted")
                         
                         // Reload data
-                        self.stories.remove(at: self.currentIndex!)
+                        self.posts.remove(at: self.currentIndex!)
                         self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
                         if self.currentIndex! == 0 {
                             self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
                                                              at: .right, animated: true)
-                        } else if self.currentIndex! == self.stories.count {
+                        } else if self.currentIndex! == self.posts.count {
                             self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
                                                              at: .right, animated: true)
                         }
@@ -541,7 +565,7 @@ extension Stories {
             dialog.dismiss()
             // Show EditVC
             let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-            editVC.editObject = self.stories[self.currentIndex!]
+            editVC.editObject = self.posts[self.currentIndex!]
             self.navigationController?.pushViewController(editVC, animated: true)
         })
         
@@ -558,12 +582,11 @@ extension Stories {
                 let report = PFObject(className: "Reported")
                 report["byUsername"] = PFUser.current()!.username!
                 report["byUser"] = PFUser.current()!
-                report["to"] = self.stories[self.currentIndex!].value(forKey: "username") as! String
-                report["toUser"] = self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser
-                report["forObjectId"] = self.stories[self.currentIndex!].objectId!
+                report["to"] = self.posts[self.currentIndex!].value(forKey: "username") as! String
+                report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                report["forObjectId"] = self.posts[self.currentIndex!].objectId!
                 report["reason"] = answer.text!
-                report.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
+                report.saveInBackground(block: { (success: Bool, error: Error?) in
                     if success {
                         print("Successfully saved report: \(report)")
                         // Dismiss
@@ -576,12 +599,11 @@ extension Stories {
                 })
             }
             
-            let cancel = UIAlertAction(title: "Cancel",
-                                       style: .cancel,
-                                       handler: { (alertAction: UIAlertAction!) in
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alertAction: UIAlertAction!) in
                                         // Dismiss
                                         dialog.dismiss()
             })
+            
             alert.addTextField(configurationHandler: nil)
             alert.addAction(report)
             alert.addAction(cancel)
@@ -596,9 +618,9 @@ extension Stories {
             return true
         }
         
-        if (self.stories[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+        if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Views, Delete, Edit
-            if editTypes.contains(self.stories[self.currentIndex!].value(forKey: "contentType") as! String) {
+            if editTypes.contains(self.posts[self.currentIndex!].value(forKey: "contentType") as! String) {
                 dialogController.addAction(views)
                 dialogController.addAction(delete)
                 dialogController.addAction(edit)
@@ -617,107 +639,5 @@ extension Stories {
     }
     
     
-    
-    // *** FUNCTION - Like Post ***
-    func like(sender: Any) {
-
-        // Query likes
-        let likes = PFQuery(className: "Likes")
-        likes.whereKey("forObjectId", equalTo: self.stories[self.currentIndex!].objectId!)
-        likes.whereKey("fromUser", equalTo: PFUser.current()!)
-        likes.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                if objects!.isEmpty {
-                // LIKE POST
-                    let likes = PFObject(className: "Likes")
-                    likes["fromUser"] = PFUser.current()!
-                    likes["from"] = PFUser.current()!.username!
-                    likes["forObjectId"] = self.stories[self.currentIndex!].objectId!
-                    likes["toUser"] = self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser
-                    likes["to"] = (self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
-                    likes.saveInBackground(block: { (success: Bool, error: Error?) in
-                        if error == nil {
-                            print("Successfully liked post: \(likes)")
-                            
-                            // MARK: - NotificationBannerSwift
-                            let banner = NotificationBanner(title: "", subtitle: nil, rightView: UIImageView(image: UIImage(named: "HeartFilled")!))
-                            banner.backgroundColor = UIColor.clear
-                            banner.duration = 0.20
-                            banner.show()
-                            
-                            // Save to Notifications
-                            let notifications = PFObject(className: "Notifications")
-                            notifications["fromUser"] = PFUser.current()!
-                            notifications["from"] = PFUser.current()!.username!
-                            notifications["toUser"] = self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser
-                            notifications["to"] = (self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
-                            notifications["forObjectId"] = self.stories[self.currentIndex!].objectId!
-                            notifications["type"] = "like \(self.stories[self.currentIndex!].value(forKey: "contentType") as! String)"
-                            notifications.saveInBackground()
-                            
-                            // MARK: - RPHelpers; pushNotification
-                            let rpHelpers = RPHelpers()
-                            switch self.stories[self.currentIndex!].value(forKey: "contentType") as! String {
-                            case "tp":
-                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Text Post")
-                            case "ph":
-                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Photo")
-                            case "pp":
-                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Profile Photo")
-                            case "vi":
-                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Video")
-                            case "sp":
-                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Space Post")
-                            case "itm":
-                                rpHelpers.pushNotification(toUser: self.stories[self.currentIndex!].value(forKey: "byUser") as! PFUser, activityType: "liked your Moment")
-                            default:
-                                break;
-                            }
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
-                } else {
-                // UNLIKE POST
-                    for object in objects! {
-                        object.deleteInBackground(block: { (success: Bool, error: Error?) in
-                            if error == nil {
-                                print("Deleted from <Likes>: \(object)")
-
-                                // MARK: - NotificationBannerSwift
-                                let banner = NotificationBanner(title: "", subtitle: nil, rightView: UIImageView(image: UIImage(named: "HeartBroken")!))
-                                banner.backgroundColor = UIColor.clear
-                                banner.duration = 0.20
-                                banner.show()
-                                
-                                // Delete from Notifications
-                                let notifications = PFQuery(className: "Notifications")
-                                notifications.whereKey("type", equalTo: "like \(self.stories[self.currentIndex!].value(forKey: "contentType") as! String)")
-                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                notifications.whereKey("forObjectId", equalTo: self.stories[self.currentIndex!].objectId!)
-                                notifications.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
-                                    if error == nil {
-                                        for object in objects! {
-                                            object.deleteInBackground()
-                                        }
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-    }
     
 }

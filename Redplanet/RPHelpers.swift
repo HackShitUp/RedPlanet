@@ -18,7 +18,11 @@ import Bolts
 
 class RPHelpers: NSObject {
     
-    // MARK: - NotificationBanner; used to show statusbar success/error
+    
+    
+    /**************************************************************************************************
+    // MARK: - NotificationBanner; used to show statusbar progress/success/error --> Color variations
+    **************************************************************************************************/
     func showProgress(withTitle: String?) {
         // MARK: - NotificationBannerSwift
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
@@ -42,7 +46,11 @@ class RPHelpers: NSObject {
         banner.show()
     }
 
+    
+    
+    /******************************************************************************************
     // MARK: - OpenWeatherMap.org API
+    *******************************************************************************************/
     open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
         // Clear global array --> "CapturedStill.swift"
         temperature.removeAll(keepingCapacity: false)
@@ -76,7 +84,12 @@ class RPHelpers: NSObject {
         }) .resume()
     }
     
-    // MARK: - Parse; Function to check for #'s
+    
+    
+    /******************************************************************************************
+    // MARK: - Parse; Function to check for #'s and @'s
+    *******************************************************************************************/
+    // Check for #'s
     open func checkHash(forObject: PFObject?, forText: String?) {
         // Loop through words to check for @ prefixes
         for var word in forText!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
@@ -97,6 +110,7 @@ class RPHelpers: NSObject {
         }
     }
     
+    // Check for @'s
     open func checkTags(forObject: PFObject?, forText: String?, postType: String?) {
         // Loop through words to check for @ prefixes
         for var word in forText!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
@@ -157,7 +171,125 @@ class RPHelpers: NSObject {
             }
         }
     }
+    
+    
+    
+    /******************************************************************************************
+    //  MARK: - Reactions Like Function; Called to like/unlike posts in Stories
+    *******************************************************************************************/
+    // Like Post
+    open func reactLike(forPostObject: PFObject) {
+        // LIKE POST
+        let likes = PFObject(className: "Likes")
+        likes["fromUser"] = PFUser.current()!
+        likes["from"] = PFUser.current()!.username!
+        likes["forObjectId"] = forPostObject.objectId!
+        likes["toUser"] = forPostObject.value(forKey: "byUser") as! PFUser
+        likes["to"] = (forPostObject.value(forKey: "byUser") as! PFUser).username!
+        likes.saveInBackground(block: { (success: Bool, error: Error?) in
+            if error == nil {
+                print("Successfully liked post: \(likes)")
+                
+                // MARK: - NotificationBannerSwift
+                let banner = NotificationBanner(title: "", subtitle: nil, rightView: UIImageView(image: UIImage(named: "HeartFilled")!))
+                banner.backgroundColor = UIColor.clear
+                banner.duration = 0.20
+                banner.show()
+                
+                // Save to Notifications
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = forPostObject.value(forKey: "byUser") as! PFUser
+                notifications["to"] = (forPostObject.value(forKey: "byUser") as! PFUser).username!
+                notifications["forObjectId"] = forPostObject.objectId!
+                notifications["type"] = "like \(forPostObject.value(forKey: "contentType") as! String)"
+                notifications.saveInBackground()
+                
+                // MARK: - Self; pushNotification
+                switch forPostObject.value(forKey: "contentType") as! String {
+                case "tp":
+                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                                          activityType: "liked your Text Post")
+                case "ph":
+                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                                          activityType: "liked your Photo")
+                case "pp":
+                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                                          activityType: "liked your Profile Photo")
+                case "vi":
+                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                                          activityType: "liked your Video")
+                case "sp":
+                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                                          activityType: "liked your Space Post")
+                case "itm":
+                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                                          activityType: "liked your Moment")
+                default:
+                    break;
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                // Show Error
+                self.showError(withTitle: "Network Error")
+            }
+        })
+    }
+    
+    /******************************************************************************************
+    // MARK: - Reactions Unlike Function
+    *******************************************************************************************/
+    // Unlike post
+    open func reactUnlike(forLikeObject: PFObject, forPostObject: PFObject) {
+        forLikeObject.deleteInBackground(block: { (success: Bool, error: Error?) in
+            if success {
+                print("Deleted from <Likes>: \(forLikeObject)")
+                
+                // MARK: - NotificationBannerSwift
+                let banner = NotificationBanner(title: "", subtitle: nil, rightView: UIImageView(image: UIImage(named: "HeartBroken")!))
+                banner.backgroundColor = UIColor.clear
+                banner.duration = 0.20
+                banner.show()
+                
+                // Delete from Notifications
+                let notifications = PFQuery(className: "Notifications")
+                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                notifications.whereKey("forObjectId", equalTo: forPostObject.objectId!)
+                notifications.whereKey("type", equalTo: "like \(forPostObject.value(forKey: "contentType") as! String)")
+                notifications.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        for object in objects! {
+                            object.deleteInBackground()
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Show Error
+                        self.showError(withTitle: "Network Error")
+                    }
+                })
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                // Show Error
+                self.showError(withTitle: "Network Error")
+            }
+        })
+    }
+    
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     // MARK: -  Parse; Function to like object and save notification
     open func likeObject(forObject: PFObject?, notificationType: String?, activeButton: UIButton?) {
         // Disable button
@@ -249,9 +381,31 @@ class RPHelpers: NSObject {
             }
         })
     }
-    
+    */
 
-    // MARK: - Parse; Function to update <ChatsQueue>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /******************************************************************************************
+    // MARK: - Parse; Function to update <ChatsQueue>'s pointer, "lastChat" in Database and Server
+    *******************************************************************************************/
     open func updateQueue(chatQueue: PFObject?, userObject: PFObject?) {
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
@@ -282,7 +436,9 @@ class RPHelpers: NSObject {
         })
     }
     
+    /******************************************************************************************
     // MARK: - Parse; Function to create a new queue in <ChatsQueue>
+    *******************************************************************************************/
     open func createQueue(frontUser: PFObject?, endUser: PFObject?, chatObject: PFObject?) {
         let chatsQueue = PFObject(className: "ChatsQueue")
         chatsQueue["frontUser"] = frontUser!
@@ -295,7 +451,10 @@ class RPHelpers: NSObject {
     }
     
     
+    
+    /******************************************************************************************
     // MARK: - OneSignal; Function to send Push Notifications
+    *******************************************************************************************/
     open func pushNotification(toUser: PFObject?, activityType: String?) {
         // Handle nil for user's apnsId
         if let apnsId = toUser!.value(forKey: "apnsId") as? String {

@@ -181,7 +181,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     }
     
     
-    // MARK: DZNEmptyDataSet
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.posts.count == 0 {
             return true
