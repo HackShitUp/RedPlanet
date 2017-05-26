@@ -72,6 +72,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width/4, height: UIScreen.main.bounds.size.width/4)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
+        
         collectionView!.collectionViewLayout = layout
         collectionView!.reloadData()
         

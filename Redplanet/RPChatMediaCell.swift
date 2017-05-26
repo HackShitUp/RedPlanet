@@ -69,12 +69,11 @@ class RPChatMediaCell: UITableViewCell {
     
     // FUNCTION - Show story; "itm"
     func showStory() {
+        // ChatStoryVC
+        let chatStoryVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "chatStoryVC") as! ChatStory
         // MARK: - RPPopUpVC
         let rpPopUpVC = RPPopUpVC()
-        let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-        storyVC.singleStory = self.postObject!
-        storyVC.chatOrStory = "Chat"
-        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: chatStoryVC)
         self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
     }
     
@@ -132,7 +131,9 @@ class RPChatMediaCell: UITableViewCell {
             } else if withObject.value(forKey: "contentType") as! String == "itm" {
                 // (B) MOMENT
                 // MARK: - RPExtensions
-                rpMediaPreview.makeCircular(forView: rpMediaPreview, borderWidth: 0, borderColor: UIColor.clear)
+                rpMediaPreview.makeCircular(forView: rpMediaPreview,
+                                            borderWidth: 3,
+                                            borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
                 
                 // Add Moment Tap
                 let momentTap = UITapGestureRecognizer(target: self, action: #selector(showStory))
@@ -164,11 +165,13 @@ class RPChatMediaCell: UITableViewCell {
             if withObject.value(forKey: "contentType") as! String == "vi" {
                 // (A) REGULAR: VIDEO; Draw Purple Border
                 // MARK: - RPExtensions
-                rpMediaPreview.makeCircular(forView: rpMediaPreview, borderWidth: 3.50, borderColor: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
+                rpMediaPreview.makeCircular(forView: rpMediaPreview, borderWidth: 0, borderColor: UIColor.clear)
             } else {
                 // (B) MOMENT; Make circular
                 // MARK: - RPExtensions
-                rpMediaPreview.makeCircular(forView: rpMediaPreview, borderWidth: 0, borderColor: UIColor.clear)
+                rpMediaPreview.makeCircular(forView: rpMediaPreview,
+                                            borderWidth: 3,
+                                            borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
             }
         }
 

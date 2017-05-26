@@ -35,14 +35,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var lastOffSet: CGPoint?
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
-    
+
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     // MARK: - VIMVideoPlayer
     var vimVideoPlayerView: VIMVideoPlayerView?
-    
-    
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     let reactionSelector = ReactionSelector()
@@ -51,48 +49,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                      Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!),
                      Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
     
-    @IBOutlet weak var collectionView: UICollectionView!
     
-    // FUNCTION - Configure view
-    func configureView() {
-        // MARK: - SegmentedProgressBar
-        self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
-        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
-        self.spb.topColor = UIColor.white
-        self.spb.layer.applyShadow(layer: self.spb.layer)
-        self.spb.padding = 2
-        self.spb.delegate = self
-        self.view.addSubview(self.spb)
-        self.spb.startAnimation()
-        
-        // MARK: - Reactions
-        // (2) Create ReactionSelector and add Reactions from <1>
-        reactionSelector.feedbackDelegate = self
-        reactionSelector.setReactions(reactions)
-
-        // (3) Configure ReactionSelector
-        reactionSelector.config = ReactionSelectorConfig {
-            $0.spacing = 12
-            $0.iconSize = 35
-            $0.stickyReaction = true
-        }
-        // (4) Set ReactionSelector
-        reactButton.reactionSelector = reactionSelector
-        // (5) Configure reactButton
-        reactButton.config = ReactionButtonConfig() {
-            $0.iconMarging = 8
-            $0.spacing = 8
-            $0.alignment = .centerLeft
-            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
-            $0.neutralTintColor = UIColor.black
-        }
-        reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
-        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
-        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
-        reactButton.layer.applyShadow(layer: reactButton.layer)
-        view.addSubview(reactButton)
-        view.bringSubview(toFront: reactButton)
-    }
+    
+    @IBOutlet weak var collectionView: UICollectionView!
 
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
@@ -101,8 +60,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
-//        newsfeeds.limit = 500
-        newsfeeds.limit = 10
+        newsfeeds.limit = 500
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -117,17 +75,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-//                        self.stories.append(object)
+                        self.posts.append(object)
                     }
-                    self.posts.append(object)
                 }
                 
-                
-                // Reload data in main thread
+                // Reload data in main thread and configureView
                 DispatchQueue.main.async(execute: {
-                    // Reload data
                     self.collectionView.reloadData()
-                    // Configure view
                     self.configureView()
                 })
                 
@@ -141,6 +95,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
+    
+    
     
     // MARK: - SegmentedProgressBar Delegate Methods
     func segmentedProgressBarChangedIndex(index: Int) {
@@ -180,6 +136,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
     }
     
+    
+    
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -194,7 +152,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor.groupTableViewBackground)
         SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 21))
-        SVProgressHUD.show(withStatus: "\((storyObjects.last!.value(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String)")
+        SVProgressHUD.show()
         
         // Fetch Stories
         fetchStories()
@@ -261,7 +219,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     
-    // MARK: UICollectionViewDataSource
+    // MARK: UICollectionView DataSource Methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -324,7 +282,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             mpCell.postObject = self.posts[indexPath.item]                // Set PFObject
-            mpCell.delegate = self                                          // Set parent UIViewController
+            mpCell.delegate = self                                        // Set parent UIViewController
             mpCell.updateView(withObject: self.posts[indexPath.item])     // Update UI
             return mpCell
         }
@@ -342,9 +300,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb.skip()
+            self.spb?.skip()
         } else if self.lastOffSet!.x > scrollView.contentOffset.x {
-            self.spb.rewind()
+            self.spb?.rewind()
         }
         
         // Get visible indexPath
@@ -439,8 +397,49 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Stories; Interactive functions go here...
+// MARK: - Stories; Functions for "configureView", "likePost", "unlikePost", "saveViews", and "showOptions"
 extension Stories {
+    
+    // FUNCTION - Configure view
+    func configureView() {
+        // MARK: - SegmentedProgressBar
+        self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
+        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
+        self.spb.topColor = UIColor.white
+        self.spb.layer.applyShadow(layer: self.spb.layer)
+        self.spb.padding = 2
+        self.spb.delegate = self
+        self.view.addSubview(self.spb)
+        self.spb.startAnimation()
+        
+        // MARK: - Reactions
+        // (2) Create ReactionSelector and add Reactions from <1>
+        reactionSelector.feedbackDelegate = self
+        reactionSelector.setReactions(reactions)
+        
+        // (3) Configure ReactionSelector
+        reactionSelector.config = ReactionSelectorConfig {
+            $0.spacing = 12
+            $0.iconSize = 35
+            $0.stickyReaction = true
+        }
+        // (4) Set ReactionSelector
+        reactButton.reactionSelector = reactionSelector
+        // (5) Configure reactButton
+        reactButton.config = ReactionButtonConfig() {
+            $0.iconMarging = 8
+            $0.spacing = 8
+            $0.alignment = .centerLeft
+            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
+            $0.neutralTintColor = UIColor.black
+        }
+        reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
+        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
+        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
+        reactButton.layer.applyShadow(layer: reactButton.layer)
+        view.addSubview(reactButton)
+        view.bringSubview(toFront: reactButton)
+    }
     
     // FUNCTION - Like Post
     func like(sender: Any) {
@@ -531,9 +530,21 @@ extension Stories {
                     for object in objects! {
                         // Delete object
                         object.deleteInBackground()
+                        
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Deleted")
+                        
+                        // Replace userProfilePicture if contentType is "pp"
+                        if object.value(forKey: "contentType") as! String == "pp" {
+                            // Save PFFile context
+                            let proPicData = UIImageJPEGRepresentation(UIImage(named: "GenderNeutralUser")!, 1)
+                            let parseFile = PFFile(data: proPicData!)
+                            // Replace with "GenderNeutralUser"
+                            PFUser.current()!["userProfilePicture"] = parseFile
+                            PFUser.current()!["proPicExists"] = true
+                            PFUser.current()!.saveInBackground()
+                        }
                         
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
@@ -636,7 +647,4 @@ extension Stories {
             dialogController.show(in: self)
         }
     }
-    
-    
-    
 }

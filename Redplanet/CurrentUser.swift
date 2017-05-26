@@ -97,7 +97,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         toUser.whereKey("toUser", equalTo: PFUser.current()!)
         // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
-        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
+        newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
         newsfeeds.findObjectsInBackground {
@@ -143,7 +143,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         let saved = PFQuery(className: "Newsfeeds")
         saved.whereKey("byUser", equalTo: PFUser.current()!)
         saved.whereKey("saved", equalTo: true)
-        saved.includeKeys(["byUser", "toUser", "pointObject"])
+        saved.includeKeys(["byUser", "toUser"])
         saved.order(byDescending: "createdAt")
         saved.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in

@@ -2282,6 +2282,46 @@
             </objects>
             <point key="canvasLocation" x="2850" y="-557"/>
         </scene>
+        <!--Chat Story-->
+        <scene sceneID="gaP-jv-UzS">
+            <objects>
+                <viewController storyboardIdentifier="chatStoryVC" id="mGh-SE-fwt" customClass="ChatStory" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OGx-4B-Unn"/>
+                        <viewControllerLayoutGuide type="bottom" id="hsJ-Pm-yj8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="20g-Oh-lkp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Jkg-XO-Hdk">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="QPs-EG-33d">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Jkg-XO-Hdk" firstAttribute="top" secondItem="20g-Oh-lkp" secondAttribute="top" id="bj0-IO-aQi"/>
+                            <constraint firstItem="Jkg-XO-Hdk" firstAttribute="leading" secondItem="20g-Oh-lkp" secondAttribute="leading" id="fAZ-pH-hyu"/>
+                            <constraint firstAttribute="trailing" secondItem="Jkg-XO-Hdk" secondAttribute="trailing" id="mOg-DH-r72"/>
+                            <constraint firstItem="hsJ-Pm-yj8" firstAttribute="top" secondItem="Jkg-XO-Hdk" secondAttribute="bottom" id="y9I-8f-PKG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="Jkg-XO-Hdk" id="d1V-AU-KMz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kYq-hD-BeU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3308" y="-557"/>
+        </scene>
         <!--Camera-->
         <scene sceneID="ge8-LM-Iyl">
             <objects>

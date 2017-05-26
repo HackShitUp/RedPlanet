@@ -21,9 +21,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
 
     // Initialize parent VC
     var delegate: UIViewController?
-    
-    // Initiliaze AppDelegate
-    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
     @IBOutlet weak var myProPic: PFImageView!
     @IBOutlet weak var numberOfPosts: UIButton!
@@ -33,7 +30,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var userBio: KILabel!
     @IBOutlet weak var segmentView: UIView!
     
-    // Function to show followers
+    // FUNCITON - Show followers
     func showFollowers() {
         // Append data
         relationForUser.append(PFUser.current()!)
@@ -44,7 +41,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
-    // Function to show followers
+    // FUNCTION - Show followers
     func showFollowing() {
         // Append data
         relationForUser.append(PFUser.current()!)
@@ -55,37 +52,34 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
-    
-    // Function to show profile photo
+    // FUNCTION - Show profile photo
     func showProPic() {
-        
+        // Check if ProfilePhoto exists
         if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
-            // Append to otherObject
-            otherObject.append(PFUser.current()!)
-            // Append to otherName
-            otherName.append(PFUser.current()!.username!)
-            
+        // Show Profile Photo
             // Get user's profile photo
             let proPic = PFQuery(className: "Newsfeeds")
             proPic.whereKey("byUser", equalTo: PFUser.current()!)
             proPic.whereKey("contentType", equalTo: "pp")
+            proPic.includeKeys(["byUser", "toUser"])
             proPic.order(byDescending: "createdAt")
             proPic.getFirstObjectInBackground {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
-                    
-//                    // Append object
-//                    proPicObject.append(object!)
-//                    
-//                    // Push VC
-//                    let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-//                    self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                    
+                    // StoryVC
+                    let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                    storyVC.storyObject = object
+                    // MARK: - RPPopUpVC
+                    let rpPopUpVC = RPPopUpVC()
+                    rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                    self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             }
-        } else {
+            
+        } else if PFUser.current()!.value(forKey: "proPicExists") as! Bool == false {
+        // ZOOM into photo
             // Mark: - Agrume
             let agrume = Agrume(image: self.myProPic.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
             agrume.hideStatusBar = true
@@ -93,7 +87,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         }
     }
     
-    // Function to edit profile
+    // FUNCTION - Edit profile
     func editProfile() {
         // Track when user taps the EditProfile button
         Heap.track("TappedEditProfile", withProperties:

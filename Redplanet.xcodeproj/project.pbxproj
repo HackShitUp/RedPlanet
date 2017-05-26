@@ -173,6 +173,7 @@
 		7EDEB9F91EA5A3AA00EEE4E1 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */; };
 		7EE35EAF1EB0073300C14FAD /* RPPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */; };
 		7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */; };
+		7EEB56721ED8D4FA001652DA /* ChatStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB56711ED8D4FA001652DA /* ChatStory.swift */; };
 		7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE661E3C7B6D003FA134 /* UserCell.swift */; };
 		7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE671E3C7B6D003FA134 /* UserCell.xib */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
@@ -426,6 +427,7 @@
 		7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
 		7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPPopUpVC.swift; sourceTree = "<group>"; };
 		7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedProgressBar.swift; sourceTree = "<group>"; };
+		7EEB56711ED8D4FA001652DA /* ChatStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatStory.swift; sourceTree = "<group>"; };
 		7EECEE661E3C7B6D003FA134 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		7EECEE671E3C7B6D003FA134 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
@@ -689,6 +691,7 @@
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
 				7E9351DC1EBAE2E60045DA48 /* Stories.swift */,
 				7EB40B5A1EC6618A0034E8AF /* Story.swift */,
+				7EEB56711ED8D4FA001652DA /* ChatStory.swift */,
 			);
 			name = HOME/STORIES;
 			sourceTree = "<group>";
@@ -1055,8 +1058,8 @@
 		7EC05B181DB5FABF0039B357 /* CurrentUser */ = {
 			isa = PBXGroup;
 			children = (
-				7E3066461E90F7D800CDEABD /* CurrentUser.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
+				7E3066461E90F7D800CDEABD /* CurrentUser.swift */,
 				7E41C7A61E4012300025129B /* CurrentUserHeader.swift */,
 				7E41C7A41E4006380025129B /* CurrentUserHeader.xib */,
 			);
@@ -1750,6 +1753,7 @@
 				7E01A5201EB81C8100CD7FBF /* StoryScrollCell.swift in Sources */,
 				7E41C7B81E4056870025129B /* OtherUser.swift in Sources */,
 				7E6A12E81E4D524C00CF108B /* Agrume.swift in Sources */,
+				7EEB56721ED8D4FA001652DA /* ChatStory.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
 				7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */,
 				7E9351DD1EBAE2E70045DA48 /* Stories.swift in Sources */,

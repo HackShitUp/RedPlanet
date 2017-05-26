@@ -27,16 +27,8 @@ class StoryCell: UITableViewCell {
     
     // Function to show stories
     func showStories() {
-        // Save to Views
-//        let views = PFObject(className: "Views")
-//        views["byUser"] = PFUser.current()!
-//        views["byUsername"] = PFUser.current()!.username!
-//        views["forObjectId"] = self.postObject!.objectId!
-//        views.saveInBackground()
-        
         // Append object
         storyObjects.append(self.postObject!)
-        
         // MARK: - RPPopUpVC
         let rpPopUpVC = RPPopUpVC()
         let storiesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storiesVC") as! Stories
@@ -48,97 +40,6 @@ class StoryCell: UITableViewCell {
     // Func options
     func doMore() {
         
-        // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: nil)
-        dialogController.dismissDirection = .bottom
-        dialogController.dismissWithOutsideTouch = true
-        dialogController.showSeparator = true
-        // Configure style
-        dialogController.buttonStyle = { (button,height,position) in
-            button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-            button.layer.masksToBounds = true
-        }
-        // Add Cancel button
-        dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-            button.setTitle("CANCEL", for: [])
-            return true
-        }
-        // (1) VIEWS
-        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
-            // Dismiss
-            
-        })
-        // (2) DELETE
-        let delete = AZDialogAction(title: "Delete Recent Post", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
-            
-            // Delete shared and original post
-            let content = PFQuery(className: "Newsfeeds")
-            content.whereKey("byUser", equalTo: PFUser.current()!)
-            content.whereKey("objectId", equalTo: self.postObject!.objectId!)
-            let shares = PFQuery(className: "Newsfeeds")
-            shares.whereKey("pointObject", equalTo: self.postObject!)
-            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-            newsfeeds.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    // Delete objects
-                    PFObject.deleteAll(inBackground: objects, block: {
-                        (success: Bool, error: Error?) in
-                        if error == nil {
-                            // Delete all Notifications
-                            let notifications = PFQuery(className: "Notifications")
-                            notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
-                            notifications.findObjectsInBackground(block: {
-                                (objects: [PFObject]?, error: Error?) in
-                                if error == nil {
-                                    for object in objects! {
-                                        object.deleteEventually()
-                                    }
-                                    // MARK: - RPHelpers
-                                    let rpHelpers = RPHelpers()
-                                    rpHelpers.showSuccess(withTitle: "Deleted")
-                                    
-                                    // Send FriendsNewsfeeds Notification
-                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
-                                    // Send MyProfile Notification
-                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                    
-                                    // Pop view controller
-                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                    // MARK: - RPHelpers
-                                    let rpHelpers = RPHelpers()
-                                    rpHelpers.showError(withTitle: "Network Error")
-                                }
-                            })
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // MARK: - RPHelpers
-                            let rpHelpers = RPHelpers()
-                            rpHelpers.showError(withTitle: "Network Error")
-                        }
-                    })
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.showError(withTitle: "Network Error")
-                }
-            })
-        })
-        
-        // Show options if post belongs to current user
-        if (self.postObject!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            dialogController.addAction(views)
-            dialogController.addAction(delete)
-            dialogController.show(in: self.delegate!)
-        }
     }
     
     

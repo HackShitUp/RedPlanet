@@ -352,7 +352,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         let toUser = PFQuery(className:  "Newsfeeds")
         toUser.whereKey("toUser", equalTo: otherObject.last!)
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
-        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
+        newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {

@@ -46,6 +46,12 @@ class MomentPhoto: UICollectionViewCell {
             // MARK: - SDWebImage
             photoMoment.sd_setImage(with: URL(string: photo.url!)!)
         }
+        
+        // (4) Bring name/time to front and add subview
+        self.contentView.bringSubview(toFront: self.rpUsername)
+        self.contentView.bringSubview(toFront: self.time)
+        self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
+        self.time.layer.applyShadow(layer: self.time.layer)
     }
     
     
