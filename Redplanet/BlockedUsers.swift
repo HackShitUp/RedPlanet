@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 
 import DZNEmptyDataSet
-import NotificationBannerSwift
 import SDWebImage
 
 class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
@@ -56,11 +55,9 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
                 
             } else {
                 print(error?.localizedDescription as Any)
-                // MARK: - NotificationBannerSwift
-                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                banner.show()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             // Reload data
             self.tableView!.reloadData()
@@ -208,12 +205,6 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
             // dismiss
             dialog.dismiss()
             
-            // MARK: - NotificationBannerSwift
-            let banner = StatusBarNotificationBanner(title: "Unblocking...", style: .success)
-            banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-            banner.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
-            banner.show()
-            
             // Remove
             let blocked = PFQuery(className: "Blocked")
             blocked.whereKey("byUser", equalTo: PFUser.current()!)
@@ -225,12 +216,9 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
                         object.deleteInBackground(block: {
                             (success: Bool, error: Error?) in
                             if error == nil {
-                                
-                                // MARK: - NotificationBannerSwift
-                                let banner = StatusBarNotificationBanner(title: "Unblocked!", style: .success)
-                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                                banner.show()
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showSuccess(withTitle: "Unblocked!")
                                 
                                 // Reload data
                                 self.refresh(sender: self)

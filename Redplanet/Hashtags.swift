@@ -13,14 +13,17 @@ import ParseUI
 import Bolts
 
 import AnimatedCollectionViewLayout
+import NotificationBannerSwift
 import SDWebImage
+import VIMVideoPlayer
 import DZNEmptyDataSet
 
 class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Class Configureable Variable
     var hashtagString = String()
-    
+    // MARK: - VIMVideoPlayer
+    var vimVideoPlayerView: VIMVideoPlayerView?
     
     // ScrollSets for database <contentType>
     let scrollSets = ["tp", "ph", "pp", "sp"]
@@ -118,11 +121,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             }
         }
     }
-    
-    
-    
-    
-    
+
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.posts.count == 0 {
@@ -165,7 +164,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Fetch hastags
         fetchHastags()
         
@@ -180,16 +179,25 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         layout.itemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         collectionView!.collectionViewLayout = layout
         collectionView!.frame = self.view.bounds
         collectionView!.isPagingEnabled = true
-        collectionView!.backgroundColor = UIColor.black
+        collectionView!.backgroundColor = UIColor.randomColor()
     
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: "#\(self.hashtagString.uppercased())", style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor.darkGray
+        banner.show()
     }
     
     override func didReceiveMemoryWarning() {
@@ -209,7 +217,6 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Returning: \(self.posts.count) posts")
         return self.posts.count
     }
     
@@ -227,71 +234,97 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // Configure initial setup for time
-        let from = self.posts[indexPath.item].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
-        // Text Posts, Profile Photo
+        // TEXT POST, PHOTO, PROFILE PHOTO, SPACE POST
         if self.scrollSets.contains(self.posts[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
             // Set PFObject
             scrollCell.postObject = self.posts[indexPath.item]
-            // Set parentDelegate
+            // Set parent UIViewController
             scrollCell.delegate = self
+            // Set UITableView Data Source and Delegates
             scrollCell.setTableViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
-            
             return scrollCell
+        }
+        
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
+            // MOMENT VIDEO
             
-        } else if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "photoAsset") != nil {
-            // MOMENT PHOTO
-            let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
-                mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
-            }
-            
-            // (2) MARK: - RPHelpers; Set time
-            mpCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set photo
-            if let photo = self.posts[indexPath.item].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                mpCell.photoMoment.sd_showActivityIndicatorView()
-                mpCell.photoMoment.sd_setIndicatorStyle(.gray)
-                mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!)!)
-            }
-            
-            return mpCell
-            
-        } else {
-            // MOMENT VIDEO CELL
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
-                mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
+            // Add and play || pause video when visible
+            if self.currentIndex == indexPath.item {
+                // Set PFObject, parent UIViewController, update UI, and play video
+                mvCell.postObject = self.posts[indexPath.item]
+                mvCell.delegate = self
+                mvCell.updateView(withObject: self.posts[indexPath.item], videoPlayer: self.vimVideoPlayerView)
+                self.vimVideoPlayerView?.player.play()
             }
-            
-            // (2) MARK: - RPHelpers; Set time
-            mvCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (3) Set video
-            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // TODO::
-            }
-            
-            
             return mvCell
         }
+        
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
+            // VIDEO
+            let videoCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as! VideoCell
+            // Add and play || pause video when visible
+            if self.currentIndex == indexPath.item {
+                // Set PFObject, parent UIViewController, update UI, and play video
+                videoCell.postObject = self.posts[indexPath.item]
+                videoCell.delegate = self
+                videoCell.updateView(withObject: self.posts[indexPath.item], videoPlayer: self.vimVideoPlayerView)
+                self.vimVideoPlayerView?.player.play()
+            }
+            return videoCell
+        }
+        
+        
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "photoAsset") != nil {
+            // MOMENT PHOTO
+            
+            let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
+            mpCell.postObject = self.posts[indexPath.item]                // Set PFObject
+            mpCell.delegate = self                                          // Set parent UIViewController
+            mpCell.updateView(withObject: self.posts[indexPath.item])     // Update UI
+            return mpCell
+        }
+        
+        let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "", for: indexPath)
+        return cell
     }
-
-
-
+    
+    
+    // MARK: - UIScrollView Delegate Methods
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        self.lastOffSet = scrollView.contentOffset
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        // Get visible indexPath
+        var visibleRect = CGRect()
+        visibleRect.origin = self.collectionView!.contentOffset
+        visibleRect.size = self.collectionView!.bounds.size
+        let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
+        let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
+        
+        // Set currentIndex
+        self.currentIndex = indexPath.item
+        // SAVE to Views
+        saveViews(withIndex: indexPath.item)
+        
+        // Reload data
+        self.collectionView!.reloadData()
+        
+        // Reload data
+        if self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+        } else if self.currentIndex! != 0 && self.posts[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
+        } else if self.currentIndex! != self.posts.count && self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
+        }
+    }
 }
 
 
@@ -353,4 +386,208 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
             self.dismiss(animated: true, completion: nil)
         }
     }
+}
+
+
+
+// MARK: - Hashtags; Interactive functions go here...
+extension Hashtags {
+    
+    // FUNCTION - Like Post
+    func like(sender: Any) {
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        // Query likes
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        likes.whereKey("fromUser", equalTo: PFUser.current()!)
+        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                if objects!.isEmpty {
+                    // LIKE POST
+                    rpHelpers.reactLike(forPostObject: self.posts[self.currentIndex!])
+                } else {
+                    // UNLIKE POST
+                    for object in objects! {
+                        rpHelpers.reactUnlike(forLikeObject: object, forPostObject: self.posts[self.currentIndex!])
+                    }
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+                // Show Error
+                rpHelpers.showError(withTitle: "Network Error")
+            }
+        }
+    }
+    
+    // FUNCTION - Save Views
+    func saveViews(withIndex: Int) {
+        // Save to Views
+        let views = PFQuery(className: "Views")
+        views.whereKey("forObject", equalTo: self.posts[withIndex])
+        views.whereKey("byUser", equalTo: PFUser.current()!)
+        views.countObjectsInBackground { (count: Int32, error: Error?) in
+            if error == nil && count == 0 {
+                // MARK: - Save PFObject
+                let views = PFObject(className: "Views")
+                views["byUser"] = PFUser.current()!
+                views["byUsername"] = PFUser.current()!.username!
+                views["forObject"] = self.posts[withIndex]
+                views["screenshotted"] = false
+                views.saveInBackground()
+            } else {
+                print("Error: \(error?.localizedDescription as Any)")
+            }
+        }
+    }
+    
+    // FUNCTION - More options for post ***
+    func showOption(sender: Any) {
+        // Set edit-able contentType's
+        let editTypes = ["tp", "ph", "pp", "sp", "vi"]
+        
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: nil)
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.layer.masksToBounds = true
+        }
+        
+        // (1) Show Views for post
+        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Views VC
+            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+            viewsVC.fetchObject = self.posts[self.currentIndex!]
+            viewsVC.viewsOrLikes = "Views"
+            self.navigationController?.pushViewController(viewsVC, animated: true)
+        })
+        
+        // (2) Delete Post
+        let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // Query post
+            let posts = PFQuery(className: "Newsfeeds")
+            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
+            posts.whereKey("byUser", equalTo: PFUser.current()!)
+            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        // Delete object
+                        object.deleteInBackground()
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Deleted")
+                        
+                        // Reload data
+                        self.posts.remove(at: self.currentIndex!)
+                        self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        if self.currentIndex! == 0 {
+                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
+                                                             at: .right, animated: true)
+                        } else if self.currentIndex! == self.posts.count {
+                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
+                                                             at: .right, animated: true)
+                        }
+                        
+                        // Dismiss
+                        dialog.dismiss()
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                }
+            })
+        })
+        
+        // (3) Edit Post
+        let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Show EditVC
+            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+            editVC.editObject = self.posts[self.currentIndex!]
+            self.navigationController?.pushViewController(editVC, animated: true)
+        })
+        
+        // (4) Report
+        let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            // MARK: - UIAlertController
+            let alert = UIAlertController(title: "Report Post",
+                                          message: "Please provide your reason for reporting this Post",
+                                          preferredStyle: .alert)
+            let report = UIAlertAction(title: "Report", style: .destructive) {
+                [unowned self, alert] (action: UIAlertAction!) in
+                let answer = alert.textFields![0]
+                // REPORTED
+                let report = PFObject(className: "Reported")
+                report["byUsername"] = PFUser.current()!.username!
+                report["byUser"] = PFUser.current()!
+                report["to"] = self.posts[self.currentIndex!].value(forKey: "username") as! String
+                report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                report["forObjectId"] = self.posts[self.currentIndex!].objectId!
+                report["reason"] = answer.text!
+                report.saveInBackground(block: { (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved report: \(report)")
+                        // Dismiss
+                        dialog.dismiss()
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Dismiss
+                        dialog.dismiss()
+                    }
+                })
+            }
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alertAction: UIAlertAction!) in
+                // Dismiss
+                dialog.dismiss()
+            })
+            
+            alert.addTextField(configurationHandler: nil)
+            alert.addAction(report)
+            alert.addAction(cancel)
+            alert.view.tintColor = UIColor.black
+            dialog.present(alert, animated: true, completion: nil)
+        })
+        
+        // (5) CANCEL
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.setTitle("CANCEL", for: [])
+            return true
+        }
+        
+        if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            // Views, Delete, Edit
+            if editTypes.contains(self.posts[self.currentIndex!].value(forKey: "contentType") as! String) {
+                dialogController.addAction(views)
+                dialogController.addAction(delete)
+                dialogController.addAction(edit)
+                dialogController.show(in: self)
+            } else {
+                // Views and delete
+                dialogController.addAction(views)
+                dialogController.addAction(delete)
+                dialogController.show(in: self)
+            }
+        } else {
+            // Report
+            dialogController.addAction(report)
+            dialogController.show(in: self)
+        }
+    }
+    
+    
+    
 }

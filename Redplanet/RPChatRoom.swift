@@ -18,7 +18,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import NotificationBannerSwift
 import OneSignal
 import SDWebImage
 
@@ -28,7 +27,6 @@ var chatUsername = [String]()
 
 // Add Notification to reload data
 let rpChat = Notification.Name("rpChat")
-
 
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
@@ -149,11 +147,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - NotificationBannerSwift
-                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                        banner.show()
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error")
                     }
                 })
             }
@@ -202,20 +198,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - NotificationBannerSwift
-                            let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                            banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                            banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                            banner.show()
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showError(withTitle: "Network Error")
                         }
                     })
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - NotificationBannerSwift
-                    let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                    banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                    banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                    banner.show()
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             })
 
@@ -848,29 +840,21 @@ extension RPChatRoom {
                                                                 // Update <ChatsQueue> with last object in array
                                                                 let rpHelpers = RPHelpers()
                                                                 _ = rpHelpers.updateQueue(chatQueue: self.messageObjects.last!, userObject: chatUserObject.last!)
-                                                                
-                                                                // MARK: - NotificationBannerSwift
-                                                                let banner = StatusBarNotificationBanner(title: "Deleted", style: .success)
-                                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                                banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                                                                banner.show()
+                                                                // Show success
+                                                                rpHelpers.showSuccess(withTitle: "Deleted")
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
-                                                                // MARK: - NotificationBannerSwift
-                                                                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                                                                banner.show()
+                                                                // MARK: - RPHelpers
+                                                                let rpHelpers = RPHelpers()
+                                                                rpHelpers.showError(withTitle: "Network Error")
                                                             }
                                                         })
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // MARK: - NotificationBannerSwift
-                                                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                                                        banner.show()
+                                                        // MARK: - RPHelpers
+                                                        let rpHelpers = RPHelpers()
+                                                        rpHelpers.showError(withTitle: "Network Error")
                                                     }
                     })
                 })
@@ -886,19 +870,19 @@ extension RPChatRoom {
                                                         object!["saved"] = true
                                                         object!.saveInBackground()
                                                         
-                                                        // MARK: - NotificationBannerSwift
-                                                        let banner = StatusBarNotificationBanner(title: "Saved", style: .success)
-                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                        banner.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
-                                                        banner.show()
+                                                        // MARK: - RPHelpers
+                                                        let rpHelpers = RPHelpers()
+                                                        rpHelpers.showSuccess(withTitle: "Saved")
+                                                        
+                                                        // Reload UITableViewCell data and array data
+                                                        self.messageObjects[indexPath.item] = object!
+                                                        self.tableView.reloadRows(at: [indexPath], with: .none)
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // MARK: - NotificationBannerSwift
-                                                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                                                        banner.show()
+                                                        // MARK: - RPHelpers
+                                                        let rpHelpers = RPHelpers()
+                                                        rpHelpers.showError(withTitle: "Error")
                                                     }
                     })
                 })
@@ -914,23 +898,28 @@ extension RPChatRoom {
                                                         object!["saved"] = false
                                                         object!.saveInBackground()
                                                         
-                                                        // MARK: - NotificationBannerSwift
-                                                        let banner = StatusBarNotificationBanner(title: "Unsaved", style: .success)
-                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                        banner.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
-                                                        banner.show()
+                                                        // MARK: - RPHelpers
+                                                        let rpHelpers = RPHelpers()
+                                                        rpHelpers.showSuccess(withTitle: "Unsaved")
                                                         
-                                                        // Delete from messageObjects and UITableView
-                                                        self.messageObjects.remove(at: indexPath.row)
-                                                        self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                        // Configure time to check for "Ephemeral" content
+                                                        let components : NSCalendar.Unit = .hour
+                                                        let difference = (Calendar.current as NSCalendar).components(components, from: object!.createdAt!, to: Date(), options: [])
+                                                        
+                                                        // Delete from messageObjects and UITableView if > 24 hours
+                                                        if difference.hour! > 24 {
+                                                            self.messageObjects.remove(at: indexPath.row)
+                                                            self.tableView.deleteRows(at: [indexPath], with: .fade)
+                                                        } else {
+                                                        // Otherwise, reload UITableViewCell
+                                                            self.tableView.reloadRows(at: [indexPath], with: .fade)
+                                                        }
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // MARK: - NotificationBannerSwift
-                                                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                                                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                                                        banner.show()
+                                                        // MARK: - RPHelpers
+                                                        let rpHelpers = RPHelpers()
+                                                        rpHelpers.showError(withTitle: "Network Error")
                                                     }
                     })
                     

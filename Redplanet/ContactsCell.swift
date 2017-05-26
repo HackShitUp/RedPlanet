@@ -12,8 +12,6 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
-
-import NotificationBannerSwift
 import OneSignal
 
 class ContactsCell: UITableViewCell {
@@ -26,20 +24,16 @@ class ContactsCell: UITableViewCell {
     
     // Function to show status bar success
     func showSuccess(withTitle: String?) {
-        // MARK: - NotificationBannerSwift
-        let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
-        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-        banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-        banner.show()
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        rpHelpers.showError(withTitle: "\(withTitle!)")
     }
     
     // Function to show status bar error
     func showError() {
-        // MARK: - NotificationBannerSwift
-        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-        banner.show()
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        rpHelpers.showError(withTitle: "Network Error")
     }
     
 

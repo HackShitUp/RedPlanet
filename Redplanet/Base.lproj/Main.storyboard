@@ -908,7 +908,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gok-15-Q2v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1948" y="-1988"/>
+            <point key="canvasLocation" x="1934" y="-1985"/>
         </scene>
         <!--Followers Following-->
         <scene sceneID="AXj-6A-Al8">
@@ -941,7 +941,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GEP-AB-Six" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2391" y="-1985"/>
+            <point key="canvasLocation" x="2371" y="-1986"/>
         </scene>
         <!--Reactions-->
         <scene sceneID="EDw-NG-fLC">
@@ -1267,7 +1267,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PiM-EQ-pRi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2821" y="-1989"/>
+            <point key="canvasLocation" x="2815" y="-1991"/>
         </scene>
         <!--Hashtags-->
         <scene sceneID="GAP-sP-SPL">
@@ -1311,7 +1311,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8xQ-xf-oJ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3258" y="-1990"/>
+            <point key="canvasLocation" x="3258" y="-1992"/>
         </scene>
         <!--Follow Requests-->
         <scene sceneID="mRB-yU-bPu">
@@ -2620,7 +2620,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="174.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NoC-zV-vDO">
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NoC-zV-vDO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="175"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="kCd-Uy-A4u">
@@ -2630,7 +2630,7 @@
                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="featuredCell" id="GUv-Tw-uVt" customClass="FeaturedCell" customModule="Redplanet" customModuleProvider="target">
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="newsCell" id="GUv-Tw-uVt" customClass="NewsCell" customModule="Redplanet" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="125" height="175"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -2756,7 +2756,7 @@
                                                         <outlet property="rpUsername" destination="ZhZ-KD-7zE" id="bCP-hH-Ons"/>
                                                     </connections>
                                                 </collectionViewCell>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="promotedCell" id="gpa-6D-qB2" customClass="PromotedCell" customModule="Redplanet" customModuleProvider="target">
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="featuredCell" id="gpa-6D-qB2" customClass="FeaturedCell" customModule="Redplanet" customModuleProvider="target">
                                                     <rect key="frame" x="340" y="0.0" width="125" height="175"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -2770,20 +2770,23 @@
                                                                     <constraint firstAttribute="width" constant="121" id="z0I-uS-eeC"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KsW-yL-4Mt">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KsW-yL-4Mt">
                                                                 <rect key="frame" x="2" y="2" width="121" height="121"/>
                                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="121" id="2d1-Lg-XgW"/>
                                                                     <constraint firstAttribute="height" constant="121" id="VvU-1E-38S"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="teamrp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UtV-IP-64Z">
-                                                                <rect key="frame" x="8" y="146" width="109" height="20"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="teamrp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UtV-IP-64Z">
+                                                                <rect key="frame" x="8" y="146" width="109" height="21"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="109" id="MYz-m7-FyL"/>
+                                                                    <constraint firstAttribute="height" constant="21" id="MeN-pb-Upy"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -2801,7 +2804,9 @@
                                                         </subviews>
                                                     </view>
                                                     <constraints>
+                                                        <constraint firstItem="UtV-IP-64Z" firstAttribute="leading" secondItem="gpa-6D-qB2" secondAttribute="leading" constant="8" id="D6T-IZ-9FM"/>
                                                         <constraint firstAttribute="trailing" secondItem="Ojm-LV-CmN" secondAttribute="trailing" constant="2" id="EK6-96-Ueh"/>
+                                                        <constraint firstAttribute="trailing" secondItem="UtV-IP-64Z" secondAttribute="trailing" constant="8" id="FVv-iB-Rk6"/>
                                                         <constraint firstItem="Ojm-LV-CmN" firstAttribute="leading" secondItem="gpa-6D-qB2" secondAttribute="leading" constant="2" id="Yk4-RU-f0K"/>
                                                         <constraint firstItem="Ojm-LV-CmN" firstAttribute="top" secondItem="gpa-6D-qB2" secondAttribute="top" constant="2" id="bT8-nY-jeH"/>
                                                         <constraint firstItem="S7h-CI-YtW" firstAttribute="top" secondItem="KsW-yL-4Mt" secondAttribute="bottom" constant="8" id="gYw-zb-e43"/>
@@ -2810,6 +2815,8 @@
                                                         <constraint firstAttribute="trailing" secondItem="KsW-yL-4Mt" secondAttribute="trailing" constant="2" id="i6b-BB-lrd"/>
                                                         <constraint firstItem="S7h-CI-YtW" firstAttribute="leading" secondItem="gpa-6D-qB2" secondAttribute="leading" constant="8" id="oEX-6F-zqX"/>
                                                         <constraint firstItem="KsW-yL-4Mt" firstAttribute="top" secondItem="gpa-6D-qB2" secondAttribute="top" constant="2" id="pjG-Ar-GTA"/>
+                                                        <constraint firstAttribute="bottom" secondItem="UtV-IP-64Z" secondAttribute="bottom" constant="8" id="rqy-Nj-Rbx"/>
+                                                        <constraint firstItem="UtV-IP-64Z" firstAttribute="top" secondItem="S7h-CI-YtW" secondAttribute="bottom" id="sXs-KN-KdC"/>
                                                     </constraints>
                                                     <size key="customSize" width="125" height="175"/>
                                                     <connections>
@@ -2846,8 +2853,8 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="textColor"/>
-                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                            <color key="textColor" red="0.39942183355437666" green="0.39942183355437666" blue="0.39942183355437666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                     </navigationItem>
