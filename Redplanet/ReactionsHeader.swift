@@ -9,5 +9,5 @@
 import UIKit
 class ReactionsHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var reactionType: UILabel!
-    @IBOutlet weak var reactButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
 }

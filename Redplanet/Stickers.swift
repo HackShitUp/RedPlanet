@@ -16,7 +16,10 @@ import OneSignal
 
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     // Declare Stickers
-    let stickers = ["Sun.png",
+    let stickers = ["HeartFilled",
+                    "HeartBroken",
+                    "Stickers",
+                    "Sun.png",
                     "Pineapple.png",
                         "9.png",
                         "10.png",

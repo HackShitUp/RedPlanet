@@ -425,15 +425,24 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
         if collectionView.tag == 0 {
             return self.articles.count
         } else if collectionView.tag == 1 {
+            
+            if featuredPosts.count == 0 {
+                // MARK: - DZNEmptyDataSet
+                collectionView.emptyDataSetSource = self
+                collectionView.emptyDataSetDelegate = self
+            }
+            
             return self.featuredPosts.count
         } else if collectionView.tag == 2 {
             return self.randomUsers.count
         } else {
+            
             if geocodeUsers.count == 0 {
                 // MARK: - DZNEmptyDataSet
                 collectionView.emptyDataSetSource = self
                 collectionView.emptyDataSetDelegate = self
             }
+            
             return self.geocodeUsers.count
         }
     }

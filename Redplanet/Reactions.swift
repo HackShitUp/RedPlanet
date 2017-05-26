@@ -17,6 +17,9 @@ import SDWebImage
 // Global array to fetch objects
 var reactionObject = [PFObject]()
 
+// Define NotificationIdentifier
+let reactNotification = Notification.Name("Reactions")
+
 class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
 
     // MARK: - Initialize TwicketSegmentedControl
@@ -33,7 +36,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     // UIRefreshControl
     var refresher: UIRefreshControl!
     
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentContainer: UIView!
     @IBOutlet weak var textView: UITextView!
@@ -43,6 +45,13 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         reactionObject.removeAll(keepingCapacity: false)
         // Pop VC
         _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func refresh(_ sender: Any) {
+        // Reload data
+        handleCase()
+        // Scroll to top
+        self.tableView?.setContentOffset(.zero, animated: true)
     }
     
     // FUNCTION - Query objects based on Switch Case...
@@ -374,6 +383,28 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
+    
+    // FUNCTION - Like Post
+    func likeAction(sender: UIButton) {
+        if self.reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+        // UNLIKE POST
+            self.unlikePost(forObject: reactionObject.last!, andButton: sender)
+            // Reload data
+            DispatchQueue.main.async(execute: {
+                self.handleCase()
+            })
+            
+        } else {
+        // LIKE POST
+            self.likePost(forObject: reactionObject.last!, andButton: sender)
+            // Reload data
+            DispatchQueue.main.async(execute: {
+                self.handleCase()
+            })
+        }
+    }
+    
+    
 
     // MARK: - TwicketSegmentedControl
     func didSelect(_ segmentIndex: Int) {
@@ -394,55 +425,17 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         var str: String?
         if self.segmentedControl.selectedSegmentIndex == 0 {
             str = "💩\nNo Likes Yet."
-        } else if self.segmentedControl.selectedSegmentIndex == 1 {
-            str = "💩\nNo Comments Yet."
         } else {
-            str = "💩\nNo Shares Yet."
+            str = "💩\nNo Comments Yet."
         }
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
-        
         return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
-    
-    // MARK: - UIKeyboard Notification
-    func keyboardWillShow(notification: NSNotification) {
-        // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        
-        // Move UI up
-        UIView.animate(withDuration: 0.4) { () -> Void in
-            // Layout views
-            self.view.setNeedsLayout()
-            self.view.layoutIfNeeded()
-            // If table view's origin is 0
-            if self.tableView!.frame.origin.y == 0 {
-                // Move tableView up
-                self.tableView!.frame.origin.y -= self.keyboard.height
-                // Move chatbox up
-                self.commentContainer.frame.origin.y -= self.keyboard.height
-                // Scroll to the bottom
-                if self.reactionObjects.count > 0 && self.segmentedControl.selectedSegmentIndex == 1 {
-                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                    self.tableView.setContentOffset(bot, animated: false)
-                }
-            }
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        if self.tableView!.frame.origin.y != 0 {
-            // Move table view up
-            self.tableView!.frame.origin.y += self.keyboard.height
-            // Move chatbox up
-            self.commentContainer.frame.origin.y += self.keyboard.height
-        }
-    }
+
 
     // MARK: - UIViewController Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -466,7 +459,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // MARK: - TwicketSegmentedControl
         let frame = CGRect(x: 5, y: view.frame.height/2 - 20, width: view.frame.width - 20, height: 40)
         segmentedControl.frame = frame
@@ -509,6 +502,18 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCase), name: reactNotification, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // Remove reactionNotification observer
+        NotificationCenter.default.removeObserver(self, name: reactNotification, object: nil)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Remove observers
@@ -525,24 +530,70 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         SDImageCache.shared().clearDisk()
     }
     
+    
+    
+    // MARK: - UIKeyboard Notification
+    func keyboardWillShow(notification: NSNotification) {
+        // Define keyboard frame size
+        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        
+        // Move UI up
+        UIView.animate(withDuration: 0.4) { () -> Void in
+            // Layout views
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            // If table view's origin is 0
+            if self.tableView!.frame.origin.y == 0 {
+                // Move tableView up
+                self.tableView!.frame.origin.y -= self.keyboard.height
+                // Move chatbox up
+                self.commentContainer.frame.origin.y -= self.keyboard.height
+                // Scroll to the bottom
+                if self.reactionObjects.count > 0 && self.segmentedControl.selectedSegmentIndex == 1 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
+                }
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        // Define keyboard frame size
+        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        if self.tableView!.frame.origin.y != 0 {
+            // Move table view up
+            self.tableView!.frame.origin.y += self.keyboard.height
+            // Move chatbox up
+            self.commentContainer.frame.origin.y += self.keyboard.height
+        }
+    }
+    
+    
     // MARK: - UITableView Data Source Methods
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let reactionsHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ReactionsHeader") as! ReactionsHeader
         reactionsHeader.contentView.backgroundColor = UIColor.white
         reactionsHeader.reactionType.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         reactionsHeader.reactionType.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-        if self.segmentedControl.selectedSegmentIndex == 0 {
-            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Likes"
-            reactionsHeader.reactButton.isHidden = false
+
+        switch self.segmentedControl.selectedSegmentIndex {
+        case 0:
+            reactionsHeader.likeButton.isHidden = false
+            // Configure likeButton
+            reactionsHeader.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
             if reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                reactionsHeader.reactButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
+                reactionsHeader.likeButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
             } else {
-                reactionsHeader.reactButton.setImage(UIImage(named: "Like"), for: .normal)
+                reactionsHeader.likeButton.setImage(UIImage(named: "Like"), for: .normal)
             }
-        } else {
+            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Likes"
+        case 1:
+            reactionsHeader.likeButton.isHidden = true
             reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Comments"
-            reactionsHeader.reactButton.isHidden = true
+        default:
+            break;
         }
+        
         
         return reactionsHeader
     }
@@ -590,40 +641,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             
         } else {
         // COMMENTS
+            
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
-            
-            // Set parentVC delegate
-            cell.delegate = self
-
-            // Set PFObject
-            cell.postObject = self.reactionObjects[indexPath.row]
-            
-            // Get and set user's data
-            if let user = self.reactionObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
-                // (1) Set rpUsername
-                cell.rpUsername.text = (user.value(forKey: "username") as! String)
-                // (2) Get and set userProfilePicture
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-                    cell.rpUserProPic.sd_showActivityIndicatorView()
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
-                    // MARK: - RPExtensions
-                    cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-                }
-            }
-            
-            // (2) Set time
-            let from = self.reactionObjects[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            // MARK: - RPHelpers
-            cell.time.text = difference.getFullTime(difference: difference, date: from)
-
-            // (3) Set comment
-            cell.comment.text = (self.reactionObjects[indexPath.row].value(forKey: "commentOfContent") as! String)
-            
+            cell.delegate = self                                                // Set parent UIViewController
+            cell.commentObject = self.reactionObjects[indexPath.row]            // Set PFObject
+            cell.updateView(withObject: self.reactionObjects[indexPath.row])    // Update UI
+            cell.countLikes(forObject: self.reactionObjects[indexPath.row])     // Count likes
             return cell
         }
     }
@@ -641,11 +664,15 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
 
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
+        if let cell = self.tableView.cellForRow(at: indexPath) {
+            cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+        }
     }
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.white
+        if let cell = self.tableView.cellForRow(at: indexPath) {
+            cell.contentView.backgroundColor = UIColor.white
+        }
     }
 
     // MARK: - UIScrollViewDelegate Methods
@@ -684,5 +711,143 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
         return true
     }
+    
+}
+
+
+
+
+
+
+// MARK: - RPExtensions; used to like/unlike objects
+extension Reactions {
+    
+    // LIKE POST
+    func likePost(forObject: PFObject, andButton: UIButton) {
+        // Disable button
+        andButton.isUserInteractionEnabled = false
+        // SAVE Likes
+        let likes = PFObject(className: "Likes")
+        likes["fromUser"] = PFUser.current()!
+        likes["from"] = PFUser.current()!.username!
+        likes["toUser"] = forObject.value(forKey: "byUser") as! PFUser
+        likes["to"] = (forObject.value(forKey: "byUser") as! PFUser).username!
+        likes["forObjectId"] = forObject.objectId!
+        likes.saveInBackground(block: { (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved object: \(likes)")
+                
+                // Re-enable button
+                andButton.isUserInteractionEnabled = true
+                // Set Button Image
+                andButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
+                // Animate like button
+                UIView.animate(withDuration: 0.6 ,
+                               animations: { andButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
+                               completion: { finish in
+                                UIView.animate(withDuration: 0.5) {
+                                    andButton.transform = CGAffineTransform.identity
+                                }
+                })
+
+                // SAVE to Notification
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = forObject.value(forKey: "byUser") as! PFUser
+                notifications["to"] = (forObject.value(forKey: "byUser") as! PFUser).username!
+                notifications["forObjectId"] = forObject.objectId!
+                notifications["type"] = "like \(forObject.value(forKey: "contentType") as! String)"
+                notifications.saveInBackground()
+                
+                // MARK: - RPHelpers; pushNotification
+                let rpHelpers = RPHelpers()
+                switch forObject.value(forKey: "contentType") as! String {
+                    case "tp":
+                    rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                                               activityType: "liked your Text Post")
+                    case "ph":
+                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                                                   activityType: "liked your Photo")
+                    case "pp":
+                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                                                   activityType: "liked your Profile Photo")
+                    case "vi":
+                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                                                   activityType: "liked your Video")
+                    case "sp":
+                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                                                   activityType: "liked your Space Post")
+                    case "itm":
+                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                                                   activityType: "liked your Moment")
+                default:
+                    break;
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
+            }
+        })
+    
+    }
+    
+    // UNLIKE POST
+    func unlikePost(forObject: PFObject, andButton: UIButton) {
+        // Disable button
+        andButton.isUserInteractionEnabled = false
+        // Query PFObject
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
+        likes.whereKey("fromUser", equalTo: PFUser.current()!)
+        likes.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    object.deleteInBackground()
+                    
+                    // Re-enable button
+                    andButton.isUserInteractionEnabled = true
+                    // Set Button Image
+                    andButton.setImage(UIImage(named: "Like"), for: .normal)
+                    // Animate like button
+                    UIView.animate(withDuration: 0.6 ,
+                                   animations: { andButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5) {
+                                        andButton.transform = CGAffineTransform.identity
+                                    }
+                    })
+
+                    // Remove from Notifications
+                    let notifications = PFQuery(className: "Notifications")
+                    notifications.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
+                    notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                    notifications.findObjectsInBackground(block: {
+                        (objects: [PFObject]?, error: Error?) in
+                        if error == nil {
+                            for object in objects! {
+                                object.deleteInBackground()
+                            }
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showError(withTitle: "Network Error")
+                        }
+                    })
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
+            }
+        })
+    }
+    
+    
     
 }

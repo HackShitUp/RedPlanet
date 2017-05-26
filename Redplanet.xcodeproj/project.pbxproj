@@ -1028,6 +1028,7 @@
 		7EAB4EB01DB4608300059DB1 /* RPChatRoom */ = {
 			isa = PBXGroup;
 			children = (
+				7E274EB71E31A80B006B2D8B /* Stickers.swift */,
 				7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */,
 				7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */,
 				7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */,
@@ -1157,7 +1158,6 @@
 				7EC5D1951DB353E000437219 /* Chats.swift */,
 				7EC5D1971DB353F300437219 /* ChatsCell.swift */,
 				7E7037C41DBD5E6400F03E0C /* NewChats.swift */,
-				7E274EB71E31A80B006B2D8B /* Stickers.swift */,
 				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
 			);
 			name = CHATS;

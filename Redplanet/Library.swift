@@ -33,7 +33,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     // Initialized UIRefreshControl
     var refresher: UIRefreshControl!
     
-    // Function to refresh
+    // FUNCTION - To refresh
     func refresh() {
         self.fetchAssets()
         self.refresher.endRefreshing()
@@ -56,6 +56,11 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         navigationController?.present(self.imagePicker, animated: true, completion: nil)
+    }
+    
+    // FUNCTION - Scroll to the top of UICollectionView
+    func scrollToTop() {
+        self.collectionView?.setContentOffset(.zero, animated: true)
     }
     
     // FUNCTION - Fetch all PHAssets
@@ -199,6 +204,12 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         super.viewDidLoad()
         // Fetch Assets
         fetchAssets()
+        
+        // Add tap method to scroll to top
+        let scrollTap = UITapGestureRecognizer(target: self, action: #selector(scrollToTop))
+        scrollTap.numberOfTapsRequired = 1
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
+        self.navigationController?.navigationBar.addGestureRecognizer(scrollTap)
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()

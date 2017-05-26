@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -49,13 +49,13 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="reactButton" destination="ZBA-AI-3BP" id="bjx-2z-nuH"/>
+                <outlet property="likeButton" destination="ZBA-AI-3BP" id="etC-fG-rwt"/>
                 <outlet property="reactionType" destination="Co6-wj-84H" id="w7D-8S-eKj"/>
             </connections>
             <point key="canvasLocation" x="96.5" y="66"/>
         </view>
     </objects>
     <resources>
-        <image name="Like" width="52" height="50"/>
+        <image name="Like" width="56" height="53"/>
     </resources>
 </document>
