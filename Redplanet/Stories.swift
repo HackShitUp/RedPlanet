@@ -159,8 +159,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions Delegate Method
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
-            // Pause SegmentedProgressBar
-            self.spb.isPaused = true
             switch reactionSelector.selectedReaction!.id {
                 case "rpMore":
                 // MORE
@@ -181,8 +179,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             default:
                 break;
             }
-        } else {
-            self.spb.isPaused = false
         }
         // Reset ReactButton
         self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
@@ -268,7 +264,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SDImageCache.shared().clearDisk()
     }
 
-    
     
     // MARK: UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
