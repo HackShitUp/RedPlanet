@@ -41,6 +41,13 @@ class RPChatMediaCell: UITableViewCell {
     
     // FUNCTION - Play video; "vi"
     func playVideo() {
+        // MARK: - SubtleVolume
+        let subtleVolume = SubtleVolume(style: .dots)
+        subtleVolume.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 3)
+        subtleVolume.animation = .fadeIn
+        subtleVolume.barTintColor = UIColor.black
+        subtleVolume.barBackgroundColor = UIColor.white
+        
         if let video = postObject!.value(forKey: "videoAsset") as? PFFile {
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
@@ -53,6 +60,8 @@ class RPChatMediaCell: UITableViewCell {
             vimVideoPlayerView.player.play()
             viewController.view.addSubview(vimVideoPlayerView)
             viewController.view.bringSubview(toFront: vimVideoPlayerView)
+            viewController.view.addSubview(subtleVolume)
+            viewController.view.bringSubview(toFront: subtleVolume)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
             self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
         }

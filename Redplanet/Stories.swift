@@ -37,11 +37,15 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
     
-    // MARK: - VIMVideoPlayer
-    var vimVideoPlayerView: VIMVideoPlayerView?
+    
+    
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
+    // MARK: - VIMVideoPlayer
+    var vimVideoPlayerView: VIMVideoPlayerView?
+    
+    
     
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
@@ -102,7 +106,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
 //        newsfeeds.limit = 500
-        newsfeeds.limit = 30
+        newsfeeds.limit = 10
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -205,6 +209,15 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // MARK: - VIMVideoPlayerView
         vimVideoPlayerView = VIMVideoPlayerView()
+        
+        // MARK: - SubtleVolume
+        let subtleVolume = SubtleVolume(style: .dots)
+        subtleVolume.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 7)
+        subtleVolume.animation = .fadeIn
+        subtleVolume.barTintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        subtleVolume.barBackgroundColor = UIColor.white
+        self.view.addSubview(subtleVolume)
+        subtleVolume.superview?.bringSubview(toFront: subtleVolume)
         
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()

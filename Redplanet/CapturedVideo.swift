@@ -28,13 +28,13 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
     
     // MARK: - VIMVideoPlayer
     var vimPlayerView: VIMVideoPlayerView!
-    
+    // MARK: - SubtleVolume
+    var subtleVolume: SubtleVolume!
     
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
-        // Pop VC
-        _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: false)
     }
     
     @IBOutlet weak var saveButton: UIButton!
@@ -231,6 +231,15 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SubtleVolume
+        subtleVolume = SubtleVolume(style: .dots)
+        subtleVolume.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 3)
+        subtleVolume.animation = .fadeIn
+        subtleVolume.barTintColor = UIColor.black
+        subtleVolume.barBackgroundColor = UIColor.white
+        self.view.addSubview(subtleVolume)
+        
         // Execute code if url array is NOT empty
         if self.capturedURL != nil {
             
@@ -271,6 +280,8 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
                 (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
             }
+            // Bring subtleVolume to front
+            self.view.bringSubview(toFront: subtleVolume)
         }
     }
     

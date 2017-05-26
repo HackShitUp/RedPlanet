@@ -37,6 +37,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     // Array to hold user's objects
     var userObjects = [PFObject]()
 
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var mediaPreview: PFImageView!
@@ -172,6 +173,14 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     
     // FUNCTION - Play Video
     func playVideo() {
+        // MARK: - SubtleVolume
+        let subtleVolume = SubtleVolume(style: .dots)
+        subtleVolume.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 3)
+        subtleVolume.animation = .fadeIn
+        subtleVolume.barTintColor = UIColor.black
+        subtleVolume.barBackgroundColor = UIColor.white
+        self.view.addSubview(subtleVolume)
+        
         // MARK: - RPPopUpVC
         let rpPopUpVC = RPPopUpVC()
         let viewController = UIViewController()
@@ -183,6 +192,8 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         vimPlayerView.player.play()
         viewController.view.addSubview(vimPlayerView)
         viewController.view.bringSubview(toFront: vimPlayerView)
+        viewController.view.addSubview(subtleVolume)
+        viewController.view.bringSubview(toFront: subtleVolume)
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
         self.present(rpPopUpVC, animated: true, completion: nil)
     }

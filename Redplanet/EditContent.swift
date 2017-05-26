@@ -25,9 +25,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     // MARK: - Configurable class variables
     var editObject: PFObject?
     
+    
     // Array to hold user's objects
     var userObjects = [PFObject]()
-    
     // Initialized CGRect for keyboard frame
     var keyboard = CGRect()
     
@@ -209,6 +209,13 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     func playVideo(sender: AnyObject) {
         // Fetch video data
         if let video = self.editObject!.value(forKey: "videoAsset") as? PFFile {
+            // MARK: - SubtleVolume
+            let subtleVolume = SubtleVolume(style: .dots)
+            subtleVolume.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 3)
+            subtleVolume.animation = .fadeIn
+            subtleVolume.barTintColor = UIColor.black
+            subtleVolume.barBackgroundColor = UIColor.white
+            
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
             let viewController = UIViewController()
@@ -220,6 +227,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             vimPlayerView.player.play()
             viewController.view.addSubview(vimPlayerView)
             viewController.view.bringSubview(toFront: vimPlayerView)
+            viewController.view.addSubview(subtleVolume)
+            viewController.view.bringSubview(toFront: subtleVolume)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
             self.present(rpPopUpVC, animated: true, completion: nil)
         }
@@ -248,6 +257,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        
         
         // (1) Set Text
         if let text = self.editObject!.value(forKey: "textPost") as? String {

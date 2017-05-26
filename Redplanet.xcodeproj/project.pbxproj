@@ -141,6 +141,7 @@
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
 		7EB40B5B1EC6618A0034E8AF /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5A1EC6618A0034E8AF /* Story.swift */; };
 		7EB40B5D1EC690520034E8AF /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5C1EC690520034E8AF /* ShareWith.swift */; };
+		7EBAFEF11ED7BAE300BB052D /* SubtleVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
 		7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */; };
@@ -387,6 +388,7 @@
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
 		7EB40B5A1EC6618A0034E8AF /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		7EB40B5C1EC690520034E8AF /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
+		7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtleVolume.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
 		7EC5D12F1DB2FE4F00437219 /* Redplanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redplanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1033,6 +1035,14 @@
 			name = RPChatRoom;
 			sourceTree = "<group>";
 		};
+		7EBAFEF21ED7BAE800BB052D /* SubtleVolume */ = {
+			isa = PBXGroup;
+			children = (
+				7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */,
+			);
+			name = SubtleVolume;
+			sourceTree = "<group>";
+		};
 		7EC005761E8CD95A00405530 /* AZDialogViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1083,6 +1093,7 @@
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
 				7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */,
 				7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */,
+				7EBAFEF21ED7BAE800BB052D /* SubtleVolume */,
 				7E4199221E4C668000EFA065 /* SwipeView */,
 				7E8035381EB4113B00C9BA63 /* TwicketSegmentedControl */,
 				7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */,
@@ -1773,6 +1784,7 @@
 				7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */,
 				7E85C8711ECCC15200D5EF07 /* Hashtags.swift in Sources */,
 				7E80DAAB1EB420D7003F0067 /* Palette.swift in Sources */,
+				7EBAFEF11ED7BAE300BB052D /* SubtleVolume.swift in Sources */,
 				7E80DAAD1EB420D7003F0067 /* UIViewShadowExtension.swift in Sources */,
 				7E80352E1EB4102700C9BA63 /* Home.swift in Sources */,
 				7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */,

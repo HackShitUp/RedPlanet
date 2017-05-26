@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 import CoreLocation
+import MediaPlayer
 
 import Parse
 import ParseUI
@@ -30,6 +33,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
+    // MARK: - SubtleVolume
+    var subtleVolume: SubtleVolume!
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var captureButton: SwiftyCamButton!
@@ -251,7 +256,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
     }
 
-    // Function to configure view
+    // FUNCTION - Configure View
     func configureView() {
         // Configure UIStatusBar
         UIApplication.shared.statusBarStyle = .lightContent
@@ -269,11 +274,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.containerSwipeNavigationController?.shouldShowLeftViewController = true
         self.containerSwipeNavigationController?.shouldShowBottomViewController = true
     }
+
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title
@@ -377,14 +380,21 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Set statusBar
+        // Configure UIStatusBar
         UIApplication.shared.statusBarStyle = .lightContent
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        // MARK: - SubtleVolume
+        subtleVolume = SubtleVolume(style: .dots)
+        subtleVolume.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        subtleVolume.delegate = self
+        self.view.addSubview(subtleVolume)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -396,5 +406,19 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         URLCache.shared.removeAllCachedResponses()
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
+    }
+}
+
+
+
+// MARK: - RPCamera Extension for SubtleVolume
+extension RPCamera: SubtleVolumeDelegate {
+    
+    func subtleVolume(_ subtleVolume: SubtleVolume, willChange value: Float) {
+        // TOOD::
+    }
+
+    func subtleVolume(_ subtleVolume: SubtleVolume, didChange value: Float) {
+        // self.takePhoto()
     }
 }
