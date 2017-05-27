@@ -621,14 +621,11 @@ extension Stories {
                                             if error == nil {
                                                 object!["saved"] = true
                                                 object!.saveInBackground()
-                                                
-                                                // Reload collectionView data and array data
-                                                self.posts[self.currentIndex!] = object!
-                                                
+
                                                 // MARK: - RPHelpers
                                                 let rpHelpers = RPHelpers()
                                                 rpHelpers.showSuccess(withTitle: "Saved Post")
-                                                
+
                                                 // Dismiss
                                                 dialog.dismiss()
                                                 
@@ -651,12 +648,10 @@ extension Stories {
                                                 object!["saved"] = false
                                                 object!.saveInBackground()
                                                 
-                                                // Reload collectionView data and array data
-                                                self.posts[self.currentIndex!] = object!
-                                                
                                                 // MARK: - RPHelpers
                                                 let rpHelpers = RPHelpers()
                                                 rpHelpers.showSuccess(withTitle: "Unsaved Post")
+
                                                 
                                                 // Dismiss
                                                 dialog.dismiss()
@@ -734,6 +729,7 @@ extension Stories {
             } else if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == false {
                 dialogController.addAction(save)
             }
+            print("CI: \(self.posts[self.currentIndex!])")
             dialogController.show(in: self)
         } else {
             // Report

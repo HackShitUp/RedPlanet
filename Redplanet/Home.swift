@@ -152,17 +152,16 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 }
                 
                 
-                if self.posts.count == 0 {
-                    // MARK: - DZNEmptyDataSet
-                    self.tableView.emptyDataSetSource = self
-                    self.tableView.emptyDataSetDelegate = self
-                } else {
-                    // Reload data in main thread
-                    DispatchQueue.main.async {
-                        self.tableView?.reloadData()
+                // Reload data in main thread
+                DispatchQueue.main.async(execute: {
+                    if self.posts.count == 0 {
+                        // MARK: - DZNEmptyDataSet
+                        self.tableView.emptyDataSetSource = self
+                        self.tableView.emptyDataSetDelegate = self
                     }
-                }
-                
+                    self.tableView?.reloadData()
+                })
+
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - RPHelpers
