@@ -366,7 +366,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let font = UIFont(name: "AvenirNext-Medium", size: 15)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 12)
         let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: font!]
         return NSAttributedString(string: self.dznType!, attributes: attributeDictionary)
     }
@@ -376,8 +376,6 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        print("AI \(self.tableView!.headerView(forSection: 0)!.frame.size.height)")
-        print("VL \(self.tableView!.headerView(forSection: 0)!.frame.size.height/2.0)")
         return (self.tableView!.headerView(forSection: 0)!.frame.size.height/2.0)
     }
     
