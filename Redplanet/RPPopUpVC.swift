@@ -94,6 +94,8 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     // MARK: - UIView Life Cycle
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Reset UIVIEW
+        UIView.setAnimationsEnabled(true)
         // MARK: - RPExtensions
         self.view.straightenCorners(sender: self.view)
         self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
@@ -123,6 +125,8 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // Reset UIVIEW
+        UIView.setAnimationsEnabled(true)
     }
     
     // Creates the ScrollView and the ContentView (UIView), don't move

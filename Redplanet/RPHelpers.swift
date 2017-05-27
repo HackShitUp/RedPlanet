@@ -184,8 +184,8 @@ class RPHelpers: NSObject {
         likes["fromUser"] = PFUser.current()!
         likes["from"] = PFUser.current()!.username!
         likes["forObjectId"] = forPostObject.objectId!
-        likes["toUser"] = forPostObject.value(forKey: "byUser") as! PFUser
-        likes["to"] = (forPostObject.value(forKey: "byUser") as! PFUser).username!
+        likes["toUser"] = forPostObject.object(forKey: "byUser") as! PFUser
+        likes["to"] = (forPostObject.object(forKey: "byUser") as! PFUser).username!
         likes.saveInBackground(block: { (success: Bool, error: Error?) in
             if error == nil {
                 print("Successfully liked post: \(likes)")
@@ -200,8 +200,8 @@ class RPHelpers: NSObject {
                 let notifications = PFObject(className: "Notifications")
                 notifications["fromUser"] = PFUser.current()!
                 notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = forPostObject.value(forKey: "byUser") as! PFUser
-                notifications["to"] = (forPostObject.value(forKey: "byUser") as! PFUser).username!
+                notifications["toUser"] = forPostObject.object(forKey: "byUser") as! PFUser
+                notifications["to"] = (forPostObject.object(forKey: "byUser") as! PFUser).username!
                 notifications["forObjectId"] = forPostObject.objectId!
                 notifications["type"] = "like \(forPostObject.value(forKey: "contentType") as! String)"
                 notifications.saveInBackground()
@@ -209,22 +209,22 @@ class RPHelpers: NSObject {
                 // MARK: - Self; pushNotification
                 switch forPostObject.value(forKey: "contentType") as! String {
                 case "tp":
-                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                    self.pushNotification(toUser: forPostObject.object(forKey: "byUser") as! PFUser,
                                           activityType: "liked your Text Post")
                 case "ph":
-                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                    self.pushNotification(toUser: forPostObject.object(forKey: "byUser") as! PFUser,
                                           activityType: "liked your Photo")
                 case "pp":
-                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                    self.pushNotification(toUser: forPostObject.object(forKey: "byUser") as! PFUser,
                                           activityType: "liked your Profile Photo")
                 case "vi":
-                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                    self.pushNotification(toUser: forPostObject.object(forKey: "byUser") as! PFUser,
                                           activityType: "liked your Video")
                 case "sp":
-                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                    self.pushNotification(toUser: forPostObject.object(forKey: "byUser") as! PFUser,
                                           activityType: "liked your Space Post")
                 case "itm":
-                    self.pushNotification(toUser: forPostObject.value(forKey: "byUser") as! PFUser,
+                    self.pushNotification(toUser: forPostObject.object(forKey: "byUser") as! PFUser,
                                           activityType: "liked your Moment")
                 default:
                     break;

@@ -72,7 +72,7 @@ class StoryCell: UITableViewCell {
     // FUNCTION - Update UI
     func updateView(withObject: PFObject) {
         // (1) Get User's Object
-        if let user = withObject.value(forKey: "byUser") as? PFUser {
+        if let user = withObject.object(forKey: "byUser") as? PFUser {
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - RPHelpers extension
                 self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
@@ -121,8 +121,8 @@ class StoryCell: UITableViewCell {
             self.mediaPreview.isHidden = false
         }
         // MARK: - RPHelpers
-        self.textPreview.roundAllCorners(sender: self.textPreview)
-        self.mediaPreview.roundAllCorners(sender: self.mediaPreview)
+        self.textPreview.makeCircular(forView: self.textPreview, borderWidth: 0, borderColor: UIColor.clear)
+        self.mediaPreview.makeCircular(forView: self.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
     }
     
     override func awakeFromNib() {

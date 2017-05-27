@@ -481,7 +481,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             let fCell = collectionView.dequeueReusableCell(withReuseIdentifier: "featuredCell", for: indexPath) as! FeaturedCell
             
             // (1) Set user's name
-            if let user = self.featuredPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.featuredPosts[indexPath.item].object(forKey: "byUser") as? PFUser {
                 fCell.rpUsername.text = (user.value(forKey: "username") as! String)
             }
 

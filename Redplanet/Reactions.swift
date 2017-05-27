@@ -178,8 +178,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             comments["byUsername"] = PFUser.current()!.username!
             comments["commentOfContent"] = commentText
             comments["forObjectId"] = reactionObject.last!.objectId!
-            comments["toUser"] = reactionObject.last!.value(forKey: "byUser") as! PFUser
-            comments["to"] = (reactionObject.last!.value(forKey: "byUser") as! PFUser).username!
+            comments["toUser"] = reactionObject.last!.object(forKey: "byUser") as! PFUser
+            comments["to"] = (reactionObject.last!.object(forKey: "byUser") as! PFUser).username!
             comments.saveInBackground {
                 (success: Bool, error: Error?) in
                 if success {
@@ -192,8 +192,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
-                    notifications["toUser"] = reactionObject.last!.value(forKey: "byUser") as! PFUser
-                    notifications["to"] = (reactionObject.last!.value(forKey: "byUser") as! PFUser).username!
+                    notifications["toUser"] = reactionObject.last!.object(forKey: "byUser") as! PFUser
+                    notifications["to"] = (reactionObject.last!.object(forKey: "byUser") as! PFUser).username!
                     notifications["forObjectId"] = reactionObject.last!.objectId!
                     notifications["type"] = "comment"
                     notifications.saveInBackground(block: {
@@ -201,7 +201,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         if success {
 
                             // Handle optional chaining for user object
-                            if let user = reactionObject.last!.value(forKey: "byUser") as? PFUser {
+                            if let user = reactionObject.last!.object(forKey: "byUser") as? PFUser {
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 let rpHelpers = RPHelpers()
                                 rpHelpers.pushNotification(toUser: user, activityType: "commented on your post")
@@ -265,7 +265,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     
                     // Delete Comment
                     let comment = PFQuery(className: "Comments")
-                    comment.whereKey("byUser", equalTo: self.reactionObjects[indexPath.row].value(forKey: "byUser") as! PFUser)
+                    comment.whereKey("byUser", equalTo: self.reactionObjects[indexPath.row].object(forKey: "byUser") as! PFUser)
                     comment.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
                     comment.whereKey("commentOfContent", equalTo: self.reactionObjects[indexPath.row].value(forKey: "commentOfContent") as! String)
                     comment.findObjectsInBackground(block: {
@@ -344,7 +344,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                                                 let report = PFObject(className: "Reported")
                                                 report["byUser"] = PFUser.current()!
                                                 report["byUsername"] = PFUser.current()!.username!
-                                                report["toUser"] = self.reactionObjects[indexPath.row].value(forKey: "byUser") as! PFUser
+                                                report["toUser"] = self.reactionObjects[indexPath.row].object(forKey: "byUser") as! PFUser
                                                 report["toUsername"] = self.reactionObjects[indexPath.row].value(forKey: "byUsername") as! String
                                                 report["forObjectId"] = self.reactionObjects[indexPath.row].objectId!
                                                 report["reason"] = "Inappropriate comment."
@@ -369,7 +369,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 // Determine which options to show dependent on user's objectId
                 if (self.reactionObjects[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     dialogController.addAction(delete)
-                } else if (reactionObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                } else if (reactionObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     dialogController.addAction(delete)
                     dialogController.addAction(reply)
                     dialogController.addAction(report)
@@ -730,8 +730,8 @@ extension Reactions {
         let likes = PFObject(className: "Likes")
         likes["fromUser"] = PFUser.current()!
         likes["from"] = PFUser.current()!.username!
-        likes["toUser"] = forObject.value(forKey: "byUser") as! PFUser
-        likes["to"] = (forObject.value(forKey: "byUser") as! PFUser).username!
+        likes["toUser"] = forObject.object(forKey: "byUser") as! PFUser
+        likes["to"] = (forObject.object(forKey: "byUser") as! PFUser).username!
         likes["forObjectId"] = forObject.objectId!
         likes.saveInBackground(block: { (success: Bool, error: Error?) in
             if success {
@@ -754,8 +754,8 @@ extension Reactions {
                 let notifications = PFObject(className: "Notifications")
                 notifications["fromUser"] = PFUser.current()!
                 notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = forObject.value(forKey: "byUser") as! PFUser
-                notifications["to"] = (forObject.value(forKey: "byUser") as! PFUser).username!
+                notifications["toUser"] = forObject.object(forKey: "byUser") as! PFUser
+                notifications["to"] = (forObject.object(forKey: "byUser") as! PFUser).username!
                 notifications["forObjectId"] = forObject.objectId!
                 notifications["type"] = "like \(forObject.value(forKey: "contentType") as! String)"
                 notifications.saveInBackground()
@@ -764,22 +764,22 @@ extension Reactions {
                 let rpHelpers = RPHelpers()
                 switch forObject.value(forKey: "contentType") as! String {
                     case "tp":
-                    rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                    rpHelpers.pushNotification(toUser: forObject.object(forKey: "byUser") as! PFUser,
                                                activityType: "liked your Text Post")
                     case "ph":
-                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                        rpHelpers.pushNotification(toUser: forObject.object(forKey: "byUser") as! PFUser,
                                                    activityType: "liked your Photo")
                     case "pp":
-                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                        rpHelpers.pushNotification(toUser: forObject.object(forKey: "byUser") as! PFUser,
                                                    activityType: "liked your Profile Photo")
                     case "vi":
-                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                        rpHelpers.pushNotification(toUser: forObject.object(forKey: "byUser") as! PFUser,
                                                    activityType: "liked your Video")
                     case "sp":
-                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                        rpHelpers.pushNotification(toUser: forObject.object(forKey: "byUser") as! PFUser,
                                                    activityType: "liked your Space Post")
                     case "itm":
-                        rpHelpers.pushNotification(toUser: forObject.value(forKey: "byUser") as! PFUser,
+                        rpHelpers.pushNotification(toUser: forObject.object(forKey: "byUser") as! PFUser,
                                                    activityType: "liked your Moment")
                 default:
                     break;

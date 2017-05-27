@@ -611,13 +611,16 @@ extension Story {
             posts.whereKey("byUser", equalTo: PFUser.current()!)
             posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
+                    print("Called here...")
                     for object in objects! {
                         object["saved"] = true
                         object.saveInBackground()
                         
                         // Reload collectionView data and array data
                         self.posts[self.currentIndex!] = object
-                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+//                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                        print("Fired...")
                         
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
@@ -642,13 +645,16 @@ extension Story {
             posts.whereKey("byUser", equalTo: PFUser.current()!)
             posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
+                    print("Called there...")
                     for object in objects! {
                         object["saved"] = false
                         object.saveInBackground()
                         
                         // Reload collectionView data and array data
                         self.posts[self.currentIndex!] = object
-                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+//                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                        print("Fired there...")
                         
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
@@ -676,8 +682,8 @@ extension Story {
                 let report = PFObject(className: "Reported")
                 report["byUsername"] = PFUser.current()!.username!
                 report["byUser"] = PFUser.current()!
-                report["to"] = (self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
-                report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                report["to"] = (self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                report["toUser"] = self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser
                 report["forObjectId"] = self.posts[self.currentIndex!].objectId!
                 report["reason"] = answer.text!
                 report.saveInBackground(block: { (success: Bool, error: Error?) in
@@ -713,7 +719,7 @@ extension Story {
         }
         
         
-        if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+        if (self.posts[currentIndex!].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Views/Delete
             dialogController.addAction(views)
             dialogController.addAction(delete)

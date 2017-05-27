@@ -30,7 +30,7 @@ class MomentVideo: UICollectionViewCell {
     
     // FUNCTION - Navigates to user's profile
     func visitProfile(sender: AnyObject) {
-        otherObject.append(self.postObject?.value(forKey: "byUser") as! PFUser)
+        otherObject.append(self.postObject?.object(forKey: "byUser") as! PFUser)
         otherName.append(self.postObject?.value(forKey: "username") as! String)
         let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
@@ -40,7 +40,7 @@ class MomentVideo: UICollectionViewCell {
     // FUNCTION - Update UI
     func updateView(withObject: PFObject?, videoPlayer: VIMVideoPlayerView?) {
         // (1) Get and set user's object
-        if let user = withObject!.value(forKey: "byUser") as? PFUser {
+        if let user = withObject!.object(forKey: "byUser") as? PFUser {
             // Set username
             self.rpUsername.setTitle("\(user.value(forKey: "username") as! String)", for: .normal)
         }

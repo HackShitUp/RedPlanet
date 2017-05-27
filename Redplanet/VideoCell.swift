@@ -64,7 +64,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     
     // FUNCTION - Navigates to user's profile
     func visitProfile(sender: AnyObject) {
-        otherObject.append(self.postObject?.value(forKey: "byUser") as! PFUser)
+        otherObject.append(self.postObject?.object(forKey: "byUser") as! PFUser)
         otherName.append(self.postObject?.value(forKey: "username") as! String)
         let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
@@ -73,7 +73,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     // FUNCTION - Update UI
     func updateView(withObject: PFObject?, videoPlayer: VIMVideoPlayerView?) {
         // (1) Get and set user's object
-        if let user = withObject!.value(forKey: "byUser") as? PFUser {
+        if let user = withObject!.object(forKey: "byUser") as? PFUser {
             // Set username
             self.rpUsername.text = (user.value(forKey: "username") as! String)
             // Get and set user's profile photo
@@ -112,7 +112,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         if let text = withObject!.value(forKey: "textPost") as? String {
             // MARK: - RPExtensions
             let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("\((withObject!.value(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+            _ = formattedString.bold("\((withObject!.object(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
             if withObject!.value(forKey: "textPost") as! String != "" {
                 self.textPost.attributedText = formattedString
             } else {

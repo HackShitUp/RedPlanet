@@ -65,7 +65,7 @@ class SpacePostCell: UITableViewCell {
     // FUNCTION - Navigates to sender's profile
     func visitSender(sender: AnyObject) {
         // Traverse user's object
-        if let byUser = self.postObject?.value(forKey: "byUser") as? PFUser {
+        if let byUser = self.postObject?.object(forKey: "byUser") as? PFUser {
             otherObject.append(byUser)
             otherName.append(byUser.username!)
         }
@@ -92,7 +92,7 @@ class SpacePostCell: UITableViewCell {
         self.toUserProPic.makeCircular(forView: self.toUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // (1) Get byUser's object
-        if let byUser = withObject?.value(forKey: "byUser") as? PFUser {
+        if let byUser = withObject?.object(forKey: "byUser") as? PFUser {
             // Get and set proPic
             if let proPic = byUser.value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
@@ -125,7 +125,7 @@ class SpacePostCell: UITableViewCell {
         if let text = withObject!.value(forKey: "textPost") as? String {
             // MARK: - RPExtensions
             let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("\((withObject!.value(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+            _ = formattedString.bold("\((withObject!.object(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
             if text != "" {
                 self.textPost.attributedText = formattedString
             } else {

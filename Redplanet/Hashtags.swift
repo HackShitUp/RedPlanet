@@ -682,8 +682,8 @@ extension Hashtags {
                 let report = PFObject(className: "Reported")
                 report["byUsername"] = PFUser.current()!.username!
                 report["byUser"] = PFUser.current()!
-                report["to"] = (self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
-                report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                report["to"] = (self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                report["toUser"] = self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser
                 report["forObjectId"] = self.posts[self.currentIndex!].objectId!
                 report["reason"] = answer.text!
                 report.saveInBackground(block: { (success: Bool, error: Error?) in
@@ -719,7 +719,7 @@ extension Hashtags {
         }
         
         
-        if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+        if (self.posts[currentIndex!].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Views/Delete
             dialogController.addAction(views)
             dialogController.addAction(delete)

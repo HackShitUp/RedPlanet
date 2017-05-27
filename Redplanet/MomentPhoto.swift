@@ -12,6 +12,7 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
+
 import SDWebImage
 
 class MomentPhoto: UICollectionViewCell {
@@ -29,7 +30,7 @@ class MomentPhoto: UICollectionViewCell {
     // Function to update UI
     func updateView(withObject: PFObject?) {
         // (1) Get and set user's object
-        if let user = withObject!.value(forKey: "byUser") as? PFUser {
+        if let user = withObject!.object(forKey: "byUser") as? PFUser {
             // Set name
             self.rpUsername.setTitle("\(user.value(forKey: "realNameOfUser") as! String)", for: .normal)
         }
@@ -44,6 +45,8 @@ class MomentPhoto: UICollectionViewCell {
         // (3) Set Photo
         if let photo = withObject!.value(forKey: "photoAsset") as? PFFile {
             // MARK: - SDWebImage
+            photoMoment.sd_addActivityIndicator()
+            photoMoment.sd_setIndicatorStyle(.gray)
             photoMoment.sd_setImage(with: URL(string: photo.url!)!)
         }
         

@@ -55,7 +55,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     func fetchStories() {
         // Fetch stories
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
+        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.object(forKey: "byUser") as! PFUser)
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = 500
@@ -614,64 +614,59 @@ extension Stories {
         
         // (4) Save Post
         let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
             // Query
             let posts = PFQuery(className: "Newsfeeds")
-            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
-            posts.whereKey("byUser", equalTo: PFUser.current()!)
-            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    for object in objects! {
-                        object["saved"] = true
-                        object.saveInBackground()
-                        
-                        // Reload collectionView data and array data
-                        self.posts[self.currentIndex!] = object
-                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        
-                        // MARK: - RPHelpers
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.showSuccess(withTitle: "Saved")
-                        
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.showError(withTitle: "Network Error")
-                }
+            posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
+                                        block: { (object: PFObject?, error: Error?) in
+                                            if error == nil {
+                                                object!["saved"] = true
+                                                object!.saveInBackground()
+                                                
+                                                // Reload collectionView data and array data
+                                                self.posts[self.currentIndex!] = object!
+                                                
+                                                // MARK: - RPHelpers
+                                                let rpHelpers = RPHelpers()
+                                                rpHelpers.showSuccess(withTitle: "Saved Post")
+                                                
+                                                // Dismiss
+                                                dialog.dismiss()
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - RPHelpers
+                                                let rpHelpers = RPHelpers()
+                                                rpHelpers.showError(withTitle: "Network Error")
+                                            }
             })
         })
         
         // (5) Unsave Post
         let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
+            // Query
             let posts = PFQuery(className: "Newsfeeds")
-            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
-            posts.whereKey("byUser", equalTo: PFUser.current()!)
-            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    for object in objects! {
-                        object["saved"] = false
-                        object.saveInBackground()
-                        
-                        // Reload collectionView data and array data
-                        self.posts[self.currentIndex!] = object
-                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        
-                        // MARK: - RPHelpers
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.showSuccess(withTitle: "Unsaved")
-                        
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.showError(withTitle: "Network Error")
-                }
+            posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
+                                        block: { (object: PFObject?, error: Error?) in
+                                            if error == nil {
+                                                object!["saved"] = false
+                                                object!.saveInBackground()
+                                                
+                                                // Reload collectionView data and array data
+                                                self.posts[self.currentIndex!] = object!
+                                                
+                                                // MARK: - RPHelpers
+                                                let rpHelpers = RPHelpers()
+                                                rpHelpers.showSuccess(withTitle: "Unsaved Post")
+                                                
+                                                // Dismiss
+                                                dialog.dismiss()
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - RPHelpers
+                                                let rpHelpers = RPHelpers()
+                                                rpHelpers.showError(withTitle: "Network Error")
+                                            }
             })
         })
         
@@ -688,8 +683,8 @@ extension Stories {
                 let report = PFObject(className: "Reported")
                 report["byUsername"] = PFUser.current()!.username!
                 report["byUser"] = PFUser.current()!
-                report["to"] = (self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
-                report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
+                report["to"] = (self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                report["toUser"] = self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser
                 report["forObjectId"] = self.posts[self.currentIndex!].objectId!
                 report["reason"] = answer.text!
                 report.saveInBackground(block: { (success: Bool, error: Error?) in
@@ -725,7 +720,7 @@ extension Stories {
         }
         
         
-        if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+        if (self.posts[currentIndex!].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Views/Delete
             dialogController.addAction(views)
             dialogController.addAction(delete)

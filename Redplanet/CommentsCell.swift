@@ -33,7 +33,7 @@ class CommentsCell: UITableViewCell {
     
     // FUNCTION - Navigate to user's profile
     func showProfile(sender: AnyObject) {
-        otherObject.append(self.commentObject!.value(forKey: "byUser") as! PFUser)
+        otherObject.append(self.commentObject!.object(forKey: "byUser") as! PFUser)
         otherName.append(self.rpUsername.text!)
         let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
@@ -104,8 +104,8 @@ class CommentsCell: UITableViewCell {
             let likes = PFObject(className: "Likes")
             likes["fromUser"] = PFUser.current()!
             likes["from"] = PFUser.current()!.username!
-            likes["toUser"] = commentObject!.value(forKey: "byUser") as! PFUser
-            likes["to"] = (commentObject!.value(forKey: "byUser") as! PFUser).username!
+            likes["toUser"] = commentObject!.object(forKey: "byUser") as! PFUser
+            likes["to"] = (commentObject!.object(forKey: "byUser") as! PFUser).username!
             likes["forObjectId"] = commentObject!.objectId!
             likes.saveInBackground(block: { (success: Bool, error: Error?) in
                 if success {
@@ -131,15 +131,15 @@ class CommentsCell: UITableViewCell {
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
-                    notifications["toUser"] = self.commentObject!.value(forKey: "byUser") as! PFUser
-                    notifications["to"] = (self.commentObject!.value(forKey: "byUser") as! PFUser).username!
+                    notifications["toUser"] = self.commentObject!.object(forKey: "byUser") as! PFUser
+                    notifications["to"] = (self.commentObject!.object(forKey: "byUser") as! PFUser).username!
                     notifications["forObjectId"] = self.commentObject!.objectId!
                     notifications["type"] = "like co"
                     notifications.saveInBackground()
                     
                     // MARK: - RPHelpers
                     let rpHelpers = RPHelpers()
-                    rpHelpers.pushNotification(toUser: self.commentObject!.value(forKey: "byUser") as! PFUser,
+                    rpHelpers.pushNotification(toUser: self.commentObject!.object(forKey: "byUser") as! PFUser,
                                                activityType: "liked your comment")
                     
                     
@@ -194,7 +194,7 @@ class CommentsCell: UITableViewCell {
     // FUNCTION - Update UI
     func updateView(withObject: PFObject) {
         // Get and set user's data
-        if let user = withObject.value(forKey: "byUser") as? PFUser {
+        if let user = withObject.object(forKey: "byUser") as? PFUser {
             // (1) Set rpUsername
             self.rpUsername.text = (user.value(forKey: "username") as! String)
             // (2) Get and set userProfilePicture
