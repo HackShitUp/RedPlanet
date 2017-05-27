@@ -518,7 +518,7 @@ extension Stories {
                 views["screenshotted"] = false
                 views.saveInBackground()
             } else {
-                print("Error: \(error?.localizedDescription as Any)")
+                print(error?.localizedDescription as Any)
             }
         }
     }
@@ -539,6 +539,7 @@ extension Stories {
             button.setTitleColor(UIColor.white, for: .normal)
             button.layer.borderColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1).cgColor
             button.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.layer.masksToBounds = true
         }
         
@@ -612,22 +613,30 @@ extension Stories {
             self.navigationController?.pushViewController(editVC, animated: true)
         })
         
-        // (4) Save Post
-        let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+        
+        // (4) SAVE or UNSAVE ACTION; add tool action
+        dialogController.rightToolAction = { (button) in
             // Query
             let posts = PFQuery(className: "Newsfeeds")
             posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
                                         block: { (object: PFObject?, error: Error?) in
                                             if error == nil {
-                                                object!["saved"] = true
+                                                
+                                                if object!["saved"] as! Bool == false {
+                                                    object!["saved"] = true
+                                                    // MARK: - RPHelpers
+                                                    let rpHelpers = RPHelpers()
+                                                    rpHelpers.showSuccess(withTitle: "Saved Post")
+                                                } else if object!["saved"] as! Bool == true {
+                                                    object!["saved"] = false
+                                                    // MARK: - RPHelpers
+                                                    let rpHelpers = RPHelpers()
+                                                    rpHelpers.showAction(withTitle: "Unsaved Post")
+                                                }
                                                 object!.saveInBackground()
-
-                                                // MARK: - RPHelpers
-                                                let rpHelpers = RPHelpers()
-                                                rpHelpers.showSuccess(withTitle: "Saved Post")
-
-                                                // Dismiss
-                                                dialog.dismiss()
+                                                
+                                                // Dismiss dialog
+                                                dialogController.dismiss()
                                                 
                                             } else {
                                                 print(error?.localizedDescription as Any)
@@ -636,37 +645,10 @@ extension Stories {
                                                 rpHelpers.showError(withTitle: "Network Error")
                                             }
             })
-        })
-        
-        // (5) Unsave Post
-        let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
-            // Query
-            let posts = PFQuery(className: "Newsfeeds")
-            posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
-                                        block: { (object: PFObject?, error: Error?) in
-                                            if error == nil {
-                                                object!["saved"] = false
-                                                object!.saveInBackground()
-                                                
-                                                // MARK: - RPHelpers
-                                                let rpHelpers = RPHelpers()
-                                                rpHelpers.showSuccess(withTitle: "Unsaved Post")
+        }
 
-                                                
-                                                // Dismiss
-                                                dialog.dismiss()
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                                // MARK: - RPHelpers
-                                                let rpHelpers = RPHelpers()
-                                                rpHelpers.showError(withTitle: "Network Error")
-                                            }
-            })
-        })
-        
         // (5) Report
-        let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+        let report = AZDialogAction(title: "REPORT", handler: { (dialog) -> (Void) in
             // MARK: - UIAlertController
             let alert = UIAlertController(title: "Report Post",
                                           message: "Please provide your reason for reporting this Post",
@@ -707,29 +689,28 @@ extension Stories {
             dialog.present(alert, animated: true, completion: nil)
         })
         
-        // (5) CANCEL
+        // (6) CANCEL
         dialogController.cancelButtonStyle = { (button,height) in
             button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
             button.setTitle("CANCEL", for: [])
             return true
         }
         
-        
+        // Show options depending on who owns the post...
         if (self.posts[currentIndex!].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Views/Delete
             dialogController.addAction(views)
             dialogController.addAction(delete)
+            // Add saveButton
+            dialogController.rightToolStyle = { (button) in
+                button.setImage(UIImage(named: "SaveWhite"), for: .normal)
+                button.tintColor = .darkGray
+                return true
+            }
             // Add Edit Option
             if editTypes.contains(self.posts[self.currentIndex!].value(forKey: "contentType") as! String) {
                 dialogController.addAction(edit)
             }
-            // Add Save/Unsave Option
-            if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == true {
-                dialogController.addAction(unsave)
-            } else if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == false {
-                dialogController.addAction(save)
-            }
-            print("CI: \(self.posts[self.currentIndex!])")
             dialogController.show(in: self)
         } else {
             // Report

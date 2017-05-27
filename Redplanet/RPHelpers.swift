@@ -23,6 +23,14 @@ class RPHelpers: NSObject {
     /**************************************************************************************************
     // MARK: - NotificationBanner; used to show statusbar progress/success/error --> Color variations
     **************************************************************************************************/
+    func showAction(withTitle: String?) {
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor.darkGray
+        banner.show()
+    }
+    
     func showProgress(withTitle: String?) {
         // MARK: - NotificationBannerSwift
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
@@ -30,6 +38,7 @@ class RPHelpers: NSObject {
         banner.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         banner.show()
     }
+    
     func showSuccess(withTitle: String?) {
         // MARK: - NotificationBannerSwift
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)

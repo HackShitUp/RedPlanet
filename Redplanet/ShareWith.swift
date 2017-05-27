@@ -97,7 +97,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                         textPostChat["read"] = false
                         textPostChat["saved"] = false
                         textPostChat["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
-                        // Update "ChatsQueue"
+                        // Update "CHATS"
                         self.updateChats(withObject: textPostChat, user: user)
                         
                     case "ph":
@@ -565,12 +565,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 self.usersToShareWith.append(self.searchedUsers[indexPath.row])
                 print("Appeneding: \(self.usersToShareWith)")
             }
-            // Resign first responder
-            self.searchBar.resignFirstResponder()
-            // Clear searchBar text
-            self.searchBar.text! = ""
-            // Query Following
-            fetchFollowing()
 
         case 2:
         // POST: Append current user's object
