@@ -77,11 +77,13 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             fetchNotifications()
-            self.tableView?.allowsSelection = false
+            self.tableView.allowsSelection = false
         case 1:
             fetchToday()
+            self.tableView.allowsSelection = false
         case 2:
             fetchSaved()
+            self.tableView.allowsSelection = true
         default:
             break;
         }
@@ -163,11 +165,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     self.tableView?.reloadData()
                 }
                 
-                // Reload data in main thread
-                DispatchQueue.main.async {
-                    self.tableView?.reloadData()
-                }
-                
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - RPHelpers
@@ -220,10 +217,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     let rpHelpers = RPHelpers()
                     rpHelpers.showError(withTitle: "Network Error")
                 }
-            }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
             }
         })
     }
@@ -338,9 +331,9 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         } else if self.segmentedControl.selectedSegmentIndex == 1 {
             str = "💩 No Posts Today."
         } else {
-            str = "No Saved Posts."
+            str = "💩 No Saved Posts."
         }
-        let font = UIFont(name: "AvenirNext-Medium", size: 15)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 12)
         let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: font!]
         return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
@@ -350,7 +343,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         let str = "Launch Camera"
         let font = UIFont(name: "AvenirNext-Bold", size: 12)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1),
             NSFontAttributeName: font!
         ]
         return NSAttributedString(string: str, attributes: attributeDictionary)
@@ -361,6 +354,10 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        /*
+         THE UITableView SHOULD ONLY RELOAD ONCE OR ELSE THIS WILL CAUSE THE APP TO CRASH
+         THIS IS BECAUSE RELOADING THE UITableView resets the frame of the views...
+         */
         return self.tableView!.headerView(forSection: 0)!.frame.size.height/2
     }
     
@@ -463,6 +460,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         tableView.rowHeight = 75
         tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         tableView.tableFooterView = UIView()
+        tableView.estimatedSectionHeaderHeight = 425
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         // Register NIB
         tableView.register(UINib(nibName: "CurrentUserHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "CurrentUserHeader")
         
@@ -594,69 +593,29 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // TODAY'S || SAVED POSTS
-        if self.segmentedControl.selectedSegmentIndex == 1 || self.segmentedControl.selectedSegmentIndex == 2 {
+        // TODAY'S POSTS
+        if self.segmentedControl.selectedSegmentIndex == 2 {
             let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
             
-            // Set delegate
-            cell.delegate = self
-            // Set PFObject
-            cell.postObject = self.relativeObjects[indexPath.row]
-            
-            // (1) Get User's Object
-            if let user = self.relativeObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - RPHelpers extension
-                    cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                }
-                // (2) Set rpUsername
-                if let fullName = user.value(forKey: "realNameOfUser") as? String{
-                    cell.rpUsername.text = fullName
-                }
-            }
-            
-            // (3) Set time
-            let from = self.relativeObjects[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            // MARK: - RPExtensions
-            cell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (4) Set mediaPreview or textPreview
-            cell.textPreview.isHidden = true
-            cell.mediaPreview.isHidden = true
-            
-            if self.relativeObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-                cell.textPreview.text = "\(self.relativeObjects[indexPath.row].value(forKey: "textPost") as! String)"
-                cell.textPreview.isHidden = false
-            } else if self.relativeObjects[indexPath.row].value(forKey: "contentType") as! String == "sp" {
-                cell.mediaPreview.image = UIImage(named: "CSpacePost")
-                cell.mediaPreview.isHidden = false
-            } else {
-                if let photo = self.relativeObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
-                } else if let video = self.relativeObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                    // MARK: - AVPlayer
-                    let player = AVPlayer(url: URL(string: video.url!)!)
-                    let playerLayer = AVPlayerLayer(player: player)
-                    playerLayer.frame = cell.mediaPreview.bounds
-                    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                    cell.mediaPreview.contentMode = .scaleAspectFit
-                    cell.mediaPreview.layer.addSublayer(playerLayer)
-                    player.isMuted = true
-                    player.play()
-                }
-                cell.mediaPreview.isHidden = false
-            }
-            // MARK: - RPHelpers
-            cell.textPreview.roundAllCorners(sender: cell.textPreview)
-            cell.mediaPreview.roundAllCorners(sender: cell.mediaPreview)
+            cell.delegate = self                                                // Set parent UIViewController
+            cell.postObject = self.relativeObjects[indexPath.row]               // Set PFObject
+            cell.updateView(withObject: self.relativeObjects[indexPath.row])    // Update UI
+            cell.addStoryTap()                                                  // Add storyTap
             
             return cell
+            
+        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+        // SAVED POSTS
+
+            let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
+            
+            cell.delegate = self                                                // Set parent UIViewController
+            cell.postObject = self.relativeObjects[indexPath.row]               // Set PFObject
+            cell.updateView(withObject: self.relativeObjects[indexPath.row])    // Update UI
+            cell.addStoriesTap()                                                // Add storiesTap
+            
+            return cell
+            
             
         } else {
         // ACTIVITY
@@ -822,6 +781,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
     }
+
     
     // MARK: - UIScrollView Delegate Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -835,5 +795,4 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             }
         }
     }
-
 }

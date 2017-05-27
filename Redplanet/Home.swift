@@ -323,68 +323,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
         
-        // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
-        
-        // Set delegate
-        cell.delegate = self
-        
-        // Set PFObject
-        cell.postObject = self.posts[indexPath.row]
-        
-        // (1) Get User's Object
-        if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
-            if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-            }
-
-            // (2) Set realNameOfUser or username depending on user objects
-            if self.segmentedControl.selectedSegmentIndex == 0 {
-                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-            } else {
-                cell.rpUsername.text = (user.value(forKey: "username") as! String)
-            }
-        }
-        
-        // (3) Set time
-        let from = self.posts[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        // MARK: - RPHelpers
-        cell.time.text = difference.getFullTime(difference: difference, date: from)
-
-        // (4) Set mediaPreview or textPreview
-        cell.textPreview.isHidden = true
-        cell.mediaPreview.isHidden = true
-        
-        if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-            cell.textPreview.text = "\(self.posts[indexPath.row].value(forKey: "textPost") as! String)"
-            cell.textPreview.isHidden = false
-        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
-            cell.mediaPreview.image = UIImage(named: "CSpacePost")
-            cell.mediaPreview.isHidden = false
-        } else {
-            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                cell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
-            } else if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // MARK: - AVPlayer
-                let player = AVPlayer(url: URL(string: video.url!)!)
-                let playerLayer = AVPlayerLayer(player: player)
-                playerLayer.frame = cell.mediaPreview.bounds
-                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                cell.mediaPreview.contentMode = .scaleAspectFit
-                cell.mediaPreview.layer.addSublayer(playerLayer)
-                player.isMuted = true
-                player.play()
-            }
-            cell.mediaPreview.isHidden = false
-        }
-        // MARK: - RPHelpers
-        cell.textPreview.makeCircular(forView: cell.textPreview, borderWidth: 0, borderColor: UIColor.clear)
-        cell.mediaPreview.makeCircular(forView: cell.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
+        cell.delegate = self                                                // Set parent UIViewController
+        cell.postObject = self.posts[indexPath.row]                         // Set PFObject
+        cell.updateView(withObject: self.posts[indexPath.row])              // Update UI
+        cell.addStoriesTap()                                                // Add storiesTap
         
         return cell
     }

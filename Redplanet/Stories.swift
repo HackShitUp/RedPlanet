@@ -555,6 +555,8 @@ extension Stories {
         
         // (2) Delete Post
         let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
             // Query post
             let posts = PFQuery(className: "Newsfeeds")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
@@ -590,9 +592,6 @@ extension Stories {
                             self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
                                                              at: .right, animated: true)
                         }
-                        
-                        // Dismiss
-                        dialog.dismiss()
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -615,6 +614,9 @@ extension Stories {
         
         // (4) Save Post
         let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Query
             let posts = PFQuery(className: "Newsfeeds")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
@@ -628,6 +630,10 @@ extension Stories {
                         self.posts[self.currentIndex!] = object
                         self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
                         
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Saved")
+                        
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -640,6 +646,8 @@ extension Stories {
         
         // (5) Unsave Post
         let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
             let posts = PFQuery(className: "Newsfeeds")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
@@ -652,6 +660,10 @@ extension Stories {
                         // Reload collectionView data and array data
                         self.posts[self.currentIndex!] = object
                         self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Unsaved")
                         
                     }
                 } else {

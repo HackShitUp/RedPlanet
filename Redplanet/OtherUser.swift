@@ -144,6 +144,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             fetchToday()
         case 1:
             fetchSaved()
+            self.tableView?.allowsSelection = false
         default:
             break;
         }
@@ -234,7 +235,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+                    self.tableView?.reloadData()
                 })
                 
             } else {
@@ -322,7 +323,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+                    self.tableView?.reloadData()
                 })
                 
             } else {
@@ -617,70 +618,30 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
         
-        // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
-        
-        // Set delegate
-        cell.delegate = self
-        
-        // Set PFObject
-        cell.postObject = self.relativePosts[indexPath.row]
-        
-        // (1) Get User's Object
-        if let user = self.relativePosts[indexPath.row].value(forKey: "byUser") as? PFUser {
-            if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-            }
+        // TODAY'S POSTS
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
             
-            // (2) Set rpUsername
-            if let fullName = user.value(forKey: "realNameOfUser") as? String{
-                cell.rpUsername.text = fullName
-            }
-        }
-        
-        // (3) Set time
-        let from = self.relativePosts[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        // MARK: - RPHelpers
-        cell.time.text = difference.getFullTime(difference: difference, date: from)
-        
-        // (4) Set mediaPreview or textPreview
-        cell.textPreview.isHidden = true
-        cell.mediaPreview.isHidden = true
-        
-        if self.relativePosts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-            cell.textPreview.text = "\(self.relativePosts[indexPath.row].value(forKey: "textPost") as! String)"
-            cell.textPreview.isHidden = false
-        } else if self.relativePosts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
-            cell.mediaPreview.image = UIImage(named: "CSpacePost")
-            cell.mediaPreview.isHidden = false
+            cell.delegate = self                                                // Set parent UIViewController
+            cell.postObject = self.relativePosts[indexPath.row]                 // Set PFObject
+            cell.updateView(withObject: self.relativePosts[indexPath.row])      // Update UI
+            cell.addStoriesTap()                                                // Add storiesTap
+            
+            return cell
+            
         } else {
-            if let photo = self.relativePosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // MARK: - SDWebImage
-                cell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
-            } else if let video = self.relativePosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // MARK: - AVPlayer
-                let player = AVPlayer(url: URL(string: video.url!)!)
-                let playerLayer = AVPlayerLayer(player: player)
-                playerLayer.frame = cell.mediaPreview.bounds
-                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                cell.mediaPreview.contentMode = .scaleAspectFit
-                cell.mediaPreview.layer.addSublayer(playerLayer)
-                player.isMuted = true
-                player.play()
-            }
-            cell.mediaPreview.isHidden = false
+        // SAVED POSTS
+            
+            let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
+            
+            cell.delegate = self                                                // Set parent UIViewController
+            cell.postObject = self.relativePosts[indexPath.row]                 // Set PFObject
+            cell.updateView(withObject: self.relativePosts[indexPath.row])      // Update UI
+            cell.addStoryTap()                                                  // Add storyTap
+            
+            return cell
         }
-        // MARK: - RPHelpers
-        cell.textPreview.roundAllCorners(sender: cell.textPreview)
-        cell.mediaPreview.roundAllCorners(sender: cell.mediaPreview)
-        
-        return cell
     }
     
     
@@ -688,6 +649,18 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if let cell = self.tableView.cellForRow(at: indexPath) {
             cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.segmentedControl.selectedSegmentIndex == 1 {
+            // Show Story
+            let storyVC = self.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+            storyVC.storyObject = self.relativePosts[indexPath.row]
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+            self.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
         }
     }
     

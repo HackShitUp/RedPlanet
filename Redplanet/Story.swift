@@ -541,6 +541,8 @@ extension Story {
         
         // (2) Delete Post
         let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
             // Query post
             let posts = PFQuery(className: "Newsfeeds")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
@@ -578,9 +580,6 @@ extension Story {
                         }
                         
                         // Dismiss
-                        dialog.dismiss()
-                        
-                        // Dismiss
                         self.dismiss(animated: true, completion: nil)
                     }
                 } else {
@@ -604,6 +603,9 @@ extension Story {
         
         // (4) Save Post
         let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Query
             let posts = PFQuery(className: "Newsfeeds")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
@@ -617,6 +619,9 @@ extension Story {
                         self.posts[self.currentIndex!] = object
                         self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
                         
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Saved Post")
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -629,6 +634,9 @@ extension Story {
         
         // (5) Unsave Post
         let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Query
             let posts = PFQuery(className: "Newsfeeds")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
@@ -642,6 +650,9 @@ extension Story {
                         self.posts[self.currentIndex!] = object
                         self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
                         
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Unsaved Post")
                     }
                 } else {
                     print(error?.localizedDescription as Any)
