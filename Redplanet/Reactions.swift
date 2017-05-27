@@ -179,7 +179,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             comments["commentOfContent"] = commentText
             comments["forObjectId"] = reactionObject.last!.objectId!
             comments["toUser"] = reactionObject.last!.value(forKey: "byUser") as! PFUser
-            comments["to"] = reactionObject.last!.value(forKey: "username") as! String
+            comments["to"] = (reactionObject.last!.value(forKey: "byUser") as! PFUser).username!
             comments.saveInBackground {
                 (success: Bool, error: Error?) in
                 if success {
@@ -193,7 +193,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
                     notifications["toUser"] = reactionObject.last!.value(forKey: "byUser") as! PFUser
-                    notifications["to"] = reactionObject.last!.value(forKey: "username") as! String
+                    notifications["to"] = (reactionObject.last!.value(forKey: "byUser") as! PFUser).username!
                     notifications["forObjectId"] = reactionObject.last!.objectId!
                     notifications["type"] = "comment"
                     notifications.saveInBackground(block: {

@@ -102,7 +102,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         // Create PFObject
         let photo = PFObject(className: "Newsfeeds")
         photo["byUser"] = PFUser.current()!
-        photo["byUsername"] = PFUser.current()!.username!.lowercased()
+        photo["username"] = PFUser.current()!.username!.lowercased()
         photo["contentType"] = "ph"
         photo["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 1)!)
         photo["textPost"] = self.textPost.text
@@ -138,7 +138,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                     // Create PFObject
                     let video = PFObject(className: "Newsfeeds")
                     video["byUser"] = PFUser.current()!
-                    video["byUsername"] = PFUser.current()!.username!.lowercased()
+                    video["username"] = PFUser.current()!.username!.lowercased()
                     video["contentType"] = "vi"
                     video["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
                     video["textPost"] = self.textPost.text

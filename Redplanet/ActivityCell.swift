@@ -57,7 +57,8 @@ class ActivityCell: UITableViewCell {
             // -------------------- L I K E ----------------------------------------------------------------------------------
             // -------------------- T A G ------------------------------------------------------------------------------------
             // -------------------- S P A C E --------------------------------------------------------------------------------
-            if self.activity.text!.hasPrefix("liked") || self.activity.text!.hasPrefix("tagged you in a") || self.activity.text!.hasPrefix("wrote on your Space") {
+            // -------------------- C O M M E N T ----------------------------------------------------------------------------
+            if self.activity.text!.hasPrefix("liked") || self.activity.text!.hasPrefix("tagged you in a") || self.activity.text!.hasPrefix("wrote on your Space") || self.activity.text! == "commented on your post" {
                 // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST, or MOMENT
                 let post = PFQuery(className: "Newsfeeds")
                 post.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -80,40 +81,6 @@ class ActivityCell: UITableViewCell {
                     }
                 })
             }
-            
-            
-            // -------------------- C O M M E N T ---------------------------------------------------------------------------
-            if self.activity.text! == "commented on your post" {
-                
-                // Disable buttons
-                self.activity.isUserInteractionEnabled = false
-                self.activity.isEnabled = false
-                
-                // Find Comment
-                // Find in Newsfeed
-                let newsfeeds = PFQuery(className: "Newsfeeds")
-                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
-                newsfeeds.includeKeys(["byUser", "toUser"])
-                newsfeeds.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        // Re-enable buttons
-                        self.activity.isUserInteractionEnabled = true
-                        self.activity.isEnabled = true
-                        // PUSH VC
-                        for object in objects! {
-                            // Show Story
-                            self.showStory(withObject: object)
-                        }
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // Re-enable buttons
-                        self.activity.isUserInteractionEnabled = true
-                        self.activity.isEnabled = true
-                    }
-                })
-            }
-            
 
             // ----------L I K E D -----  C O M M E N T ------------------------------------------------------------------
             if self.activity.text! == "liked your comment" {
@@ -124,12 +91,13 @@ class ActivityCell: UITableViewCell {
                 // Find Comments
                 let comments = PFQuery(className: "Comments")
                 comments.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
-                comments.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
+                comments.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                     if error == nil {
+
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
+                        
                         for object in objects! {
                             let commentId = object.value(forKey: "forObjectId") as! String
                             // Find content
@@ -141,13 +109,14 @@ class ActivityCell: UITableViewCell {
                                 if error == nil {
                                     // PUSH VC
                                     for object in objects! {
-                                        // Push to ReactionsVC
-                                        reactionObject.append(object)
-                                        let reactionsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rectionsVC") as! Reactions
-                                        self.delegate?.navigationController?.pushViewController(reactionsVC, animated: true)
+                                        // Show Story
+                                        self.showStory(withObject: object)
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // MARK: - RPHelpers
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.showError(withTitle: "Couldn't find post...")
                                 }
                             })
                         }
@@ -156,6 +125,9 @@ class ActivityCell: UITableViewCell {
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error")
                     }
                 })
             }

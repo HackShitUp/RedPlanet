@@ -71,6 +71,7 @@ class CommentsCell: UITableViewCell {
                         let notifications = PFQuery(className: "Notifications")
                         notifications.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
                         notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                        notifications.whereKey("type", equalTo: "like co")
                         notifications.findObjectsInBackground(block: {
                             (objects: [PFObject]?, error: Error?) in
                             if error == nil {

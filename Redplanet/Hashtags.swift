@@ -14,16 +14,16 @@ import Bolts
 
 import AnimatedCollectionViewLayout
 import NotificationBannerSwift
+import Reactions
 import SDWebImage
 import VIMVideoPlayer
 import DZNEmptyDataSet
 
-class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, ReactionFeedbackDelegate {
     
     // MARK: - Class Configureable Variable
     var hashtagString = String()
-    // MARK: - VIMVideoPlayer
-    var vimVideoPlayerView: VIMVideoPlayerView?
+    
     
     // ScrollSets for database <contentType>
     let scrollSets = ["tp", "ph", "pp", "sp"]
@@ -40,6 +40,18 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     var lastOffSet: CGPoint?
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
+    
+    // MARK: - VIMVideoPlayer
+    var vimVideoPlayerView: VIMVideoPlayerView?
+    
+    // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
+    let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+    let reactionSelector = ReactionSelector()
+    let reactions = [Reaction(id: "rpLike", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
+                     Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
+                     Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!),
+                     Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
+    
     
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -109,7 +121,12 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                         if self.posts.count != 0 {
                             DispatchQueue.main.async {
                                 self.collectionView.reloadData()
+                                self.configureView()
                             }
+                        } else {
+                            // MARK: - DZNEmptyDataSet
+                            self.collectionView.emptyDataSetSource = self
+                            self.collectionView.emptyDataSetDelegate = self
                         }
                         
                     } else {
@@ -121,7 +138,35 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             }
         }
     }
-
+    
+    // MARK: - Reactions Delegate Method
+    func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
+        if feedback == nil || feedback == .tapToSelectAReaction {
+            switch reactionSelector.selectedReaction!.id {
+            case "rpMore":
+                // MORE
+                self.showOption(sender: self)
+            case "rpLike":
+                // LIKE
+                self.like(sender: self)
+            case "rpComment":
+                // COMMENT
+                reactionObject.append(self.posts[self.currentIndex!])
+                let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+                self.navigationController?.pushViewController(reactionsVC, animated: true)
+            case "rpShare":
+                // SHARE
+                shareWithObject.append(self.posts[self.currentIndex!])
+                let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                self.navigationController?.pushViewController(shareWithVC, animated: true)
+            default:
+                break;
+            }
+        }
+        // Reset ReactButton
+        self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
+    }
+    
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.posts.count == 0 {
@@ -393,6 +438,37 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
 // MARK: - Hashtags; Interactive functions go here...
 extension Hashtags {
     
+    // FUNCTION - Configure view
+    func configureView() {
+        // MARK: - Reactions
+        // (2) Create ReactionSelector and add Reactions from <1>
+        reactionSelector.feedbackDelegate = self
+        reactionSelector.setReactions(reactions)
+        
+        // (3) Configure ReactionSelector
+        reactionSelector.config = ReactionSelectorConfig {
+            $0.spacing = 12
+            $0.iconSize = 35
+            $0.stickyReaction = true
+        }
+        // (4) Set ReactionSelector
+        reactButton.reactionSelector = reactionSelector
+        // (5) Configure reactButton
+        reactButton.config = ReactionButtonConfig() {
+            $0.iconMarging = 8
+            $0.spacing = 8
+            $0.alignment = .centerLeft
+            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
+            $0.neutralTintColor = UIColor.black
+        }
+        reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
+        reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
+        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
+        reactButton.layer.applyShadow(layer: reactButton.layer)
+        view.addSubview(reactButton)
+        view.bringSubview(toFront: reactButton)
+    }
+    
     // FUNCTION - Like Post
     func like(sender: Any) {
         // MARK: - RPHelpers
@@ -482,9 +558,21 @@ extension Hashtags {
                     for object in objects! {
                         // Delete object
                         object.deleteInBackground()
+                        
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Deleted")
+                        
+                        // Replace userProfilePicture if contentType is "pp"
+                        if object.value(forKey: "contentType") as! String == "pp" {
+                            // Save PFFile context
+                            let proPicData = UIImageJPEGRepresentation(UIImage(named: "GenderNeutralUser")!, 1)
+                            let parseFile = PFFile(data: proPicData!)
+                            // Replace with "GenderNeutralUser"
+                            PFUser.current()!["userProfilePicture"] = parseFile
+                            PFUser.current()!["proPicExists"] = false
+                            PFUser.current()!.saveInBackground()
+                        }
                         
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
@@ -519,7 +607,57 @@ extension Hashtags {
             self.navigationController?.pushViewController(editVC, animated: true)
         })
         
-        // (4) Report
+        // (4) Save Post
+        let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+            let posts = PFQuery(className: "Newsfeeds")
+            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
+            posts.whereKey("byUser", equalTo: PFUser.current()!)
+            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object["saved"] = true
+                        object.saveInBackground()
+                        
+                        // Reload collectionView data and array data
+                        self.posts[self.currentIndex!] = object
+                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                }
+            })
+        })
+        
+        // (5) Unsave Post
+        let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
+            let posts = PFQuery(className: "Newsfeeds")
+            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
+            posts.whereKey("byUser", equalTo: PFUser.current()!)
+            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object["saved"] = false
+                        object.saveInBackground()
+                        
+                        // Reload collectionView data and array data
+                        self.posts[self.currentIndex!] = object
+                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                }
+            })
+        })
+        
+        // (5) Report
         let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
             // MARK: - UIAlertController
             let alert = UIAlertController(title: "Report Post",
@@ -532,7 +670,7 @@ extension Hashtags {
                 let report = PFObject(className: "Reported")
                 report["byUsername"] = PFUser.current()!.username!
                 report["byUser"] = PFUser.current()!
-                report["to"] = self.posts[self.currentIndex!].value(forKey: "username") as! String
+                report["to"] = (self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
                 report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
                 report["forObjectId"] = self.posts[self.currentIndex!].objectId!
                 report["reason"] = answer.text!
@@ -568,26 +706,26 @@ extension Hashtags {
             return true
         }
         
+        
         if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Views, Delete, Edit
+            // Views/Delete
+            dialogController.addAction(views)
+            dialogController.addAction(delete)
+            // Add Edit Option
             if editTypes.contains(self.posts[self.currentIndex!].value(forKey: "contentType") as! String) {
-                dialogController.addAction(views)
-                dialogController.addAction(delete)
                 dialogController.addAction(edit)
-                dialogController.show(in: self)
-            } else {
-                // Views and delete
-                dialogController.addAction(views)
-                dialogController.addAction(delete)
-                dialogController.show(in: self)
             }
+            // Add Save/Unsave Option
+            if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == true {
+                dialogController.addAction(unsave)
+            } else if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == false {
+                dialogController.addAction(save)
+            }
+            dialogController.show(in: self)
         } else {
             // Report
             dialogController.addAction(report)
             dialogController.show(in: self)
         }
     }
-    
-    
-    
 }

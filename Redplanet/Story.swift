@@ -16,12 +16,13 @@ import ParseUI
 import Bolts
 
 import AnimatedCollectionViewLayout
+import DZNEmptyDataSet
 import Reactions
 import SDWebImage
 import SVProgressHUD
 import VIMVideoPlayer
 
-class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
+class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     // MARK: - Class Variable; Used to get object and determine whether its for CHATS or Single Post
     open var storyObject: PFObject?
@@ -57,7 +58,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         newsfeeds.whereKey("objectId", equalTo: self.storyObject!.objectId!)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.limit = 500
+        newsfeeds.limit = 1
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -77,8 +78,14 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                 
                 // Reload data in main thread and configureView
                 DispatchQueue.main.async(execute: {
+                    if self.posts.count != 0 {
+                        self.configureView()
+                    } else {
+                        // MARK: - DZNEmptyDataSet
+                        self.collectionView.emptyDataSetSource = self
+                        self.collectionView.emptyDataSetDelegate = self
+                    }
                     self.collectionView.reloadData()
-                    self.configureView()
                 })
                 
             } else {
@@ -125,7 +132,33 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         // Reset ReactButton
         self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
     }
-
+    
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.posts.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let font = UIFont(name: "AvenirNext-Medium", size: 25)
+        let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!]
+        return NSAttributedString(string: "💩\nThe story doesn't exist...", attributes: attributeDictionary)
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17)
+        let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!]
+        return NSAttributedString(string: "OK", attributes: attributeDictionary)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Dismiss
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
     
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -529,7 +562,7 @@ extension Story {
                             let parseFile = PFFile(data: proPicData!)
                             // Replace with "GenderNeutralUser"
                             PFUser.current()!["userProfilePicture"] = parseFile
-                            PFUser.current()!["proPicExists"] = true
+                            PFUser.current()!["proPicExists"] = false
                             PFUser.current()!.saveInBackground()
                         }
                         
@@ -566,7 +599,57 @@ extension Story {
             self.navigationController?.pushViewController(editVC, animated: true)
         })
         
-        // (4) Report
+        // (4) Save Post
+        let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+            let posts = PFQuery(className: "Newsfeeds")
+            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
+            posts.whereKey("byUser", equalTo: PFUser.current()!)
+            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object["saved"] = true
+                        object.saveInBackground()
+                        
+                        // Reload collectionView data and array data
+                        self.posts[self.currentIndex!] = object
+                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                }
+            })
+        })
+        
+        // (5) Unsave Post
+        let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
+            let posts = PFQuery(className: "Newsfeeds")
+            posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
+            posts.whereKey("byUser", equalTo: PFUser.current()!)
+            posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object["saved"] = false
+                        object.saveInBackground()
+                        
+                        // Reload collectionView data and array data
+                        self.posts[self.currentIndex!] = object
+                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
+                        
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                }
+            })
+        })
+        
+        // (5) Report
         let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
             // MARK: - UIAlertController
             let alert = UIAlertController(title: "Report Post",
@@ -579,7 +662,7 @@ extension Story {
                 let report = PFObject(className: "Reported")
                 report["byUsername"] = PFUser.current()!.username!
                 report["byUser"] = PFUser.current()!
-                report["to"] = self.posts[self.currentIndex!].value(forKey: "username") as! String
+                report["to"] = (self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser).username!
                 report["toUser"] = self.posts[self.currentIndex!].value(forKey: "byUser") as! PFUser
                 report["forObjectId"] = self.posts[self.currentIndex!].objectId!
                 report["reason"] = answer.text!
@@ -615,19 +698,22 @@ extension Story {
             return true
         }
         
+        
         if (self.posts[currentIndex!].value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Views, Delete, Edit
+            // Views/Delete
+            dialogController.addAction(views)
+            dialogController.addAction(delete)
+            // Add Edit Option
             if editTypes.contains(self.posts[self.currentIndex!].value(forKey: "contentType") as! String) {
-                dialogController.addAction(views)
-                dialogController.addAction(delete)
                 dialogController.addAction(edit)
-                dialogController.show(in: self)
-            } else {
-                // Views and delete
-                dialogController.addAction(views)
-                dialogController.addAction(delete)
-                dialogController.show(in: self)
             }
+            // Add Save/Unsave Option
+            if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == true {
+                dialogController.addAction(unsave)
+            } else if self.posts[self.currentIndex!].value(forKey: "saved") as! Bool == false {
+                dialogController.addAction(save)
+            }
+            dialogController.show(in: self)
         } else {
             // Report
             dialogController.addAction(report)

@@ -385,6 +385,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
         
+        // Change background color
+        self.navigationController?.view.backgroundColor = UIColor.black
+        
         // MARK: - SubtleVolume
         subtleVolume = SubtleVolume(style: .dots)
         subtleVolume.frame = CGRect(x: 0, y: 0, width: 0, height: 0)

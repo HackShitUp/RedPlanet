@@ -55,6 +55,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 // Traverse PFObject to get object data...
                 let postObject = shareWithObject.last!
+                if let geoPoint = PFUser.current()!.value(forKey: "location") as? PFGeoPoint {
+                    postObject["location"] = geoPoint   // add geoLocation...
+                }
                 postObject.saveInBackground(block: { (success: Bool, error: Error?) in
                     if success {
                         // Handle nil textPost
@@ -164,6 +167,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             if self.navigationController?.restorationIdentifier == "right" || self.navigationController?.restorationIdentifier == "left" {
                 // MARK: - SwipeNavigationController; show center VC
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+                
+            } else if self.navigationController?.restorationIdentifier == "center" {
+                self.navigationController?.popToRootViewController(animated: true)
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }
@@ -309,8 +315,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         if position == .center {
             // Pop 2 VC's and push to bot || pop 1 VC
             if self.navigationController?.viewControllers.count == vcCount {
-                let viewControllers = self.navigationController!.viewControllers as [UIViewController]
-                _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - vcCount!], animated: false)
+                self.navigationController?.popToRootViewController(animated: true)
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }

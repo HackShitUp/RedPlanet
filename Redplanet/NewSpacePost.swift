@@ -108,7 +108,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         // Create object
         let textSpace = PFObject(className: "Newsfeeds")
         textSpace["byUser"] = PFUser.current()!
-        textSpace["byUsername"] = PFUser.current()!.username!
+        textSpace["username"] = PFUser.current()!.username!
         textSpace["contentType"] = "sp"
         textSpace["saved"] = false
         textSpace["textPost"] = self.textView.text!
@@ -123,7 +123,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         // Create PFObject
         let photoSpace = PFObject(className: "Newsfeeds")
         photoSpace["byUser"] = PFUser.current()!
-        photoSpace["byUsername"] = PFUser.current()!.username!
+        photoSpace["username"] = PFUser.current()!.username!
         photoSpace["contentType"] = "sp"
         photoSpace["saved"] = false
         photoSpace["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 0.5)!)
@@ -159,7 +159,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     // Create PFObject
                     let videoSpace = PFObject(className: "Newsfeeds")
                     videoSpace["byUser"] = PFUser.current()!
-                    videoSpace["byUsername"] = PFUser.current()!.username!
+                    videoSpace["username"] = PFUser.current()!.username!
                     videoSpace["contentType"] = "sp"
                     videoSpace["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
                     videoSpace["saved"] = false

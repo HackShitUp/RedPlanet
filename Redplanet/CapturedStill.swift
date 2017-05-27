@@ -77,7 +77,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // Create PFObject
             let itmPhoto = PFObject(className: "Newsfeeds")
             itmPhoto["byUser"] = PFUser.current()!
-            itmPhoto["byUsername"] = PFUser.current()!.username!
+            itmPhoto["username"] = PFUser.current()!.username!
             itmPhoto["contentType"] = "itm"
             itmPhoto["saved"] = false
             itmPhoto["textPost"] = self.textField.text

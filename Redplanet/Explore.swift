@@ -40,7 +40,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
     // Boolean to determine randomized query; whether function will fetch public/private accounts
     var switchBool: Bool? = false
     // Titles for header
-    var exploreTitles = ["NEWS", "FEATURED", "Suggested Accounts", "People Near Me"]
+    var exploreTitles = ["NEWS", "FEATURED", "SUGGESTED ACCOUNTS", "PEOPLE NEAR ME"]
     
     @IBOutlet weak var searchBar: UITextField!
     
@@ -101,7 +101,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
         let featured = PFQuery(className: "Newsfeeds")
         featured.whereKey("byUser", matchesQuery: PFUser.query()!.whereKey("private", equalTo: false))
         featured.whereKey("contentType", containedIn: ["tp", "ph", "vi", "itm"])
-        featured.includeKey("byUser")
+        featured.includeKeys(["byUser", "toUser"])
         featured.order(byDescending: "createdAt")
         featured.limit = self.page
         featured.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in

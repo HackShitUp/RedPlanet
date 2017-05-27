@@ -685,7 +685,7 @@
 			name = UICollectionViewCells;
 			sourceTree = "<group>";
 		};
-		7E972FE31EA9555E0047F4D4 /* HOME/STORIES */ = {
+		7E972FE31EA9555E0047F4D4 /* STORIES */ = {
 			isa = PBXGroup;
 			children = (
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
@@ -693,7 +693,7 @@
 				7EB40B5A1EC6618A0034E8AF /* Story.swift */,
 				7EEB56711ED8D4FA001652DA /* ChatStory.swift */,
 			);
-			name = HOME/STORIES;
+			name = STORIES;
 			sourceTree = "<group>";
 		};
 		7E972FED1EA97D810047F4D4 /* TextPostCell */ = {
@@ -1118,7 +1118,7 @@
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,
 				7EA730D61E3B293500CF4D12 /* RPShareUI */,
-				7E972FE31EA9555E0047F4D4 /* HOME/STORIES */,
+				7E972FE31EA9555E0047F4D4 /* STORIES */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
 				7E3F0EDF1DC0630E006BF522 /* FOLLOWREQUESTS */,
 				7E7E38BD1DD533CF00DEC27B /* CONTACTS */,

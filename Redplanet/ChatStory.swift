@@ -16,12 +16,13 @@ import ParseUI
 import Bolts
 
 import AnimatedCollectionViewLayout
+import DZNEmptyDataSet
 import Reactions
 import SDWebImage
 import SVProgressHUD
 import VIMVideoPlayer
 
-class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate {
+class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold chat moments
     var chatPosts = [PFObject]()
@@ -43,11 +44,9 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", equalTo: chatUserObject.last!)
-        
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", equalTo: chatUserObject.last!)
-        
         let chats = PFQuery.orQuery(withSubqueries: [receiver, sender])
         chats.whereKey("contentType", equalTo: "itm")
         chats.order(byDescending: "createdAt")
@@ -62,7 +61,7 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
                     // Ephemeral content
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 || (difference.hour! < 24 && object.value(forKey: "saved") as! Bool == true) {
+                    if difference.hour! < 24 || (difference.hour! < 24 && object.value(forKey: "saved") as! Bool == false) {
                         self.chatPosts.append(object)
                     }
                 }
@@ -70,6 +69,7 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
                 if self.chatPosts.count != 0 {
                     // Reload data in main thread and configureView
                     DispatchQueue.main.async(execute: {
+                        self.collectionView.reloadData()
                         // MARK: - SegmentedProgressBar
                         self.spb = SegmentedProgressBar(numberOfSegments: self.chatPosts.count, duration: 10)
                         self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
@@ -79,12 +79,11 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
                         self.spb.delegate = self
                         self.view.addSubview(self.spb)
                         self.spb.startAnimation()
-                        
-                        self.collectionView.reloadData()
                     })
                 } else {
-                    // TODO
                     // MARK: - DZNEmptyDataSet
+                    self.collectionView.emptyDataSetSource = self
+                    self.collectionView.emptyDataSetDelegate = self
                 }
                 
             } else {
@@ -103,6 +102,34 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
         // Dismiss VC
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
+    
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.chatPosts.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let font = UIFont(name: "AvenirNext-Medium", size: 25)
+        let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!]
+        return NSAttributedString(string: "💩\nThe Chat Story doesn't exist...", attributes: attributeDictionary)
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17)
+        let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!]
+        return NSAttributedString(string: "OK", attributes: attributeDictionary)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Dismiss
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

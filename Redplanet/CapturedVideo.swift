@@ -104,7 +104,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
                     // Create PFObject
                     let video = PFObject(className: "Newsfeeds")
                     video["byUser"] = PFUser.current()!
-                    video["byUsername"] = PFUser.current()!.username!
+                    video["username"] = PFUser.current()!.username!
                     video["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
                     video["contentType"] = "itm"
                     video["saved"] = false
