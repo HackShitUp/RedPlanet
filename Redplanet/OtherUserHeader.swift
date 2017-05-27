@@ -34,33 +34,37 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var blockButton: UIButton!
     @IBOutlet weak var chatButton: UIButton!
     @IBOutlet weak var newSpaceButton: UIButton!
+    @IBOutlet weak var segmentView: UIView!
     
-    // Function to show followers
+    // FUNCTION - Zoom into photo
+    func zoom(sender: AnyObject) {
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.rpUserProPic.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+        agrume.showFrom(self.delegate!.self)
+    }
+    
+    // FUNCTION - Show followers
     func showFollowers() {
-        // Append data
-        relationForUser.append(otherObject.last!)
-        
-        // Push VC
+        // Show FollowersFollowingVC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
+        followersFollowingVC.relationForUser = otherObject.last!
         followersFollowingVC.followersFollowing = "Followers"
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
-    // Function to show followers
+    // FUNCTION - Show following
     func showFollowing() {
-        // Append data
-        relationForUser.append(otherObject.last!)
-        
-        // Push VC
+        // Show FollowersFollowingVC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
+        followersFollowingVC.relationForUser = otherObject.last!
         followersFollowingVC.followersFollowing = "Following"
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
     
-    // Function to show profile photo
+    // FUNCTION - Show current profile photo
     func showProPic() {
-        
+        // If proPicExists
         if otherObject.last!.value(forKey: "proPicExists") as! Bool == true {    
             // Get user's profile photo
             let proPic = PFQuery(className: "Newsfeeds")
@@ -70,13 +74,13 @@ class OtherUserHeader: UITableViewHeaderFooterView {
             proPic.getFirstObjectInBackground {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
-                    
-//                    // Append object
-//                    proPicObject.append(object!)
-//                    // Push VC
-//                    let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-//                    self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                    
+                    // StoryVC
+                    let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+                    storyVC.storyObject = object
+                    // MARK: - RPPopUpVC
+                    let rpPopUpVC = RPPopUpVC()
+                    rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+                    self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
                 } else {
                     print(error?.localizedDescription as Any)
                     // Error
@@ -90,14 +94,6 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         }
     }
     
-    
-    
-    // Function to zoom
-    func zoom(sender: AnyObject) {
-        // Mark: - Agrume
-        let agrume = Agrume(image: self.rpUserProPic.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
-        agrume.showFrom(self.delegate!.self)
-    }
     
     // FOLLOW ACTION
     @IBAction func followAction(_ sender: Any) {

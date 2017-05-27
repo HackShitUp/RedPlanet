@@ -20,6 +20,8 @@ import Bolts
 import OneSignal
 import SDWebImage
 
+// Define NotificationName
+let homeNotification = Notification.Name(rawValue: "home")
 
 class Home: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, TwicketSegmentedControlDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -140,18 +142,25 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                     
                     // (1) MAP the current array, <posts>
                     let users = self.posts.map {$0.object(forKey: "byUser") as! PFUser}
-                    // (2) Check if posts array does NOT contain user's object
-                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && difference.hour! < 24 {
+                    // (2) Check if posts array does NOT contain user's object AND ALSO get savedPosts
+                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!})
+                        && difference.hour! < 24 {
                         self.posts.append(object)
                     } else {
                         self.skipped.append(object)
                     }
                 }
                 
-                // MARK: - DZNEmptyDataSet
+                
                 if self.posts.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                } else {
+                    // Reload data in main thread
+                    DispatchQueue.main.async {
+                        self.tableView?.reloadData()
+                    }
                 }
                 
             } else {
@@ -159,10 +168,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
-            }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
             }
         }
     }
@@ -252,7 +257,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
         // Define Notification to reload data
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "home"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: homeNotification, object: nil)
         
         // Set UITabBarController Delegate
         self.tabBarController?.delegate = self

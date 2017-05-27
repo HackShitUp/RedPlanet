@@ -579,6 +579,9 @@ extension Story {
                         
                         // Dismiss
                         dialog.dismiss()
+                        
+                        // Dismiss
+                        self.dismiss(animated: true, completion: nil)
                     }
                 } else {
                     print(error?.localizedDescription as Any)

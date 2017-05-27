@@ -14,12 +14,10 @@ import Bolts
 import SDWebImage
 import DZNEmptyDataSet
 
-// Array to get followers|following for user
-var relationForUser = [PFObject]()
-
 class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     // MARK: - Class Variable; Determine whether to fetch followers or following
+    var relationForUser: PFObject?
     var followersFollowing: String?
     
     // Array to hold users
@@ -37,9 +35,6 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     var refresher: UIRefreshControl!
     
     @IBAction func back(_ sender: Any) {
-        // Deallocate array and variable
-        relationForUser.removeAll(keepingCapacity: false)
-        followersFollowing = ""
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -57,7 +52,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         // Fetch Followers
         let followers = PFQuery(className: "FollowMe")
         followers.whereKey("isFollowing", equalTo: true)
-        followers.whereKey("following", equalTo: relationForUser.last!)
+        followers.whereKey("following", equalTo: self.relationForUser!)
         followers.includeKeys(["following", "follower"])
         followers.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -96,7 +91,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         // Fetch Following
         let following = PFQuery(className: "FollowMe")
         following.whereKey("isFollowing", equalTo: true)
-        following.whereKey("follower", equalTo: relationForUser.last!)
+        following.whereKey("follower", equalTo: self.relationForUser!)
         following.includeKeys(["following", "follower"])
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -148,7 +143,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(relationForUser.last!.value(forKey: "realNameOfUser") as! String)'s \(title!)"
+            self.title = "\(self.relationForUser!.value(forKey: "realNameOfUser") as! String)'s \(title!)"
         }
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false

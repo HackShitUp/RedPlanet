@@ -73,7 +73,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Re-enable backButton
             self.backButton.isEnabled = true
             // Send Notification to friendsNewsfeed
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "HOME"), object: nil)
             // Send Notification to myProfile
             NotificationCenter.default.post(name: myProfileNotification, object: nil)
             // Pop view controller
@@ -658,7 +658,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     
     // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         // Edit changes
         PFUser.current()!["proPicExists"] = true
@@ -696,8 +696,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         
         // Set Bool
         isNewProPic = true
-        // Return bool
-        return isNewProPic
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

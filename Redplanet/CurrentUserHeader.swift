@@ -14,7 +14,6 @@ import SafariServices
 import Parse
 import ParseUI
 import Bolts
-
 import KILabel
 
 class CurrentUserHeader: UITableViewHeaderFooterView {
@@ -32,22 +31,18 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     
     // FUNCITON - Show followers
     func showFollowers() {
-        // Append data
-        relationForUser.append(PFUser.current()!)
-        relationForUser.append(PFUser.current()!)
-        // Push VC
+        // Show FollowersFollowingVC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
+        followersFollowingVC.relationForUser = otherObject.last!
         followersFollowingVC.followersFollowing = "Followers"
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
     // FUNCTION - Show followers
     func showFollowing() {
-        // Append data
-        relationForUser.append(PFUser.current()!)
-        relationForUser.append(PFUser.current()!)
-        // Push VC
+        // Show FollowersFollowingVC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
+        followersFollowingVC.relationForUser = otherObject.last!
         followersFollowingVC.followersFollowing = "Following"
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
