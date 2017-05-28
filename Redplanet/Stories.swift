@@ -183,7 +183,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor.groupTableViewBackground)
         SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 21))
-        SVProgressHUD.show(withStatus: "\((storyObjects.last!.object(forKey: "byUser") as! PFUser).username!.uppercased())")
+        SVProgressHUD.show(withStatus: "\((storyObjects.last!.object(forKey: "byUser") as! PFUser).username!.lowercased())")
         
         // Fetch Stories
         fetchStories()

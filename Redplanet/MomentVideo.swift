@@ -13,6 +13,8 @@ import AVKit
 import Parse
 import ParseUI
 import Bolts
+
+import SDWebImage
 import VIMVideoPlayer
 
 class MomentVideo: UICollectionViewCell {
@@ -100,6 +102,10 @@ class MomentVideo: UICollectionViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
+        
+        // MARK: - SDWebImage
+        self.contentView.sd_addActivityIndicator()
+        self.contentView.sd_setIndicatorStyle(.gray)
     }
     
 }

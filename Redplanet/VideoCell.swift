@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 import KILabel
 import SafariServices
+import SDWebImage
 import VIMVideoPlayer
 
 class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
@@ -22,8 +23,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     var postObject: PFObject?
     // Initialize parent UIViewController
     var delegate: UIViewController?
-    // Initialize Float value to seek w UISlider
-    var playerRateBeforeSeek: Float = 0
     
     // MARK: - VIMVideoPlayerView
     var vimVideoPlayerView: VIMVideoPlayerView!
@@ -35,7 +34,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     @IBOutlet weak var captionView: UIView!
     @IBOutlet weak var textPost: KILabel!
     
-    @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var videoLength: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBAction func playAction(_ sender: Any) {
@@ -49,6 +47,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             self.playButton.setImage(UIImage(named: "Play"), for: .normal)
         }
     }
+    
     @IBOutlet weak var volumeButton: UIButton!
     @IBAction func volumeAction(_ sender: Any) {
         if self.vimVideoPlayerView.player.isMuted {
@@ -110,12 +109,10 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         
         // (4) Set text post
         if let text = withObject!.value(forKey: "textPost") as? String {
-            // MARK: - RPExtensions
-            let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("\((withObject!.object(forKey: "byUser") as! PFUser).username!) ", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(text)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
             if withObject!.value(forKey: "textPost") as! String != "" {
-                self.textPost.attributedText = formattedString
+                self.textPost.text = text
             } else {
+                self.captionView.isHidden = true
                 self.textPost.isHidden = true
             }
         }
@@ -134,20 +131,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         }
     }
     
-    // FUNCTIONS - Configure UISlider
-    func sliderBeganTracking(slider: UISlider) {
-        playerRateBeforeSeek = vimVideoPlayerView.player.player.rate
-        vimVideoPlayerView.player.pause()
-    }
-    
-    func sliderEndedTracking(slider: UISlider) {
-        let videoDuration = CMTimeGetSeconds(self.vimVideoPlayerView.player.player.currentItem!.duration)
-        let elapsedTime: Float64 = videoDuration * Float64(slider.value)
-        vimVideoPlayerView.player.player.seek(to: CMTimeMakeWithSeconds(elapsedTime, 100)) { (completed: Bool) -> Void in
-            self.vimVideoPlayerView.player.play()
-        }
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Hide captionView
@@ -156,9 +139,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         // Configure volume button
         self.volumeButton.makeCircular(forView: self.volumeButton, borderWidth: 0, borderColor: UIColor.clear)
         self.volumeButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
-        
-        // Configure UISlider
-        self.slider.setValue(0, animated: true)
         
         // Add Profile Tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))
@@ -184,9 +164,9 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         self.captionView.isUserInteractionEnabled = true
         self.captionView.addGestureRecognizer(captionViewTap)
         
-        // Add methods to UISlider
-        slider.addTarget(self, action: #selector(sliderBeganTracking), for: .touchDown)
-        slider.addTarget(self, action: #selector(sliderEndedTracking), for: [.touchUpInside, .touchUpOutside])
+        // MARK: - SDWebImage
+        self.videoPreview.sd_showActivityIndicatorView()
+        self.videoPreview.sd_setIndicatorStyle(.white)
 
         // MARK: - KILabel; @, #, and https://
         // @@@
@@ -238,14 +218,5 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         dateFormatter.dateFormat = "m:ss"
         // Change text
         self.videoLength.text = "\(dateFormatter.string(from: date))s"
-        
-        // Change slider value
-        self.slider.setValue(Float(CMTimeGetSeconds(cmTime)), animated: true)
     }
-    
-    func videoPlayerViewPlaybackLikely(toKeepUp videoPlayerView: VIMVideoPlayerView!) {
-        
-    }
-    
-
 }
