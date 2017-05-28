@@ -442,8 +442,17 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
 // MARK: - Hashtags; Interactive functions go here...
 extension Hashtags {
     
-    // FUNCTION - Configure view
     func configureView() {
+        // MARK: - SegmentedProgressBar
+        self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
+        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
+        self.spb.topColor = UIColor.white
+        self.spb.layer.applyShadow(layer: self.spb.layer)
+        self.spb.padding = 2
+        self.spb.delegate = self
+        self.view.addSubview(self.spb)
+        self.spb.startAnimation()
+        
         // MARK: - Reactions
         // (2) Create ReactionSelector and add Reactions from <1>
         reactionSelector.feedbackDelegate = self
@@ -466,8 +475,8 @@ extension Hashtags {
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
+        reactButton.center = self.view.center
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
-        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         reactButton.layer.applyShadow(layer: reactButton.layer)
         view.addSubview(reactButton)
         view.bringSubview(toFront: reactButton)

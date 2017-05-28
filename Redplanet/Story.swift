@@ -430,7 +430,6 @@ extension Story: UITableViewDataSource, UITableViewDelegate {
 // MARK: - Story Functions
 extension Story {
     
-    // FUNCTION - Configure view
     func configureView() {
         // MARK: - SegmentedProgressBar
         self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
@@ -464,8 +463,8 @@ extension Story {
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
+        reactButton.center = self.view.center
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
-        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         reactButton.layer.applyShadow(layer: reactButton.layer)
         view.addSubview(reactButton)
         view.bringSubview(toFront: reactButton)
