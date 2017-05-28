@@ -106,26 +106,28 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                         // Clear array
                         self.posts.removeAll(keepingCapacity: false)
                         for object in objects! {
-//                            // Ephemeral content
-//                            let components : NSCalendar.Unit = .hour
-//                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                            if difference.hour! < 24 {
-//                                self.posts.append(object)
-//                            }
-                            self.posts.append(object)
+                            // Ephemeral content
+                            let components : NSCalendar.Unit = .hour
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                            if difference.hour! < 24 {
+                                self.posts.append(object)
+                            }
                         }
                         
-                        // Reload data in main thread
-                        if self.posts.count != 0 {
-                            DispatchQueue.main.async {
-                                self.collectionView.reloadData()
+                        // Reload data in main thread and configureView
+                        DispatchQueue.main.async(execute: {
+                            if self.posts.count != 0 {
+                                // Configure View
                                 self.configureView()
+                                // Save currentIndex
+                                self.saveViews(withIndex: self.currentIndex!)
+                            } else {
+                                // MARK: - DZNEmptyDataSet
+                                self.collectionView.emptyDataSetSource = self
+                                self.collectionView.emptyDataSetDelegate = self
                             }
-                        } else {
-                            // MARK: - DZNEmptyDataSet
-                            self.collectionView.emptyDataSetSource = self
-                            self.collectionView.emptyDataSetDelegate = self
-                        }
+                            self.collectionView.reloadData()
+                        })
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -232,6 +234,11 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // MARK: - VIMVideoPlayerView; de-allocate AVPlayer's currentItem
+        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -497,19 +504,21 @@ extension Hashtags {
     func saveViews(withIndex: Int) {
         // Save to Views
         let views = PFQuery(className: "Views")
-        views.whereKey("forObject", equalTo: self.posts[withIndex])
+        views.whereKey("forObjectId", equalTo: self.posts[withIndex].objectId!)
         views.whereKey("byUser", equalTo: PFUser.current()!)
-        views.countObjectsInBackground { (count: Int32, error: Error?) in
-            if error == nil && count == 0 {
-                // MARK: - Save PFObject
-                let views = PFObject(className: "Views")
-                views["byUser"] = PFUser.current()!
-                views["byUsername"] = PFUser.current()!.username!
-                views["forObjectId"] = self.posts[withIndex].objectId!
-                views["didScreenshot"] = false
-                views.saveInBackground()
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                if objects!.isEmpty {
+                    // MARK: - Save PFObject
+                    let views = PFObject(className: "Views")
+                    views["byUser"] = PFUser.current()!
+                    views["byUsername"] = PFUser.current()!.username!
+                    views["forObjectId"] = self.posts[withIndex].objectId!
+                    views["didScreenshot"] = false
+                    views.saveInBackground()
+                }
             } else {
-                print("Error: \(error?.localizedDescription as Any)")
+                print(error?.localizedDescription as Any)
             }
         }
     }

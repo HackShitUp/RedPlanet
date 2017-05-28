@@ -31,6 +31,9 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     let scrollSets = ["tp", "ph", "pp", "sp"]
     // Array to hold posts; PFObject
     var posts = [PFObject]()
+    
+    // Variable to determine DZNEmptyDataSet Title
+    var dznTitle: String?
 
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
@@ -85,6 +88,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                         // MARK: - DZNEmptyDataSet
                         self.collectionView.emptyDataSetSource = self
                         self.collectionView.emptyDataSetDelegate = self
+                        self.dznTitle = "💩\nThis post doesn't exist..."
                     }
                     self.collectionView.reloadData()
                 })
@@ -146,7 +150,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let font = UIFont(name: "AvenirNext-Medium", size: 25)
         let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: font!]
-        return NSAttributedString(string: "💩\nThe story doesn't exist...", attributes: attributeDictionary)
+        return NSAttributedString(string: "\(self.dznTitle!)", attributes: attributeDictionary)
     }
     
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
@@ -423,7 +427,7 @@ extension Story: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Story; Functions for "configureView", "likePost", "unlikePost", "saveViews", and "showOptions"
+// MARK: - Story Functions
 extension Story {
     
     // FUNCTION - Configure view
@@ -498,19 +502,21 @@ extension Story {
     func saveViews(withIndex: Int) {
         // Save to Views
         let views = PFQuery(className: "Views")
-        views.whereKey("forObject", equalTo: self.posts[withIndex])
+        views.whereKey("forObjectId", equalTo: self.posts[withIndex].objectId!)
         views.whereKey("byUser", equalTo: PFUser.current()!)
-        views.countObjectsInBackground { (count: Int32, error: Error?) in
-            if error == nil && count == 0 {
-                // MARK: - Save PFObject
-                let views = PFObject(className: "Views")
-                views["byUser"] = PFUser.current()!
-                views["byUsername"] = PFUser.current()!.username!
-                views["forObjectId"] = self.posts[withIndex].objectId!
-                views["didScreenshot"] = false
-                views.saveInBackground()
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                if objects!.isEmpty {
+                    // MARK: - Save PFObject
+                    let views = PFObject(className: "Views")
+                    views["byUser"] = PFUser.current()!
+                    views["byUsername"] = PFUser.current()!.username!
+                    views["forObjectId"] = self.posts[withIndex].objectId!
+                    views["didScreenshot"] = false
+                    views.saveInBackground()
+                }
             } else {
-                print("Error: \(error?.localizedDescription as Any)")
+                print(error?.localizedDescription as Any)
             }
         }
     }
@@ -578,13 +584,15 @@ extension Story {
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
                         self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        if self.currentIndex! == 0 {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
-                                                             at: .right, animated: true)
-                        } else if self.currentIndex! == self.posts.count {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
-                                                             at: .right, animated: true)
-                        }
+                        
+                        // MARK: - DZNEmptyDataSet
+                        self.collectionView.emptyDataSetSource = self
+                        self.collectionView.emptyDataSetDelegate = self
+                        self.dznTitle = "💩\nThis post doesn't exist..."
+                        self.collectionView.reloadEmptyDataSet()
+                        
+                        // Disable reactButton
+                        self.reactButton.isHidden = true
                     }
                 } else {
                     print(error?.localizedDescription as Any)

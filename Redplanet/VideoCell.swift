@@ -112,7 +112,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             if withObject!.value(forKey: "textPost") as! String != "" {
                 self.textPost.text = text
             } else {
-                self.captionView.isHidden = true
                 self.textPost.isHidden = true
             }
         }

@@ -58,7 +58,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         postsClass.whereKey("byUser", equalTo: storyObjects.last!.object(forKey: "byUser") as! PFUser)
         postsClass.includeKeys(["byUser", "toUser"])
         postsClass.order(byDescending: "createdAt")
-        postsClass.limit = 500
+        postsClass.limit = 10
         postsClass.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -82,7 +82,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     if self.posts.count != 0 {
                         // Configure View
                         self.configureView()
-
+                        // Save currentIndex
+                        self.saveViews(withIndex: self.currentIndex!)
                     } else {
                         // MARK: - DZNEmptyDataSet
                         self.collectionView.emptyDataSetSource = self
@@ -436,7 +437,7 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Stories; Functions for "configureView", "likePost", "unlikePost", "saveViews", and "showOptions"
+// MARK: - Stories Functions
 extension Stories {
     
     // FUNCTION - Configure view
@@ -511,17 +512,19 @@ extension Stories {
     func saveViews(withIndex: Int) {
         // Save to Views
         let views = PFQuery(className: "Views")
-        views.whereKey("forObjectId", equalTo: self.posts[withIndex])
+        views.whereKey("forObjectId", equalTo: self.posts[withIndex].objectId!)
         views.whereKey("byUser", equalTo: PFUser.current()!)
-        views.countObjectsInBackground { (count: Int32, error: Error?) in
-            if error == nil && count == 0 {
-                // MARK: - Save PFObject
-                let views = PFObject(className: "Views")
-                views["byUser"] = PFUser.current()!
-                views["byUsername"] = PFUser.current()!.username!
-                views["forObjectId"] = self.posts[withIndex].objectId!
-                views["didScreenshot"] = false
-                views.saveInBackground()
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                if objects!.isEmpty {
+                    // MARK: - Save PFObject
+                    let views = PFObject(className: "Views")
+                    views["byUser"] = PFUser.current()!
+                    views["byUsername"] = PFUser.current()!.username!
+                    views["forObjectId"] = self.posts[withIndex].objectId!
+                    views["didScreenshot"] = false
+                    views.saveInBackground()
+                }
             } else {
                 print(error?.localizedDescription as Any)
             }
