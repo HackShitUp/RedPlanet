@@ -227,6 +227,11 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // MARK: - VIMVideoPlayerView; de-allocate AVPlayer's currentItem
+        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
         // MARK: - SVProgressHUD
         SVProgressHUD.dismiss()
     }
