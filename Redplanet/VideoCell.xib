@@ -80,7 +80,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y4y-RA-6CY">
-                        <rect key="frame" x="172" y="532" width="30" height="30"/>
+                        <rect key="frame" x="172" y="540" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="4Im-4f-SRW"/>
                             <constraint firstAttribute="height" constant="30" id="ET4-pv-OYS"/>
@@ -93,7 +93,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pWx-xX-t49">
-                        <rect key="frame" x="8" y="532" width="30" height="30"/>
+                        <rect key="frame" x="8" y="540" width="30" height="30"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="A8s-Rh-DOv"/>
@@ -105,7 +105,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00s" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttt-oH-Esl">
-                        <rect key="frame" x="242" y="532" width="125" height="30"/>
+                        <rect key="frame" x="242" y="540" width="125" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="JYR-Ia-7jH"/>
                             <constraint firstAttribute="width" constant="125" id="sOg-M5-bJ1"/>
@@ -120,13 +120,13 @@
             <constraints>
                 <constraint firstItem="nIT-oe-FG4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="167" id="0GF-mM-SNY"/>
                 <constraint firstAttribute="trailing" secondItem="ttt-oH-Esl" secondAttribute="trailing" constant="8" id="50i-yY-oYR"/>
-                <constraint firstItem="ttt-oH-Esl" firstAttribute="top" secondItem="SBY-uT-fcB" secondAttribute="bottom" constant="8" id="54Q-F4-xxg"/>
+                <constraint firstItem="ttt-oH-Esl" firstAttribute="top" secondItem="SBY-uT-fcB" secondAttribute="bottom" constant="16" id="54Q-F4-xxg"/>
                 <constraint firstItem="Bkr-fd-IDf" firstAttribute="top" secondItem="u7n-5M-ns8" secondAttribute="bottom" constant="8" id="5NY-4P-Zc5"/>
                 <constraint firstItem="SBY-uT-fcB" firstAttribute="top" secondItem="u7n-5M-ns8" secondAttribute="bottom" constant="8" id="5zc-Bf-NfF"/>
-                <constraint firstItem="y4y-RA-6CY" firstAttribute="top" secondItem="SBY-uT-fcB" secondAttribute="bottom" constant="8" id="71M-x1-VuW"/>
+                <constraint firstItem="y4y-RA-6CY" firstAttribute="top" secondItem="SBY-uT-fcB" secondAttribute="bottom" constant="16" id="71M-x1-VuW"/>
                 <constraint firstItem="ttt-oH-Esl" firstAttribute="leading" secondItem="y4y-RA-6CY" secondAttribute="trailing" constant="40" id="E7R-B7-yTj"/>
                 <constraint firstItem="nIT-oe-FG4" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="28" id="Fh2-pj-WVd"/>
-                <constraint firstItem="pWx-xX-t49" firstAttribute="top" secondItem="SBY-uT-fcB" secondAttribute="bottom" constant="8" id="HIk-gK-6qz"/>
+                <constraint firstItem="pWx-xX-t49" firstAttribute="top" secondItem="SBY-uT-fcB" secondAttribute="bottom" constant="16" id="HIk-gK-6qz"/>
                 <constraint firstItem="pWx-xX-t49" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="K9h-Wp-DFG"/>
                 <constraint firstItem="y4y-RA-6CY" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="QrS-pC-XCJ"/>
                 <constraint firstItem="eD9-CG-8zb" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="a3l-IA-HND"/>

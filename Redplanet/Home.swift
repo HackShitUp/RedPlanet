@@ -306,7 +306,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     }
     
     
-    // MARK: - Table view data source
+    // MARK: - UITableView DataSource Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
