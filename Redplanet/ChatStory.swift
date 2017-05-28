@@ -319,13 +319,6 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        // Manipulate SegmentedProgressBar
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb?.skip()
-        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
-            self.spb?.rewind()
-        }
-        
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
@@ -334,21 +327,28 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
         
         // Set currentIndex
-        self.currentIndex = indexPath.item
+        currentIndex = indexPath.item
         
-        // Reload data
-        self.collectionView!.reloadData()
-        
-        // Reload data
-        if self.chatPosts[self.currentIndex!].value(forKey: "videoAsset") != nil {
+        // If currentIndex has videoAsset, replace VIMVideoPlayerView with new AVPlayerItem
+        if self.chatPosts[currentIndex!].value(forKey: "videoAsset") != nil {
+            if let videoURL = self.chatPosts[currentIndex!].value(forKey: "videoAsset") as? PFFile {
+                let playerItem = AVPlayerItem(url: URL(string: videoURL.url!)!)
+                self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
+            }
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex!, section: 0)])
+        } else if currentIndex! != 0 {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-        } else if self.currentIndex! != 0 && self.chatPosts[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! - 1, section: 0)])
+        } else if currentIndex! != self.chatPosts.count {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
-        } else if self.currentIndex! != self.chatPosts.count && self.chatPosts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
+        }
+
+        // Manipulate SegmentedProgressBar
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb?.skip()
+        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
+            self.spb?.rewind()
         }
     }
 

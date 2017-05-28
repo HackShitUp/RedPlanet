@@ -22,7 +22,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     // MARK: - Class Configureable Variable
     var hashtagString = String()
-    
+
     
     // ScrollSets for database <contentType>
     let scrollSets = ["tp", "ph", "pp", "sp"]
@@ -348,24 +348,25 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
         
         // Set currentIndex
-        self.currentIndex = indexPath.item
+        currentIndex = indexPath.item
+        
+        // If currentIndex has videoAsset, replace VIMVideoPlayerView with new AVPlayerItem
+        if self.posts[currentIndex!].value(forKey: "videoAsset") != nil {
+            if let videoURL = self.posts[currentIndex!].value(forKey: "videoAsset") as? PFFile {
+                let playerItem = AVPlayerItem(url: URL(string: videoURL.url!)!)
+                self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
+            }
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex!, section: 0)])
+        } else if currentIndex! != 0 {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! - 1, section: 0)])
+        } else if currentIndex! != self.posts.count {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
+        }
+
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
-        
-        // Reload data
-        self.collectionView!.reloadData()
-        
-        // Reload data
-        if self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-        } else if self.currentIndex! != 0 && self.posts[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
-        } else if self.currentIndex! != self.posts.count && self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
-        }
     }
 }
 
@@ -562,6 +563,9 @@ extension Hashtags {
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Deleted")
+                        
+                        // Replace VIMVideoPlayer's AVPlayerItem if it's playing
+                        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
                         
                         // Replace userProfilePicture if contentType is "pp"
                         if object.value(forKey: "contentType") as! String == "pp" {

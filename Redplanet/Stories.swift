@@ -359,35 +359,25 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Set currentIndex
         currentIndex = indexPath.item
         
-        
         // If currentIndex has videoAsset, replace VIMVideoPlayerView with new AVPlayerItem
-        // and reload current item, and previous or next index items
         if self.posts[currentIndex!].value(forKey: "videoAsset") != nil {
             if let videoURL = self.posts[currentIndex!].value(forKey: "videoAsset") as? PFFile {
                 let playerItem = AVPlayerItem(url: URL(string: videoURL.url!)!)
                 self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
             }
             self.collectionView.reloadItems(at: [IndexPath(item: currentIndex!, section: 0)])
-        } else if currentIndex! != 0 && self.posts[currentIndex! - 1].value(forKey: "videoAsset") != nil {
+        } else if currentIndex! != 0 {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! - 1, section: 0)])
-        } else if currentIndex! != self.posts.count && self.posts[currentIndex! + 1].value(forKey: "videoAsset") != nil {
+        } else if currentIndex! != self.posts.count {
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
         }
         
-        
+
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
-        
-        
-        /*
-            (1) currentIndex has video == reload currentIndex, previous, and next
-            (2) previousIndex has video == reload previous index
-            (3) next index has video == reload previous index
-         */
-        
-        
+
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb?.skip()
@@ -617,6 +607,9 @@ extension Stories {
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Deleted")
+                        
+                        // Replace VIMVideoPlayer's AVPlayerItem if it's playing
+                        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
                         
                         // Replace userProfilePicture if contentType is "pp"
                         if object.value(forKey: "contentType") as! String == "pp" {
