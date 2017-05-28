@@ -184,7 +184,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     
     // FUNCTION - MARK: - RPHelpers; update "chatsQueue" and send push notification
-    fileprivate func updateChats(withObject: PFObject?, user: PFObject?) {
+    func updateChats(withObject: PFObject?, user: PFObject?) {
         withObject!.saveInBackground(block: { (success: Bool, error: Error?) in
             if success {
                 // MARK: - RPHelpers; update chatsQueue; and send push notification

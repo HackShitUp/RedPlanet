@@ -36,7 +36,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var lastOffSet: CGPoint?
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
-
+    
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     // MARK: - VIMVideoPlayer
@@ -78,10 +78,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 }
                 
                 // Reload data in main thread and configureView
-                DispatchQueue.main.async(execute: { 
+                DispatchQueue.main.async(execute: {
                     if self.posts.count != 0 {
                         // Configure View
                         self.configureView()
+
                     } else {
                         // MARK: - DZNEmptyDataSet
                         self.collectionView.emptyDataSetSource = self
@@ -89,9 +90,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     }
                     self.collectionView.reloadData()
                 })
-                
-                
-                
+
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - SVProgressHUD
@@ -169,8 +168,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Dismiss
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-
-    
     
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -186,10 +183,28 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor.groupTableViewBackground)
         SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 21))
-        SVProgressHUD.show()
+        SVProgressHUD.show(withStatus: "\((storyObjects.last!.object(forKey: "byUser") as! PFUser).username!.uppercased())")
         
         // Fetch Stories
         fetchStories()
+        
+        /*
+        // MARK: - UserDefaults
+        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
+        if !viewed.contains(self.posts[self.currentIndex!].objectId!) {
+            // Save to UserDefaults
+            let viewedData = UserDefaults.standard
+            viewedData.set([self.posts[self.currentIndex!].objectId!], forKey: "ViewedData")
+        } else {
+            // Scroll to item without index
+            let postIds = self.posts.map { $0.objectId!}
+            for index in 0...self.posts.count {
+                if !viewed.contains(postIds[index]) {
+                    self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: false)
+                }
+            }
+        }
+        */
         
         // MARK: - VIMVideoPlayerView
         vimVideoPlayerView = VIMVideoPlayerView()
@@ -293,6 +308,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 mvCell.updateView(withObject: self.posts[indexPath.item], videoPlayer: self.vimVideoPlayerView)
                 self.vimVideoPlayerView?.player.play()
             }
+            
             return mvCell
         }
         
@@ -307,6 +323,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 videoCell.updateView(withObject: self.posts[indexPath.item], videoPlayer: self.vimVideoPlayerView)
                 self.vimVideoPlayerView?.player.play()
             }
+            
             return videoCell
         }
         
@@ -332,13 +349,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        // Manipulate SegmentedProgressBar
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb?.skip()
-        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
-            self.spb?.rewind()
-        }
-        
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
@@ -347,24 +357,60 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
         
         // Set currentIndex
-        self.currentIndex = indexPath.item
+        currentIndex = indexPath.item
+        
+        
+        // If currentIndex has videoAsset, replace VIMVideoPlayerView with new AVPlayerItem
+        // and reload current item, and previous or next index items
+        if self.posts[currentIndex!].value(forKey: "videoAsset") != nil {
+            if let videoURL = self.posts[currentIndex!].value(forKey: "videoAsset") as? PFFile {
+                let playerItem = AVPlayerItem(url: URL(string: videoURL.url!)!)
+                self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
+            }
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex!, section: 0)])
+        } else if currentIndex! != 0 && self.posts[currentIndex! - 1].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! - 1, section: 0)])
+        } else if currentIndex! != self.posts.count && self.posts[currentIndex! + 1].value(forKey: "videoAsset") != nil {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
+        }
+        
+        
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
         
-        // Reload data
-        self.collectionView!.reloadData()
-
-        // Reload data
-        if self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-        } else if self.currentIndex! != 0 && self.posts[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
-        } else if self.currentIndex! != self.posts.count && self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
+        
+        /*
+            (1) currentIndex has video == reload currentIndex, previous, and next
+            (2) previousIndex has video == reload previous index
+            (3) next index has video == reload previous index
+         */
+        
+        
+        // Manipulate SegmentedProgressBar
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb?.skip()
+        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
+            self.spb?.rewind()
         }
+        
+        
+        /*
+        // MARK: - UserDefaults
+        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
+        if !viewed.contains(self.posts[self.currentIndex!].objectId!) {
+            // Save to UserDefaults
+            //                            let defaults = UserDefaults.standard
+            //                            defaults.set(array, forKey: "SavedStringArray")
+            let viewedData = UserDefaults.standard
+            viewedData.set([self.posts[self.currentIndex!].objectId!], forKey: "ViewedData")
+            print("VIEWED_DATA: \(String(describing: viewedData.stringArray(forKey: "ViewedData")))")
+        } else {
+            print("Already Saved...")
+        }
+        */
+
     }
 }
 
