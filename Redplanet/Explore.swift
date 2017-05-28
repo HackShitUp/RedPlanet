@@ -531,7 +531,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 // (1) Set username
                 eCell.rpUsername.text! = (self.randomUsers[indexPath.item].value(forKey: "username") as! String).lowercased()
                 // (2) Set fullName
-                eCell.rpFullName.text! = (self.randomUsers[indexPath.item].value(forKey: "realNameOfUser") as! String)
+                eCell.rpFullName.text! = (self.randomUsers[indexPath.item].value(forKey: "fullName") as! String)
                 // (3) Get and set profile photo
                 // Handle optional chaining
                 if let proPic = self.randomUsers[indexPath.item].value(forKey: "userProfilePicture") as? PFFile {
@@ -553,7 +553,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 // (1) Set username
                 eCell.rpUsername.text! = (self.geocodeUsers[indexPath.item].value(forKey: "username") as! String).lowercased()
                 // (2) Set fullName
-                eCell.rpFullName.text! = (self.geocodeUsers[indexPath.item].value(forKey: "realNameOfUser") as! String)
+                eCell.rpFullName.text! = (self.geocodeUsers[indexPath.item].value(forKey: "fullName") as! String)
                 // (3) Get and set profile photo
                 // Handle optional chaining
                 if let proPic = self.geocodeUsers[indexPath.item].value(forKey: "userProfilePicture") as? PFFile {
@@ -582,7 +582,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
         // Track Who Tapped a story
             Heap.track("TappedSelectedStories", withProperties:
                 ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                    "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
                 ])
             
             let selectedStoriesVC = self.storyboard?.instantiateViewController(withIdentifier: "selectedStoriesVC") as! SelectedStories

@@ -143,7 +143,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(self.relationForUser!.value(forKey: "realNameOfUser") as! String)'s \(title!)"
+            self.title = "\(self.relationForUser!.value(forKey: "fullName") as! String)'s \(title!)"
         }
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
@@ -259,7 +259,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
         let realName = PFUser.query()!
-        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        realName.whereKey("fullName", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -317,7 +317,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         // SEARCHED
         if self.searchBar.text! != "" {
             // (1) Set rpFullName
-            cell.rpFullName.text! = self.searchedObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpFullName.text! = self.searchedObjects[indexPath.row].value(forKey: "fullName") as! String
             // (2) Set rpUsername
             cell.rpUsername.text! = self.searchedObjects[indexPath.row].value(forKey: "username") as! String
             // (3) Get and set userProfilePicture
@@ -328,9 +328,9 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         } else {
         // FOLLOWERS || FOLLOWING
             // (1) Sort users in abcOrder
-            let abcUsers = self.userObjects.sorted {($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+            let abcUsers = self.userObjects.sorted {($0.value(forKey: "fullName") as! String) < ($1.value(forKey: "fullName") as! String)}
             // (1) Set rpFullName
-            cell.rpFullName.text! = abcUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpFullName.text! = abcUsers[indexPath.row].value(forKey: "fullName") as! String
             // (2) Set rpUsername
             cell.rpUsername.text! = abcUsers[indexPath.row].value(forKey: "username") as! String
             // (3) Get and set userProfilePicture
@@ -354,7 +354,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         } else {
             // FOLLOWERS
             // Sort Followers in ABC order
-            let abcUsers = self.userObjects.sorted{($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+            let abcUsers = self.userObjects.sorted{($0.value(forKey: "fullName") as! String) < ($1.value(forKey: "fullName") as! String)}
             // Append to otherObject
             otherObject.append(abcUsers[indexPath.row])
             // Append otherName

@@ -54,12 +54,12 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     // FUNCTION - Fetch Story
     func fetchSingle() {
-        let newsfeeds = PFQuery(className: "Posts")
-        newsfeeds.whereKey("objectId", equalTo: self.storyObject!.objectId!)
-        newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.limit = 1
-        newsfeeds.findObjectsInBackground {
+        let postsClass = PFQuery(className: "Posts")
+        postsClass.whereKey("objectId", equalTo: self.storyObject!.objectId!)
+        postsClass.order(byDescending: "createdAt")
+        postsClass.includeKeys(["byUser", "toUser"])
+        postsClass.limit = 1
+        postsClass.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // MARK: - SVProgressHUD

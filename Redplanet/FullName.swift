@@ -74,7 +74,7 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
             // Set fullName
             let fullName = "\(self.firstName.text!) \(self.lastName.text!)"
             
-            PFUser.current()!["realNameOfUser"] = fullName
+            PFUser.current()!["fullName"] = fullName
             PFUser.current()!.saveInBackground {
                 (success: Bool, error: Error?) in
                 if success {                    

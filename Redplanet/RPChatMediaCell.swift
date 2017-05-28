@@ -83,10 +83,10 @@ class RPChatMediaCell: UITableViewCell {
         // (1) Set usernames depending on who sent what
         if (withObject.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Set Current user's username
-            self.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
+            self.rpUsername.text! = PFUser.current()!.value(forKey: "fullName") as! String
         } else {
             // Set username
-            self.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
+            self.rpUsername.text! = chatUserObject.last!.value(forKey: "fullName") as! String
         }
         
         // (2) Get and set user's profile photos

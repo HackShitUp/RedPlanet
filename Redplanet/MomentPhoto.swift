@@ -32,7 +32,7 @@ class MomentPhoto: UICollectionViewCell {
         // (1) Get and set user's object
         if let user = withObject!.object(forKey: "byUser") as? PFUser {
             // Set name
-            self.rpUsername.setTitle("\(user.value(forKey: "realNameOfUser") as! String)", for: .normal)
+            self.rpUsername.setTitle("\(user.value(forKey: "fullName") as! String)", for: .normal)
         }
         
         // (2) Set time

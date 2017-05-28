@@ -48,7 +48,7 @@ class ProfilePhotoCell: UITableViewCell {
         // (1) Get user's object
         if let user = withObject?.object(forKey: "byUser") as? PFUser {
             // Set username
-            self.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
+            self.rpUsername.text = (user.value(forKey: "fullName") as! String)
             // Set profile photo
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage

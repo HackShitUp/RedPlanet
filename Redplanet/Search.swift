@@ -132,7 +132,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
             // Track Who Searched the App
             Heap.track("Searched", withProperties:
                 ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                    "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)",
                     "SearchedFor": "\(self.searchBar.text!)"
                 ])
             
@@ -168,7 +168,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
                 let realName = PFUser.query()!
-                realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+                realName.whereKey("fullName", matchesRegex: "(?i)" + self.searchBar.text!)
                 let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
                 search.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -239,7 +239,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
             cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // (1) Set user's full name
-            cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "fullName") as! String
             
             // (2) Set username
             cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "username") as! String

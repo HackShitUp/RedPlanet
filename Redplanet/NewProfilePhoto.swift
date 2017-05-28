@@ -111,7 +111,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Profile Photo"
+            self.title = "\(PFUser.current()!.value(forKey: "fullName") as! String)'s Profile Photo"
         }
     }
     
@@ -128,11 +128,11 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         if isNewProPic == false {
             
             // Get profile photo's caption
-            let newsfeeds = PFQuery(className: "Posts")
-            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-            newsfeeds.whereKey("contentType", equalTo: "pp")
-            newsfeeds.order(byDescending: "createdAt")
-            newsfeeds.getFirstObjectInBackground(block: {
+            let postsClass = PFQuery(className: "Posts")
+            postsClass.whereKey("byUser", equalTo: PFUser.current()!)
+            postsClass.whereKey("contentType", equalTo: "pp")
+            postsClass.order(byDescending: "createdAt")
+            postsClass.getFirstObjectInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
@@ -209,11 +209,11 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         if isNewProPic == false {
             
             // Get profile photo's caption
-            let newsfeeds = PFQuery(className: "Posts")
-            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-            newsfeeds.whereKey("contentType", equalTo: "pp")
-            newsfeeds.order(byDescending: "createdAt")
-            newsfeeds.getFirstObjectInBackground(block: {
+            let postsClass = PFQuery(className: "Posts")
+            postsClass.whereKey("byUser", equalTo: PFUser.current()!)
+            postsClass.whereKey("contentType", equalTo: "pp")
+            postsClass.order(byDescending: "createdAt")
+            postsClass.getFirstObjectInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {

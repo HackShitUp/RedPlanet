@@ -95,12 +95,12 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                 }
                 
                 // Get posts
-                let newsfeeds = PFQuery(className: "Posts")
-                newsfeeds.includeKey("byUser")
-                newsfeeds.whereKey("byUser", containedIn: self.publicUsers)
-                newsfeeds.whereKey("objectId", containedIn: self.hashtagIds)
-                newsfeeds.order(byDescending: "createdAt")
-                newsfeeds.findObjectsInBackground(block: {
+                let postsClass = PFQuery(className: "Posts")
+                postsClass.includeKey("byUser")
+                postsClass.whereKey("byUser", containedIn: self.publicUsers)
+                postsClass.whereKey("objectId", containedIn: self.hashtagIds)
+                postsClass.order(byDescending: "createdAt")
+                postsClass.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         // Clear array

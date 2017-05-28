@@ -123,11 +123,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // FETCH POSTS
     func fetchFirstPosts(forGroup: [PFObject]) {
-        let newsfeeds = PFQuery(className: "Posts")
-        newsfeeds.whereKey("byUser", containedIn: forGroup)
-        newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.findObjectsInBackground {
+        let postsClass = PFQuery(className: "Posts")
+        postsClass.whereKey("byUser", containedIn: forGroup)
+        postsClass.includeKeys(["byUser", "toUser"])
+        postsClass.order(byDescending: "createdAt")
+        postsClass.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear arrays

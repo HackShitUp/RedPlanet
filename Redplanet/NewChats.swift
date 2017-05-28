@@ -198,7 +198,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
         let realName = PFUser.query()!
-        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        realName.whereKey("fullName", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -263,7 +263,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // SEARCHED
         if self.searchBar.text != "" {
             // (1) Set fullName
-            cell.rpFullName.text = (self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)
+            cell.rpFullName.text = (self.searchObjects[indexPath.row].value(forKey: "fullName") as! String)
             // (2) Set username
             cell.rpUsername.text = (self.searchObjects[indexPath.row].value(forKey: "username") as! String)
             // (3) Get and set userProfilePicture
@@ -275,7 +275,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         } else {
         // FOLLOWING
             // (1) Set fullName
-            cell.rpFullName.text = (self.following[indexPath.row].value(forKey: "realNameOfUser") as! String)
+            cell.rpFullName.text = (self.following[indexPath.row].value(forKey: "fullName") as! String)
             // (2) Set username
             cell.rpUsername.text = (self.following[indexPath.row].value(forKey: "username") as! String)
             // (3) Get and set userProfilePicture

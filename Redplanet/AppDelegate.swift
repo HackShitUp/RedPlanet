@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                 
                                             } else {
                                                 // MARK: - NotitficationBanner
-                                                let banner = NotificationBanner(title: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String):", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "RPLogo")))
+                                                let banner = NotificationBanner(title: "\(PFUser.current()!.value(forKey: "fullName") as! String):", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "RPLogo")))
                                                 banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
                                                 banner.titleLabel?.textColor = UIColor.black
                                                 banner.subtitleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 15)
@@ -283,13 +283,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             // Track Who Opens the App
             Heap.track("AppOpen", withProperties:
                 ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                    "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
                 ])
             // Attach a unique identifier to user
             Heap.identify("\(PFUser.current()!.objectId!)")
             Heap.addUserProperties([
                 "UserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)",
                 "Email": "\(PFUser.current()!.email!)"
                 ])
             

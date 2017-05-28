@@ -54,12 +54,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
         // Fetch stories
-        let newsfeeds = PFQuery(className: "Posts")
-        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.object(forKey: "byUser") as! PFUser)
-        newsfeeds.includeKeys(["byUser", "toUser"])
-        newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.limit = 500
-        newsfeeds.findObjectsInBackground {
+        let postsClass = PFQuery(className: "Posts")
+        postsClass.whereKey("byUser", equalTo: storyObjects.last!.object(forKey: "byUser") as! PFUser)
+        postsClass.includeKeys(["byUser", "toUser"])
+        postsClass.order(byDescending: "createdAt")
+        postsClass.limit = 500
+        postsClass.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // MARK: - SVProgressHUD

@@ -101,10 +101,10 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             let commentId = object.value(forKey: "forObjectId") as! String
                             // Find content
-                            let newsfeeds = PFQuery(className: "Posts")
-                            newsfeeds.whereKey("objectId", equalTo: commentId)
-                            newsfeeds.includeKeys(["byUser", "toUser"])
-                            newsfeeds.findObjectsInBackground(block: {
+                            let postsClass = PFQuery(className: "Posts")
+                            postsClass.whereKey("objectId", equalTo: commentId)
+                            postsClass.includeKeys(["byUser", "toUser"])
+                            postsClass.findObjectsInBackground(block: {
                                 (objects: [PFObject]?, error: Error?) in
                                 if error == nil {
                                     // PUSH VC

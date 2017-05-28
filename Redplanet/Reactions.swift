@@ -623,7 +623,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             // Get and set user's data
             if let user = self.reactionObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
                 // (1) Set rpFullName
-                cell.rpFullName.text = (user.value(forKey: "realNameOfUser") as! String)
+                cell.rpFullName.text = (user.value(forKey: "fullName") as! String)
                 // (2) Set rpUsername
                 cell.rpUsername.text = (user.value(forKey: "username") as! String)
                 // (3) Get and set userProfilePicture

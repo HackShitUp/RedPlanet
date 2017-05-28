@@ -304,7 +304,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         // Track when on ContactsVC
         Heap.track("ViewingContacts", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
             ])
         
         // Check whether current user has entered his/her number
@@ -384,13 +384,13 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         if indexPath.section == 0 {
             
             // Sort notFollowing in ABC order
-            let notABCFollowing = notFollowing.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            let notABCFollowing = notFollowing.sorted { ($0.value(forKey: "fullName") as! String) < ($1.value(forKey: "fullName") as! String) }
             
             // Set user's object contained in UITableViewCell
             cell.userObject = notABCFollowing[indexPath.row]
             
             // Check whether user has a full name
-            cell.rpUsername.text! = notABCFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpUsername.text! = notABCFollowing[indexPath.row].value(forKey: "fullName") as! String
             
             
             // Configure buttons
@@ -426,13 +426,13 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         // FOLLOWING
             
             // Sort Following in ABC order
-            let abcFollowing = following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            let abcFollowing = following.sorted { ($0.value(forKey: "fullName") as! String) < ($1.value(forKey: "fullName") as! String) }
             
             // Set user's object contained in UITableViewCell
             cell.userObject = abcFollowing[indexPath.row]
             
             // Check whether user has a full name
-            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "fullName") as! String
             
             // Change button's title and design
             cell.followButton.setTitle("Following", for: .normal)

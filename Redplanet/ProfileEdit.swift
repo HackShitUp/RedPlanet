@@ -200,7 +200,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // =====================================================================================================================
             let me = PFUser.current()!
             me["email"] = rpEmail.text!.lowercased()
-            me["realNameOfUser"] = fullName
+            me["fullName"] = fullName
             me["userBiography"] = self.rpUserBio.text!
             me["username"] = rUsername.lowercased()
             me["birthday"] = stringDate
@@ -227,17 +227,17 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         rpHelpers.showProgress(withTitle: "Updating Profile...")
                         
                         // New Profile Photo
-                        let newsfeeds = PFObject(className: "Posts")
-                        newsfeeds["byUser"] = PFUser.current()!
-                        newsfeeds["username"] = PFUser.current()!.username!
-                        newsfeeds["photoAsset"] = proPicFile
-                        newsfeeds["contentType"] = "pp"
-                        newsfeeds["saved"] = false
-                        newsfeeds["textPost"] = profilePhotoCaption.last!
-                        newsfeeds.saveInBackground(block: {
+                        let postsClass = PFObject(className: "Posts")
+                        postsClass["byUser"] = PFUser.current()!
+                        postsClass["username"] = PFUser.current()!.username!
+                        postsClass["photoAsset"] = proPicFile
+                        postsClass["contentType"] = "pp"
+                        postsClass["saved"] = false
+                        postsClass["textPost"] = profilePhotoCaption.last!
+                        postsClass.saveInBackground(block: {
                             (success: Bool, error: Error?) in
                             if success {
-                                print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
+                                print("Pushed New Profile Photo to Newsfeeeds:\n\(postsClass)\n")
 
                                 // Show showDialogAlert
                                 self.showDialogAlert()
@@ -563,7 +563,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 userBirthday.date = dateFormatter.date(from: bday)!
             }
             // (2) Set username's title to navigation bar
-            if let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as? String {
+            if let fullName = PFUser.current()!.value(forKey: "fullName") as? String {
                 self.title = fullName
             }
             // (3) Set username
@@ -578,7 +578,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 }
             }
             // (5) Set user's real name
-            if let RPRealName = PFUser.current()!["realNameOfUser"] as? String {
+            if let RPRealName = PFUser.current()!["fullName"] as? String {
                 if RPRealName.isEmpty {
                     rpName.text = "What's your real name?"
                 } else {

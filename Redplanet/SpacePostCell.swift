@@ -99,7 +99,7 @@ class SpacePostCell: UITableViewCell {
                 self.byUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // Set fullName
-            self.byUsername.text = (byUser.value(forKey: "realNameOfUser") as! String)
+            self.byUsername.text = (byUser.value(forKey: "fullName") as! String)
         }
         
         // (2) Get toUser's object
@@ -110,7 +110,7 @@ class SpacePostCell: UITableViewCell {
                 self.toUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // Set fullName
-            self.toUsername.text = (toUser.value(forKey: "realNameOfUser") as! String)
+            self.toUsername.text = (toUser.value(forKey: "fullName") as! String)
         }
         
         // (3) Set time

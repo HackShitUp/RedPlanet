@@ -80,7 +80,7 @@ class StoryCell: UITableViewCell {
                 self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (2) Set rpUsername
-            if let fullName = user.value(forKey: "realNameOfUser") as? String{
+            if let fullName = user.value(forKey: "fullName") as? String{
                 self.rpUsername.text = fullName
             }
         }

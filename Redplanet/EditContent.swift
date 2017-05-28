@@ -92,8 +92,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         } else {
             
             // Fetch object
-            let newsfeeds = PFQuery(className: "Posts")
-            newsfeeds.getObjectInBackground(withId: self.editObject!.objectId!, block: {
+            let postsClass = PFQuery(className: "Posts")
+            postsClass.getObjectInBackground(withId: self.editObject!.objectId!, block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // Found object, now save it
@@ -369,7 +369,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 
                 // Find the user
                 let fullName = PFUser.query()!
-                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                fullName.whereKey("fullName", matchesRegex: "(?i)" + word)
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
@@ -416,7 +416,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // (1) Set rpFullName
-        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "fullName") as! String
         // (2) Set rpUsername
         cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
         // (3) Get and set userProfilePicture

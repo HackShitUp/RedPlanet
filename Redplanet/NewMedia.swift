@@ -362,7 +362,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 // Find the user
                 let fullName = PFUser.query()!
-                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                fullName.whereKey("fullName", matchesRegex: "(?i)" + word)
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
@@ -408,7 +408,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // (1) Set realNameOfUser
-        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "fullName") as! String
         // (2) Set username
         cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
         // (3) Get and set userProfilePicture

@@ -181,7 +181,7 @@ class ContactsCell: UITableViewCell {
             self.followButton.isEnabled = false
             
             // MARK: - AZDialogViewController
-            let dialogController = AZDialogViewController(title: "Unfollow?", message: "\(self.userObject!.value(forKey: "realNameOfUser") as! String)")
+            let dialogController = AZDialogViewController(title: "Unfollow?", message: "\(self.userObject!.value(forKey: "fullName") as! String)")
             dialogController.dismissDirection = .bottom
             dialogController.dismissWithOutsideTouch = true
             dialogController.showSeparator = true
@@ -302,7 +302,7 @@ class ContactsCell: UITableViewCell {
             
             
             // MARK: - AZDialogViewController
-            let dialogController = AZDialogViewController(title: "Follower", message: "\(self.userObject!.value(forKey: "realNameOfUser") as! String)")
+            let dialogController = AZDialogViewController(title: "Follower", message: "\(self.userObject!.value(forKey: "fullName") as! String)")
             dialogController.dismissDirection = .bottom
             dialogController.dismissWithOutsideTouch = true
             dialogController.showSeparator = true
@@ -532,7 +532,7 @@ class ContactsCell: UITableViewCell {
                 
                 
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Sent Follow Request", message: "\(self.userObject!.value(forKey: "realNameOfUser") as! String)")
+                let dialogController = AZDialogViewController(title: "Sent Follow Request", message: "\(self.userObject!.value(forKey: "fullName") as! String)")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
@@ -663,7 +663,7 @@ class ContactsCell: UITableViewCell {
                 
                 
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Follow Requested", message: "\(self.userObject!.value(forKey: "realNameOfUser") as! String)")
+                let dialogController = AZDialogViewController(title: "Follow Requested", message: "\(self.userObject!.value(forKey: "fullName") as! String)")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
