@@ -142,19 +142,15 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
             if searchBar.text!.hasPrefix("#") {
                 // Looking for hashtags...
                 let hashtags = PFQuery(className: "Hashtags")
-                hashtags.whereKey("userHash", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
+                hashtags.whereKey("hashtag", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
                 hashtags.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         // Clear array
                         self.searchHashes.removeAll(keepingCapacity: false)
-                        
                         for object in objects! {
-                            // Hashtag
-                            if self.searchHashes.contains(object["userHash"] as! String) {
-                                // Skip appending object
-                            } else {
-                                self.searchHashes.append(object["userHash"] as! String)
+                            if !self.searchHashes.contains(object["hashtag"] as! String) {
+                                self.searchHashes.append(object["hashtag"] as! String)
                             }
                         }
                         

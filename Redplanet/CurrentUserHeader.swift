@@ -33,7 +33,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     func showFollowers() {
         // Show FollowersFollowingVC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
-        followersFollowingVC.relationForUser = otherObject.last!
+        followersFollowingVC.relationForUser = PFUser.current()!
         followersFollowingVC.followersFollowing = "Followers"
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
@@ -42,7 +42,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     func showFollowing() {
         // Show FollowersFollowingVC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
-        followersFollowingVC.relationForUser = otherObject.last!
+        followersFollowingVC.relationForUser = PFUser.current()!
         followersFollowingVC.followersFollowing = "Following"
         self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }

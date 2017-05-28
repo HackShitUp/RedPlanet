@@ -187,30 +187,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Fetch Stories
         fetchStories()
-        
-        
-//        // MARK: - UserDefaults
-//        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
-//        if !viewed.contains(self.posts[self.currentIndex!].objectId!) {
-//            // Save to UserDefaults
-//            let viewedData = UserDefaults.standard
-//            viewedData.set([self.posts[self.currentIndex!].objectId!], forKey: "ViewedData")
-//        } else {
-//            // Scroll to item without index
-//            let postIds = self.posts.map { $0.objectId!}
-//            for index in 0...self.posts.count {
-//                if !viewed.contains(postIds[index]) {
-//                    self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: false)
-//                }
-//            }
-//        }
-        
+
         let postIds = self.posts.map { $0.objectId! }
         let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
         let missedPosts = Set(viewed).subtracting(postIds)
         print("MissedPosts: \(missedPosts)")
-        
-        
 
         // MARK: - VIMVideoPlayerView
         vimVideoPlayerView = VIMVideoPlayerView()
@@ -389,21 +370,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         } else if self.lastOffSet!.x > scrollView.contentOffset.x {
             self.spb?.rewind()
         }
-        
-        
-        
-//        // MARK: - UserDefaults
-//        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
-//        if !viewed.contains(self.posts[self.currentIndex!].objectId!) {
-//            // Save to UserDefaults
-//            let viewedData = UserDefaults.standard
-//            viewedData.set([self.posts[self.currentIndex!].objectId!], forKey: "ViewedData")
-//            print("VIEWED_DATA: \(String(describing: viewedData.stringArray(forKey: "ViewedData")))")
-//        } else {
-//            print("Already Saved...")
-//        }
-        
-
     }
 }
 

@@ -58,7 +58,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     // FUNCTION - Fetch hashtags
     func fetchHastags() {
         let hashtags = PFQuery(className: "Hashtags")
-        hashtags.whereKey("hashtag", equalTo: hashtagString)
+        hashtags.whereKey("hashtag", equalTo: "#\(hashtagString)")
         hashtags.order(byDescending: "createdAt")
         hashtags.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -99,7 +99,6 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                 newsfeeds.includeKey("byUser")
                 newsfeeds.whereKey("byUser", containedIn: self.publicUsers)
                 newsfeeds.whereKey("objectId", containedIn: self.hashtagIds)
-                newsfeeds.whereKey("contentType", containedIn: ["tp", "ph", "vi", "itm"])
                 newsfeeds.order(byDescending: "createdAt")
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -506,8 +505,8 @@ extension Hashtags {
                 let views = PFObject(className: "Views")
                 views["byUser"] = PFUser.current()!
                 views["byUsername"] = PFUser.current()!.username!
-                views["forObject"] = self.posts[withIndex]
-                views["screenshotted"] = false
+                views["forObjectId"] = self.posts[withIndex].objectId!
+                views["didScreenshot"] = false
                 views.saveInBackground()
             } else {
                 print("Error: \(error?.localizedDescription as Any)")

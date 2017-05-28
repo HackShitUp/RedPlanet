@@ -501,8 +501,8 @@ extension Story {
                 let views = PFObject(className: "Views")
                 views["byUser"] = PFUser.current()!
                 views["byUsername"] = PFUser.current()!.username!
-                views["forObject"] = self.posts[withIndex]
-                views["screenshotted"] = false
+                views["forObjectId"] = self.posts[withIndex].objectId!
+                views["didScreenshot"] = false
                 views.saveInBackground()
             } else {
                 print("Error: \(error?.localizedDescription as Any)")

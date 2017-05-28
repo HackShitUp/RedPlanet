@@ -109,9 +109,8 @@ class RPHelpers: NSObject {
                 print("FOR OBJECT: \(forObject!)\n")
                 // Save hashtag to server
                 let hashtags = PFObject(className: "Hashtags")
-                hashtags["hashtag"] = word.lowercased()
-                hashtags["userHash"] = "#" + word.lowercased()
-                hashtags["by"] = PFUser.current()!.username!
+                hashtags["hashtag"] = "#" + word.lowercased()
+                hashtags["byUsername"] = PFUser.current()!.username!
                 hashtags["byUser"] = PFUser.current()!
                 hashtags["forObjectId"] =  forObject?.objectId!
                 hashtags.saveInBackground()
