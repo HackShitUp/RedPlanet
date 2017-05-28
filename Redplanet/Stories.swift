@@ -519,9 +519,6 @@ extension Stories {
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
-        
-//        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
-//        reactButton.frame.origin.x = UIScreen.main.bounds.size.width * 0.5
         reactButton.center = self.view.center
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
         reactButton.layer.applyShadow(layer: reactButton.layer)
