@@ -152,9 +152,9 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     // FUNCTION - Fetch today's posts
     func fetchToday() {
-        let byUser = PFQuery(className: "Newsfeeds")
+        let byUser = PFQuery(className: "Posts")
         byUser.whereKey("byUser", equalTo: otherObject.last!)
-        let toUser = PFQuery(className:  "Newsfeeds")
+        let toUser = PFQuery(className:  "Posts")
         toUser.whereKey("toUser", equalTo: otherObject.last!)
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
         newsfeeds.includeKeys(["byUser", "toUser"])
@@ -180,6 +180,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 if otherObject.last!.value(forKey: "private") as! Bool == true {
                     // (1) Follower
                     if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         // MARK: - DZNEmptyDataSet
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -196,6 +198,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         
                     } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // (3) Follower Requested
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         // MARK: - DZNEmptyDataSet
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -203,6 +207,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         
                     } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // (4) Sent Follow Request
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         // MARK : -DZNEmptyDataSet
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -219,6 +225,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         
                     } else {
                         // (6) Not yet following
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
@@ -235,7 +243,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    self.tableView?.reloadData()
+                    self.tableView.reloadData()
                 })
                 
             } else {
@@ -246,9 +254,9 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     // FUNCTION - Fetch saved posts
     func fetchSaved() {
-        let byUser = PFQuery(className: "Newsfeeds")
+        let byUser = PFQuery(className: "Posts")
         byUser.whereKey("byUser", equalTo: otherObject.last!)
-        let toUser = PFQuery(className:  "Newsfeeds")
+        let toUser = PFQuery(className:  "Posts")
         toUser.whereKey("toUser", equalTo: otherObject.last!)
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
         newsfeeds.whereKey("saved", equalTo: true)
@@ -268,6 +276,9 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 if otherObject.last!.value(forKey: "private") as! Bool == true {
                     // (1) Follower
                     if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
+                        
                         // MARK: - DZNEmptyDataSet
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -284,6 +295,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         
                     } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // (3) Follower Requested
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         // MARK: - DZNEmptyDataSet
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -291,6 +304,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         
                     } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // (4) Sent Follow Request
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         // MARK : -DZNEmptyDataSet
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -306,6 +321,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         }
                         
                     } else {
+                        // Clear array
+                        self.relativePosts.removeAll(keepingCapacity: false)
                         // (6) Not yet following
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
@@ -323,7 +340,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    self.tableView?.reloadData()
+                    self.tableView.reloadData()
                 })
                 
             } else {
@@ -685,7 +702,6 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             handleCase()
         }
     }
-
 
 }
 

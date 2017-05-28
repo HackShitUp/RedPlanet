@@ -98,7 +98,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
 
     // FUNCTION - Fetch Featured
     func fetchFeatured() {
-        let featured = PFQuery(className: "Newsfeeds")
+        let featured = PFQuery(className: "Posts")
         featured.whereKey("byUser", matchesQuery: PFUser.query()!.whereKey("private", equalTo: false))
         featured.whereKey("contentType", containedIn: ["tp", "ph", "vi", "itm"])
         featured.includeKeys(["byUser", "toUser"])
@@ -118,8 +118,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
                                                                                  options: [])
                     
                     let users = self.featuredPosts.map {$0.object(forKey: "byUser") as! PFUser}
-                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) {
-//                        && difference.hour! < 24 {
+                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
                         self.featuredPosts.append(object)
                     }
                 }
@@ -351,7 +350,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
             if let featuredCV = tCell.collectionView.viewWithTag(1) as? UICollectionView {
                 // MARK: - DZNEmptyDataSet
                 featuredCV.emptyDataSetSource = self
-                featuredCV.emptyDataSetSource = self
+                featuredCV.emptyDataSetDelegate = self
+                featuredCV.reloadEmptyDataSet()
             }
         }
         
@@ -359,7 +359,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
             if let geocodeCV = tCell.collectionView.viewWithTag(3) as? UICollectionView {
                 // MARK: - DZNEmptyDataSet
                 geocodeCV.emptyDataSetSource = self
-                geocodeCV.emptyDataSetSource = self
+                geocodeCV.emptyDataSetDelegate = self
+                geocodeCV.reloadEmptyDataSet()
             }
         }
     }
@@ -374,36 +375,45 @@ class Explore: UITableViewController, UITextFieldDelegate {
 
 // MARK: - Explore Extension for UITableViewCell --> TableCollectionCell
 extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
-    
-    
+
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         return true
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nLocation access is currently denied."
-        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: font!]
-        return NSAttributedString(string: str, attributes: attributeDictionary)
+        var str: String?
+        if scrollView.tag == 1 {
+            str = "💩\nSomething went wrong."
+        } else if scrollView.tag == 3 {
+            str = "💩\nThere's no one near you..."
+        }
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15)
+        let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: font!]
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
     
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
-        // Title for button
-        let str = "Find Friends"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
+        var str: String?
+        if scrollView.tag == 1 {
+            str = ""
+        } else if scrollView.tag == 3 {
+            str = "Manage Location Access"
+        }
+        let font = UIFont(name: "AvenirNext-Demibold", size: 12)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
             NSFontAttributeName: font!
         ]
-        return NSAttributedString(string: str, attributes: attributeDictionary)
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
     
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // TODO::
+        if scrollView.tag == 1 {
+            self.fetchFeatured()
+        } else if scrollView.tag == 3 {
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        }
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
@@ -411,7 +421,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return CGFloat(125)
+        return CGFloat(5)
     }
     
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
@@ -425,24 +435,10 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
         if collectionView.tag == 0 {
             return self.articles.count
         } else if collectionView.tag == 1 {
-            
-            if featuredPosts.count == 0 {
-                // MARK: - DZNEmptyDataSet
-                collectionView.emptyDataSetSource = self
-                collectionView.emptyDataSetDelegate = self
-            }
-            
             return self.featuredPosts.count
         } else if collectionView.tag == 2 {
             return self.randomUsers.count
         } else {
-            
-            if geocodeUsers.count == 0 {
-                // MARK: - DZNEmptyDataSet
-                collectionView.emptyDataSetSource = self
-                collectionView.emptyDataSetDelegate = self
-            }
-            
             return self.geocodeUsers.count
         }
     }
@@ -452,7 +448,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             let nCell = collectionView.dequeueReusableCell(withReuseIdentifier: "newsCell", for: indexPath) as! NewsCell
             
             // Set background color
-            nCell.storyCover.backgroundColor = UIColor.randomColor()
+            nCell.storyCover.backgroundColor = UIColor.groupTableViewBackground
             
             // (1) Set publisher's name
             nCell.publisherName.text = self.publisherNames[indexPath.item]
@@ -462,6 +458,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 // MARK: - SDWebImage
                 nCell.storyCover.sd_setImage(with: URL(string: urlToImage)!)
             } else {
+                nCell.storyCover.image = UIImage()
                 nCell.storyCover.backgroundColor = UIColor.randomColor()
             }
             

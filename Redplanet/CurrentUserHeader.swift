@@ -53,7 +53,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
         // Show Profile Photo
             // Get user's profile photo
-            let proPic = PFQuery(className: "Newsfeeds")
+            let proPic = PFQuery(className: "Posts")
             proPic.whereKey("byUser", equalTo: PFUser.current()!)
             proPic.whereKey("contentType", equalTo: "pp")
             proPic.includeKeys(["byUser", "toUser"])

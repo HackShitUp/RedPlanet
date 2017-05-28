@@ -36,7 +36,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // MARK: - TwicketSegmentedControl
     let segmentedControl = TwicketSegmentedControl()
     // Initialize limit; Pipeline method
-    var page: Int = 50
+    var page: Int = 100
     // Initialize UIRefreshControl
     var refresher: UIRefreshControl!
     
@@ -92,10 +92,10 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // FUNCTION - Fetch today's posts
     func fetchToday() {
         // User's Posts
-        let byUser = PFQuery(className: "Newsfeeds")
+        let byUser = PFQuery(className: "Posts")
         byUser.whereKey("byUser", equalTo: PFUser.current()!)
         // User's Space Posts
-        let toUser = PFQuery(className:  "Newsfeeds")
+        let toUser = PFQuery(className:  "Posts")
         toUser.whereKey("toUser", equalTo: PFUser.current()!)
         // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
@@ -141,7 +141,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // FUNCTION: Fetch saved posts
     func fetchSaved() {
-        let saved = PFQuery(className: "Newsfeeds")
+        let saved = PFQuery(className: "Posts")
         saved.whereKey("byUser", equalTo: PFUser.current()!)
         saved.whereKey("saved", equalTo: true)
         saved.includeKeys(["byUser", "toUser"])
@@ -525,7 +525,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         header.fullName.attributedText = underlineAttributedString
         
         // (3) Set count for posts, followers, and following
-        let posts = PFQuery(className: "Newsfeeds")
+        let posts = PFQuery(className: "Posts")
         posts.whereKey("byUser", equalTo: PFUser.current()!)
         posts.countObjectsInBackground {
             (count: Int32, error: Error?) in
@@ -785,14 +785,14 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // MARK: - UIScrollView Delegate Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            // If posts on server are > than shown
-            if page <= self.relativeObjects.count + self.skipped.count {
-                // Increase page size to load more posts
-                page = page + 50
-                // Query content
-                handleCase()
-            }
-        }
+//        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+//            // If posts on server are > than shown
+//            if page <= self.relativeObjects.count + self.skipped.count {
+//                // Increase page size to load more posts
+//                page = page + 50
+//                // Query content
+//                handleCase()
+//            }
+//        }
     }
 }

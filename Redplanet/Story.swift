@@ -28,7 +28,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     open var storyObject: PFObject?
     
     // ScrollSets
-    let scrollSets = ["tp", "pp", "ph", "vi", "sp"]
+    let scrollSets = ["tp", "ph", "pp", "sp"]
     // Array to hold posts; PFObject
     var posts = [PFObject]()
 
@@ -54,7 +54,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     // FUNCTION - Fetch Story
     func fetchSingle() {
-        let newsfeeds = PFQuery(className: "Newsfeeds")
+        let newsfeeds = PFQuery(className: "Posts")
         newsfeeds.whereKey("objectId", equalTo: self.storyObject!.objectId!)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser"])
@@ -80,6 +80,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                 DispatchQueue.main.async(execute: {
                     if self.posts.count != 0 {
                         self.configureView()
+                        self.saveViews(withIndex: self.currentIndex!)
                     } else {
                         // MARK: - DZNEmptyDataSet
                         self.collectionView.emptyDataSetSource = self
@@ -320,13 +321,6 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        // Manipulate SegmentedProgressBar
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb?.skip()
-        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
-            self.spb?.rewind()
-        }
-        
         // Get visible indexPath
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
@@ -335,23 +329,31 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
         
         // Set currentIndex
-        self.currentIndex = indexPath.item
+        currentIndex = indexPath.item
+        
+        // If currentIndex has videoAsset, replace VIMVideoPlayerView with new AVPlayerItem
+        if self.posts[currentIndex!].value(forKey: "videoAsset") != nil {
+            if let videoURL = self.posts[currentIndex!].value(forKey: "videoAsset") as? PFFile {
+                let playerItem = AVPlayerItem(url: URL(string: videoURL.url!)!)
+                self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: playerItem)
+            }
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex!, section: 0)])
+        } else if currentIndex! != 0 {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! - 1, section: 0)])
+        } else if currentIndex! != self.posts.count {
+            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
+        }
+        
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
         
-        // Reload data
-        self.collectionView!.reloadData()
-        
-        // Reload data
-        if self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-        } else if self.currentIndex! != 0 && self.posts[self.currentIndex! - 1].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! - 1, section: 0)])
-        } else if self.currentIndex! != self.posts.count && self.posts[self.currentIndex!].value(forKey: "videoAsset") != nil {
-            self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-            self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex! + 1, section: 0)])
+        // Manipulate SegmentedProgressBar
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb?.skip()
+        } else if self.lastOffSet!.x > scrollView.contentOffset.x {
+            self.spb?.rewind()
         }
     }
 }
@@ -389,7 +391,6 @@ extension Story: UITableViewDataSource, UITableViewDelegate {
             
         } else if self.posts[tableView.tag].value(forKey: "contentType") as! String == "pp" {
             // PROFILE PHOTO
-            
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
             ppCell.postObject = self.posts[tableView.tag]                 // Set PFObject
             ppCell.superDelegate = self                                   // Set parent UIViewController
@@ -545,7 +546,7 @@ extension Story {
             // Dismiss
             dialog.dismiss()
             // Query post
-            let posts = PFQuery(className: "Newsfeeds")
+            let posts = PFQuery(className: "Posts")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
             posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
@@ -603,7 +604,7 @@ extension Story {
         // (4) SAVE or UNSAVE ACTION; add tool action
         dialogController.rightToolAction = { (button) in
             // Query
-            let posts = PFQuery(className: "Newsfeeds")
+            let posts = PFQuery(className: "Posts")
             posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
                                         block: { (object: PFObject?, error: Error?) in
                                             if error == nil {

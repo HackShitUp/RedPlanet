@@ -92,7 +92,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         } else {
             
             // Fetch object
-            let newsfeeds = PFQuery(className: "Newsfeeds")
+            let newsfeeds = PFQuery(className: "Posts")
             newsfeeds.getObjectInBackground(withId: self.editObject!.objectId!, block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {

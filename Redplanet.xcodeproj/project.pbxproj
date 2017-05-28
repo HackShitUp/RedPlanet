@@ -1058,10 +1058,10 @@
 		7EC05B181DB5FABF0039B357 /* CurrentUser */ = {
 			isa = PBXGroup;
 			children = (
-				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 				7E3066461E90F7D800CDEABD /* CurrentUser.swift */,
 				7E41C7A61E4012300025129B /* CurrentUserHeader.swift */,
 				7E41C7A41E4006380025129B /* CurrentUserHeader.xib */,
+				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 			);
 			name = CurrentUser;
 			sourceTree = "<group>";

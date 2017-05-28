@@ -227,7 +227,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         rpHelpers.showProgress(withTitle: "Updating Profile...")
                         
                         // New Profile Photo
-                        let newsfeeds = PFObject(className: "Newsfeeds")
+                        let newsfeeds = PFObject(className: "Posts")
                         newsfeeds["byUser"] = PFUser.current()!
                         newsfeeds["username"] = PFUser.current()!.username!
                         newsfeeds["photoAsset"] = proPicFile
@@ -263,7 +263,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         
                         // Change caption
                         // Find in <Newsfeeds>
-                        let newsfeedProPic = PFQuery(className: "Newsfeeds")
+                        let newsfeedProPic = PFQuery(className: "Posts")
                         newsfeedProPic.whereKey("byUser", equalTo: PFUser.current()!)
                         newsfeedProPic.whereKey("contentType", equalTo: "pp")
                         newsfeedProPic.order(byDescending: "createdAt")

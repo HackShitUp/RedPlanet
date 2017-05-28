@@ -54,7 +54,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
         // Fetch stories
-        let newsfeeds = PFQuery(className: "Newsfeeds")
+        let newsfeeds = PFQuery(className: "Posts")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.object(forKey: "byUser") as! PFUser)
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
@@ -379,7 +379,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
             self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
         }
-        
 
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
@@ -393,16 +392,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         
         
-        // MARK: - UserDefaults
-        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
-        if !viewed.contains(self.posts[self.currentIndex!].objectId!) {
-            // Save to UserDefaults
-            let viewedData = UserDefaults.standard
-            viewedData.set([self.posts[self.currentIndex!].objectId!], forKey: "ViewedData")
-            print("VIEWED_DATA: \(String(describing: viewedData.stringArray(forKey: "ViewedData")))")
-        } else {
-            print("Already Saved...")
-        }
+//        // MARK: - UserDefaults
+//        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
+//        if !viewed.contains(self.posts[self.currentIndex!].objectId!) {
+//            // Save to UserDefaults
+//            let viewedData = UserDefaults.standard
+//            viewedData.set([self.posts[self.currentIndex!].objectId!], forKey: "ViewedData")
+//            print("VIEWED_DATA: \(String(describing: viewedData.stringArray(forKey: "ViewedData")))")
+//        } else {
+//            print("Already Saved...")
+//        }
         
 
     }
@@ -546,7 +545,7 @@ extension Stories {
     func saveViews(withIndex: Int) {
         // Save to Views
         let views = PFQuery(className: "Views")
-        views.whereKey("forObject", equalTo: self.posts[withIndex])
+        views.whereKey("forObjectId", equalTo: self.posts[withIndex])
         views.whereKey("byUser", equalTo: PFUser.current()!)
         views.countObjectsInBackground { (count: Int32, error: Error?) in
             if error == nil && count == 0 {
@@ -554,8 +553,8 @@ extension Stories {
                 let views = PFObject(className: "Views")
                 views["byUser"] = PFUser.current()!
                 views["byUsername"] = PFUser.current()!.username!
-                views["forObject"] = self.posts[withIndex]
-                views["screenshotted"] = false
+                views["forObjectId"] = self.posts[withIndex].objectId!
+                views["didScreenshot"] = false
                 views.saveInBackground()
             } else {
                 print(error?.localizedDescription as Any)
@@ -599,7 +598,7 @@ extension Stories {
             // Dismiss
             dialog.dismiss()
             // Query post
-            let posts = PFQuery(className: "Newsfeeds")
+            let posts = PFQuery(className: "Posts")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
             posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
@@ -660,7 +659,7 @@ extension Stories {
         // (4) SAVE or UNSAVE ACTION; add tool action
         dialogController.rightToolAction = { (button) in
             // Query
-            let posts = PFQuery(className: "Newsfeeds")
+            let posts = PFQuery(className: "Posts")
             posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
                                         block: { (object: PFObject?, error: Error?) in
                                             if error == nil {

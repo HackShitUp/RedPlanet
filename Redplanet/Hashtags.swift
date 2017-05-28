@@ -95,7 +95,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                 }
                 
                 // Get posts
-                let newsfeeds = PFQuery(className: "Newsfeeds")
+                let newsfeeds = PFQuery(className: "Posts")
                 newsfeeds.includeKey("byUser")
                 newsfeeds.whereKey("byUser", containedIn: self.publicUsers)
                 newsfeeds.whereKey("objectId", containedIn: self.hashtagIds)
@@ -551,7 +551,7 @@ extension Hashtags {
             // Dismiss
             dialog.dismiss()
             // Query post
-            let posts = PFQuery(className: "Newsfeeds")
+            let posts = PFQuery(className: "Posts")
             posts.whereKey("objectId", equalTo: self.posts[self.currentIndex!].objectId!)
             posts.whereKey("byUser", equalTo: PFUser.current()!)
             posts.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
@@ -612,7 +612,7 @@ extension Hashtags {
         // (4) SAVE or UNSAVE ACTION; add tool action
         dialogController.rightToolAction = { (button) in
             // Query
-            let posts = PFQuery(className: "Newsfeeds")
+            let posts = PFQuery(className: "Posts")
             posts.getObjectInBackground(withId: self.posts[self.currentIndex!].objectId!,
                                         block: { (object: PFObject?, error: Error?) in
                                             if error == nil {

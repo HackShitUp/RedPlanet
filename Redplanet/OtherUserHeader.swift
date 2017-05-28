@@ -67,7 +67,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // If proPicExists
         if otherObject.last!.value(forKey: "proPicExists") as! Bool == true {    
             // Get user's profile photo
-            let proPic = PFQuery(className: "Newsfeeds")
+            let proPic = PFQuery(className: "Posts")
             proPic.whereKey("byUser", equalTo: otherObject.last!)
             proPic.whereKey("contentType", equalTo: "pp")
             proPic.order(byDescending: "createdAt")
@@ -627,7 +627,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         self.contentView.backgroundColor = UIColor.white
         
         // COUNT POSTS
-        let countPosts = PFQuery(className: "Newsfeeds")
+        let countPosts = PFQuery(className: "Posts")
         countPosts.whereKey("byUser", equalTo: otherObject.last!)
         countPosts.countObjectsInBackground(block: {
             (count: Int32, error: Error?) -> Void in

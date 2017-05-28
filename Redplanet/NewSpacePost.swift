@@ -106,7 +106,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // FUNCTION - Share Text Post
     func shareText() {
         // Create object
-        let textSpace = PFObject(className: "Newsfeeds")
+        let textSpace = PFObject(className: "Posts")
         textSpace["byUser"] = PFUser.current()!
         textSpace["username"] = PFUser.current()!.username!
         textSpace["contentType"] = "sp"
@@ -121,7 +121,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // FUNCTION - Create PFObject w Photo
     func sharePhoto() {
         // Create PFObject
-        let photoSpace = PFObject(className: "Newsfeeds")
+        let photoSpace = PFObject(className: "Posts")
         photoSpace["byUser"] = PFUser.current()!
         photoSpace["username"] = PFUser.current()!.username!
         photoSpace["contentType"] = "sp"
@@ -157,7 +157,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 do {
                     let videoData = try Data(contentsOf: compressedURL)
                     // Create PFObject
-                    let videoSpace = PFObject(className: "Newsfeeds")
+                    let videoSpace = PFObject(className: "Posts")
                     videoSpace["byUser"] = PFUser.current()!
                     videoSpace["username"] = PFUser.current()!.username!
                     videoSpace["contentType"] = "sp"

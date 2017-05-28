@@ -100,7 +100,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     // FUNCTION - Share photo
     func sharePhoto() {
         // Create PFObject
-        let photo = PFObject(className: "Newsfeeds")
+        let photo = PFObject(className: "Posts")
         photo["byUser"] = PFUser.current()!
         photo["username"] = PFUser.current()!.username!.lowercased()
         photo["contentType"] = "ph"
@@ -136,7 +136,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                 do {
                     let videoData = try Data(contentsOf: compressedURL)
                     // Create PFObject
-                    let video = PFObject(className: "Newsfeeds")
+                    let video = PFObject(className: "Posts")
                     video["byUser"] = PFUser.current()!
                     video["username"] = PFUser.current()!.username!.lowercased()
                     video["contentType"] = "vi"

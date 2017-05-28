@@ -60,7 +60,7 @@ class ActivityCell: UITableViewCell {
             // -------------------- C O M M E N T ----------------------------------------------------------------------------
             if self.activity.text!.hasPrefix("liked") || self.activity.text!.hasPrefix("tagged you in a") || self.activity.text!.hasPrefix("wrote on your Space") || self.activity.text! == "commented on your post" {
                 // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST, or MOMENT
-                let post = PFQuery(className: "Newsfeeds")
+                let post = PFQuery(className: "Posts")
                 post.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 post.includeKeys(["byUser", "toUser"])
                 post.findObjectsInBackground(block: {
@@ -101,7 +101,7 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             let commentId = object.value(forKey: "forObjectId") as! String
                             // Find content
-                            let newsfeeds = PFQuery(className: "Newsfeeds")
+                            let newsfeeds = PFQuery(className: "Posts")
                             newsfeeds.whereKey("objectId", equalTo: commentId)
                             newsfeeds.includeKeys(["byUser", "toUser"])
                             newsfeeds.findObjectsInBackground(block: {

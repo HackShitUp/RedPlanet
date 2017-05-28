@@ -75,7 +75,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // MOMENT
         if chatCamera == false {
             // Create PFObject
-            let itmPhoto = PFObject(className: "Newsfeeds")
+            let itmPhoto = PFObject(className: "Posts")
             itmPhoto["byUser"] = PFUser.current()!
             itmPhoto["username"] = PFUser.current()!.username!
             itmPhoto["contentType"] = "itm"

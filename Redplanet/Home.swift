@@ -123,7 +123,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // FETCH POSTS
     func fetchFirstPosts(forGroup: [PFObject]) {
-        let newsfeeds = PFQuery(className: "Newsfeeds")
+        let newsfeeds = PFQuery(className: "Posts")
         newsfeeds.whereKey("byUser", containedIn: forGroup)
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.order(byDescending: "createdAt")

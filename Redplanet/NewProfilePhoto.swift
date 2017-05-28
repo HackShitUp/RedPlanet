@@ -128,7 +128,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         if isNewProPic == false {
             
             // Get profile photo's caption
-            let newsfeeds = PFQuery(className: "Newsfeeds")
+            let newsfeeds = PFQuery(className: "Posts")
             newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
             newsfeeds.whereKey("contentType", equalTo: "pp")
             newsfeeds.order(byDescending: "createdAt")
@@ -209,7 +209,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         if isNewProPic == false {
             
             // Get profile photo's caption
-            let newsfeeds = PFQuery(className: "Newsfeeds")
+            let newsfeeds = PFQuery(className: "Posts")
             newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
             newsfeeds.whereKey("contentType", equalTo: "pp")
             newsfeeds.order(byDescending: "createdAt")
