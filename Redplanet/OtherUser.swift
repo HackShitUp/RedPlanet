@@ -55,7 +55,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     @IBAction func moreAction(_ sender: Any) {
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "fullName") as! String)",
+        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
                                                       message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
@@ -422,7 +422,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Track Who's Profile user lands on
         Heap.track("ViewedProfile", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
                 "OtherUserID": "\(otherObject.last!.objectId!)",
                 "OtherUsername": "\(otherObject.last!.value(forKey: "username") as! String)"
             ])
@@ -512,10 +512,10 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         
         // (2) Get user's full/real name and bio
         if otherObject.last!.value(forKey: "userBiography") != nil {
-            header.fullName.text! = "\(otherObject.last!.value(forKey: "fullName") as! String)"
+            header.fullName.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
             header.userBio.text! = "\(otherObject.last!.value(forKey: "userBiography") as! String)"
         } else {
-            header.fullName.text! = "\(otherObject.last!.value(forKey: "fullName") as! String)"
+            header.fullName.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
         
         // (3) Set CurrentUser & OtherUser's relatinship state
@@ -607,11 +607,11 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Get user's info and bio
         if PFUser.current()!.value(forKey: "userBiography") != nil {
             // Set fullname AND bio
-            let fullName = PFUser.current()!.value(forKey: "fullName") as! String
+            let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as! String
             label.text = "\(fullName.uppercased())\n\(PFUser.current()!.value(forKey: "userBiography") as! String)"
         } else {
             // Set Full name
-            label.text = "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+            label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
         }
         label.sizeToFit()
         
@@ -803,7 +803,7 @@ extension OtherUser {
                     if success {
                         // MARK: - AZDialogViewController
                         let dialogController = AZDialogViewController(title: "💩\nSuccessfully Blocked \(otherName.last!.uppercased())",
-                            message: "You can unblock \(otherObject.last!.value(forKey: "fullName") as! String) in Settings.")
+                            message: "You can unblock \(otherObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.")
                         dialogController.dismissDirection = .bottom
                         dialogController.dismissWithOutsideTouch = true
                         dialogController.showSeparator = true
@@ -848,7 +848,7 @@ extension OtherUser {
     func reportOrBlock() {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "fullName") as! String)",
+        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
             message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true

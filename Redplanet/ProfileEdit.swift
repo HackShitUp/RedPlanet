@@ -200,7 +200,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // =====================================================================================================================
             let me = PFUser.current()!
             me["email"] = rpEmail.text!.lowercased()
-            me["fullName"] = fullName
+            me["realNameOfUser"] = fullName
             me["userBiography"] = self.rpUserBio.text!
             me["username"] = rUsername.lowercased()
             me["birthday"] = stringDate
@@ -563,7 +563,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 userBirthday.date = dateFormatter.date(from: bday)!
             }
             // (2) Set username's title to navigation bar
-            if let fullName = PFUser.current()!.value(forKey: "fullName") as? String {
+            if let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as? String {
                 self.title = fullName
             }
             // (3) Set username
@@ -578,7 +578,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 }
             }
             // (5) Set user's real name
-            if let RPRealName = PFUser.current()!["fullName"] as? String {
+            if let RPRealName = PFUser.current()!["realNameOfUser"] as? String {
                 if RPRealName.isEmpty {
                     rpName.text = "What's your real name?"
                 } else {

@@ -65,7 +65,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
         // MARK: - HEAP
         Heap.track("SharedMoment", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"])
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"])
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
         // POST

@@ -53,7 +53,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
             // Track when number was saved
             Heap.track("SavedNumber", withProperties:
                 ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                 ])
             
             // Remove non-integers

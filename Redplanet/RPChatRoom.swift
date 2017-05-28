@@ -67,7 +67,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     @IBAction func moreButton(_ sender: Any) {
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "\(chatUserObject.last!.value(forKey: "fullName") as! String)",
+        let dialogController = AZDialogViewController(title: "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
                                                       message: "Chats")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
@@ -120,7 +120,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         dialogController.addAction(AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
             
             let alert = UIAlertController(title: "Report",
-                                          message: "Please provide your reason for reporting \(chatUserObject.last!.value(forKey: "fullName") as! String)",
+                                          message: "Please provide your reason for reporting \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
                 preferredStyle: .alert)
             
             let report = UIAlertAction(title: "Report", style: .destructive) {
@@ -143,7 +143,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
-                        rpHelpers.showSuccess(withTitle: "Successfully Reproted \(chatUserObject.last!.value(forKey: "fullName") as! String)")
+                        rpHelpers.showSuccess(withTitle: "Successfully Reproted \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)")
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -194,7 +194,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             
                             // MARK: - RPHelpers
                             let rpHelpers = RPHelpers()
-                            rpHelpers.showSuccess(withTitle: "Successfully Blocked \(chatUserObject.last!.value(forKey: "fullName") as! String)")
+                            rpHelpers.showSuccess(withTitle: "Successfully Blocked \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)")
 
                         } else {
                             print(error?.localizedDescription as Any)
@@ -363,7 +363,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: navBarFont]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(chatUserObject.last!.value(forKey: "fullName") as! String)"
+            self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
         // Extension: UINavigationBar Normalization && hide UITabBar
         self.navigationController?.navigationBar.normalizeBar(navigator: self.navigationController)
@@ -767,7 +767,7 @@ extension RPChatRoom {
             // Track when chat was sent
             Heap.track("SentChat", withProperties:
                 ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                 ])
             // Clear text to prevent sending again and set constant before sending for better UX
             let chatText = self.newChat.text!

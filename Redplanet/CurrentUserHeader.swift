@@ -87,7 +87,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         // Track when user taps the EditProfile button
         Heap.track("TappedEditProfile", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         let profileEdit = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profileEditVC") as! ProfileEdit
         self.delegate?.navigationController?.pushViewController(profileEdit, animated: true)

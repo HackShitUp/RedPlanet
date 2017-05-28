@@ -266,7 +266,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
-                    self.abcFollowing = following.sorted{ ($0.value(forKey: "fullName") as! String) < ($1.value(forKey: "fullName") as! String)}
+                    self.abcFollowing = following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                     self.tableView.reloadData()
                 })
                 
@@ -397,7 +397,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
         let realName = PFUser.query()!
-        realName.whereKey("fullName", matchesRegex: "(?i)" + self.searchBar.text!)
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -512,7 +512,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             // FOLLOWING
 
                 // (1) Set name
-                cell.rpFullName.text! = self.abcFollowing[indexPath.row].value(forKey: "fullName") as! String
+                cell.rpFullName.text! = self.abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
                 // (2) Set Profile Photo
                 if let proPic = self.abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
@@ -532,7 +532,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         // SEARCHED
 
             // (1) Set name
-            cell.rpFullName.text! = self.searchedUsers[indexPath.row].value(forKey: "fullName") as! String
+            cell.rpFullName.text! = self.searchedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String
             // (2) Set Profile Photo
             if let proPic = self.searchedUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage

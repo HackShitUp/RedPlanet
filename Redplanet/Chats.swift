@@ -110,7 +110,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Track when New Chat button was tapped
         Heap.track("TappedNewChat", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
          // Show new view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
@@ -223,7 +223,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
                 
-                let fullName = self.userObjects[indexPath.row].value(forKey: "fullName") as! String
+                let fullName = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
                 
                 // MARK: - AZDialogViewController
                 let dialogController = AZDialogViewController(title: "\(fullName)",
@@ -446,7 +446,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
         let realName = PFUser.query()!
-        realName.whereKey("fullName", matchesRegex: "(?i)" + self.searchBar.text!)
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -549,7 +549,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             
             // Set full name
             // Handle optional chaining for user's real name
-            if let fullName = self.searchObjects[indexPath.row].value(forKey: "fullName") as? String {
+            if let fullName = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
                 cell.rpUsername.text! = fullName
             } else {
                 cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "username") as! String
@@ -580,7 +580,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // SENDER
                 if let sender = self.chatObjects[indexPath.row].object(forKey: "sender") as? PFUser {
                     // Set username
-                    cell.rpUsername.text! = sender.value(forKey: "fullName") as! String
+                    cell.rpUsername.text! = sender.value(forKey: "realNameOfUser") as! String
                     
                     // Get and set user's profile photo
                     // Handle optional chaining
@@ -612,7 +612,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // Fetch user's data
                 if let receiver = self.chatObjects[indexPath.row].object(forKey: "receiver") as? PFUser {
                     // Set username
-                    cell.rpUsername.text! = receiver.value(forKey: "fullName") as! String
+                    cell.rpUsername.text! = receiver.value(forKey: "realNameOfUser") as! String
                     
                     // Get and set user's profile photo
                     // Handle optional chaining
@@ -649,7 +649,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // Append user's object
             chatUserObject.append(self.searchObjects[indexPath.row])
             // Append user's username
-            chatUsername.append(self.searchObjects[indexPath.row].value(forKey: "fullName") as! String)
+            chatUsername.append(self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)
         } else {
         // CURRENT CHATS
             // RECEIVER

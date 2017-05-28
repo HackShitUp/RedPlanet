@@ -38,7 +38,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // Track when user taps the invite button
         Heap.track("TappedInvite", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         // Show Activity
         let textToShare = "🤗\nFollow me on Redplanet, my username is @\(PFUser.current()!.username!)"
@@ -361,7 +361,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 // Track when user taps the invite button
                 Heap.track("TappedInvite", withProperties:
                     ["byUserId": "\(PFUser.current()!.objectId!)",
-                        "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                        "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                     ])
                 // Show Activity
                 let textToShare = "🤗\nFollow me on Redplanet, my username is @\(PFUser.current()!.username!)"
@@ -448,7 +448,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 // Track when user views license
                 Heap.track("ViewedLicense", withProperties:
                     ["byUserId": "\(PFUser.current()!.objectId!)",
-                        "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                        "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                     ])
                 
                 // MARK: - SafariServices

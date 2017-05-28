@@ -100,7 +100,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // MARK: - HEAP
         Heap.track("FollowedUser", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         
         // Disable Follow Button
@@ -224,7 +224,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     @IBAction func relationAction(_ sender: Any) {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "fullName") as! String)",
+        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
                                                       message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true

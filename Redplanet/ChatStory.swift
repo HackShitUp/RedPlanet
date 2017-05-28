@@ -241,10 +241,10 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
                 // (1) Set usernames depending on who sent what
                 if (self.chatPosts[indexPath.item].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     // Set Current user's username
-                    mvCell.rpUsername.setTitle("\(PFUser.current()!.value(forKey: "fullName") as! String)", for: .normal)
+                    mvCell.rpUsername.setTitle("\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)", for: .normal)
                 } else {
                     // Set username
-                    mvCell.rpUsername.setTitle("\(chatUserObject.last!.value(forKey: "fullName") as! String)", for: .normal)
+                    mvCell.rpUsername.setTitle("\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)", for: .normal)
                 }
                 
                 // (2) Set time
@@ -287,10 +287,10 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
             // (1) Set usernames depending on who sent what
             if (self.chatPosts[indexPath.item].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
-                mpCell.rpUsername.setTitle("\(PFUser.current()!.value(forKey: "fullName") as! String)", for: .normal)
+                mpCell.rpUsername.setTitle("\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)", for: .normal)
             } else {
                 // Set username
-                mpCell.rpUsername.setTitle("\(chatUserObject.last!.value(forKey: "fullName") as! String)", for: .normal)
+                mpCell.rpUsername.setTitle("\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)", for: .normal)
             }
             
             // (2) Set time

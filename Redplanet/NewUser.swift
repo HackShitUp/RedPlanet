@@ -67,7 +67,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                     
                     // Load Onboarding tutorial
                     // Perform segueue
-                    let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "fullName") as! String),", body: "Welcome to Redplanet, a fun way to create organized stories!", image: nil, buttonText: nil) { () -> Void in
+                    let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to create organized stories!", image: nil, buttonText: nil) { () -> Void in
                     }
                     let secondPage = OnboardingContentViewController(title: "2 Feeds", body: "You have 2 feeds: One for your friends, and one for the people you're following.", image: nil, buttonText: nil) { () -> Void in
                     }

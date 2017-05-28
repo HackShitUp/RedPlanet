@@ -45,7 +45,7 @@ class Onboarding: UICollectionViewController {
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
                 chats["saved"] = false
-                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "fullName") as! String), welcome to the community! Feel free to chat us @teamrp if you have any questions or concerns using Redplanet. If you're having difficulty using Redplanet, head over to https://medium.com/@redplanetmedia to find tutorials.\n Redplanet"
+                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us @teamrp if you have any questions or concerns using Redplanet. If you're having difficulty using Redplanet, head over to https://medium.com/@redplanetmedia to find tutorials.\n Redplanet"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
@@ -60,7 +60,7 @@ class Onboarding: UICollectionViewController {
                         // Track who signed up
                         Heap.track("SignedUp", withProperties:
                             ["byUserId": "\(PFUser.current()!.objectId!)",
-                                "Name": "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+                                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                             ])
                         
                         
@@ -229,7 +229,7 @@ class Onboarding: UICollectionViewController {
         // (1) Set user's object
         cell.userObject = self.followObjects[indexPath.row]
         // (2) Set user's fullName and username
-        cell.rpFullName.text! = self.followObjects[indexPath.row].value(forKey: "fullName") as! String
+        cell.rpFullName.text! = self.followObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
         cell.rpUsername.text! = self.followObjects[indexPath.row].value(forKey: "username") as! String
         // (3) Set user's bio
         if let biography = self.followObjects[indexPath.row].value(forKey: "userBiography") as? String {

@@ -32,10 +32,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     // Array to hold posts
     var posts = [PFObject]()
-    // Used for skipping/rewinding segments
-    var lastOffSet: CGPoint?
+    // Array to hold viewed posts
+    var viewedPosts = [String]()
     // Variabel to hold currentIndex
     var currentIndex: Int? = 0
+    // Used for skipping/rewinding segments
+    var lastOffSet: CGPoint?
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -50,6 +52,50 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                      Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
 
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    // FUNCTION - Fetch viewed posts
+    func fetchViewed() {
+        let views = PFQuery(className: "Views")
+        views.limit = 500
+        views.whereKey("byUser", equalTo: PFUser.current()!)
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.viewedPosts.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    if let forObjectId = object.value(forKey: "forObjectId") as? String {
+                        self.viewedPosts.append(forObjectId)
+                    }
+                }
+                
+                // Map posts' objectIds
+                let postIds = self.posts.map {$0.objectId!}
+                // Get viewed posts that are a subset of all current posts
+                let notViewedPosts = Set(postIds).subtracting(self.viewedPosts)
+                // Subtract all of current posts, and the subset, and scroll to index
+                let difference = self.posts.count - notViewedPosts.count
+                // Scroll to index if the user HAS NOT viewed every post
+                if difference != self.posts.count {
+                    DispatchQueue.main.async(execute: {
+                        // Set currentIndex
+                        self.currentIndex! = difference
+                        // MARK: - SegmentedProgressBar Delegate Method
+//                        self.segmentedProgressBarChangedIndex(index: self.currentIndex!)
+//                        // Set scrollView's lastOffSet by multiplying width by difference
+//                        let framer = self.view.frame.width * CGFloat(difference)
+//                        let offSet = CGPoint(dictionaryRepresentation: framer as! CFDictionary)
+//                        self.lastOffSet = offSet
+                        
+//                        let a = self.collectionView.contentOffset.x * CGFloat(difference)
+//                        self.lastOffSet = CGPoint(dictionaryRepresentation: a as! CFDictionary)
+                    })
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
 
     // FUNCTION - Fetch user's stories...
     func fetchStories() {
@@ -84,12 +130,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                         self.configureView()
                         // Save currentIndex
                         self.saveViews(withIndex: self.currentIndex!)
+                        // Fetch views
+                        self.fetchViewed()
+                        // reload data
+                        self.collectionView.reloadData()
                     } else {
                         // MARK: - DZNEmptyDataSet
                         self.collectionView.emptyDataSetSource = self
                         self.collectionView.emptyDataSetDelegate = self
+                        self.collectionView.reloadEmptyDataSet()
                     }
-                    self.collectionView.reloadData()
                 })
 
             } else {
@@ -104,10 +154,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     
-    
     // MARK: - SegmentedProgressBar Delegate Methods
     func segmentedProgressBarChangedIndex(index: Int) {
-        self.collectionView?.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: true)
+        self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .right, animated: false)
     }
     
     func segmentedProgressBarFinished() {
@@ -188,11 +237,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Fetch Stories
         fetchStories()
-
-        let postIds = self.posts.map { $0.objectId! }
-        let viewed = UserDefaults.standard.stringArray(forKey: "ViewedData") ?? [String]()
-        let missedPosts = Set(viewed).subtracting(postIds)
-        print("MissedPosts: \(missedPosts)")
 
         // MARK: - VIMVideoPlayerView
         vimVideoPlayerView = VIMVideoPlayerView()
@@ -365,6 +409,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // SAVE to Views
         saveViews(withIndex: indexPath.item)
 
+        print("NewOffSet: \(scrollView.contentOffset.x)")
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb?.skip()
@@ -474,8 +519,11 @@ extension Stories {
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
+        
+//        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
+//        reactButton.frame.origin.x = UIScreen.main.bounds.size.width * 0.5
+        reactButton.center = self.view.center
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
-        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         reactButton.layer.applyShadow(layer: reactButton.layer)
         view.addSubview(reactButton)
         view.bringSubview(toFront: reactButton)

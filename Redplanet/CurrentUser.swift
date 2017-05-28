@@ -514,10 +514,10 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
         // (2) Set user's bio and information
         if PFUser.current()!.value(forKey: "userBiography") != nil {
-            header.fullName.text! = "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+            header.fullName.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             header.userBio.text! = "\(PFUser.current()!.value(forKey: "userBiography") as! String)"
         } else {
-            header.fullName.text! = "\(PFUser.current()!.value(forKey: "fullName") as! String)"
+            header.fullName.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
         }
         // Underline fullname
         let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
@@ -569,10 +569,10 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Get user's info and bio
         if let bio = PFUser.current()!.value(forKey: "userBiography") as? String {
             // Set fullname and bio
-            label.text = "\((PFUser.current()!.value(forKey: "fullName") as! String).uppercased())\n\(bio)"
+            label.text = "\((PFUser.current()!.value(forKey: "realNameOfUser") as! String).uppercased())\n\(bio)"
         } else {
             // set fullName
-            label.text = (PFUser.current()!.value(forKey: "fullName") as! String)
+            label.text = (PFUser.current()!.value(forKey: "realNameOfUser") as! String)
         }
         label.sizeToFit()
         
@@ -638,7 +638,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 cell.userObject = user
                 
                 // (1B) Set user's fullName
-                cell.rpUsername.text = (user.value(forKey: "fullName") as! String)
+                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
                 
                 // (1C) Get and user's profile photo
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {

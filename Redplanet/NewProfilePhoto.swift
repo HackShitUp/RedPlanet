@@ -111,7 +111,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(PFUser.current()!.value(forKey: "fullName") as! String)'s Profile Photo"
+            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Profile Photo"
         }
     }
     

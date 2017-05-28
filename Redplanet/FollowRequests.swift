@@ -255,7 +255,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         // FOLLOWER REQUESTED
             
             // (1) Set user's fullName
-            cell.rpFullName.text! = self.nFollowers[indexPath.row].value(forKey: "fullName") as! String
+            cell.rpFullName.text! = self.nFollowers[indexPath.row].value(forKey: "realNameOfUser") as! String
             
             // (2) Get username
             cell.rpUsername.text! = self.nFollowers[indexPath.row].value(forKey: "username") as! String
@@ -279,7 +279,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         } else {
         // SENT TO
             // (1) Set user's fullName
-            cell.rpFullName.text! = self.sentTo[indexPath.row].value(forKey: "fullName") as! String
+            cell.rpFullName.text! = self.sentTo[indexPath.row].value(forKey: "realNameOfUser") as! String
             
             // (2) Get username
             cell.rpUsername.text! = self.sentTo[indexPath.row].value(forKey: "username") as! String
