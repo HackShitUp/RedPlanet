@@ -89,6 +89,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                         self.collectionView.emptyDataSetSource = self
                         self.collectionView.emptyDataSetDelegate = self
                         self.dznTitle = "💩\nThis post doesn't exist..."
+                        self.collectionView.reloadEmptyDataSet()
                     }
                     self.collectionView.reloadData()
                 })

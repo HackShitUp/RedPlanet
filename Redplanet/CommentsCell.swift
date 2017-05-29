@@ -159,7 +159,6 @@ class CommentsCell: UITableViewCell {
     func countLikes(forObject: PFObject) {
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: forObject.objectId!)
-        likes.whereKey("fromUser", equalTo: PFUser.current()!)
         likes.includeKey("fromUser")
         likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {

@@ -688,24 +688,25 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     // MARK: - UIScrollView Delegate Method
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        /*
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             // If posts on server are > than shown
             if self.page <= self.relativePosts.count + self.skipped.count {
                 // Increase page size to load more posts
                 page = page + 50
                 // Query content
-//                self.handleCase()
+                self.handleCase()
             }
         }
+        */
     }
 
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView.contentOffset.y <= -140.00 {
+        if self.tableView.contentOffset.y <= -150.00 {
             refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         }
     }
-
 }
 
 

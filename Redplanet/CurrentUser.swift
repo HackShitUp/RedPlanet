@@ -125,6 +125,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                         // MARK: - DZNEmptyDataSet
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                     self.tableView?.reloadData()
                 }
@@ -161,6 +162,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                         // MARK: - DZNEmptyDataSet
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                     self.tableView?.reloadData()
                 }
@@ -207,6 +209,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                         // MARK: - DZNEmptyDataSet
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                     self.tableView?.reloadData()
                 }
@@ -781,14 +784,16 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // MARK: - UIScrollView Delegate Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-//            // If posts on server are > than shown
-//            if page <= self.relativeObjects.count + self.skipped.count {
-//                // Increase page size to load more posts
-//                page = page + 50
-//                // Query content
-//                handleCase()
-//            }
-//        }
+        /*
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            // If posts on server are > than shown
+            if page <= self.relativeObjects.count + self.skipped.count {
+                // Increase page size to load more posts
+                page = page + 50
+                // Query content
+                handleCase()
+            }
+        }
+        */
     }
 }

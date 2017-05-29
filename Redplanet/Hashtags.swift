@@ -125,6 +125,7 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                                 // MARK: - DZNEmptyDataSet
                                 self.collectionView.emptyDataSetSource = self
                                 self.collectionView.emptyDataSetDelegate = self
+                                self.collectionView.reloadEmptyDataSet()
                             }
                             self.collectionView.reloadData()
                         })
@@ -212,10 +213,6 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
 
         // Fetch hastags
         fetchHastags()
-        
-        // MARK: - DZNEmptyDataSet
-        self.collectionView!.emptyDataSetSource = self
-        self.collectionView!.emptyDataSetDelegate = self
         
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()

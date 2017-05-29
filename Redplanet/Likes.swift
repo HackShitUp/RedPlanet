@@ -34,11 +34,11 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     @IBAction func refresh(_ sender: Any) {
         self.refresher.endRefreshing()
-        self.fetchLikes()
+        self.fetchLikes(completionHandler: { (Int) in})
     }
 
     // FUNCTION - Fetch Likes
-    func fetchLikes() {
+    func fetchLikes(completionHandler: @escaping (_ count: Int) -> ()) {
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
         likes.includeKey("fromUser")
@@ -105,7 +105,24 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         super.viewDidLoad()
         
         // Fetch likes
-        fetchLikes()
+        fetchLikes(completionHandler: { (count) in
+            if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+                let navBarAttributesDictionary: [String: AnyObject]? = [
+                    NSForegroundColorAttributeName: UIColor.black,
+                    NSFontAttributeName: navBarFont
+                ]
+                self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                self.title = "\(count) Likes"
+            }
+            
+            // Set DZNEmptyDataSet if posts are 0
+            if count == 0 {
+                // MARK: - DZNEmptyDataSet
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+            }
+        })
         
         // Configure UITableView
         self.tableView.rowHeight = 50
@@ -185,7 +202,7 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 // Increase page size to load more posts
                 page = page + 50
                 // Fetch likes
-                self.fetchLikes()
+                self.fetchLikes(completionHandler: { (Int) in})
             }
         }
     }
