@@ -249,7 +249,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         following.whereKey("follower", equalTo: PFUser.current()!)
         following.whereKey("isFollowing", equalTo: true)
         following.includeKeys(["follower", "following"])
-        following.order(byAscending: "createdAt")
+        following.order(byDescending: "createdAt")
         following.limit = self.page
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -258,7 +258,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 var following = [PFObject]()
                 // Clear array
                 following.removeAll(keepingCapacity: false)
-                for object in objects! {
+                for object in objects!.reversed() {
                     if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "following") as! PFUser).objectId!}) {
                         following.append(object.object(forKey: "following") as! PFUser)
                     }

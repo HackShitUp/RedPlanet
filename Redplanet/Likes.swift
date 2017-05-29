@@ -58,11 +58,11 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     self.tableView.emptyDataSetSource = self
                     self.tableView.emptyDataSetDelegate = self
                     self.tableView.reloadEmptyDataSet()
-                } else {
-                    DispatchQueue.main.async(execute: {
-                        self.tableView.reloadData()
-                    })
                 }
+                
+                DispatchQueue.main.async(execute: {
+                    self.tableView.reloadData()
+                })
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -107,15 +107,6 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         
         // Fetch likes
         fetchLikes(completionHandler: { (count) in
-            if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
-                let navBarAttributesDictionary: [String: AnyObject]? = [
-                    NSForegroundColorAttributeName: UIColor.black,
-                    NSFontAttributeName: navBarFont
-                ]
-                self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-                self.navigationController?.navigationBar.topItem!.title = "\(count) Likes"
-            }
-            
             // Set DZNEmptyDataSet if posts are 0
             if count == 0 {
                 // MARK: - DZNEmptyDataSet

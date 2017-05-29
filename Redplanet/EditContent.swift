@@ -109,40 +109,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                             rpHelpers.checkHash(forObject: object!, forText: self.textPost.text!)
                             rpHelpers.checkTags(forObject: object!, forText: self.textPost.text!, postType: (object!.value(forKey: "contentType") as! String))
                             
-                            
                             // TODO:: RELOAD DATA
                             /*
-                             // Refresh data if successfull
-                             if object!.value(forKey: "contentType") as! String == "tp" {
-                             // Text Post
-                             textPostObject.removeAll(keepingCapacity: false)
-                             textPostObject.append(object!)
-                             NotificationCenter.default.post(name: textPostNotification, object: nil)
-                             
-                             } else if object!.value(forKey: "contentType") as! String == "ph" {
-                             // Photo
-                             photoAssetObject.removeAll(keepingCapacity: false)
-                             photoAssetObject.append(object!)
-                             NotificationCenter.default.post(name: photoNotification, object: nil)
-                             
-                             } else if object!.value(forKey: "contentType") as! String == "pp" {
-                             // Profile Photo
-                             proPicObject.removeAll(keepingCapacity: false)
-                             proPicObject.append(object!)
-                             NotificationCenter.default.post(name: profileNotification, object: nil)
-                             
-                             } else if object!.value(forKey: "contentType") as! String == "vi" {
-                             // Video
-                             videoObject.removeAll(keepingCapacity: false)
-                             videoObject.append(object!)
-                             NotificationCenter.default.post(name: videoNotification, object: nil)
-                             
-                             } else if object!.value(forKey: "contentType") as! String == "sp" {
-                             // Space Post
-                             spaceObject.removeAll(keepingCapacity: false)
-                             spaceObject.append(object!)
-                             NotificationCenter.default.post(name: spaceNotification, object: nil)
-                             }
                              */
                         } else {
                             print(error?.localizedDescription as Any)

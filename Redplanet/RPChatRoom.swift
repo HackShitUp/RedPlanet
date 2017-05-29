@@ -299,7 +299,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         receiver.whereKey("sender", equalTo: chatUserObject.last!)
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.includeKeys(["receiver", "sender"])
-        chats.order(byAscending: "createdAt")
+        chats.order(byDescending: "createdAt")
         chats.limit = self.page
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -307,7 +307,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
-                for object in objects! {
+                for object in objects!.reversed() {
                     // Ephemeral Chat
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
@@ -408,21 +408,21 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 // Clear newChat
                 self.newChat.text!.removeAll()
-                // Reload data
-                self.fetchChats()
                 // Dismiss view controller
-                self.dismiss(animated: true, completion: nil)
-                
+                self.dismiss(animated: true, completion: {
+                    // Reload data
+                    self.fetchChats()
+                })
             } else {
                 print(error?.localizedDescription as Any)
                 // Re-enable done button
                 editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                 
-                // Reload data
-                self.fetchChats()
-                
                 // Dismiss view controller
-                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: { 
+                    // Reload data
+                    self.fetchChats()
+                })
             }
         }
         // Dismiss view controller
@@ -494,12 +494,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Scroll to bottom via main thread
-        DispatchQueue.main.async(execute: {
-            if self.messageObjects.count != 0 && self.messageObjects.count > 8 {
-                self.tableView!.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
-            }
-        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -545,7 +539,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
     }
     
     

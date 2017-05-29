@@ -128,7 +128,7 @@ class Onboarding: UICollectionViewController {
         
         let people = PFUser.query()!
         people.whereKey("private", equalTo: false)
-        people.order(byAscending: "createdAt")
+        people.order(byDescending: "createdAt")
         people.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -136,7 +136,7 @@ class Onboarding: UICollectionViewController {
                 self.followObjects.removeAll(keepingCapacity: false)
                 
                 // Append object
-                for object in objects! {
+                for object in objects!.reversed() {
                     self.followObjects.append(object)
                 }
                 
@@ -186,6 +186,8 @@ class Onboarding: UICollectionViewController {
         // Stylize title
         configureView()
         
+        self.collectionView?.backgroundColor = UIColor.groupTableViewBackground
+        
         // Fetch users
         fetchUsers()
         
@@ -223,8 +225,7 @@ class Onboarding: UICollectionViewController {
         
         // MARK: RPExteions; Round floatingView and apply ahdow
         cell.floatingView.roundAllCorners(sender: cell.floatingView)
-        cell.floatingView.layer.borderWidth = 0.5
-        cell.floatingView.layer.borderColor = UIColor.lightGray.cgColor
+        cell.floatingView.backgroundColor = UIColor.white
         
         // (1) Set user's object
         cell.userObject = self.followObjects[indexPath.row]

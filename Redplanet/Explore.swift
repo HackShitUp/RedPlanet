@@ -116,11 +116,12 @@ class Explore: UITableViewController, UITextFieldDelegate {
                                                                                  from: object.createdAt!,
                                                                                  to: Date(),
                                                                                  options: [])
-                    
-                    let users = self.featuredPosts.map {$0.object(forKey: "byUser") as! PFUser}
-                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
+                    // Prevent duplicates, and add
+                    let users = self.featuredPosts.map{$0.object(forKey: "byUser") as! PFUser}
+                    if !users.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && difference.hour! < 24 {
                         self.featuredPosts.append(object)
                     }
+                    
                 }
                 
                 // Reload data in main thread
@@ -224,14 +225,14 @@ class Explore: UITableViewController, UITextFieldDelegate {
         discover.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
         discover.whereKey("objectId", notContainedIn: self.randomUsers.map {$0.objectId!})
         discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
-        discover.order(byAscending: "createdAt")
+        discover.order(byDescending: "createdAt")
         discover.limit = self.page
         discover.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
                 self.geocodeUsers.removeAll(keepingCapacity: false)
-                for object in objects! {
+                for object in objects!.reversed() {
                     if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.geocodeUsers.contains(where: {$0.objectId! == object.objectId!}) {
                         self.geocodeUsers.append(object)
                     }
@@ -278,7 +279,6 @@ class Explore: UITableViewController, UITextFieldDelegate {
         searchBar.delegate = self
         searchBar.backgroundColor = UIColor.groupTableViewBackground
         searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width - 32, height: 30)
-        searchBar.roundAllCorners(sender: searchBar)
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
@@ -331,12 +331,21 @@ class Explore: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 35
+        
+        if self.featuredPosts.count == 0 && section == 1 {
+            return 0
+        } else {
+            return 35
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 || indexPath.section == 1 {
+        if indexPath.section == 0 {
             return 175
+        } else if indexPath.section == 1 && self.featuredPosts.count != 0 {
+            return 175
+        } else if indexPath.section == 1 && self.featuredPosts.count == 0 {
+            return 0
         } else {
             return 125
         }
@@ -367,6 +376,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let tCell = self.tableView.dequeueReusableCell(withIdentifier: "tableCollectionCell", for: indexPath) as! TableCollectionCell
+        tCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.section)
         return tCell
     }
 }
@@ -384,7 +394,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         if scrollView.tag == 1 {
-            str = "💩\nSomething went wrong."
+            str = "🚀"
         } else if scrollView.tag == 3 {
             str = "💩\nThere's no one near you..."
         }
@@ -396,7 +406,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         var str: String?
         if scrollView.tag == 1 {
-            str = ""
+            str = "Tap to retry"
         } else if scrollView.tag == 3 {
             str = "Manage Location Access"
         }

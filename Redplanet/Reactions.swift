@@ -42,7 +42,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - Initialize TwicketSegmentedControl
     let segmentedControl = TwicketSegmentedControl()
     
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentContainer: UIView!
     @IBOutlet weak var textView: UITextView!
@@ -147,14 +146,14 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
         comments.includeKey("byUser")
-        comments.order(byAscending: "createdAt")
+        comments.order(byDescending: "createdAt")
         comments.limit = self.page
         comments.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
                 self.reactionObjects.removeAll(keepingCapacity: false)
-                for object in objects! {
+                for object in objects!.reversed() {
                     if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "byUser") as! PFUser).objectId!}) {
                         self.reactionObjects.append(object)
                     }
@@ -164,16 +163,16 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     self.tableView.emptyDataSetSource = self
                     self.tableView.emptyDataSetDelegate = self
                     self.tableView.reloadEmptyDataSet()
-                } else {
-                    // Main Thread
-                    DispatchQueue.main.async {
-                        // Reload data
-                        self.tableView.reloadData()
-                        // Scroll to bottom
-                        if self.reactionObjects.count > 0 {
-                            self.tableView!.scrollToRow(at: IndexPath(row: self.reactionObjects.count - 1, section: 0), at: .bottom, animated: true)
-                            
-                        }
+                }
+                
+                // Main Thread
+                DispatchQueue.main.async {
+                    // Reload data
+                    self.tableView.reloadData()
+                    // Scroll to bottom
+                    if self.reactionObjects.count > 0 {
+                        self.tableView!.scrollToRow(at: IndexPath(row: self.reactionObjects.count - 1, section: 0), at: .bottom, animated: true)
+                        
                     }
                 }
                 
@@ -590,6 +589,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     
+    
     // MARK: - UISearchBar Delegate Methods
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // Configure UISearchBar
@@ -686,8 +686,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         } else {
             return self.reactionObjects.count
         }
-        
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -701,7 +699,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // SEARCHED
-            if self.searchBar.text != "" {
+            if self.searchBar.text != "" && self.searchBar.isFirstResponder {
                 // (1) Get and set realNameOfUser
                 if let realNameOfUser = self.searchedObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
                     cell.rpFullName.text = realNameOfUser

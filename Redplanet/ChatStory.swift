@@ -61,7 +61,7 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
                     // Ephemeral content
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 || (difference.hour! < 24 && object.value(forKey: "saved") as! Bool == false) {
+                    if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
                         self.chatPosts.append(object)
                     }
                 }

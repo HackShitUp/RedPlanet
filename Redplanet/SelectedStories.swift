@@ -135,8 +135,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // Set publisher name
         cell.publisherName.text = self.publisherName
         // MARK: - SDWebImage
+        cell.coverPhoto.sd_addActivityIndicator()
         cell.publisherLogo.sd_setIndicatorStyle(.gray)
-        cell.publisherLogo.sd_showActivityIndicatorView()
         cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL)!)
         // MARK: - RPHelpers
         cell.publisherLogo.roundAllCorners(sender: cell.publisherLogo)
@@ -147,7 +147,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // (2) Set cover photo
         if let urlToImage = self.articleObjects[indexPath.item].value(forKey: "urlToImage") as? String {
             // MARK: - SDWebImage
-            cell.coverPhoto.sd_showActivityIndicatorView()
+            cell.coverPhoto.sd_addActivityIndicator()
             cell.coverPhoto.sd_setIndicatorStyle(.gray)
             cell.coverPhoto.sd_setImage(with: URL(string: urlToImage)!)
             cell.storyStatus.text = "Tap anywhere to read the full story..."
