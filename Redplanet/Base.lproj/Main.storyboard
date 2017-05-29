@@ -1108,7 +1108,7 @@
                                             <constraint firstAttribute="height" constant="1" id="TWW-aY-8jZ"/>
                                         </constraints>
                                     </view>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Share your comment..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bSo-2F-RF3">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Tap to share your comment..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bSo-2F-RF3">
                                         <rect key="frame" x="0.0" y="1" width="375" height="51"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

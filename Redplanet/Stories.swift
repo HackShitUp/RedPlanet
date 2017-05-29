@@ -83,9 +83,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     // Save currentIndex to "Views"
                     self.saveViews(withIndex: self.currentIndex!)
                     
-                    // Set lastOffSet
-                    self.lastOffSet = CGPoint(x: (self.collectionView.contentOffset.x * CGFloat(difference)), y: 0)
-                    
                     DispatchQueue.main.async(execute: {
                         // Skip SegmentedProgressBar by number of collectionViews
                         for _ in 0..<self.currentIndex! {
@@ -279,10 +276,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Add observer for screenshots
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshot),
+                                               name: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
+                                               object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // Remove observer
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -580,6 +583,40 @@ extension Stories {
             }
         }
     }
+    
+    // FUNCTION - Send Screenshot Notifiication
+    func sendScreenshot() {
+        // Update "didScreenshot" attribute in "Views"
+        let views = PFQuery(className: "Views")
+        views.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    object["didScreenshot"] = true
+                    object.saveInBackground()
+                    
+                    // Save to Notifications
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser
+                    notifications["to"] =  (self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                    notifications["forObjectId"] = object.value(forKey: "forObjectId") as! String
+                    notifications["type"] = "screenshot"
+                    notifications.saveInBackground()
+                    
+                    // MARK: - RPHelpers; send push notification
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.pushNotification(toUser: self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "screenshotted your post.")
+                    
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
     
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {

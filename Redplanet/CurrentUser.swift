@@ -623,26 +623,22 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Initialize and set parent vc
             cell.delegate = self
             
-            // MARK: - RPHelpers extension
-            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-            
             // Declare content's object
             // in Notifications' <forObjectId>
             cell.contentObject = relativeObjects[indexPath.row]
             
             // (1) GET and set user's object
             if let user = self.relativeObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
-                
                 // (1A) Set user's object
                 cell.userObject = user
-                
                 // (1B) Set user's fullName
                 cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                
                 // (1C) Get and user's profile photo
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                    // MARK: - RPHelpers extension
+                    cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
                 }
             }
             
@@ -651,114 +647,68 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             // (3) Set title of activity
             // START TITLE *****************************************************************************************************
-            
-            // -----------------------------------------------------------------------------------------------------------------
-            // ==================== R E L A T I O N S H I P S ------------------------------------------------------------------
-            // -----------------------------------------------------------------------------------------------------------------
-            // (1) Follow Requested
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "follow requested" {
-                cell.activity.text = "requested to follow you"
+            if let type = relativeObjects[indexPath.row].value(forKey: "type") as? String {
+                switch type {
+                    // -------------------------------------------------------------------------------------------
+                    // =======F O L L O W    R E Q U E S T S -----------------------------------------------------
+                    // -------------------------------------------------------------------------------------------
+                    case "follow requested":
+                    cell.activity.text = "requested to follow you"
+                    case "followed":
+                    cell.activity.text = "started following you"
+                    // -------------------------------------------------------------------------------------------
+                    // ==================== S P A C E ------------------------------------------------------------
+                    // -------------------------------------------------------------------------------------------
+                    case "space":
+                    cell.activity.text = "wrote on your Space"
+                    // -------------------------------------------------------------------------------------------
+                    // ==================== L I K E --------------------------------------------------------------
+                    // -------------------------------------------------------------------------------------------
+                    case "like tp":
+                    cell.activity.text = "liked your Text Post"
+                    case "like ph":
+                    cell.activity.text = "liked your Photo"
+                    case "like pp":
+                    cell.activity.text = "liked your Profile Photo"
+                    case "like sp":
+                    cell.activity.text = "liked your Space Post"
+                    case "like vi":
+                    cell.activity.text = "liked your Video"
+                    case "like itm":
+                    cell.activity.text = "liked your Moment"
+                    case "like co":
+                    cell.activity.text = "liked your comment"
+                    // -------------------------------------------------------------------------------------------
+                    // ==================== T A G ----------------------------------------------------------------
+                    // -------------------------------------------------------------------------------------------
+                    case "tag tp":
+                    cell.activity.text = "tagged you in a Text Post"
+                    case "tag ph":
+                    cell.activity.text = "tagged you in a Photo"
+                    case "tag pp":
+                    cell.activity.text = "tagged you in a Profile Photo"
+                    case "tag sp":
+                    cell.activity.text = "tagged you in a Space Post"
+                    case "tag vi":
+                    cell.activity.text = "tagged you in a Video"
+                    case "tag itm":
+                    cell.activity.text = "tagged you in a Moment"
+                    case "tag co":
+                    cell.activity.text = "tagged you in a comment"
+                    // -------------------------------------------------------------------------------------------
+                    // ==================== C O M M E N T --------------------------------------------------------
+                    // -------------------------------------------------------------------------------------------
+                    case "comment":
+                    cell.activity.text = "commented on your post"
+                    // -------------------------------------------------------------------------------------------
+                    // ================= S C R E E N S H O T -----------------------------------------------------
+                    // -------------------------------------------------------------------------------------------
+                    case "screenshot":
+                    cell.activity.text = "screenshot your post"
+                default:
+                    break;
+                }
             }
-            
-            // (2) Followed
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "followed" {
-                cell.activity.text = "started following you"
-            }
-            
-            // -------------------------------------------------------------------------------------------------------------
-            // ==================== S P A C E ------------------------------------------------------------------------------
-            // -------------------------------------------------------------------------------------------------------------
-            
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "space" {
-                cell.activity.text = "wrote on your Space"
-            }
-            
-            // --------------------------------------------------------------------------------------------------------------
-            // ==================== L I K E ---------------------------------------------------------------------------------
-            // --------------------------------------------------------------------------------------------------------------
-            
-            // (1) Text Post
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like tp" {
-                cell.activity.text = "liked your Text Post"
-            }
-            
-            // (2) Photo
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like ph" {
-                cell.activity.text = "liked your Photo"
-            }
-            
-            // (3) Profile Photo
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like pp" {
-                cell.activity.text = "liked your Profile Photo"
-            }
-            
-            // (4) Space Post
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like sp" {
-                cell.activity.text = "liked your Space Post"
-            }
-            
-            // (5) Moment
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like itm" {
-                cell.activity.text = "liked your Moment"
-            }
-            
-            // (6) Video
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like vi" {
-                cell.activity.text = "liked your Video"
-            }
-            
-            // (7)  Liked Comment
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "like co" {
-                cell.activity.text = "liked your comment"
-            }
-            
-            // ------------------------------------------------------------------------------------------------
-            // ==================== T A G ---------------------------------------------------------------------
-            // ------------------------------------------------------------------------------------------------
-            
-            // (1) Text Post
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "tag tp" {
-                cell.activity.text = "tagged you in a Text Post"
-            }
-            
-            // (2) Photo
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "tag ph" {
-                cell.activity.text = "tagged you in a Photo"
-            }
-            
-            // (3) Profile Photo
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "tag pp" {
-                cell.activity.text = "tagged you in a Profile Photo"
-            }
-            
-            // (4) Space Post
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "tag sp" {
-                cell.activity.text = "tagged you in a Space Post"
-            }
-            
-            // TODO::
-            // (5) SKIP: Moment
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "tag itm" {
-                cell.activity.text = "tagged you in a Moment"
-            }
-            
-            // (6) Video
-            if relativeObjects[indexPath.row].value(forKey: "type") as? String == "tag vi" {
-                cell.activity.text = "tagged you in a Video"
-            }
-            
-            // (7) Comment
-            if relativeObjects[indexPath.row].value(forKey: "type") as! String == "tag co" {
-                cell.activity.text = "tagged you in a comment"
-            }
-            
-            // -------------------------------------------------------------------------------------------
-            // ==================== C O M M E N T --------------------------------------------------------
-            // -------------------------------------------------------------------------------------------
-            if relativeObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
-                cell.activity.text = "commented on your post"
-            }
-            
             // ===========================================================================================================
             // END TITLE =================================================================================================
             // ===========================================================================================================

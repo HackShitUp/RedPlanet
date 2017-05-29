@@ -58,7 +58,8 @@ class ActivityCell: UITableViewCell {
             // -------------------- T A G ------------------------------------------------------------------------------------
             // -------------------- S P A C E --------------------------------------------------------------------------------
             // -------------------- C O M M E N T ----------------------------------------------------------------------------
-            if self.activity.text!.hasPrefix("liked") || self.activity.text!.hasPrefix("tagged you in a") || self.activity.text!.hasPrefix("wrote on your Space") || self.activity.text! == "commented on your post" {
+            // -------------------- S C R E E N S H O T ----------------------------------------------------------------------
+            if self.activity.text!.hasPrefix("liked") || self.activity.text!.hasPrefix("tagged you in a") || self.activity.text!.hasPrefix("wrote on your Space") || self.activity.text! == "commented on your post" || self.activity.text!.hasPrefix("screenshot your post") {
                 // TEXT POST, PHOTO, PROFILE PHOTO, VIDEO, SPACE POST, or MOMENT
                 let post = PFQuery(className: "Posts")
                 post.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -70,8 +71,18 @@ class ActivityCell: UITableViewCell {
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                         for object in objects! {
-                            // Show Story
-                            self.showStory(withObject: object)
+                            // Ephemeral and Saved Content Configuration
+                            let components: NSCalendar.Unit = .hour
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                            // Check if content has not expired OR if it's saved
+                            if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
+                                // Show Story
+                                self.showStory(withObject: object)
+                            } else {
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showAction(withTitle: "This post expired, and it wasn't saved...")
+                            }
                         }
                     } else {
                         print(error?.localizedDescription as Any)
@@ -93,7 +104,6 @@ class ActivityCell: UITableViewCell {
                 comments.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 comments.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -109,8 +119,18 @@ class ActivityCell: UITableViewCell {
                                 if error == nil {
                                     // PUSH VC
                                     for object in objects! {
-                                        // Show Story
-                                        self.showStory(withObject: object)
+                                        // Ephemeral and Saved Content Configuration
+                                        let components: NSCalendar.Unit = .hour
+                                        let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                                        // Check if content has not expired OR if it's saved
+                                        if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
+                                            // Show Story
+                                            self.showStory(withObject: object)
+                                        } else {
+                                            // MARK: - RPHelpers
+                                            let rpHelpers = RPHelpers()
+                                            rpHelpers.showAction(withTitle: "This post expired, and it wasn't saved...")
+                                        }
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)

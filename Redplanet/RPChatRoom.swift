@@ -329,7 +329,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 if self.messageObjects.count > 0 {
                     DispatchQueue.main.async(execute: {
                         self.tableView.reloadData()
-                        self.tableView!.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
+                        self.tableView.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
                     })
                 }
                 
@@ -534,12 +534,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func createObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
-                                               object: nil,
-                                               queue: OperationQueue.main) { notification in
-                                                // Send screenshot
-                                                self.sendScreenshot()
-        }
+        // Add observer for screenshots
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshot),
+                                               name: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
+                                               object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fetchChats), name: rpChat, object: nil)
     }
     

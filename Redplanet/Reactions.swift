@@ -322,7 +322,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     // Dismiss
                     dialog.dismiss()
                     // Clear comment box
-                    if self.textView.text == "Share your comment!" {
+                    if self.textView.text == "Tap to share your comment..." {
                         self.textView.textColor = UIColor.black
                         self.textView.text! = ""
                     }
@@ -711,7 +711,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
         return true
     }
-    
 }
 
 
