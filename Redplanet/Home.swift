@@ -158,6 +158,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                         // MARK: - DZNEmptyDataSet
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                     self.tableView?.reloadData()
                 })

@@ -67,7 +67,7 @@ class Onboarding: UICollectionViewController {
                         
                         // MARK: - AZDialogViewController
                         let dialogController = AZDialogViewController(title: "🙈\nPlease Allow Access",
-                                                                      message: "Before you begin using Redplanet, we're going to ask you access for the following...\n• Location\n• Camera\n• Photos\n• Microphone")
+                                                                      message: "Before you start using Redplanet, it needs access for the following...\n• Location\n• Camera\n• Photos\n• Microphone")
                         dialogController.dismissDirection = .bottom
                         dialogController.dismissWithOutsideTouch = true
                         dialogController.showSeparator = true

@@ -56,7 +56,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // FUNCTION - Fetch viewed posts
     func fetchViewed() {
         let views = PFQuery(className: "Views")
-        views.limit = 500
+        views.limit = 2500
         views.whereKey("byUser", equalTo: PFUser.current()!)
         views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -683,12 +683,22 @@ extension Stories {
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
                         self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        if self.currentIndex! == 0 {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
-                                                             at: .right, animated: true)
-                        } else if self.currentIndex! == self.posts.count {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
-                                                             at: .right, animated: true)
+                        
+                        if self.posts.count == 0 {
+                            // Hide reactButton
+                            self.reactButton.isHidden = true
+                            // Set DZN
+                            self.collectionView.emptyDataSetSource = self
+                            self.collectionView.emptyDataSetDelegate = self
+                            self.collectionView.reloadEmptyDataSet()
+                        } else {
+                            if self.currentIndex! == 0 {
+                                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
+                                                                 at: .right, animated: true)
+                            } else if self.currentIndex! == self.posts.count {
+                                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
+                                                                 at: .right, animated: true)
+                            }
                         }
                     }
                 } else {

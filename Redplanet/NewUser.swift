@@ -67,9 +67,9 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                     
                     // Load Onboarding tutorial
                     // Perform segueue
-                    let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to create organized stories!", image: nil, buttonText: nil) { () -> Void in
+                    let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to create and share organized stories!", image: nil, buttonText: nil) { () -> Void in
                     }
-                    let secondPage = OnboardingContentViewController(title: "2 Feeds", body: "You have 2 feeds: One for your friends, and one for the people you're following.", image: nil, buttonText: nil) { () -> Void in
+                    let secondPage = OnboardingContentViewController(title: "Stories", body: "You have 2 types of stories: One by your friends, and one created by the people you're following.", image: nil, buttonText: nil) { () -> Void in
                     }
                     let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "By default, everything you share disappears in 24 hours!", image: nil, buttonText: "Continue") { () -> Void in
                         

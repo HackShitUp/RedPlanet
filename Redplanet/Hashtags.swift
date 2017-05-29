@@ -628,12 +628,22 @@ extension Hashtags {
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
                         self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        if self.currentIndex! == 0 {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
-                                                             at: .right, animated: true)
-                        } else if self.currentIndex! == self.posts.count {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
-                                                             at: .right, animated: true)
+
+                        if self.posts.count == 0 {
+                            // Hide reactButton
+                            self.reactButton.isHidden = true
+                            // Set DZN
+                            self.collectionView.emptyDataSetSource = self
+                            self.collectionView.emptyDataSetDelegate = self
+                            self.collectionView.reloadEmptyDataSet()
+                        } else {
+                            if self.currentIndex! == 0 {
+                                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
+                                                                 at: .right, animated: true)
+                            } else if self.currentIndex! == self.posts.count {
+                                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
+                                                                 at: .right, animated: true)
+                            }
                         }
                     }
                 } else {

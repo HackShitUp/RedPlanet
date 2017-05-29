@@ -229,7 +229,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         // I TIME STAMP
         let time = UILabel(frame: self.view.bounds)
-        time.font = UIFont(name: "Futura-Medium", size: 60)
+        time.font = UIFont(name: "Futura-Medium", size: 65)
         time.textColor = UIColor.white
         time.layer.applyShadow(layer: time.layer)
         time.text = "\(timeFormatter.string(from: NSDate() as Date))"
@@ -241,10 +241,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         // II DAY
         let day = UILabel(frame: self.view.bounds)
-        day.font = UIFont(name: "AvenirNext-Medium", size: 50)
+        day.font = UIFont(name: "AvenirNext-Demibold", size: 50)
         day.textColor = UIColor.white
         day.layer.applyShadow(layer: day.layer)
-        day.text = "\(dayOfWeek.uppercased())"
+        day.text = "\(dayOfWeek)"
         day.textAlignment = .center
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
         day.layer.render(in: UIGraphicsGetCurrentContext()!)
