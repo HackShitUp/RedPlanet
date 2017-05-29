@@ -395,7 +395,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         let indexPath: IndexPath = self.collectionView!.indexPathForItem(at: visiblePoint)!
         
         // Set currentIndex
-        currentIndex = indexPath.item
+        self.currentIndex! = indexPath.item
         
         // If currentIndex has videoAsset, replace VIMVideoPlayerView with new AVPlayerItem
         if self.posts[currentIndex!].value(forKey: "videoAsset") != nil {

@@ -16,13 +16,16 @@ import Bolts
 import SDWebImage
 import DZNEmptyDataSet
 
-class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Class configurable variable
     var fetchObject: PFObject?
     
     // Array of users who viewed a post
     var viewObjects = [PFObject]()
+    // Array of searched users
+    var searchedObjects = [PFObject]()
+    
     // PFQuery; Pipeline method
     var page: Int = 50
     // Refresher
@@ -121,7 +124,13 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     NSFontAttributeName: navBarFont
                 ]
                 self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-                self.title = "\(count) Views"
+                if count == 0 {
+                    self.title = "Views"
+                } else if count == 1 {
+                    self.title = "1 View"
+                } else {
+                    self.title = "\(count) Views"
+                }
             }
             
             // Set DZNEmptyDataSet if posts are 0
@@ -132,6 +141,17 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 self.tableView.reloadEmptyDataSet()
             }
         })
+        
+        // Configure UISearchBar
+        searchBar.delegate = self
+        searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        searchBar.barTintColor = UIColor.white
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search"
+        tableView.tableHeaderView = self.searchBar
+        tableView.tableHeaderView?.layer.borderWidth = 0.5
+        tableView.tableHeaderView?.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+        tableView.tableHeaderView?.clipsToBounds = true
         
         // Configure UITableView
         self.tableView.rowHeight = 50
@@ -160,6 +180,55 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
+    
+    // MARK: - UISearchBar Delegate Methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Configure UISearchBar
+        if searchBar.text == "Search" {
+            searchBar.text! = ""
+        } else {
+            searchBar.text! = searchBar.text!
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search by fullName and username
+        let name = PFUser.query()!
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFUser.query()!
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.searchedObjects.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    let users = self.viewObjects.map{$0.object(forKey: "byUser") as! PFUser}
+                    if users.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.searchedObjects.append(object)
+                    }
+                }
+                
+                // Reload data
+                if self.searchedObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.backgroundView = UIView()
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+    
+    
 
     // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -171,30 +240,53 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewObjects.count
+        if self.searchBar.text! != "" {
+            return self.searchedObjects.count
+        } else {
+            return self.viewObjects.count
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
         
-        // (1) Get and set user's data
-        if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
-            // Set username
-            cell.rpUsername.text = user.username!
-            // Get and set userProfilePicture
-            if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - RPExtensions
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
-                // MARK: - RPExtensions
-                cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-            }
-        }
+        // MARK: - RPExtensions
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // (2) Set didScreenshot icon indicator if screenshotted
-        if self.viewObjects[indexPath.row].value(forKey: "didScreenshot") as! Bool == true {
-            cell.screenShotted.isHidden = false
-        } else {
+        // SEARCHED
+        if self.searchBar.text! != "" {
+            // (1) Get and set user's data
+            if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
+                // Set username
+                cell.rpUsername.text = user.username!
+                // Get and set userProfilePicture
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - RPExtensions
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+            }
+            // (2) Hide screenShotted
             cell.screenShotted.isHidden = true
+            
+        } else {
+        // VIEWED
+            // (1) Get and set user's data
+            if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
+                // Set username
+                cell.rpUsername.text = user.username!
+                // Get and set userProfilePicture
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - RPExtensions
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+            }
+            
+            // (2) Set didScreenshot icon indicator if screenshotted
+            if self.viewObjects[indexPath.row].value(forKey: "didScreenshot") as! Bool == true {
+                cell.screenShotted.isHidden = false
+            } else {
+                cell.screenShotted.isHidden = true
+            }
         }
         
         return cell
@@ -225,4 +317,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             }
         }
     }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign first responder status
+        self.searchBar.resignFirstResponder()
+        // Clear searchBar
+        self.searchBar.text! = ""
+        // Set tableView backgroundView
+        self.tableView.backgroundView = UIView()
+        // Query Views
+        queryViews(completionHandler: { (count) in})
+    }
+    
 }

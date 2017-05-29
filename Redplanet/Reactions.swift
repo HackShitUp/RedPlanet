@@ -20,13 +20,14 @@ var reactionObject = [PFObject]()
 // Define NotificationIdentifier
 let reactNotification = Notification.Name("Reactions")
 
-class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
+class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UISearchBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
 
-    // MARK: - Initialize TwicketSegmentedControl
-    let segmentedControl = TwicketSegmentedControl()
     
     // Array to hold reactionObjects
     var reactionObjects = [PFObject]()
+    // Array to hold searchedUsers
+    var searchedObjects = [PFObject]()
+    
     // AppDelegate
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     // Keyboard Frame
@@ -35,6 +36,11 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     var page: Int = 50
     // UIRefreshControl
     var refresher: UIRefreshControl!
+    // UISearchBar
+    let searchBar = UISearchBar()
+    
+    // MARK: - Initialize TwicketSegmentedControl
+    let segmentedControl = TwicketSegmentedControl()
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -65,6 +71,16 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         case 0:
             fetchLikes()
             self.tableView.allowsSelection = true
+            // Configure UISearchBar
+            searchBar.delegate = self
+            searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            searchBar.barTintColor = UIColor.white
+            searchBar.sizeToFit()
+            searchBar.placeholder = "Search"
+            tableView.tableHeaderView = self.searchBar
+            tableView.tableHeaderView?.layer.borderWidth = 0.5
+            tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+            tableView.tableHeaderView?.clipsToBounds = true
         case 1:
             fetchComments()
             // Add long press method in tableView
@@ -73,6 +89,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             self.tableView.isUserInteractionEnabled = true
             self.tableView.addGestureRecognizer(hold)
             self.tableView.allowsSelection = true
+            // Remove UISearchBar
+            tableView.tableHeaderView = nil
         default:
             break;
         }
@@ -102,8 +120,14 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
                 // MARK: - DZNEmptyDataSet
                 if self.reactionObjects.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                } else {
+                    // Reload data in main thread
+                    DispatchQueue.main.async {
+                        self.tableView!.reloadData()
+                    }
                 }
                 
             } else {
@@ -111,10 +135,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
-            }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView!.reloadData()
             }
         }
     }
@@ -141,8 +161,20 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 }
                 // MARK: - DZNEmptyDataSet
                 if self.reactionObjects.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                } else {
+                    // Main Thread
+                    DispatchQueue.main.async {
+                        // Reload data
+                        self.tableView.reloadData()
+                        // Scroll to bottom
+                        if self.reactionObjects.count > 0 {
+                            self.tableView!.scrollToRow(at: IndexPath(row: self.reactionObjects.count - 1, section: 0), at: .bottom, animated: true)
+                            
+                        }
+                    }
                 }
                 
             } else {
@@ -150,16 +182,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
-            }
-            // Main Thread
-            DispatchQueue.main.async {
-                // Reload data
-                self.tableView.reloadData()
-                // Scroll to bottom
-                if self.reactionObjects.count > 0 {
-                    self.tableView!.scrollToRow(at: IndexPath(row: self.reactionObjects.count - 1, section: 0), at: .bottom, animated: true)
-
-                }
             }
         })
     }
@@ -231,7 +253,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             }
         }
     }
-    
     
     // FUNCTION - Handles comment options including Delete, Reply, and Report
     func handleComment(sender: UILongPressGestureRecognizer) {
@@ -384,7 +405,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    
     // FUNCTION - Like Post
     func likeAction(sender: UIButton) {
         if self.reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
@@ -404,9 +424,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             })
         }
     }
-    
-    
 
+    
+    
     // MARK: - TwicketSegmentedControl
     func didSelect(_ segmentIndex: Int) {
         // Handle case
@@ -543,8 +563,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             // Layout views
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
-            // If table view's origin is 0
-            if self.tableView!.frame.origin.y == 0 {
+            // If table view's origin is 0 AND commenting...
+            if self.tableView!.frame.origin.y == 0 && self.textView.isFirstResponder {
                 // Move tableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
                 // Move chatbox up
@@ -568,6 +588,55 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             self.commentContainer.frame.origin.y += self.keyboard.height
         }
     }
+    
+    
+    // MARK: - UISearchBar Delegate Methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Configure UISearchBar
+        if searchBar.text == "Search" {
+            searchBar.text! = ""
+        } else {
+            searchBar.text! = searchBar.text!
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search by fullName and username
+        let name = PFUser.query()!
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFUser.query()!
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.searchedObjects.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    let users = self.reactionObjects.map{$0.object(forKey: "fromUser") as! PFUser}
+                    if users.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.searchedObjects.append(object)
+                    }
+                }
+                
+                // Reload data
+                if self.searchedObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.backgroundView = UIView()
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+
     
     
     // MARK: - UITableView Data Source Methods
@@ -612,29 +681,58 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.reactionObjects.count
+        if self.searchBar.text != "" && self.searchBar.isFirstResponder && self.segmentedControl.selectedSegmentIndex == 0 {
+            return self.searchedObjects.count
+        } else {
+            return self.reactionObjects.count
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if self.segmentedControl.selectedSegmentIndex == 0 {
-        // LIKES
+        // LIKES || SEARCHED
+            
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-
-            // Get and set user's data
-            if let user = self.reactionObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
-                // (1) Set rpFullName
-                cell.rpFullName.text = (user.value(forKey: "realNameOfUser") as! String)
-                // (2) Set rpUsername
-                cell.rpUsername.text = (user.value(forKey: "username") as! String)
+            
+            // MARK: - RPExtensions
+            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            
+            // SEARCHED
+            if self.searchBar.text != "" {
+                // (1) Get and set realNameOfUser
+                if let realNameOfUser = self.searchedObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
+                    cell.rpFullName.text = realNameOfUser
+                }
+                // (2) Get and set username
+                if let username = self.searchedObjects[indexPath.row].value(forKey: "username") as? String {
+                    cell.rpUsername.text = username
+                }
                 // (3) Get and set userProfilePicture
-                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                if let proPic = self.searchedObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setIndicatorStyle(.gray)
                     cell.rpUserProPic.sd_showActivityIndicatorView()
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
-                    // MARK: - RPExtensions
-                    cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                }
+                
+            } else {
+            // LIKES
+                // Get and set user's data
+                if let user = self.reactionObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
+                    // (1) Set realNameOfUser
+                    cell.rpFullName.text = (user.value(forKey: "realNameOfUser") as! String)
+                    // (2) Set rpUsername
+                    cell.rpUsername.text = (user.value(forKey: "username") as! String)
+                    // (3) Get and set userProfilePicture
+                    if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                        cell.rpUserProPic.sd_showActivityIndicatorView()
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                    }
                 }
             }
 
@@ -680,6 +778,18 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // Resign first responder
         self.textView.resignFirstResponder()
+        
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            // Resign first responder status
+            self.searchBar.resignFirstResponder()
+            // Clear searchBar
+            self.searchBar.text! = ""
+            // Set tableView backgroundView
+            self.tableView.backgroundView = UIView()
+            // Reload likes
+            self.handleCase()
+        }
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -702,7 +812,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         self.textView.textColor = UIColor.black
         // MARK: - TwicketSegmentedControl
         self.segmentedControl.move(to: 1)
-        fetchComments()
+        // Fetch comments
+        self.fetchComments()
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -847,7 +958,4 @@ extension Reactions {
             }
         })
     }
-    
-    
-    
 }
