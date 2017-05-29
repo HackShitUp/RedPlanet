@@ -41,13 +41,14 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     func fetchLikes(completionHandler: @escaping (_ count: Int) -> ()) {
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
+        likes.order(byDescending: "createdAt")
         likes.includeKey("fromUser")
         likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
                 self.likeObjects.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    if let user = object.object(forKey: "byUser") as? PFUser {
+                    if let user = object.object(forKey: "fromUser") as? PFUser {
                         self.likeObjects.append(user)
                     }
                 }
@@ -120,7 +121,7 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 // MARK: - DZNEmptyDataSet
                 self.tableView.emptyDataSetSource = self
                 self.tableView.emptyDataSetDelegate = self
-                self.tableView.reloadEmptyDataSet()
+//                self.tableView.reloadEmptyDataSet()
             }
         })
         
@@ -128,6 +129,9 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         self.tableView.rowHeight = 50
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorColor = UIColor.groupTableViewBackground
+        // Register NIB
+        tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
+
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
@@ -170,12 +174,20 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
-        // (1) Set username
-        cell.rpUsername.text = (self.likeObjects[indexPath.row].value(forKey: "username") as! String)
-        // (2) Get and set userProfilePicture
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
+        // (1) Set realNameOfUser
+        if let fullName = self.likeObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
+            cell.rpFullName.text = fullName
+        }
+        // (2) Set username
+        if let username = self.likeObjects[indexPath.row].value(forKey: "username") as? String {
+            cell.rpUsername.text = username
+        }
+        // (3) Get and set userProfilePicture
         if let proPic = self.likeObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-            // MARK: - RPExtensions
+            // MARK: -SDWebImage
+            cell.rpUserProPic.sd_addActivityIndicator()
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
             // MARK: - RPExtensions
             cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)

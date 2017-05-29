@@ -1235,7 +1235,7 @@
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
 				7EDFB8EC1EC95EF20019F2E0 /* REACTIONS */,
 				7E607DC11ED64ECE0029292D /* VIEWS */,
-				7EE79A521EDBC838005D91AD /* COMMENTS */,
+				7EE79A521EDBC838005D91AD /* COMMENTS/LIKES */,
 			);
 			name = REACTIONS;
 			sourceTree = "<group>";
@@ -1297,13 +1297,13 @@
 			name = SpacePostCell;
 			sourceTree = "<group>";
 		};
-		7EE79A521EDBC838005D91AD /* COMMENTS */ = {
+		7EE79A521EDBC838005D91AD /* COMMENTS/LIKES */ = {
 			isa = PBXGroup;
 			children = (
 				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
 				7EE79A4C1EDBB52C005D91AD /* Likes.swift */,
 			);
-			name = COMMENTS;
+			name = COMMENTS/LIKES;
 			sourceTree = "<group>";
 		};
 		7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */ = {

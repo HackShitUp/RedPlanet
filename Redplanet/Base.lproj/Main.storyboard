@@ -584,7 +584,7 @@
                             <outlet property="delegate" destination="DoU-9E-83d" id="AOB-Bb-dJr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="QHx-Da-Pxu">
+                    <navigationItem key="navigationItem" title="Likes" id="QHx-Da-Pxu">
                         <barButtonItem key="leftBarButtonItem" image="Left_50" id="exq-zT-Acq">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -1821,7 +1821,7 @@
                             <outlet property="delegate" destination="Dwg-ZI-FdO" id="6cf-Kv-Njo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="dGy-pS-IGn">
+                    <navigationItem key="navigationItem" title="Views" id="dGy-pS-IGn">
                         <barButtonItem key="leftBarButtonItem" image="Left_50" id="Vz1-71-5Yj">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
