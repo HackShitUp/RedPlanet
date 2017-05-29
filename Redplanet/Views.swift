@@ -34,12 +34,14 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     // FUNCTION - Reload data
     func refresh() {
+        // End UIRefreshControl
+        self.refresher.endRefreshing()
+        // Query Views
         queryViews(completionHandler: { (Int) in})
     }
     
     // FUNCTION - Query Views
     func queryViews(completionHandler: @escaping (_ count: Int) -> ()) {
-        // TOOD:: UPDATE QUERY KEYS AFTER DATABASE is re-configured
         let views = PFQuery(className: "Views")
         views.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
         views.includeKey("byUser")
@@ -52,11 +54,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 self.viewObjects.removeAll(keepingCapacity: false)
                 // Append objects
                 for object in objects! {
-                    if self.viewObjects.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) || (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        // Skip appending
-                    } else {
-                        self.viewObjects.append(object.object(forKey: "byUser") as! PFUser)
-                    }
+                    self.viewObjects.append(object)
                 }
                 
                 // Pass viewers count in completionHandler
@@ -114,13 +112,21 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
 
         // Query Views
         queryViews(completionHandler: { (count) in
-            if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17) {
+            if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
                 let navBarAttributesDictionary: [String: AnyObject]? = [
                     NSForegroundColorAttributeName: UIColor.black,
                     NSFontAttributeName: navBarFont
                 ]
                 self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
                 self.title = "\(count) Views"
+            }
+            
+            // Set DZNEmptyDataSet if posts are 0
+            if count == 0 {
+                // MARK: - DZNEmptyDataSet
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
             }
         })
         
@@ -135,10 +141,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
-        
-        // MARK: - DZNEmptyDataSet
-        self.tableView.emptyDataSetSource = self
-        self.tableView.emptyDataSetDelegate = self
         
         // Implement back swipe method
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
@@ -171,24 +173,38 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
-        // (1) Set username
-        cell.rpUsername.text = (self.viewObjects[indexPath.row].value(forKey: "username") as! String)
-        // (2) Get and set userProfilePicture
-        if let proPic = self.viewObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-            // MARK: - RPExtensions
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
-            // MARK: - RPExtensions
-            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        
+        // (1) Get and set user's data
+        if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
+            // Set username
+            cell.rpUsername.text = user.username!
+            // Get and set userProfilePicture
+            if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - RPExtensions
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                // MARK: - RPExtensions
+                cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            }
         }
+        
+        // (2) Set didScreenshot icon indicator if screenshotted
+        if self.viewObjects[indexPath.row].value(forKey: "didScreenshot") as! Bool == true {
+            cell.screenShotted.isHidden = false
+        } else {
+            cell.screenShotted.isHidden = true
+        }
+        
         return cell
     }
 
     
     // MARK: - UITableView Delegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Append user's object and username
-        otherObject.append(self.viewObjects[indexPath.row])
-        otherName.append(self.viewObjects[indexPath.row].value(forKey: "username") as! String)
+        // Append data
+        if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
+            otherObject.append(user)
+            otherName.append(user.username!)
+        }
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)

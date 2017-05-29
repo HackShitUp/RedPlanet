@@ -46,10 +46,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     let segmentedControl = TwicketSegmentedControl()
     
     @IBAction func backButton(_ sender: Any) {
-        // Remove last
         otherObject.removeLast()
         otherName.removeLast()
-        // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
     
@@ -186,6 +184,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                         
                     } else if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // (2) Following
@@ -194,6 +193,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                             self.dznType = "💩 No Posts Today"
                             self.tableView.emptyDataSetSource = self
                             self.tableView.emptyDataSetDelegate = self
+                            self.tableView.reloadEmptyDataSet()
                         }
                         
                     } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
@@ -204,6 +204,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                         
                     } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // (4) Sent Follow Request
@@ -213,6 +214,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                         
                     } else if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // (5) Follower AND Following (AKA: Friends)
@@ -221,6 +223,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                             self.dznType = "💩 No Posts Today"
                             self.tableView.emptyDataSetSource = self
                             self.tableView.emptyDataSetDelegate = self
+                            self.tableView.reloadEmptyDataSet()
                         }
                         
                     } else {
@@ -230,6 +233,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                     
                 } else {
@@ -238,6 +242,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "💩 No Posts Today"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                 }
                 
@@ -283,6 +288,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                         
                     } else if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // (2) Following
@@ -291,6 +297,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                             self.dznType = "💩 No Saved Posts"
                             self.tableView.emptyDataSetSource = self
                             self.tableView.emptyDataSetDelegate = self
+                            self.tableView.reloadEmptyDataSet()
                         }
                         
                     } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
@@ -301,6 +308,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                         
                     } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // (4) Sent Follow Request
@@ -310,6 +318,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                         
                     } else if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // (5) Follower AND Following (AKA: Friends)
@@ -318,6 +327,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                             self.dznType = "💩 No Saved Posts"
                             self.tableView.emptyDataSetSource = self
                             self.tableView.emptyDataSetDelegate = self
+                            self.tableView.reloadEmptyDataSet()
                         }
                         
                     } else {
@@ -327,6 +337,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "🔒 Private Account"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                     
                 } else {
@@ -335,6 +346,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         self.dznType = "💩 No Saved Posts"
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
+                        self.tableView.reloadEmptyDataSet()
                     }
                 }
                 
@@ -446,11 +458,13 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 12)!
         
         // Configure UITableView
-        tableView?.backgroundColor = UIColor.white
-        tableView?.estimatedRowHeight = 75
-        tableView?.rowHeight = 75
-        tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        tableView?.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 75
+        tableView.rowHeight = 75
+        tableView.estimatedSectionHeaderHeight = 475
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.backgroundColor = UIColor.white
+        tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        tableView.tableFooterView = UIView()
         // Register NIB
         tableView?.register(UINib(nibName: "OtherUserHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "OtherUserHeader")
         
@@ -494,10 +508,10 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Configure UI
         header.delegate = self                                  // Set Parent UIViewController
         header.frame = header.frame                             // Configure frame
-        // Add segmentedControl to subView (TwicketSegmentedControl) if posts exist
-        if self.relativePosts.count != 0 {
-            header.segmentView.addSubview(self.segmentedControl)
-        }
+        header.setNeedsLayout()
+        header.layoutIfNeeded()
+        // Add segmentedControl to subView (TwicketSegmentedControl) for posts
+        header.segmentView.addSubview(self.segmentedControl)
         
         // (1) Get user's profile photo
         if let proPic = otherObject.last!.value(forKey: "userProfilePicture") as? PFFile {
@@ -510,20 +524,20 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             header.rpUserProPic.makeCircular(forView: header.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         }
         
-        // (2) Get user's full/real name and bio
-        if otherObject.last!.value(forKey: "userBiography") != nil {
-            header.fullName.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
-            header.userBio.text! = "\(otherObject.last!.value(forKey: "userBiography") as! String)"
-        } else {
-            header.fullName.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
+        // (2) Get and set realNameOfUser
+        if let realNameOfUser = otherObject.last!.value(forKey: "realNameOfUser") as? String {
+            header.fullName.text = realNameOfUser
         }
-        
-        // (3) Set CurrentUser & OtherUser's relatinship state
+        // (3) Get and set userBiography
+        if let userBiography = otherObject.last!.value(forKey: "userBiography") as? String {
+            header.userBio.text = userBiography
+        }
+
+        // (4) Set CurrentUser & OtherUser's relatinship state
         // Hide and show buttons depending on relationship
         // Also set title depending on relationship state
         
-        // DEFAULT
-        // Not Yet Connected
+        // DEFAULT: Not Yet Connected
         // Hide Relation button, and show Follow button: chat and report
         header.relationType.isUserInteractionEnabled = true
         header.relationType.isHidden = true
@@ -571,27 +585,24 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             header.newSpaceButton.isUserInteractionEnabled = true
         }
         
-        // SELF
-        // PFUser.currentUser()'s Profile
+        // Hide all buttons if user is PFUser.current()
         if otherObject.last!.objectId! == PFUser.current()!.objectId! {
             header.followButton.isHidden = true
             header.relationType.isHidden = true
-            // Hide all buttons
             header.chatButton.isHidden = true
             header.blockButton.isHidden = true
             header.newSpaceButton.isHidden = true
         }
         
-        
-        // Add Tap Methods
+        // Create Chat
         let chatTap = UITapGestureRecognizer(target: self, action: #selector(self.showChat))
         chatTap.numberOfTapsRequired = 1
         header.chatButton.addGestureRecognizer(chatTap)
-        
+        // New Space Post
         let spaceTap = UITapGestureRecognizer(target: self, action: #selector(self.createSpace))
         spaceTap.numberOfTapsRequired = 1
         header.newSpaceButton.addGestureRecognizer(spaceTap)
-        
+        // Report/block
         let reportBlockTap = UITapGestureRecognizer(target: self, action: #selector(self.reportOrBlock))
         reportBlockTap.numberOfTapsRequired = 1
         header.blockButton.addGestureRecognizer(reportBlockTap)
@@ -603,21 +614,15 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         let label: UILabel = UILabel(frame: CGRect(x: 8, y: 385, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
-        // Get user's info and bio
-        if PFUser.current()!.value(forKey: "userBiography") != nil {
-            // Set fullname AND bio
-            let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as! String
-            label.text = "\(fullName.uppercased())\n\(PFUser.current()!.value(forKey: "userBiography") as! String)"
-        } else {
-            // Set Full name
-            label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+        label.font = UIFont(name: "AvenirNext-Medium", size: 17)
+        // Get and set userBiography
+        if let userBiography = otherObject.last!.value(forKey: "userBiography") as? String {
+            label.text = userBiography
         }
         label.sizeToFit()
-        
         return CGFloat(475 + label.frame.size.height)
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -689,7 +694,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 // Increase page size to load more posts
                 page = page + 50
                 // Query content
-                self.handleCase()
+//                self.handleCase()
             }
         }
     }
@@ -698,8 +703,6 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         if self.tableView.contentOffset.y <= -140.00 {
             refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-        } else {
-            handleCase()
         }
     }
 

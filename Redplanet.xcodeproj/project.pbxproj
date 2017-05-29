@@ -558,13 +558,13 @@
 			name = NewUserInfo;
 			sourceTree = "<group>";
 		};
-		7E607DC11ED64ECE0029292D /* Views */ = {
+		7E607DC11ED64ECE0029292D /* VIEWS */ = {
 			isa = PBXGroup;
 			children = (
 				7E607DBF1ED64EC70029292D /* Views.swift */,
 				7E607DBD1ED64D320029292D /* ViewsCell.swift */,
 			);
-			name = Views;
+			name = VIEWS;
 			sourceTree = "<group>";
 		};
 		7E6A12E21E4D524C00CF108B /* Agrume */ = {
@@ -1233,10 +1233,9 @@
 			isa = PBXGroup;
 			children = (
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
-				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
-				7EE79A4C1EDBB52C005D91AD /* Likes.swift */,
 				7EDFB8EC1EC95EF20019F2E0 /* REACTIONS */,
-				7E607DC11ED64ECE0029292D /* Views */,
+				7E607DC11ED64ECE0029292D /* VIEWS */,
+				7EE79A521EDBC838005D91AD /* COMMENTS */,
 			);
 			name = REACTIONS;
 			sourceTree = "<group>";
@@ -1296,6 +1295,15 @@
 				7E480E411ED3672200B9F469 /* SpacePostCell.xib */,
 			);
 			name = SpacePostCell;
+			sourceTree = "<group>";
+		};
+		7EE79A521EDBC838005D91AD /* COMMENTS */ = {
+			isa = PBXGroup;
+			children = (
+				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
+				7EE79A4C1EDBB52C005D91AD /* Likes.swift */,
+			);
+			name = COMMENTS;
 			sourceTree = "<group>";
 		};
 		7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */ = {

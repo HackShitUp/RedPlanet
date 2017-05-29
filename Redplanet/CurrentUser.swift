@@ -512,19 +512,21 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // MARK: - RPExtensions
             header.myProPic.makeCircular(forView: header.myProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         }
-        // (2) Set user's bio and information
-        if PFUser.current()!.value(forKey: "userBiography") != nil {
-            header.fullName.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-            header.userBio.text! = "\(PFUser.current()!.value(forKey: "userBiography") as! String)"
-        } else {
-            header.fullName.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+        // (2) Set current user's realNameOfUser
+        if let realNameOfUser = PFUser.current()!.value(forKey: "realNameOfUser") as? String {
+            header.fullName.text = realNameOfUser
+            // Underline fullname
+            let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+            let underlineAttributedString = NSAttributedString(string: "\(header.fullName.text!)", attributes: underlineAttribute)
+            header.fullName.attributedText = underlineAttributedString
         }
-        // Underline fullname
-        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
-        let underlineAttributedString = NSAttributedString(string: "\(header.fullName.text!)", attributes: underlineAttribute)
-        header.fullName.attributedText = underlineAttributedString
         
-        // (3) Set count for posts, followers, and following
+        // (3) Set current user's biography
+        if let userBiography = PFUser.current()!.value(forKey: "userBiography") as? String {
+            header.userBio.text = userBiography
+        }
+        
+        // (4) Set count for posts, followers, and following
         let posts = PFQuery(className: "Posts")
         posts.whereKey("byUser", equalTo: PFUser.current()!)
         posts.countObjectsInBackground {
@@ -566,16 +568,10 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.font = UIFont(name: "AvenirNext-Medium", size: 17)
-        // Get user's info and bio
-        if let bio = PFUser.current()!.value(forKey: "userBiography") as? String {
-            // Set fullname and bio
-            label.text = "\((PFUser.current()!.value(forKey: "realNameOfUser") as! String).uppercased())\n\(bio)"
-        } else {
-            // set fullName
-            label.text = (PFUser.current()!.value(forKey: "realNameOfUser") as! String)
+        if let userBiography = PFUser.current()!.value(forKey: "userBiography") as? String {
+            label.text = userBiography
         }
         label.sizeToFit()
-        
         return CGFloat(425 + label.frame.size.height)
     }
     

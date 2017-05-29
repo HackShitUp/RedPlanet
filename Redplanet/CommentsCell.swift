@@ -176,6 +176,8 @@ class CommentsCell: UITableViewCell {
                 } else {
                     self.numberOfLikes.isHidden = false
                     self.numberOfLikes.setTitle("\(self.likers.count)", for: .normal)
+                    // Add tap method to numberOfLikes
+                    self.numberOfLikes.addTarget(self, action: #selector(self.showLikes), for: .touchUpInside)
                 }
                 
                 // Set likeButton image
@@ -218,6 +220,13 @@ class CommentsCell: UITableViewCell {
         
         // (3) Set comment
         self.comment.text = (withObject.value(forKey: "commentOfContent") as! String)
+    }
+    
+    // FUNCTION - Show likes for comments
+    func showLikes(sender: AnyObject) {
+        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likesVC") as! Likes
+        likesVC.fetchObject = self.commentObject
+        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
     }
 
     override func awakeFromNib() {

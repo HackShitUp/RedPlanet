@@ -7,89 +7,187 @@
 //
 
 import UIKit
+import CoreData
 
-class Likes: UITableViewController {
+import Parse
+import ParseUI
+import Bolts
 
+import SDWebImage
+import DZNEmptyDataSet
+
+class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
+    // MARK: - Class configurable variable
+    var fetchObject: PFObject?
+    
+    // Array of users who viewed a post
+    var likeObjects = [PFObject]()
+    // PFQuery; Pipeline method
+    var page: Int = 50
+    // Refresher
+    var refresher: UIRefreshControl!
+    
+    @IBAction func back(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func refresh(_ sender: Any) {
+        self.refresher.endRefreshing()
+        self.fetchLikes()
+    }
+
+    // FUNCTION - Fetch Likes
+    func fetchLikes() {
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
+        likes.includeKey("fromUser")
+        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.likeObjects.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    if let user = object.object(forKey: "byUser") as? PFUser {
+                        self.likeObjects.append(user)
+                    }
+                }
+                
+                // MARK: - DZNEmptyDataSet
+                if self.likeObjects.count == 0 {
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                } else {
+                    DispatchQueue.main.async(execute: {
+                        self.tableView.reloadData()
+                    })
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.likeObjects.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "💔\nNo likes for this comment yet."
+        let font = UIFont(name: "AvenirNext-Medium", size: 25)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // MARK: - UIView Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // MARK: - RPExtensions; whitenBar and roundTopCorners
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
+        
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        // Fetch likes
+        fetchLikes()
+        
+        // Configure UITableView
+        self.tableView.rowHeight = 50
+        self.tableView.tableFooterView = UIView()
+        self.tableView.separatorColor = UIColor.groupTableViewBackground
+        
+        // Configure UIRefreshControl
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refresher)
+        
+        // MARK: - DZNEmptyDataSet
+        self.tableView.emptyDataSetSource = self
+        self.tableView.emptyDataSetDelegate = self
+        
+        // Implement back swipe method
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
-    // MARK: - Table view data source
-
+    // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return self.likeObjects.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
+        // (1) Set username
+        cell.rpUsername.text = (self.likeObjects[indexPath.row].value(forKey: "username") as! String)
+        // (2) Get and set userProfilePicture
+        if let proPic = self.likeObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - RPExtensions
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+            // MARK: - RPExtensions
+            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        }
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    
+    // MARK: - UITableView Delegate Method
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Append user's object and username
+        otherObject.append(self.likeObjects[indexPath.row])
+        otherName.append(self.likeObjects[indexPath.row].value(forKey: "username") as! String)
+        // Push VC
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        self.navigationController?.pushViewController(otherVC, animated: true)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    // MARK: - UIScrollView Delegate Method
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            // If posts on server are > than shown
+            if page <= self.likeObjects.count {
+                // Increase page size to load more posts
+                page = page + 50
+                // Fetch likes
+                self.fetchLikes()
+            }
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
