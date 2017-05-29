@@ -36,6 +36,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     // UIRefreshControl
     var refresher: UIRefreshControl!
     
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentContainer: UIView!
     @IBOutlet weak var textView: UITextView!

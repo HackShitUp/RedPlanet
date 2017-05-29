@@ -105,6 +105,26 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Fetch likes
+        fetchLikes(completionHandler: { (count) in
+            if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+                let navBarAttributesDictionary: [String: AnyObject]? = [
+                    NSForegroundColorAttributeName: UIColor.black,
+                    NSFontAttributeName: navBarFont
+                ]
+                self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                self.navigationController?.navigationBar.topItem!.title = "\(count) Likes"
+            }
+            
+            // Set DZNEmptyDataSet if posts are 0
+            if count == 0 {
+                // MARK: - DZNEmptyDataSet
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+            }
+        })
+        
         // Configure UITableView
         self.tableView.rowHeight = 50
         self.tableView.tableFooterView = UIView()
@@ -129,33 +149,6 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // Fetch likes
-        fetchLikes(completionHandler: { (count) in
-            if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
-                let navBarAttributesDictionary: [String: AnyObject]? = [
-                    NSForegroundColorAttributeName: UIColor.black,
-                    NSFontAttributeName: navBarFont
-                ]
-                self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-//                self.navigationController?.navigationBar.topItem!.title = "\(count) Likes"
-                self.navigationItem.title = "\(count) LIKES!!!"
-//                self.title = "\(count) Likes"
-//                self.navigationController?.navigationBar.title = "LIKES!"
-//                self.parent?.title = "LIKES!"
-//                self.parent?.navigationController?.title = "LIKES!"
-            }
-            // Set DZNEmptyDataSet if posts are 0
-            if count == 0 {
-                // MARK: - DZNEmptyDataSet
-                self.tableView.emptyDataSetSource = self
-                self.tableView.emptyDataSetDelegate = self
-                self.tableView.reloadEmptyDataSet()
-            }
-        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -201,7 +194,6 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         }
         return cell
     }
-    
     
     // MARK: - UITableView Delegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

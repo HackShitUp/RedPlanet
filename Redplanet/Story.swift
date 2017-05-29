@@ -228,10 +228,16 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Add observer for screenshots
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshot),
+                                               name: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
+                                               object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // Remove observer
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -428,9 +434,11 @@ extension Story: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Story Functions
+
+// MARK: - Stories Functions
 extension Story {
     
+    // FUNCTION - Configure view
     func configureView() {
         // MARK: - SegmentedProgressBar
         self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
@@ -521,6 +529,40 @@ extension Story {
         }
     }
     
+    // FUNCTION - Send Screenshot Notifiication
+    func sendScreenshot() {
+        // Update "didScreenshot" attribute in "Views"
+        let views = PFQuery(className: "Views")
+        views.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    object["didScreenshot"] = true
+                    object.saveInBackground()
+                    
+                    // Save to Notifications
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser
+                    notifications["to"] =  (self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                    notifications["forObjectId"] = object.value(forKey: "forObjectId") as! String
+                    notifications["type"] = "screenshot"
+                    notifications.saveInBackground()
+                    
+                    // MARK: - RPHelpers; send push notification
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.pushNotification(toUser: self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "screenshotted your post.")
+                    
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
+    
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {
         // Set edit-able contentType's
@@ -569,6 +611,9 @@ extension Story {
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Deleted")
                         
+                        // Replace VIMVideoPlayer's AVPlayerItem if it's playing
+                        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+                        
                         // Replace userProfilePicture if contentType is "pp"
                         if object.value(forKey: "contentType") as! String == "pp" {
                             // Save PFFile context
@@ -583,15 +628,13 @@ extension Story {
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
                         self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        
-                        // MARK: - DZNEmptyDataSet
-                        self.collectionView.emptyDataSetSource = self
-                        self.collectionView.emptyDataSetDelegate = self
-                        self.dznTitle = "💩\nThis post doesn't exist..."
-                        self.collectionView.reloadEmptyDataSet()
-                        
-                        // Disable reactButton
-                        self.reactButton.isHidden = true
+                        if self.currentIndex! == 0 {
+                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
+                                                             at: .right, animated: true)
+                        } else if self.currentIndex! == self.posts.count {
+                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
+                                                             at: .right, animated: true)
+                        }
                     }
                 } else {
                     print(error?.localizedDescription as Any)

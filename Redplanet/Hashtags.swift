@@ -52,7 +52,6 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                      Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
     
     
-    
     @IBOutlet weak var collectionView: UICollectionView!
     
     // FUNCTION - Fetch hashtags
@@ -233,16 +232,26 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        // MARK: - VIMVideoPlayerView; de-allocate AVPlayer's currentItem
-        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // MARK: - RPHelpers
         let rpHelpers = RPHelpers()
         rpHelpers.showAction(withTitle: "#\(self.hashtagString.uppercased())")
+        // Add observer for screenshots
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshot),
+                                               name: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
+                                               object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Remove observer
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // MARK: - VIMVideoPlayerView; de-allocate AVPlayer's currentItem
+        self.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -436,9 +445,10 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Hashtags; Interactive functions go here...
+// MARK: - Stories Functions
 extension Hashtags {
     
+    // FUNCTION - Configure view
     func configureView() {
         // MARK: - Reactions
         // (2) Create ReactionSelector and add Reactions from <1>
@@ -518,6 +528,40 @@ extension Hashtags {
             }
         }
     }
+    
+    // FUNCTION - Send Screenshot Notifiication
+    func sendScreenshot() {
+        // Update "didScreenshot" attribute in "Views"
+        let views = PFQuery(className: "Views")
+        views.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    object["didScreenshot"] = true
+                    object.saveInBackground()
+                    
+                    // Save to Notifications
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser
+                    notifications["to"] =  (self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser).username!
+                    notifications["forObjectId"] = object.value(forKey: "forObjectId") as! String
+                    notifications["type"] = "screenshot"
+                    notifications.saveInBackground()
+                    
+                    // MARK: - RPHelpers; send push notification
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.pushNotification(toUser: self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser,
+                                               activityType: "screenshotted your post.")
+                    
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
     
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {

@@ -27,6 +27,9 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     var page: Int = 50
     // Refresher
     var refresher: UIRefreshControl!
+    // Create UISearchBar
+    let searchBar = UISearchBar()
+    
     
     @IBAction func back(_ sender: Any) {
         _ = self.navigationController?.popViewController(animated: true)
