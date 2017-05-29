@@ -2,7 +2,7 @@
 //  PhotoCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 5/16/17.
+//  Created by Joshua Choi on 5/28/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -14,7 +14,7 @@ import KILabel
 import SDWebImage
 
 class PhotoCell: UITableViewCell {
-    
+
     // PFObject; used to determine post type
     var postObject: PFObject?
     // Parent UIViewController
@@ -35,8 +35,10 @@ class PhotoCell: UITableViewCell {
     
     // FUNCTION - Navigates to user's profile
     func visitProfile(sender: AnyObject) {
-        otherObject.append(self.postObject?.object(forKey: "byUser") as! PFUser)
-        otherName.append(self.postObject?.value(forKey: "username") as! String)
+        if let user = self.postObject!.object(forKey: "byUser") as? PFUser {
+            otherObject.append(user)
+            otherName.append(user.value(forKey: "username") as! String)
+        }
         let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.superDelegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
@@ -77,11 +79,10 @@ class PhotoCell: UITableViewCell {
         
         // (4) Set photo
         if let image = withObject!.value(forKey: "photoAsset") as? PFFile {
-//            self.photo.translatesAutoresizingMaskIntoConstraints = true
-//            self.photo.autoresizingMask = .flexibleBottomMargin
-//            self.photo.autoresizingMask = .flexibleHeight
-//            self.photo.contentMode = .scaleAspectFit
-
+            self.photo.autoresizingMask = .flexibleBottomMargin
+            self.photo.autoresizingMask = .flexibleHeight
+            self.photo.contentMode = .scaleAspectFit
+            
             // MARK: - SDWebImage
             self.photo.sd_addActivityIndicator()
             self.photo.sd_setIndicatorStyle(.gray)
@@ -89,7 +90,7 @@ class PhotoCell: UITableViewCell {
         }
     }
     
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -111,10 +112,4 @@ class PhotoCell: UITableViewCell {
         self.photo.isUserInteractionEnabled = true
         self.photo.addGestureRecognizer(zoomTap)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-    }
-    
 }

@@ -26,6 +26,15 @@ class MomentPhoto: UICollectionViewCell {
     @IBOutlet weak var photoMoment: PFImageView!
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
+    
+    
+    // FUNCTION - Navigates to user's profile
+    func visitProfile(sender: AnyObject) {
+        otherObject.append(self.postObject!.object(forKey: "byUser") as! PFUser)
+        otherName.append(self.postObject!.value(forKey: "username") as! String)
+        let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
+    }
 
     // Function to update UI
     func updateView(withObject: PFObject?) {
@@ -60,6 +69,12 @@ class MomentPhoto: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Add Username Tap
+        let nameTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))
+        nameTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(nameTap)
+        
         // Apply shadows
         self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
         self.time.layer.applyShadow(layer: self.time.layer)

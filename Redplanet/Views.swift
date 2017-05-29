@@ -20,12 +20,9 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     // MARK: - Class configurable variable
     var fetchObject: PFObject?
-    var viewsOrLikes: String?
     
     // Array of users who viewed a post
-    var viewers = [PFObject]()
-    // Array of users who liked a comment
-    var likers = [PFObject]()
+    var viewObjects = [PFObject]()
     // PFQuery; Pipeline method
     var page: Int = 50
     // Refresher
@@ -37,37 +34,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     // FUNCTION - Reload data
     func refresh() {
-        if self.viewsOrLikes == "Views" {
-            queryViews(completionHandler: { (Int) in})
-        } else {
-            queryLikes()
-        }
-    }
-    
-    // FUNCTION - Query Likes
-    func queryLikes() {
-        let likes = PFQuery(className: "Likes")
-        likes.whereKey("forObjectId", equalTo: self.fetchObject!.objectId!)
-        likes.includeKeys(["byUser", "fromUser"])
-        likes.order(byDescending: "createdAt")
-        likes.limit = self.page
-        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-                self.likers.removeAll(keepingCapacity: false)
-                for object in objects! {
-                    self.likers.append(object.object(forKey: "fromUser") as! PFUser)
-                }
-                
-                // Reload data in main thread
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                })
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
+        queryViews(completionHandler: { (Int) in})
     }
     
     // FUNCTION - Query Views
@@ -82,18 +49,18 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
-                self.viewers.removeAll(keepingCapacity: false)
+                self.viewObjects.removeAll(keepingCapacity: false)
                 // Append objects
                 for object in objects! {
-                    if self.viewers.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) || (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    if self.viewObjects.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) || (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
                         // Skip appending
                     } else {
-                        self.viewers.append(object.object(forKey: "byUser") as! PFUser)
+                        self.viewObjects.append(object.object(forKey: "byUser") as! PFUser)
                     }
                 }
                 
                 // Pass viewers count in completionHandler
-                completionHandler(self.viewers.count)
+                completionHandler(self.viewObjects.count)
                 
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
@@ -112,7 +79,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if self.viewers.count == 0 || self.likers.count == 0 {
+        if self.viewObjects.count == 0 {
             return true
         } else {
             return false
@@ -120,7 +87,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🙈\nNo \(self.viewsOrLikes!) Yet"
+        let str = "🙈\nNo Views Yet"
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
@@ -140,29 +107,22 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        
-        if self.viewsOrLikes! == "Views" {
-        // Query Views
-            queryViews(completionHandler: { (count) in
-                if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17) {
-                    let navBarAttributesDictionary: [String: AnyObject]? = [
-                        NSForegroundColorAttributeName: UIColor.black,
-                        NSFontAttributeName: navBarFont
-                    ]
-                    self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-                    self.title = "\(count) Views"
-                }
-            })
-        } else {
-        // Query Likes
-            queryLikes()
-        }
-        
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Query Views
+        queryViews(completionHandler: { (count) in
+            if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17) {
+                let navBarAttributesDictionary: [String: AnyObject]? = [
+                    NSForegroundColorAttributeName: UIColor.black,
+                    NSFontAttributeName: navBarFont
+                ]
+                self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                self.title = "\(count) Views"
+            }
+        })
         
         // Configure UITableView
         self.tableView.rowHeight = 50
@@ -206,15 +166,15 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewers.count
+        return self.viewObjects.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
         // (1) Set username
-        cell.rpUsername.text = (self.viewers[indexPath.row].value(forKey: "username") as! String)
+        cell.rpUsername.text = (self.viewObjects[indexPath.row].value(forKey: "username") as! String)
         // (2) Get and set userProfilePicture
-        if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+        if let proPic = self.viewObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - RPExtensions
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
             // MARK: - RPExtensions
@@ -227,8 +187,8 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     // MARK: - UITableView Delegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Append user's object and username
-        otherObject.append(self.viewers[indexPath.row])
-        otherName.append(self.viewers[indexPath.row].value(forKey: "username") as! String)
+        otherObject.append(self.viewObjects[indexPath.row])
+        otherName.append(self.viewObjects[indexPath.row].value(forKey: "username") as! String)
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
@@ -238,19 +198,12 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             // If posts on server are > than shown
-            if page <= self.viewers.count {
+            if page <= self.viewObjects.count {
                 // Increase page size to load more posts
                 page = page + 50
-                if self.viewsOrLikes == "Views" {
-                    // Query Views
-                    queryViews(completionHandler: { (count) in})
-                } else {
-                    // Query Likes
-                    queryLikes()
-                }
+                // Query Views
+                queryViews(completionHandler: { (count) in})
             }
         }
     }
-    
-    
 }

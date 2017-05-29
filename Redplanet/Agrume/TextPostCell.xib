@@ -42,7 +42,6 @@
                         <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="335" id="203-WY-Cc5"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="335" id="YuY-CE-7b6"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                         <nil key="textColor"/>

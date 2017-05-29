@@ -65,7 +65,7 @@ class SpacePostCell: UITableViewCell {
     // FUNCTION - Navigates to sender's profile
     func visitSender(sender: AnyObject) {
         // Traverse user's object
-        if let byUser = self.postObject?.object(forKey: "byUser") as? PFUser {
+        if let byUser = self.postObject!.object(forKey: "byUser") as? PFUser {
             otherObject.append(byUser)
             otherName.append(byUser.username!)
         }
@@ -76,7 +76,7 @@ class SpacePostCell: UITableViewCell {
     // FUNCTION - Navigate to receivers profile
     func visitReceiver(sender: AnyObject) {
         // Traverse user's object
-        if let toUser = self.postObject?.value(forKey: "toUser") as? PFUser {
+        if let toUser = self.postObject!.value(forKey: "toUser") as? PFUser {
             otherObject.append(toUser)
             otherName.append(toUser.username!)
         }

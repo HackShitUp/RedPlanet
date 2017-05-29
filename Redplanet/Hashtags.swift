@@ -549,7 +549,6 @@ extension Hashtags {
             // Views VC
             let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
             viewsVC.fetchObject = self.posts[self.currentIndex!]
-            viewsVC.viewsOrLikes = "Views"
             self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         

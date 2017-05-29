@@ -32,8 +32,10 @@ class MomentVideo: UICollectionViewCell {
     
     // FUNCTION - Navigates to user's profile
     func visitProfile(sender: AnyObject) {
-        otherObject.append(self.postObject?.object(forKey: "byUser") as! PFUser)
-        otherName.append(self.postObject?.value(forKey: "username") as! String)
+        if let user = self.postObject!.object(forKey: "byUser") as? PFUser {
+            otherObject.append(user)
+            otherName.append(user.value(forKey: "username") as! String)
+        }
         let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
