@@ -16,6 +16,15 @@ import Bolts
 import SDWebImage
 import SwipeNavigationController
 
+
+
+/*
+ MARK: - Used to add UIButton to bottom center of UIView
+ Hide rpButton in viewWillAppear and
+ show rpButton in viewWillDisappear
+ */
+let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+
 class MasterUI: UITabBarController, UITabBarControllerDelegate {
     
     // Initialize AppDelegate
@@ -24,7 +33,18 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     // Array to hold chats
     var unreadChats = [PFObject]()
     
-    // Function to show camera
+    // FUNCTION - Add rpButton
+    func setButton() {
+        // Add button to bottom/center of UITabBar
+        // Increase current # for y origin to place it higher on the y axis
+        rpButton.center = self.view.center
+        rpButton.frame.origin.y = self.view.bounds.height - 60
+        rpButton.setImage(UIImage(named: "SLRCamera"), for: .normal)
+        rpButton.backgroundColor = UIColor.clear
+        self.view.addSubview(rpButton)
+    }
+    
+    // FUNCTION - Show Camera
     func showShareUI() {
         DispatchQueue.main.async {
             // MARK: - SwipeNavigationController
@@ -32,7 +52,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    // Function to fetch chats
+    // FUCNTION - Fetch Chats
     open func fetchChatsQueue() {
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
@@ -75,7 +95,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         })
     }
     
-    // Function to get new follow requests
+    // FUNCTION - Get new follow requests
     open func getNewRequests() {
         // MARK: - AppDelegate Query Relationships
         appDelegate.queryRelationships()
@@ -93,7 +113,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         super.viewWillAppear(animated)
 
         // MARK: - RPExtension; add rpButton to center bottom of UIView
-        self.view.setButton(container: self.view)
+        self.setButton()
         rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
         
         // Create corner radius for topLeft/topRight of UIView
@@ -138,7 +158,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         fetchChatsQueue()
         getNewRequests()
         // MARK: - RPExtension; add rpButton to center bottom of UIView
-        self.view.setButton(container: self.view)
+        self.setButton()
         rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
     }
     
@@ -151,7 +171,5 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-    
-    
-    // MARK: - UITabBarController Delegate Method
+
 }

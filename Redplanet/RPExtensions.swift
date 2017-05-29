@@ -16,27 +16,8 @@ import Parse
 import ParseUI
 import Bolts
 
-
-/*
- MARK: - Used to add UIButton to bottom center of UIView
- Hide rpButton in viewWillAppear and
- show rpButton in viewWillDisappear
-*/
-let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
-
 // MARK: - UIView: Extensions
 extension UIView {
-    
-    // Function to add rpButton
-    func setButton(container: UIView?) {
-        // Add button to bottom/center of UITabBar
-        // Increase current # to place it higher on the y axis
-        rpButton.frame.origin.y = container!.bounds.height - 60
-        rpButton.frame.origin.x = container!.bounds.width/2 - rpButton.frame.size.width/2
-        rpButton.setImage(UIImage(named: "SLRCamera"), for: .normal)
-        rpButton.backgroundColor = UIColor.clear
-        container!.addSubview(rpButton)
-    }
     
     // Function to round ALL corners of UIView
     func roundAllCorners(sender: UIView?) {

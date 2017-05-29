@@ -74,20 +74,25 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 let notViewedPosts = Set(postIds).subtracting(self.viewedPosts)
                 // Subtract all of current posts, and the subset, and scroll to index
                 let difference = self.posts.count - notViewedPosts.count
-                // Scroll to index if the user HAS NOT viewed every post
-                if difference != self.posts.count {
+
+                // Scroll to the index not yet viewed IF the post is not the current user's
+                if difference != self.posts.count && (storyObjects.last!.object(forKey: "byUser") as! PFUser).objectId! != PFUser.current()!.objectId!  {
+                    
+                    // Set currentIndex
+                    self.currentIndex! = difference
+                    // Save currentIndex to "Views"
+                    self.saveViews(withIndex: self.currentIndex!)
+                    
+                    // Set lastOffSet
+                    self.lastOffSet = CGPoint(x: (self.collectionView.contentOffset.x * CGFloat(difference)), y: 0)
+                    
                     DispatchQueue.main.async(execute: {
-                        // Set currentIndex
-                        self.currentIndex! = difference
-                        // MARK: - SegmentedProgressBar Delegate Method
-//                        self.segmentedProgressBarChangedIndex(index: self.currentIndex!)
-//                        // Set scrollView's lastOffSet by multiplying width by difference
-//                        let framer = self.view.frame.width * CGFloat(difference)
-//                        let offSet = CGPoint(dictionaryRepresentation: framer as! CFDictionary)
-//                        self.lastOffSet = offSet
-                        
-//                        let a = self.collectionView.contentOffset.x * CGFloat(difference)
-//                        self.lastOffSet = CGPoint(dictionaryRepresentation: a as! CFDictionary)
+                        // Skip SegmentedProgressBar by number of collectionViews
+                        for _ in 0..<self.currentIndex! {
+                            self.spb.skip()
+                        }
+                        // Reload item
+                        self.collectionView.reloadItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
                     })
                 }
                 
@@ -128,8 +133,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     if self.posts.count != 0 {
                         // Configure View
                         self.configureView()
-                        // Save currentIndex
-                        self.saveViews(withIndex: self.currentIndex!)
                         // Fetch views
                         self.fetchViewed()
                         // reload data
@@ -406,10 +409,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             self.collectionView.reloadItems(at: [IndexPath(item: currentIndex! + 1, section: 0)])
         }
 
-        // SAVE to Views
-        saveViews(withIndex: indexPath.item)
-
-        print("NewOffSet: \(scrollView.contentOffset.x)")
+        
+        // SAVE to "Views" if story is NOT the currentUser's story
+        if (storyObjects.last!.object(forKey: "byUser") as! PFUser).objectId! != PFUser.current()!.objectId! {
+            saveViews(withIndex: indexPath.item)
+        }
+        
         // Manipulate SegmentedProgressBar
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb?.skip()

@@ -443,16 +443,6 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
 extension Hashtags {
     
     func configureView() {
-        // MARK: - SegmentedProgressBar
-        self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
-        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
-        self.spb.topColor = UIColor.white
-        self.spb.layer.applyShadow(layer: self.spb.layer)
-        self.spb.padding = 2
-        self.spb.delegate = self
-        self.view.addSubview(self.spb)
-        self.spb.startAnimation()
-        
         // MARK: - Reactions
         // (2) Create ReactionSelector and add Reactions from <1>
         reactionSelector.feedbackDelegate = self
