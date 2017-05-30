@@ -37,6 +37,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     func setButton() {
         // Add button to bottom/center of UITabBar
         // Increase current # for y origin to place it higher on the y axis
+        rpButton.isHidden = false
         rpButton.center = self.view.center
         rpButton.frame.origin.y = self.view.bounds.height - 60
         rpButton.setImage(UIImage(named: "SLRCamera"), for: .normal)

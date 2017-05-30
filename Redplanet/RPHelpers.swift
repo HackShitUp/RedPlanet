@@ -308,7 +308,6 @@ class RPHelpers: NSObject {
                     // Update Queue
                     for object in objects! {
                         object["lastChat"] = chatQueue
-                        object.incrementKey("score", byAmount: 1)
                         object.saveInBackground()
                     }
                 }
@@ -328,7 +327,6 @@ class RPHelpers: NSObject {
         chatsQueue["endUser"] = endUser!
         chatsQueue["endName"] = endUser!.value(forKey: "username") as! String
         chatsQueue["lastChat"] = chatObject!
-        chatsQueue.incrementKey("score", byAmount: 1)
         chatsQueue.saveInBackground()
     }
     
