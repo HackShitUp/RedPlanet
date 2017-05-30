@@ -112,7 +112,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 }
                 
                 self.fetchFirstPosts(forGroup: self.following)
-                
             } else {
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()

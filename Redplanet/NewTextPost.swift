@@ -202,7 +202,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             self.textView.text! = "What are you doing?"
         } else {
             // Odd
-            self.textView.text! = "Thoughts are preludes to revoltuionary movements..."
+            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
         }
         
         // Create corner radiuss
