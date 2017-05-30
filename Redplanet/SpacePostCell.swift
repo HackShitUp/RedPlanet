@@ -46,6 +46,15 @@ class SpacePostCell: UITableViewCell {
     // FUNCTION - Play video
     func playVideo(sender: AnyObject) {
         if let video = self.postObject!.value(forKey: "videoAsset") as? PFFile {
+            // Remove VIMVideoPlayerView's player's player's playerItem if video exists in STORIES
+            if let storiesVC = self.superDelegate! as? Stories {
+                storiesVC.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            }
+            // Remove VIMVideoPlayerView's player's player's playerItem if video exists in STORY
+            if let storyVC = self.superDelegate! as? Story {
+                storyVC.vimVideoPlayerView?.player.player.replaceCurrentItem(with: nil)
+            }
+            
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
             let viewController = UIViewController()
