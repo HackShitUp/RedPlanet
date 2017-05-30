@@ -229,7 +229,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         // New Profile Photo
                         let postsClass = PFObject(className: "Posts")
                         postsClass["byUser"] = PFUser.current()!
-                        postsClass["username"] = PFUser.current()!.username!
+                        postsClass["byUsername"] = PFUser.current()!.username!
                         postsClass["photoAsset"] = proPicFile
                         postsClass["contentType"] = "pp"
                         postsClass["saved"] = false

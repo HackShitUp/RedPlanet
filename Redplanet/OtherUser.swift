@@ -826,7 +826,7 @@ extension OtherUser {
                             fromVC!.dismiss()
                             _ = self.navigationController?.popViewController(animated: true)
                         }))
-                        dialogController.show(in: self)
+                        dialogController.show(in: fromVC!)
                         
                     } else {
                         print(error?.localizedDescription as Any)

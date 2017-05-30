@@ -38,10 +38,8 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         blocked.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear array
                 self.blockedUsers.removeAll(keepingCapacity: false)
-                
                 for object in objects! {
                     self.blockedUsers.append(object.object(forKey: "toUser") as! PFUser)
                 }
