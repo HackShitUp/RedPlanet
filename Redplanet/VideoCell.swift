@@ -101,7 +101,8 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             videoPlayer!.player.setURL(URL(string: video.url!)!)
             videoPlayer!.player.isMuted = false
             videoPlayer!.delegate = self
-            videoPlayer!.frame = self.contentView.frame
+            videoPlayer!.frame = self.bounds
+            videoPlayer!.layoutIfNeeded()
             videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
             self.videoView.backgroundColor = UIColor.black
             self.videoView.addSubview(videoPlayer!)
@@ -148,8 +149,11 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        // Set frame
+        // Set frames
+        self.contentView.layoutIfNeeded()
+        self.layoutIfNeeded()
         self.contentView.frame = self.contentView.bounds
+        self.videoView.frame = self.bounds
     }
 
     override func awakeFromNib() {
