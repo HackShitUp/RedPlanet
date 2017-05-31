@@ -109,7 +109,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                             } else if fullMessage!.hasSuffix("requested to follow you") {
                                                 // Reload data
                                                 let masterUI = MasterUI()
-                                                masterUI.getNewRequests()
+                                                masterUI.getNewRequests { (count) in
+                                                    print("TODO: Update new request in real time...")
+                                                }
                                             
                                             } else if chatUsername.count != 0 && chatUserObject.count != 0 {
                                                 if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {

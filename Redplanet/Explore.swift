@@ -100,7 +100,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
     func fetchFeatured() {
         let featured = PFQuery(className: "Posts")
         featured.whereKey("byUser", matchesQuery: PFUser.query()!.whereKey("private", equalTo: false))
-        featured.whereKey("contentType", containedIn: ["tp", "ph", "vi", "itm"])
+        // Only fetch Text Post, Photo, or Moment...
+        featured.whereKey("contentType", containedIn: ["tp", "ph", "itm"])
         featured.includeKeys(["byUser", "toUser"])
         featured.order(byDescending: "createdAt")
         featured.limit = self.page
@@ -504,23 +505,24 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             } else if self.featuredPosts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 fCell.mediaPreview.image = UIImage(named: "CSpacePost")
                 fCell.mediaPreview.isHidden = false
-            } else {
-                if let photo = self.featuredPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                    // MARK: - SDWebImage
-                    fCell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
-                }
                 
-                if let video = self.featuredPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                    // MARK: - AVPlayer
-                    let player = AVPlayer(url: URL(string: video.url!)!)
-                    let playerLayer = AVPlayerLayer(player: player)
-                    playerLayer.frame = fCell.mediaPreview.bounds
-                    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                    fCell.mediaPreview.contentMode = .scaleAspectFit
-                    fCell.mediaPreview.layer.addSublayer(playerLayer)
-                    player.isMuted = true
-                    player.play()
-                }
+                
+            } else if let photo = self.featuredPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            // PHOTO ASSET
+                // MARK: - SDWebImage
+                fCell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
+                fCell.mediaPreview.isHidden = false
+            } else if let video = self.featuredPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+            // VIDEO ASSET
+                // MARK: - AVPlayer
+                let player = AVPlayer(url: URL(string: video.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = fCell.mediaPreview.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                fCell.mediaPreview.contentMode = .scaleAspectFit
+                fCell.mediaPreview.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.play()
                 fCell.mediaPreview.isHidden = false
             }
 

@@ -54,7 +54,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     }
     
     // FUCNTION - Fetch Chats
-    open func fetchChatsQueue() {
+    open func fetchChatsQueue(completionHandler: @escaping (_ count: Int) -> ()) {
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
         let endChat = PFQuery(className: "ChatsQueue")
@@ -76,16 +76,13 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
                 }
                 
                 /*
-                 Set UITabBar Badge Value immediately after objects were appeneded
-                 This is because the request runs in the background thread and returns an empty array if handled
-                 Without a completion handler
+                Set UITabBar Badge Value immediately after objects were appeneded
+                This is because the request runs in the background thread and returns an empty array if handled
+                Without a completion handler
                 */
-                if self.unreadChats.count != 0 {
-                    if #available(iOS 10.0, *) {
-                        self.tabBar.items?[3].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                    }
-                    self.tabBar.items?[3].badgeValue = "\(self.unreadChats.count)"
-                }
+                
+                // Pass unreadChats count in completionHandler
+                completionHandler(self.unreadChats.count)
 
             } else {
                 print(error?.localizedDescription as Any)
@@ -97,16 +94,12 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     }
     
     // FUNCTION - Get new follow requests
-    open func getNewRequests() {
+    open func getNewRequests(completionHandler: @escaping (_ count: Int) -> ()) {
         // MARK: - AppDelegate Query Relationships
         appDelegate.queryRelationships()
-        // Set UITabBar badge icon
-        if currentRequestedFollowers.count != 0 {
-            if #available(iOS 10.0, *) {
-                self.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-            }
-            self.tabBar.items?[4].badgeValue = "\(currentRequestedFollowers.count)"
-        }
+        
+        // Pass new followRequests count in completionHandler
+        completionHandler(currentRequestedFollowers.count)
     }
     
     // MARK: - UIView Life Cycle
@@ -155,9 +148,31 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Fetch Unread Chats and new Follow Requests
-        fetchChatsQueue()
-        getNewRequests()
+        // Fetch Unread Chats
+        self.fetchChatsQueue { (count) in
+            if count != 0 {
+                DispatchQueue.main.async(execute: {
+                    if #available(iOS 10.0, *) {
+                        self.tabBar.items?[3].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                    }
+                    self.tabBar.items?[3].badgeValue = "\(count)"
+                })
+            } else {
+                self.tabBar.items?[3].badgeValue = nil
+            }
+        }
+        // Get New Follow Requests
+        self.getNewRequests { (count) in
+            // Set UITabBar badge icon
+            if count != 0 {
+                if #available(iOS 10.0, *) {
+                    self.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                }
+                self.tabBar.items?[4].badgeValue = "\(currentRequestedFollowers.count)"
+            } else {
+                self.tabBar.items?[4].badgeValue = nil
+            }
+        }
         // MARK: - RPExtension; add rpButton to center bottom of UIView
         self.setButton()
         rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)

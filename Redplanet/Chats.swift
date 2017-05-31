@@ -181,18 +181,20 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     }
                     self.chatObjects.append(object)
                 }
-                // MARK: - DZNEmptyDataSet
+                
                 if self.chatObjects.count == 0 {
+                    // MARK: - DZNEmptyDataSet
                     self.tableView.emptyDataSetSource = self
                     self.tableView.emptyDataSetDelegate = self
+                } else {
+                    // Reload data in main thread
+                    DispatchQueue.main.async {
+                        self.tableView?.reloadData()
+                    }
                 }
 
             } else {
                 print(error?.localizedDescription as Any)
-            }
-            // Reload data in main thread
-            DispatchQueue.main.async {
-                self.tableView?.reloadData()
             }
         })
     }
@@ -421,7 +423,17 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         super.viewDidAppear(animated)
         // MARK: - MasterUI; Reset UITabBar Counts
         let masterUI = MasterUI()
-        _ = masterUI.fetchChatsQueue()
+        // Fetch Unread Chats
+        masterUI.fetchChatsQueue { (count) in
+            if count != 0 {
+                if #available(iOS 10.0, *) {
+                    self.navigationController?.tabBarController?.tabBar.items?[3].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                }
+                self.navigationController?.tabBarController?.tabBar.items?[3].badgeValue = "\(count)"
+            } else {
+                self.navigationController?.tabBarController?.tabBar.items?[3].badgeValue = nil
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {

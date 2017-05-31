@@ -63,9 +63,19 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             peopleButton.badge(text: "\(currentRequestedFollowers.count)")
         }
         
-        // MARK: - MasterUI; reset UITabBar badge value and peopleButton badge
+        // MARK: - MasterUI; reset UITabBar badge value and peopleButton badge with new follow requests
         let masterUI = MasterUI()
-        masterUI.getNewRequests()
+        masterUI.getNewRequests { (count) in
+            // Set UITabBar badge icon
+            if count != 0 {
+                if #available(iOS 10.0, *) {
+                    self.navigationController?.tabBarController?.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                }
+                self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(count)"
+            } else {
+                self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = nil
+            }
+        }
     }
 
     // Handle segmentedControl query
