@@ -83,7 +83,9 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                 DispatchQueue.main.async(execute: {
                     if self.posts.count != 0 {
                         self.configureView()
-                        self.saveViews(withIndex: self.currentIndex!)
+                        if (self.storyObject!.object(forKey: "byUser") as! PFUser).objectId! != PFUser.current()!.objectId! {
+                            self.saveViews(withIndex: self.currentIndex!)
+                        }
                     } else {
                         // MARK: - DZNEmptyDataSet
                         self.collectionView.emptyDataSetSource = self
