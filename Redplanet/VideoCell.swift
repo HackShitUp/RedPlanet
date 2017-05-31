@@ -31,7 +31,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var videoView: VIMVideoPlayerView!
-    @IBOutlet weak var captionView: UIView!
     @IBOutlet weak var textPost: KILabel!
     
     @IBOutlet weak var videoLength: UILabel!
@@ -81,7 +80,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser")!)
                 // MARK: - RPExtensions
-                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.white)
             }
         }
         
@@ -90,7 +89,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         let now = Date()
         let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        self.time.text = difference.getFullTime(difference: difference, date: from)
+        self.time.text = "uploaded \(difference.getFullTime(difference: difference, date: from))"
         
         // (3) Add video
         if let video = withObject!.value(forKey: "videoAsset") as? PFFile {
@@ -104,23 +103,25 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             videoPlayer!.delegate = self
             videoPlayer!.frame = self.videoView.bounds
             videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+            self.videoView.backgroundColor = UIColor.black
             self.videoView.addSubview(videoPlayer!)
             self.videoView.bringSubview(toFront: videoPlayer!)
-            
-            /* Play video in parent UIViewController
-             // BOUNDS
-             VideoPreviewFrame: (0.0, 124.0, 375.0, 400.0)
-             VIMVideoPlayerViewFrame: (0.0, 0.0, 375.0, 400.0)
-             
-             // FRAME
-             VideoPreviewFrame: (0.0, 124.0, 375.0, 400.0)
-             VIMVideoPlayerViewFrame: (0.0, 124.0, 375.0, 400.0)
-            */
-            print("\nVideoPreviewFrame: \(videoView.frame)")
-            print("VIMVideoPlayerViewFrame: \(videoPlayer!.frame)")
         }
         
-        // (4) Set text post
+        // (4) Configure UI
+        let objects = [self.rpUserProPic,
+                       self.rpUsername,
+                       self.time,
+                       self.videoLength,
+                       self.playButton,
+                       self.volumeButton] as [Any]
+        for button in objects {
+            self.videoView.bringSubview(toFront: button as! UIView)
+            self.videoView.layer.applyShadow(layer: (button as! UIView).layer)
+        }
+        
+        
+        // (5) Set text post
         if let text = withObject!.value(forKey: "textPost") as? String {
             if withObject!.value(forKey: "textPost") as! String != "" {
                 self.textPost.text = text
@@ -132,25 +133,24 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     
     // FUNCTION - Show caption
     func showCaption(sender: AnyObject) {
-        // Hide || Show captionView
-        self.captionView.isHidden = !self.captionView.isHidden
+        // Hide || Show textPost
+        self.textPost.isHidden = !self.textPost.isHidden
         
-        // Play || Pause depending on captionView
-        if self.captionView.isHidden == false {
+        // Play || Pause depending on textPost
+        if self.textPost.isHidden == false {
+            self.textPost.layer.applyShadow(layer: self.textPost.layer)
+            self.videoView.bringSubview(toFront: self.textPost)
             self.vimVideoPlayerView?.player.pause()
         } else {
             self.vimVideoPlayerView?.player.play()
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Hide captionView
-        self.captionView.isHidden = true
         
-        // Configure volume button
-        self.volumeButton.makeCircular(forView: self.volumeButton, borderWidth: 0, borderColor: UIColor.clear)
-        self.volumeButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+        // Hide text post
+        self.textPost.isHidden = true
         
         // Add Profile Tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))
@@ -171,10 +171,10 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         self.videoView.addGestureRecognizer(videoCaptionTap)
         
         // Add Caption Tap
-        let captionViewTap = UITapGestureRecognizer(target: self, action: #selector(showCaption))
-        captionViewTap.numberOfTapsRequired = 1
-        self.captionView.isUserInteractionEnabled = true
-        self.captionView.addGestureRecognizer(captionViewTap)
+        let textPostTap = UITapGestureRecognizer(target: self, action: #selector(showCaption))
+        textPostTap.numberOfTapsRequired = 1
+        self.textPost.isUserInteractionEnabled = true
+        self.textPost.addGestureRecognizer(textPostTap)
         
         // MARK: - SDWebImage
         self.videoView.sd_showActivityIndicatorView()
