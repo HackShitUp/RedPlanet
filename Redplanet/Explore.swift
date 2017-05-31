@@ -508,7 +508,9 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 if let photo = self.featuredPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // MARK: - SDWebImage
                     fCell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
-                } else if let video = self.featuredPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                }
+                
+                if let video = self.featuredPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                     // MARK: - AVPlayer
                     let player = AVPlayer(url: URL(string: video.url!)!)
                     let playerLayer = AVPlayerLayer(player: player)

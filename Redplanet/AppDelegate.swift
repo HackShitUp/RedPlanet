@@ -122,11 +122,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                     // SHOW that the user is typing
                                                     // Set visible banner
                                                     // MARK: - NotitficationBanner
-                                                    let banner = NotificationBanner(title: "", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "ChatsPurple")))
+                                                    let banner = NotificationBanner(title: "", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "BubbleFilled")))
                                                     banner.subtitleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                                    banner.subtitleLabel?.textColor = UIColor.white
+                                                    banner.subtitleLabel?.textColor = UIColor.darkGray
                                                     banner.roundAllCorners(sender: banner)
-                                                    banner.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                                                    banner.backgroundColor = UIColor.groupTableViewBackground
                                                     banner.show()
                                                 }
                                                 
@@ -278,20 +278,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         if PFUser.current() != nil {
             
             // MARK: - HEAP
-//            // Set App ID
-//            Heap.setAppId("3455525110");
-//            // Track Who Opens the App
-//            Heap.track("AppOpen", withProperties:
-//                ["byUserId": "\(PFUser.current()!.objectId!)",
-//                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-//                ])
-//            // Attach a unique identifier to user
-//            Heap.identify("\(PFUser.current()!.objectId!)")
-//            Heap.addUserProperties([
-//                "UserId": "\(PFUser.current()!.objectId!)",
-//                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
-//                "Email": "\(PFUser.current()!.email!)"
-//                ])
+            // Set App ID
+            Heap.setAppId("3455525110");
+            // Track Who Opens the App
+            Heap.track("AppOpen", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            // Attach a unique identifier to user
+            Heap.identify("\(PFUser.current()!.objectId!)")
+            Heap.addUserProperties([
+                "UserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                "Email": "\(PFUser.current()!.email!)"
+                ])
             
             #if DEBUG
                 Heap.enableVisualizer();

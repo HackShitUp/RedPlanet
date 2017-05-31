@@ -272,6 +272,15 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "VideoCell", bundle: nil), forCellWithReuseIdentifier: "VideoCell")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
+        
+        // MARK: - HEAP
+        // Set App ID
+        Heap.setAppId("3455525110");
+        // Track Who Opens the App
+        Heap.track("ViewedPost", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
     }
     
     override func viewDidAppear(_ animated: Bool) {

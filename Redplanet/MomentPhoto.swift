@@ -76,10 +76,6 @@ class MomentPhoto: UICollectionViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
-        
-        // Apply shadows
-        self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
-        self.time.layer.applyShadow(layer: self.time.layer)
     }
 
 }

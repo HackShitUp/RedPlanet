@@ -53,8 +53,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Set bool
         chatCamera = false
         // Clear arrays
-        chatUserObject.removeAll(keepingCapacity: false)
-        chatUsername.removeAll(keepingCapacity: false)
+        chatUserObject.removeLast()
+        chatUsername.removeLast()
         // Pop view controller
         if self.navigationController?.viewControllers.count == 3 {
             let viewControllers = self.navigationController!.viewControllers as [UIViewController]
@@ -729,18 +729,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // MARK: - UIScrollView Delegate Methods
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.newChat.resignFirstResponder()
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            // If posts on server are > than shown
-            if page <= self.messageObjects.count + self.skipped.count {
-                // Increase page size to load more posts
-                page = page + 50
-                // Query chats
-                fetchChats()
-            }
-        }
     }
 }
 

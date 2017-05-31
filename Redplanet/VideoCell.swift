@@ -80,7 +80,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser")!)
                 // MARK: - RPExtensions
-                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.white)
+                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.groupTableViewBackground)
             }
         }
         
@@ -147,15 +147,6 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        // Set frames
-        self.contentView.layoutIfNeeded()
-        self.layoutIfNeeded()
-        self.contentView.frame = self.contentView.bounds
-        self.videoView.frame = self.bounds
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -185,9 +176,9 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         textPostTap.numberOfTapsRequired = 1
         self.textPost.isUserInteractionEnabled = true
         self.textPost.addGestureRecognizer(textPostTap)
-        
+
         // MARK: - SDWebImage
-        self.videoView.sd_showActivityIndicatorView()
+        self.videoView.sd_addActivityIndicator()
         self.videoView.sd_setIndicatorStyle(.white)
 
         // MARK: - KILabel; @, #, and https://

@@ -62,11 +62,13 @@ class MomentVideo: UICollectionViewCell {
             self.vimVideoPlayerView = videoPlayer!
             
             // MARK: - VIMVideoPlayer
-            videoPlayer!.frame = self.contentView.bounds
-            videoPlayer!.player.isLooping = true
-            videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+            videoPlayer!.player.isLooping = false
             videoPlayer!.player.setURL(URL(string: video.url!)!)
             videoPlayer!.player.isMuted = false
+            videoPlayer!.frame = self.bounds
+            videoPlayer!.layoutIfNeeded()
+            videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+            self.contentView.backgroundColor = UIColor.black
             self.contentView.addSubview(videoPlayer!)
             self.contentView.bringSubview(toFront: videoPlayer!)
             
@@ -99,6 +101,9 @@ class MomentVideo: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Set backgroundColor
+        self.contentView.backgroundColor = UIColor.black
+        
         // Add Username Tap
         let nameTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))
         nameTap.numberOfTapsRequired = 1
@@ -107,7 +112,7 @@ class MomentVideo: UICollectionViewCell {
         
         // MARK: - SDWebImage
         self.contentView.sd_addActivityIndicator()
-        self.contentView.sd_setIndicatorStyle(.gray)
+        self.contentView.sd_setIndicatorStyle(.white)
     }
     
 }

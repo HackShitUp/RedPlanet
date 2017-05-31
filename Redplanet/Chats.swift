@@ -421,7 +421,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         super.viewDidAppear(animated)
         // MARK: - MasterUI; Reset UITabBar Counts
         let masterUI = MasterUI()
-        masterUI.fetchChatsQueue()
+        _ = masterUI.fetchChatsQueue()
     }
     
     override func didReceiveMemoryWarning() {
@@ -655,11 +655,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // RECEIVER
             if (self.chatObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 chatUserObject.append(self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser)
-                chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser).value(forKey: "username") as! String)
+                chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser).username!)
             } else if (self.chatObjects[indexPath.row].value(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // SENDER
                 chatUserObject.append(self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser)
-                chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser).value(forKey: "username") as! String)
+                chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser).username!)
             }
         }
         // Push VC
