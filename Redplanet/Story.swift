@@ -278,7 +278,6 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         // TEXT POST, PHOTO, PROFILE PHOTO, SPACE POST
         if self.scrollSets.contains(self.posts[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
-            
             // Set PFObject
             scrollCell.postObject = self.posts[indexPath.item]
             // Set parent UIViewController

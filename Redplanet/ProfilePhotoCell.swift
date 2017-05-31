@@ -59,8 +59,6 @@ class ProfilePhotoCell: UITableViewCell {
                 self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
                 // MARK: - SDWebImage
                 self.largeProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                // MARK: - RPHelpers
-                self.largeProPic.makeCircular(forView: self.largeProPic, borderWidth: 3.50, borderColor: UIColor.darkGray)
             }
         }
         
@@ -83,6 +81,14 @@ class ProfilePhotoCell: UITableViewCell {
                 self.textPost.isHidden = true
             }
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Set frame
+        self.contentView.frame = self.contentView.bounds
+        // MARK: - RPHelpers
+        self.largeProPic.makeCircular(forView: self.largeProPic, borderWidth: 3.50, borderColor: UIColor.darkGray)
     }
     
     override func awakeFromNib() {

@@ -353,7 +353,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         if self.posts[indexPath.item].value(forKey: "contentType") as! String == "vi" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
         // VIDEO
             let videoCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as! VideoCell
-            videoCell.contentView.frame = self.view.bounds
             // Add and play || pause video when visible
             if self.currentIndex == indexPath.item {
                 // Set PFObject, parent UIViewController, update UI, and play video

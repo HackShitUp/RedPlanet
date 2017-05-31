@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CVs-3M-s7x" customClass="VIMVideoPlayerView">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CVs-3M-s7x" customClass="VIMVideoPlayerView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nIT-oe-FG4">
@@ -113,6 +114,7 @@
                             <constraint firstAttribute="trailing" secondItem="eD9-CG-8zb" secondAttribute="trailing" constant="8" id="hwR-cb-tWe"/>
                             <constraint firstAttribute="bottom" secondItem="pWx-xX-t49" secondAttribute="bottom" constant="16" id="iMG-yL-J0d"/>
                             <constraint firstItem="eD9-CG-8zb" firstAttribute="leading" secondItem="nIT-oe-FG4" secondAttribute="trailing" constant="8" id="iva-wG-Odg"/>
+                            <constraint firstAttribute="width" secondItem="CVs-3M-s7x" secondAttribute="height" multiplier="375:667" id="jbY-FJ-GiR"/>
                             <constraint firstAttribute="bottom" secondItem="sll-c2-WD5" secondAttribute="bottom" constant="57" id="lFb-Z6-iYG"/>
                             <constraint firstItem="eD9-CG-8zb" firstAttribute="leading" secondItem="nIT-oe-FG4" secondAttribute="trailing" constant="8" id="lml-g6-Qlo"/>
                         </constraints>
