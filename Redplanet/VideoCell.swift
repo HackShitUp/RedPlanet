@@ -30,7 +30,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var videoPreview: PFImageView!
+    @IBOutlet weak var videoView: VIMVideoPlayerView!
     @IBOutlet weak var captionView: UIView!
     @IBOutlet weak var textPost: KILabel!
     
@@ -98,15 +98,26 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             self.vimVideoPlayerView = videoPlayer!
             
             // MARK: - VIMVideoPlayer
-            videoPlayer!.frame = self.videoPreview.bounds
             videoPlayer!.player.isLooping = false
-            videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
             videoPlayer!.player.setURL(URL(string: video.url!)!)
             videoPlayer!.player.isMuted = false
             videoPlayer!.delegate = self
-            self.videoPreview.addSubview(videoPlayer!)
-            self.videoPreview.bringSubview(toFront: videoPlayer!)
-            /* Play video in parent UIViewController */
+            videoPlayer!.frame = self.videoView.bounds
+            videoPlayer!.setVideoFillMode(AVLayerVideoGravityResizeAspect)
+            self.videoView.addSubview(videoPlayer!)
+            self.videoView.bringSubview(toFront: videoPlayer!)
+            
+            /* Play video in parent UIViewController
+             // BOUNDS
+             VideoPreviewFrame: (0.0, 124.0, 375.0, 400.0)
+             VIMVideoPlayerViewFrame: (0.0, 0.0, 375.0, 400.0)
+             
+             // FRAME
+             VideoPreviewFrame: (0.0, 124.0, 375.0, 400.0)
+             VIMVideoPlayerViewFrame: (0.0, 124.0, 375.0, 400.0)
+            */
+            print("\nVideoPreviewFrame: \(videoView.frame)")
+            print("VIMVideoPlayerViewFrame: \(videoPlayer!.frame)")
         }
         
         // (4) Set text post
@@ -156,8 +167,8 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         // Add Video Tap
         let videoCaptionTap = UITapGestureRecognizer(target: self, action: #selector(showCaption))
         videoCaptionTap.numberOfTapsRequired = 1
-        self.videoPreview.isUserInteractionEnabled = true
-        self.videoPreview.addGestureRecognizer(videoCaptionTap)
+        self.videoView.isUserInteractionEnabled = true
+        self.videoView.addGestureRecognizer(videoCaptionTap)
         
         // Add Caption Tap
         let captionViewTap = UITapGestureRecognizer(target: self, action: #selector(showCaption))
@@ -166,8 +177,8 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
         self.captionView.addGestureRecognizer(captionViewTap)
         
         // MARK: - SDWebImage
-        self.videoPreview.sd_showActivityIndicatorView()
-        self.videoPreview.sd_setIndicatorStyle(.white)
+        self.videoView.sd_showActivityIndicatorView()
+        self.videoView.sd_setIndicatorStyle(.white)
 
         // MARK: - KILabel; @, #, and https://
         // @@@

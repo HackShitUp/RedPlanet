@@ -20,8 +20,8 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MoY-2h-J2b">
                         <rect key="frame" x="8" y="76" width="359" height="25"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="25" id="Qo2-77-FVk"/>
-                            <constraint firstAttribute="width" constant="359" id="XwG-Z0-a7R"/>
+                            <constraint firstAttribute="height" constant="25" id="3II-8D-dBz"/>
+                            <constraint firstAttribute="width" constant="359" id="zYR-Sx-P1Y"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                         <nil key="textColor"/>
@@ -30,8 +30,8 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yY2-g0-mKO">
                         <rect key="frame" x="8" y="101" width="359" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="359" id="DZ4-QZ-vhu"/>
-                            <constraint firstAttribute="height" constant="15" id="QQV-yJ-9QG"/>
+                            <constraint firstAttribute="height" constant="15" id="ET0-6I-wcY"/>
+                            <constraint firstAttribute="width" constant="359" id="W8g-Yt-qxP"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                         <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -41,7 +41,7 @@
                         <rect key="frame" x="20" y="132" width="335" height="110"/>
                         <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="335" id="203-WY-Cc5"/>
+                            <constraint firstAttribute="width" constant="335" id="zlx-e3-DpQ"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                         <nil key="textColor"/>
@@ -50,28 +50,27 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="automaticLinkDetectionEnabled" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9lb-Yb-88Z">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9lb-Yb-88Z" customClass="PFImageView">
                         <rect key="frame" x="167" y="28" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="GPx-ut-5Bc"/>
-                            <constraint firstAttribute="height" constant="40" id="swg-Fe-jHI"/>
+                            <constraint firstAttribute="width" constant="40" id="Frt-Se-Lw5"/>
+                            <constraint firstAttribute="height" constant="40" id="kSK-71-XT8"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="vIL-e0-hX9" secondAttribute="trailing" constant="20" id="AcG-EB-Vvw"/>
-                    <constraint firstAttribute="trailing" secondItem="MoY-2h-J2b" secondAttribute="trailing" constant="8" id="BA3-44-nWV"/>
-                    <constraint firstItem="9lb-Yb-88Z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="167" id="Eju-4F-nUG"/>
-                    <constraint firstItem="yY2-g0-mKO" firstAttribute="top" secondItem="MoY-2h-J2b" secondAttribute="bottom" id="Q4w-uU-fsS"/>
-                    <constraint firstAttribute="trailing" secondItem="yY2-g0-mKO" secondAttribute="trailing" constant="8" id="QKW-aX-jLc"/>
-                    <constraint firstAttribute="trailing" secondItem="9lb-Yb-88Z" secondAttribute="trailing" constant="168" id="YNS-xm-ePF"/>
-                    <constraint firstItem="MoY-2h-J2b" firstAttribute="top" secondItem="9lb-Yb-88Z" secondAttribute="bottom" constant="8" id="nUR-Vr-jym"/>
-                    <constraint firstItem="9lb-Yb-88Z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="28" id="nfl-0l-AtZ"/>
-                    <constraint firstItem="vIL-e0-hX9" firstAttribute="top" secondItem="yY2-g0-mKO" secondAttribute="bottom" constant="16" id="o7i-zg-HTh"/>
-                    <constraint firstAttribute="bottom" secondItem="vIL-e0-hX9" secondAttribute="bottom" constant="7.5" id="oVY-QG-dfR"/>
-                    <constraint firstItem="yY2-g0-mKO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="qt7-by-khx"/>
-                    <constraint firstItem="vIL-e0-hX9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="x8w-Ym-Nmd"/>
-                    <constraint firstItem="MoY-2h-J2b" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="yFY-6O-MWt"/>
+                    <constraint firstItem="yY2-g0-mKO" firstAttribute="top" secondItem="MoY-2h-J2b" secondAttribute="bottom" id="8UP-pC-Xfs"/>
+                    <constraint firstAttribute="bottom" secondItem="vIL-e0-hX9" secondAttribute="bottom" constant="7.5" id="Ajg-FU-ky2"/>
+                    <constraint firstAttribute="trailing" secondItem="yY2-g0-mKO" secondAttribute="trailing" constant="8" id="DbO-XZ-Bli"/>
+                    <constraint firstItem="9lb-Yb-88Z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="28" id="NFU-ZX-Mdu"/>
+                    <constraint firstItem="9lb-Yb-88Z" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="NXG-Uv-o7r"/>
+                    <constraint firstItem="vIL-e0-hX9" firstAttribute="top" secondItem="yY2-g0-mKO" secondAttribute="bottom" constant="16" id="Pjk-Si-tlO"/>
+                    <constraint firstItem="MoY-2h-J2b" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Srl-no-u6n"/>
+                    <constraint firstAttribute="trailing" secondItem="MoY-2h-J2b" secondAttribute="trailing" constant="8" id="Xcr-Vo-7PG"/>
+                    <constraint firstAttribute="trailing" secondItem="vIL-e0-hX9" secondAttribute="trailing" constant="20" id="YeN-uH-vW5"/>
+                    <constraint firstItem="MoY-2h-J2b" firstAttribute="top" secondItem="9lb-Yb-88Z" secondAttribute="bottom" constant="8" id="flh-Z9-xWP"/>
+                    <constraint firstItem="yY2-g0-mKO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="hrP-qU-1Sv"/>
+                    <constraint firstItem="vIL-e0-hX9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="k5r-PA-oXL"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

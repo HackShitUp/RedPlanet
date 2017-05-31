@@ -68,7 +68,7 @@ class TextPostCell: UITableViewCell {
         if let text = withObject!.value(forKey: "textPost") as? String {
             // Manipulate font size and color depending on character count
             if text.characters.count < 140 {
-                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 23)
+                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 25)
                 // MARK: - RPExtensions
                 self.textPost.textColor = UIColor.randomColor()
             } else {
@@ -101,6 +101,9 @@ class TextPostCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.contentView.frame = self.frame
+        
         // Add Profile Tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))
         proPicTap.numberOfTapsRequired = 1

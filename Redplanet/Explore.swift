@@ -354,6 +354,11 @@ class Explore: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let tCell = cell as? TableCollectionCell else { return }
         tCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.section)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let tCell = self.tableView.dequeueReusableCell(withIdentifier: "tableCollectionCell", for: indexPath) as! TableCollectionCell
+        tCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.section)
         
         if self.featuredPosts.count == 0 {
             if let featuredCV = tCell.collectionView.viewWithTag(1) as? UICollectionView {
@@ -372,11 +377,6 @@ class Explore: UITableViewController, UITextFieldDelegate {
                 geocodeCV.reloadEmptyDataSet()
             }
         }
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tCell = self.tableView.dequeueReusableCell(withIdentifier: "tableCollectionCell", for: indexPath) as! TableCollectionCell
-        tCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.section)
         return tCell
     }
 }
