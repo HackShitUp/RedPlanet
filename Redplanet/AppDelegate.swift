@@ -121,15 +121,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                     NotificationCenter.default.post(name: rpChat, object: nil)
                                                     
                                                 } else if fullMessage!.hasSuffix("is typing...") {
-                                                    // SHOW that the user is typing
-                                                    // Set visible banner
-                                                    // MARK: - NotitficationBanner
-                                                    let banner = NotificationBanner(title: "", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "BubbleFilled")))
-                                                    banner.subtitleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                                    banner.subtitleLabel?.textColor = UIColor.darkGray
-                                                    banner.roundAllCorners(sender: banner)
-                                                    banner.backgroundColor = UIColor.groupTableViewBackground
-                                                    banner.show()
+                                                    
+                                                    if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+                                                        proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
+                                                            if error == nil {
+                                                                let proPicView = UIImageView()
+                                                                proPicView.makeCircular(forView: proPicView, borderWidth: 0, borderColor: UIColor.clear)
+                                                                
+                                                                // MARK: - SDWebImage
+                                                                proPicView.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                                                                
+                                                                // MARK: - NotitficationBanner
+                                                                let banner = NotificationBanner(title: "\(fullMessage!)", subtitle: "", rightView: proPicView)
+                                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                                                banner.titleLabel?.textColor = UIColor.black
+                                                                banner.roundAllCorners(sender: banner)
+                                                                banner.backgroundColor = UIColor.white
+                                                                banner.show()
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
                                                 }
                                                 
                                             } else {

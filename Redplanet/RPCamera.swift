@@ -288,7 +288,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         // Set Profile Photo
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - RPExtensions
-            self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 1, borderColor: UIColor.groupTableViewBackground)
+            self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0, borderColor: UIColor.clear)
             // MARK: - SDWebImage
             self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }

@@ -18,11 +18,9 @@ import SafariServices
 
 class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
 
-    @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var privacyPolicy: UILabel!
     @IBOutlet weak var logInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var welcome: UILabel!
     
     @IBAction func signUp(_ sender: Any) {
         // Push VC
@@ -49,24 +47,24 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         self.view.clipsToBounds = true
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.view.frame = self.view.bounds
+        self.view.layoutSubviews()
+        self.view.layoutIfNeeded()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set welcome text
-        self.welcome.text = "Welcome to\nRedplanet"
-        
-        // Design logo
-        self.logo.layer.cornerRadius = 8.00
-        self.logo.clipsToBounds = true
 
         // Design logInButton
-        self.logInButton.layer.cornerRadius = 25.00
+        self.logInButton.layer.cornerRadius = self.logInButton.frame.size.height/2
         self.logInButton.clipsToBounds = true
         
         // Design signUpButton
-        self.signUpButton.layer.cornerRadius = 25.00
-        self.signUpButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-        self.signUpButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        self.signUpButton.layer.cornerRadius = self.signUpButton.frame.size.height/2
+        self.signUpButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1), for: .normal)
+        self.signUpButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
         self.signUpButton.layer.borderWidth = 3.50
         self.signUpButton.clipsToBounds = true
         

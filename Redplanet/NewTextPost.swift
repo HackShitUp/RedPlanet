@@ -76,7 +76,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
             dialogController.show(in: self)
             
-        } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revoltuionary movements..." {
+        } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revolutionary movements..." {
             
             // Vibrate device
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -289,7 +289,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // MARK: - UITextView delegate methods
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView!.text! == "What are you doing?" || self.textView!.text! == "Thoughts are preludes to revoltuionary movements..." {
+        if self.textView!.text! == "What are you doing?" || self.textView!.text! == "Thoughts are preludes to revolutionary movements..." {
             self.textView.text! = ""
             self.textView.textColor = UIColor.black
         }

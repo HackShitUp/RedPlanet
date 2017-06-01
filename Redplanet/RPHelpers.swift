@@ -25,6 +25,7 @@ class RPHelpers: NSObject {
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
         banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         banner.backgroundColor = UIColor.darkGray
+        banner.duration = 0.20
         banner.show()
     }
     
@@ -33,6 +34,7 @@ class RPHelpers: NSObject {
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
         banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         banner.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+        banner.duration = 0.20
         banner.show()
     }
     
@@ -41,6 +43,7 @@ class RPHelpers: NSObject {
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
         banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        banner.duration = 0.20
         banner.show()
     }
     
@@ -49,6 +52,7 @@ class RPHelpers: NSObject {
         let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
         banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        banner.duration = 0.20
         banner.show()
     }
 
