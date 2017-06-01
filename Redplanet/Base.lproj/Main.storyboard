@@ -2905,7 +2905,7 @@
                     <navigationItem key="navigationItem" id="Hb5-4s-j8P">
                         <nil key="title"/>
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Search..." borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="7V5-Wi-I5H">
-                            <rect key="frame" x="13" y="7" width="350" height="30"/>
+                            <rect key="frame" x="12.5" y="7" width="350" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

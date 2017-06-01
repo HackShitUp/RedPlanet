@@ -18,7 +18,16 @@
   Like a complete unknown?
   Like a rolling stone ?
   - Bob Dylan
-
+  
+  Hey, I'ma put us all on the map
+  Gone and I ain't lookin' back
+  I know they gone feel it like they tank on E
+  I promise baby, you can bet the bank on me
+  Cause can't nobody tell me what I ain't gonna be no more
+  You thinking I'ma fall, don't be so sure
+  I wish somebody made guidelines
+  On how to get up off the sidelines
+  - J Cole Sideline Story
   
   
 RED:
@@ -132,11 +141,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                                 proPicView.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
                                                                 
                                                                 // MARK: - NotitficationBanner
-                                                                let banner = NotificationBanner(title: "\(fullMessage!)", subtitle: "", rightView: proPicView)
+                                                                let banner = NotificationBanner(title: "💭 \(fullMessage!)", subtitle: "", rightView: nil)
                                                                 banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                                                banner.titleLabel?.textColor = UIColor.black
+                                                                banner.titleLabel?.textColor = UIColor.white
                                                                 banner.roundAllCorners(sender: banner)
-                                                                banner.backgroundColor = UIColor.white
+                                                                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                                                                banner.duration = 0.20
                                                                 banner.show()
                                                                 
                                                             } else {
