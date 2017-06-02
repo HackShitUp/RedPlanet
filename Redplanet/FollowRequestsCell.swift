@@ -16,6 +16,11 @@ import Bolts
 import KILabel
 import OneSignal
 
+/*
+ UICollectionViewCell class that manages and binds the user's data to this class. This class also manages actions including
+ confirming, ignoring, and rescinding follow requests.
+ */
+
 class FollowRequestsCell: UICollectionViewCell {
     
     // Variable to determine whether current user sent a friend or follow request

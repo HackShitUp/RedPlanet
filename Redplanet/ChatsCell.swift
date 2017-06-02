@@ -13,6 +13,11 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UITableViewCell class for "Chats.swift"
+ It stores the IBOutlets and UIView objects in its respective UITableViewCell in Storyboard.
+ */
+
 class ChatsCell: UITableViewCell {
     
     var delegate: UIViewController?

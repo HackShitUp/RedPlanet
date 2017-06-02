@@ -18,6 +18,11 @@ import SDWebImage
 import MessageUI
 import OneSignal
 
+
+/*
+ UITableViewController class that shows the settings options for the current user.
+ */
+
 class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, OSPermissionObserver, OSSubscriptionObserver {
     
     // Refresher

@@ -24,6 +24,14 @@ var numberExists = false
 // Define Notification
 let contactsNotification = Notification.Name("contacts")
 
+/*
+ UITableViewController that displays the users who've also saved their number to our database. This class sorts through the current user's
+ contacts and returns any numbers found in the database. 
+ 
+ *** THE USER'S NUMBER IS SAVED BY REMOVING ALL NON-NUMERICAL CHARACTERS. For instance, "201-281-3502" becomes "2012813502".
+ 
+ The data is binded here, but the actions to follow users in their contacts are executed in "ContactsCell.swift"
+*/
 
 class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     

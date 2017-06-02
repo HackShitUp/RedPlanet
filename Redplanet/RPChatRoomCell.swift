@@ -16,6 +16,9 @@ import Bolts
 
 import KILabel
 
+/*
+ UITableViewCell class that presents the <Message> attribute of a single object in "Chats"
+ */
 
 class RPChatRoomCell: UITableViewCell {
     

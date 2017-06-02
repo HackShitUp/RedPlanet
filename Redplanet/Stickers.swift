@@ -14,6 +14,14 @@ import ParseUI
 import Bolts
 import OneSignal
 
+/*
+ UICollectionViewController class that shows the sticker-assets to send in a chat room.
+ The UICollectionViewController is used with RPPopUpVC to present this class. The data binded to show the sticker image assets is
+ executed in this class. 
+ 
+ Works with "CollectionCell.swift" and "CollectionCell.xib"
+ */
+
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     // Declare Stickers
     let stickers = ["HeartFilled",

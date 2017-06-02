@@ -24,6 +24,14 @@ var isNewProPic: Bool = false
 // Bool to determine whether caption has changed
 var didChangeCaption: Bool = false
 
+/*
+ UIViewController class that allows the current user to edit their:
+ • Profile Photo (create new, edit caption, or remove current).
+ • Birthday
+ • Bio
+ The user must tap the "Save" UIBarButtonItem at the top right of the UIViewController to save any changes that were made. 
+ */
+
 class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, CLImageEditorDelegate {
     
     

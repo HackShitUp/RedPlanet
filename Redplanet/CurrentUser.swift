@@ -23,6 +23,23 @@ import SwipeNavigationController
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
 
+/*
+ UITableViewController class that presents the current user's profile. Used with "CurrentUserHeader.swift"
+ The UITableViewCells in this class, are referenced to "StoryCell.swift" in the NIBS/XIBS folder and "ActivityCell.swift" and 
+ its respective UITableViewCell in Storyboard.
+ 
+ The following is presented in the user's profile:
+ • Notifications - Activity.
+ • Today - Today's posts.
+ • Saved - Saved posts.
+ 
+ This class presents "Story.swift" if a UITableViewCell in "Saved Posts" were tapped. This class also presents "Stories.swift" if a
+ UITableViewCell was tapped for "Today". If a UITableViewCell in "Notifications" was tapped, the it might show "Story.swift", 
+ "FollowRequests.swift" or "OtherUser.swift"
+
+ Works with "RPPopUpVC.swift" to present any of the other classes necesary.
+ */
+
 class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, UINavigationControllerDelegate, TwicketSegmentedControlDelegate, OSPermissionObserver, OSSubscriptionObserver, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate

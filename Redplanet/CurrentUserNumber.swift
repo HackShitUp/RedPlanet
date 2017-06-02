@@ -14,6 +14,15 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UIViewController class that manages user's phone number to help users find friends from their contacts.
+ 
+ NOTE: Redplanet doesn't save people's contacts to the server, it simply saves their number to the server, and from the client-code,
+ the app sorts through any other numbers found in the user's contacts, and shows their friends on the app itself.
+ 
+ The current user MUST save their number, or else this class will not show data in "Contacts.swift"
+ */
+
 class CurrentUserNumber: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!

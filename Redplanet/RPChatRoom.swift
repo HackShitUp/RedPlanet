@@ -28,6 +28,23 @@ var chatUsername = [String]()
 // Add Notification to reload data
 let rpChat = Notification.Name("rpChat")
 
+
+/*
+ UIViewController class that shows the chats sent to, and or received by the current user and the last value of the global array noted
+ above, "chatUserObject". The query checks for any chats sent between the 2 users in descending order (recent to latest), and reverses
+ the objects to display the messages from oldest to recent.
+ 
+ The following criteria for messages to be fetched are:
+ • Less than 24 hours since the time they were sent.
+ • Saved
+ 
+ The class binds the data in "RPChatRoomCell.swift" and "RPChatMediaCell.swift" and their respective UITableViewCells in Storyboard. The
+ former class is presented when the chat was solely a message, and the latter class is presented when the chat stores a file (ie: photo).
+ 
+ This class refers to the <Chats> class in the database and distinguishes between which UITableViewCell to show (mentioned previously) via
+ the object/row's attribute or column, <contentType> and whether the value, <Message> is undefined or not.
+ */
+
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
     // Variable to hold messageObjects
@@ -734,7 +751,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
 
 
-// MARK: - RPChatRoom Extension; Delete chats,
+/*
+ MARK: - RPChatRoom Extension; Functions
+ • sendChat() = Send or save chat to database/server.
+ • chatOptions() = Show options to save, unsave, or delete a chat when the UITableViewCell was selected.
+ */
 extension RPChatRoom {
     
     // FUNCTION - Send Chats

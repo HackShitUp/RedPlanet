@@ -16,6 +16,10 @@ import Bolts
 // Array to hold changed profile photo
 var changedProPicImg = [UIImage]()
 
+/*
+ UIViewController class that allows users to edit their Profile Photos' caption. Presented as a modal popover in "ProfileEdit.swift"
+ */
+
 class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
 
     @IBOutlet weak var rpUserProPic: PFImageView!

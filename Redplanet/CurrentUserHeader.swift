@@ -16,6 +16,18 @@ import ParseUI
 import Bolts
 import KILabel
 
+/*
+ UITableViewHeaderFooterView class that shows the user's profile.
+ This class references to the XIB file, "CurrentUserHeader.xib" which presents the following:
+ • Number of Posts
+ • Number of Followers
+ • Number of Following
+ • Follow/Unfollow Button
+ • User's full name (realNameOfUser in database) - when tapped, navigates to "ProfileEdit.swift"
+ • User's bio.
+ Works with "CurrentUser.swift", this class where the user's posts and notifications are shown.
+ */
+
 class CurrentUserHeader: UITableViewHeaderFooterView {
 
     // Initialize parent VC

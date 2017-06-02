@@ -16,6 +16,16 @@ import Bolts
 import VIMVideoPlayer
 import ReadabilityKit
 
+
+/*
+ UITableViewCell class that shows a file asset from its object if...
+ • photoAsset has a value.
+ • videoAsset has a value.
+ • contentType is equal to "sti", "itm" or "ph"
+ 
+ This class also presents "RPPopUpVC.swift" and "ChatStory.swift" if the asset's "contentType" is "itm"
+ */
+
 class RPChatMediaCell: UITableViewCell {
     
     // Initialize Parent View Controller

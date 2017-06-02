@@ -16,6 +16,13 @@ import Bolts
 import DZNEmptyDataSet
 import SDWebImage
 
+/*
+ UITableViewController class that shows all the users the current user has blocked. This class refers to the "Blocked" class in the
+ database, and binds the data in its UITableViewCell. 
+ 
+ Works with "UserCell.swift" and "UserCell.xib" to bind the data in this class.
+ */
+
 class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     var blockedUsers = [PFObject]()

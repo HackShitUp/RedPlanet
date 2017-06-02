@@ -16,6 +16,11 @@ import Bolts
 
 import SDWebImage
 
+/*
+ UITableViewController class that allows user's to create new chats. This class only unloads all of the user's current following.
+ This class works with "UserCell.swift" and "UserCell.xib" for its UITableViewCell. The data is also binded in this class.
+ */
+
 class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate

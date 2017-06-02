@@ -17,6 +17,25 @@ import DZNEmptyDataSet
 import SDWebImage
 import SwipeNavigationController
 
+
+/*
+ This UITableViewController displays the current chats sent to, and or received by, the current user. This class manages 2 crucial
+ database classes in the server:
+ 
+ (1) ChatsQueue
+ (2) Chats
+ 
+ It first fetches <ChatsQueue> to search for any current conversations sent to, or received by the current user. The query to the
+ database class checks for a value in <lastChat> in <ChatsQueue> which is a pointer that points to <Chats>. Then, another query fires 
+ and checks for the most recent chats in the <Chats> class of the database, fetches that object, and unloads them in the UITableView.
+ The data is binded in this class, instead of its UITableViewCell class, "ChatsCell.swift"
+ 
+ This class also executes in "MasterUI.swift" where it executes fetchChatsQueue(_ ) and configures the tab-bar badge icon in its
+ completion handler to show unread chats.
+ 
+ This class executes the above, everytime the view appears, to refresh any unread chats.
+ */
+
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // <ChatsQueue>

@@ -13,6 +13,11 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UITableViewCell class that shows the notification in a UITableViewCell. The data is binded in "CurrentUser.swift" but the actions
+ are executed in this class.
+ */
+
 class ActivityCell: UITableViewCell {
 
     // Instantiate parent view controller

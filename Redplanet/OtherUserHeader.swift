@@ -29,6 +29,7 @@ import OneSignal
  • Block Button
  • New Space Post Button
  • Chat Button
+ • User's bio ("userBiography" in database)
  Works with "OtherUser.swift", this class where the user's posts are shown.
  */
 

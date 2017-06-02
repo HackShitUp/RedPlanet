@@ -14,6 +14,11 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UIViewController class that allows users to change their password by first entering their current password. If forgotten,
+ then an option to reset their password via their email is presented.
+ */
+
 class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var userPassword: UITextField!

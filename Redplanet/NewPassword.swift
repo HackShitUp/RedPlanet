@@ -14,6 +14,10 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UIViewController class that asks the current user to enter their new password.
+ */
+
 class NewPassword: UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var container: UIView!

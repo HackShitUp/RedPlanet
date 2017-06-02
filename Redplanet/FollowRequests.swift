@@ -20,7 +20,9 @@ import DZNEmptyDataSet
 let requestsNotification = Notification.Name("FollowRequests")
 
 /*
- UICollectionViewController that shows new FollowRequests. References
+ UICollectionViewController that shows new FollowRequests. Uses "FollowRequestsCell.swift" and its respective UITableViewCell in 
+ Storyboard. This UICollectionViewController can be accessed via Settings ("UserSettings.swift") or via the top left UIBarButtonItem in
+ "CurrentUser.swift"
  */
 
 class FollowRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
