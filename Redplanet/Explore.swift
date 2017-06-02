@@ -19,6 +19,23 @@ import ParseUI
 import Bolts
 import SDWebImage
 
+
+/*
+ UITableViewController class reinforcing UITableViewDataSource, and UITableViewDelegate methods. This class is a relationship 
+ view controller to "MasterUI.swift" and in the 2nd tab-bar. This class presents the following in Explore:
+ 
+ • NEWS: Stories from selected publishers via NewsApi.org.
+ • FEATURED POSTS: Posts shared by public accounts.
+ • SUGGESTED ACCOUNTS: Accounts that are shuffled like a deck of cards (randomized) and then presented.
+ • NEAR ME: Accounts within the current user's PFGeoPoint.
+ 
+ The data is also binded in this class
+ 
+ *** The follow illustrates the hierarchy of views, from left to right presenting the lowest to highest executable configurations in this class:
+ 
+ UICollectionViewCell --> UICollectionView --> UITableViewCell --> UITableView (self)
+ */
+
 class Explore: UITableViewController, UITextFieldDelegate {
     
     // Arrays to hold publisherNames and Objects for Stories
@@ -383,8 +400,9 @@ class Explore: UITableViewController, UITextFieldDelegate {
 }
 
 
-
-// MARK: - Explore Extension for UITableViewCell --> TableCollectionCell
+/*
+ MARK: - Explore Extensions; UICollectionViewDataSource, UICollectionViewDelegate, DZNEmptyDataSource, and DZNEmptyDelegate Methods
+ */
 extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // MARK: - DZNEmptyDataSet

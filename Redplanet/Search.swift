@@ -16,6 +16,10 @@ import Bolts
 import DZNEmptyDataSet
 import SDWebImage
 
+/*
+ UITableViewController class that allows users to search for others, and navigate to their profile afterwards.
+ */
+
 class Search: UITableViewController, UINavigationControllerDelegate, UITextFieldDelegate, DZNEmptyDataSetSource {
 
     // App Delegate

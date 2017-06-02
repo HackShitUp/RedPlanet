@@ -12,6 +12,8 @@ import ParseUI
 import Bolts
 import KILabel
 
+// From Explore; SUGGESTED ACCOUNTS and NEAR ME - UICollectionViewCell class that shows the News Preview
+
 class ExploreCell: UICollectionViewCell {
     
     @IBOutlet weak var rpUserProPic: PFImageView!

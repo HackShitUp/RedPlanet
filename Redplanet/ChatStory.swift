@@ -22,6 +22,15 @@ import SDWebImage
 import SVProgressHUD
 import VIMVideoPlayer
 
+
+/*
+ UIViewController class that shows "Moments" sent within chats. This class is only accessible via "RPChatRoom.swift" and presents
+ "Moments" sent between 2 users in a story-like manner. Some same principles from "Stories.swift" are applicable here. Differences
+ include:
+ (1) No Reactions
+ (2) Contents are either Photo & Videos, and never anything else.
+ */
+
 class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold chat moments

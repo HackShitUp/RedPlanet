@@ -13,7 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 
-
+/*
+ UITableViewCell class that shows the results in "Search.swift"
+ */
 
 class SearchCell: UITableViewCell {
     

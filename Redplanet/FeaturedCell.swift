@@ -12,6 +12,8 @@ import ParseUI
 import Bolts
 import KILabel
 
+// From Explore; FEATURED POSTS - UICollectionViewCell class that shows the News Preview
+
 class FeaturedCell: UICollectionViewCell {
     @IBOutlet weak var mediaPreview: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!

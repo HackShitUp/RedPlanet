@@ -22,6 +22,30 @@ import SDWebImage
 import SVProgressHUD
 import VIMVideoPlayer
 
+
+/*
+ UIViewController class reinforcing UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, and UITableViewDelegate
+ methods. This class presents a SINGLE STORY or POST (1 Post only) for a given user by traversing the class' variable object and 
+ presents them in a UICollectionView. The UICollectionView then manages the configurations for data-binding in its 
+ relative UICollectionViewCell.
+ 
+ 
+ *** The follow illustrates the hierarchy of views, from left to right presenting the lowest to highest executable configurations in this class:
+ 
+ UITableViewCell(?) --> UITableView(?) --> UICollectionViewCell --> UICollectionView (self)
+ 
+ *** The (?) indicate that the UITableView and UITableViewCell may or MAY NOT exist depending on the type of content presented. The content types, followed by a Boolean value indicate whether the UICollectionViewCell will have a UITableView and UITableViewCell in it:
+ (1) Text Post = True
+ (2) Photo = True
+ (3) Profile Photo = True
+ (4) Space Post = True
+ (5) Video = False
+ (6) Moment (Photo) = False
+ (6A) Moment (Video) = False
+ 
+ NOTE: This source file has variability
+ */
+
 class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     // MARK: - Class Variable; Used to get object and determine whether its for CHATS or Single Post
@@ -385,7 +409,13 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
 }
 
 
-// MARK: - Story Extension for UITableViewDataSource and UITableViewDelegate Methods
+/*
+ MARK: - Story Extension; Manages to present posts in a UITableViewCell if they are...
+ • Text Posts
+ • Photos
+ • Profile Photos
+ • Space Posts
+ */
 extension Story: UITableViewDataSource, UITableViewDelegate {
     // MARK: - UITableViewData Source Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -445,7 +475,14 @@ extension Story: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Stories Functions
+/*
+ MARK: - Story Extension; Functions
+ • configureView() = Configures reactButton (Reactions) and adds spb (SegmentedProgressBar)
+ • like(_ ) = Likes/unlikes post
+ • saveViews(_ ) = Handles whether to save viewed data to server or not
+ • sendScreenShot(_ ) = Handles saving data and sending push notification if post was screenshotted
+ • showOption(_ ) = Shows options for a given post
+ */
 extension Story {
     
     // FUNCTION - Configure view

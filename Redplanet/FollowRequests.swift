@@ -19,6 +19,10 @@ import DZNEmptyDataSet
 // Define Notification Identifier
 let requestsNotification = Notification.Name("FollowRequests")
 
+/*
+ UICollectionViewController that shows new FollowRequests. References 
+ */
+
 class FollowRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
     
     // Array to hold followers, and following

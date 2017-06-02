@@ -11,6 +11,9 @@ import Parse
 import ParseUI
 import Bolts
 
+
+// From Explore; NEWS - UICollectionViewCell class that shows the News Preview
+
 class NewsCell: UICollectionViewCell {
     @IBOutlet weak var storyCover: PFImageView!
     @IBOutlet weak var publisherName: UILabel!

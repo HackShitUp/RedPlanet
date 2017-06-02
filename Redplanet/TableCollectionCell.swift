@@ -8,6 +8,11 @@
 
 import UIKit
 
+/*
+ UITableViewCell class for "Explore.swift" The protocol in this class, setCollectionViewDataSourceDelegate(_ ) is configured in 
+ "Explore.swift"
+ */
+
 class TableCollectionCell: UITableViewCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
