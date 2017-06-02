@@ -13,6 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ Class that allows people to create an account and Sign Up.
+ */
 
 class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
     

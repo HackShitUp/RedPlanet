@@ -12,6 +12,20 @@ import ParseUI
 import Bolts
 import SDWebImage
 
+/*
+ MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
+ UICollectionViewCell class that holds a UITableView, and a UITableViewCell IF the type of post is one of the following:
+ • Text Post - "tp"
+ • Photo - "ph"
+ • Profile Photo - "pp"
+ • Space Post - "sp"
+ 
+ This class has a unique protocol, called "setTableViewDataSourceDelegate" that configures the parent's UICollectionViewController
+ class to its extension that manages UITableViewDataSource and UITableViewDelegate Methods.
+ 
+ FIXED (works) with "Stories.swift", "Hashtags.swift", and "Story.swift"
+ */
+
 class StoryScrollCell: UICollectionViewCell, UIScrollViewDelegate {
 
     // PFObject; used to determine post type

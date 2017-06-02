@@ -20,6 +20,13 @@ import SwipeNavigationController
 // Array to hold share object
 var shareWithObject = [PFObject]()
 
+/*
+ UITableViewController class that allows users to POST or share their Text Post, Photo, Video, or Moment with individuals.
+ Holds "ShareWithCell.swift" to present each user, but binds the data in this class. If a user decides to post it, their own
+ PFUser/PFObject is appended to an array in this class titled "usersToShareWith". When the "Done" button is tapped, the code checks
+ for the current user's object and posts it if it exists.
+*/
+
 class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SwipeNavigationControllerDelegate {
     
     // AppDelegate

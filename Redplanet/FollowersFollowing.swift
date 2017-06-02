@@ -14,10 +14,18 @@ import Bolts
 import SDWebImage
 import DZNEmptyDataSet
 
+/*
+ UITableViewController that presents and manages all of a given user's followers or following.
+ Works with "UserCell.swift" and "UserCell.xib" in the NIBS/XIBS directory. 
+ Also binds the user's data in this class for each UITableViewCell.
+ */
+
 class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
-    // MARK: - Class Variable; Determine whether to fetch followers or following
+    // MARK: - Class Variables
+    // User's object that queries followers/following for a given user. REQUIRED to make the query work.
     var relationForUser: PFObject?
+    // Determine whether to fetch followers or following
     var followersFollowing: String?
     
     // Array to hold users
@@ -45,7 +53,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         handleFetch()
     }
     
-    // Fetch Followers
+    // FUNCTION - Query all followers for relationForUser
     func fetchFollowers() {
         // Fetch Relationships
         _ = appDelegate.queryRelationships()
@@ -84,7 +92,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         }
     }
     
-    // Fetch Following
+    // FUNCTION - Query all following for relationForUser
     func fetchFollowing() {
         // Fetch Relationships
         _ = appDelegate.queryRelationships()
@@ -123,7 +131,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         }
     }
     
-    // Function to handle which relation to fetch
+    // FUNCTION - Handle which relation to fetch
     func handleFetch() {
         // Fetch Followers or Following depending on variable, followersFollowing
         if self.followersFollowing == "Followers" {
@@ -134,7 +142,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     }
     
 
-    // Configure UINavigationBar
+    // Configure view
     func configureView(title: String?) {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
@@ -391,7 +399,4 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
             }
         }
     }
-    
-    
-    
 }

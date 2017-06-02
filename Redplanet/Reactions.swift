@@ -20,9 +20,18 @@ var reactionObject = [PFObject]()
 // Define NotificationIdentifier
 let reactNotification = Notification.Name("Reactions")
 
+
+/*
+ UIViewController class that allows users to view likes and comments, AND like or unlike a given post.
+ The class refers to the LAST value in the array titled "reactionObject" (above) to handle saving and fetching data.
+ - Works with "UserCell.swift" and "UserCell.xib" to show people who've liked a given post.
+ - Works with "CommentsCell.swift" and the respective UITableViewCell in Storyboard to show all comments for a given post.
+ - Works with "ReactionsHeader.swift" and "ReactiosnHeader.xib" for optimal design and UX when liking posts and 
+   viewing the number of likes or comments for a given post.
+ */
+
 class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
 
-    
     // Array to hold reactionObjects
     var reactionObjects = [PFObject]()
     
@@ -715,9 +724,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         return true
     }
 }
-
-
-
 
 
 

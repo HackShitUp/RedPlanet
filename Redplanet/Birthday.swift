@@ -14,6 +14,12 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ Onboarding: 
+ Class that asks users to enter their birthday. 
+ This task is optional, and users can skip it. If so, their birthday will be saved as the current date.
+ */
+
 class Birthday: UIViewController, UINavigationControllerDelegate {
     
     

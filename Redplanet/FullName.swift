@@ -14,6 +14,11 @@ import ParseUI
 import Bolts
 
 
+/*
+ Onboarding: 
+ Asks the user to enter their First and Last Name.
+ */
+
 class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var firstName: UITextField!

@@ -20,10 +20,18 @@ import SwiftyCam
 import SwipeNavigationController
 import SDWebImage
 
-// Bool to determine whether camera was accessed from Chats
+// Boolean to determine whether camera was accessed from Chats
 var chatCamera: Bool = false
-// Bool to determine camera side
+// Boolean to determine camera side; used for SnapSliderFilters to process filters efficiently
 var isRearCam: Bool?
+
+
+/*
+ Class that adopts the SwiftyCamViewController (open-source). If the user taps the camera button (photo-moment), this class
+ pushes to "CapturedStill.swift". Otherwise, if the user holds onto the camera button (video-moment), this class pushes to
+ "CapturedVideo.swift"
+ */
+
 
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
     
@@ -414,7 +422,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
 
 
-// MARK: - RPCamera Extension for SubtleVolume
+/*
+ MARK: - RPCamera Extension; SubtleVolumeDelegate Method
+ Used to manipulate iOS device hardware by allowing users to capture photos/videos with the volume button
+ TODO:: INCOMPLETE!
+ */
 extension RPCamera: SubtleVolumeDelegate {
     
     func subtleVolume(_ subtleVolume: SubtleVolume, willChange value: Float) {

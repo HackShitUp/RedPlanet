@@ -19,6 +19,10 @@ import OneSignal
 import SwipeNavigationController
 import SDWebImage
 
+/*
+ UIViewController class that allows users to share New Text Posts.
+ */
+
 class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
     // Array to hold user objects

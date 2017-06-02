@@ -13,6 +13,10 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UICollectionViewCell that holds the IBOutlets and UIView objects for each news story.
+ */
+
 class SelectedStoriesCell: UICollectionViewCell {
     @IBOutlet weak var publisherLogo: PFImageView!
     @IBOutlet weak var publisherName: UILabel!

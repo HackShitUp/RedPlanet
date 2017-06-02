@@ -25,6 +25,19 @@ import SwipeNavigationController
  */
 let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
 
+
+/*
+ UITabBarController Class that manages the bottom tab-bar of the Application
+ ie: Home, Explore, Camera button, Chats, and Profile. 
+ This class also manages 3 important functions. Also, 2 of the last noted below are open functions accessible anywhere:
+ 
+ 
+ (1) setButton() - Configures the camera button in the tab bar.
+ (2) fetchChatsQueue() - Gets unread chats from the database class, "ChatsQueue" and configures the UITabBar badge icon.
+ (3) getNewRequests() - Gets new follow requests from the database class, "FollowMe" and configures the UITabBar badge icon.
+ 
+ */
+
 class MasterUI: UITabBarController, UITabBarControllerDelegate {
     
     // Initialize AppDelegate

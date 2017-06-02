@@ -23,6 +23,12 @@ import OneSignal
 import SDWebImage
 import VIMVideoPlayer
 
+
+/*
+ UIViewController class that allows users to share posts on other user's posts IF THEY are friends.
+ Friends on Redplanet are people who follow back each other (ie: userA follows userB and userB also follows userA).
+ */
+
 class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
     // Array to hold user objects

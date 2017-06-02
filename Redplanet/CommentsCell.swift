@@ -14,6 +14,13 @@ import ParseUI
 import Bolts
 import KILabel
 
+/*
+ UITableViewCell class that displays the comments of a post.
+ The comments for a given post, and its data are binded in this class, instead of its parent class, including any actions
+ possible (ie: delete, reply, like, and reporting a comment).
+ Parent class is fixed to "Reactions.swift."
+ */
+
 class CommentsCell: UITableViewCell {
     
     // Initialize parent UIViewController

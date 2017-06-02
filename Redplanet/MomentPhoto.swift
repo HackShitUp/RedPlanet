@@ -15,8 +15,18 @@ import Bolts
 
 import SDWebImage
 
+
+/*
+ MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
+ UICollectionViewCell class that shows the user's photo-moment they recorded on Redplanet sharing it
+ 
+ • Referenced as "itm" in database class titled "Posts" under the column, <contentType>, with a definite value in <photoAsset>
+ 
+ The data is binded here when its parent class class the executable functions to do so.
+ Works with "Stories.swift", "ChatStory.swift" and "Hashtags.swift"
+ */
+
 class MomentPhoto: UICollectionViewCell {
-    
     
     // Initialized PFObject
     var postObject: PFObject?

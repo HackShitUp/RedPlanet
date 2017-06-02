@@ -19,6 +19,16 @@ import KILabel
 import SDWebImage
 import VIMVideoPlayer
 
+/*
+ MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
+ UITableViewCell that presents a Space Post shared between 2 users.
+ 
+ • Refers to "sp" in the database class, "Posts", with possible values in the <photoAsset>, <videoAsset> and <textPost> columns.
+ - Consistently has a definitive value in the database class, "Posts", in the column, "toUser" and "toUsername"
+ 
+ PARENT CLASS IS ALWAYS "StoryScrollCell.swift"
+ */
+
 class SpacePostCell: UITableViewCell {
     
     // Initialized PFObject

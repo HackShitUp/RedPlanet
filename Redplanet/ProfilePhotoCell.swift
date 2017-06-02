@@ -15,6 +15,15 @@ import Bolts
 import KILabel
 import SDWebImage
 
+/*
+ MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
+ UITableViewCell that presents a user's new Profile Photo update.
+ 
+ • Refers to "pp" in the database class, "Posts", with a definitive value in <photoAsset> handled as a File value (PFFile).
+ 
+ PARENT CLASS IS ALWAYS "StoryScrollCell.swift"
+ */
+
 class ProfilePhotoCell: UITableViewCell {
     
     // Initialie PFObject to bind data

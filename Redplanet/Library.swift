@@ -23,6 +23,12 @@ import SDWebImage
 import SwipeNavigationController
 import TRMosaicLayout
 
+/*
+ UICollectionViewController class that presents a user's photos on their devices in a "waterfall-style" grid format.
+ Works with "CollectionCell.swift" to bind data and present the image in the UICollectionViewCell. This class pushes to "NewMedia.swift"
+ once the asset was selected from the UICollectionViewCell or from UIImagePickerController.
+ */
+
 class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // Array to hold all PHAssets
@@ -320,9 +326,9 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     }
 }
 
-
-
-// MARK: - Library Class Extensions, TRMosaicLayoutDelegate
+/*
+ MARK: - Library Extension; TRMosaicLayoutDelegate Methods
+ */
 extension Library: TRMosaicLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, mosaicCellSizeTypeAtIndexPath indexPath: IndexPath) -> TRMosaicCellType {
         // I recommend setting every third cell as .Big to get the best layout

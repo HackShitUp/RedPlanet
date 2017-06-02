@@ -15,6 +15,9 @@ import Bolts
 
 import SafariServices
 
+/*
+ Initial UIViewController class that allows users to either "Log In" or "Sign Up."
+ */
 
 class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
 

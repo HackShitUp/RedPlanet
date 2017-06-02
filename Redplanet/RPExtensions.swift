@@ -66,6 +66,8 @@ extension UIView {
     }
 }
 
+
+
 // MARK: - NSMutableAtrributedString
 extension NSMutableAttributedString {
     // Bolds range of string
@@ -83,6 +85,8 @@ extension NSMutableAttributedString {
         return self
     }
 }
+
+
 
 // MARK: - UINavigationBar design configurations
 extension UINavigationBar {
@@ -103,6 +107,8 @@ extension UINavigationBar {
         navigator?.navigationBar.isTranslucent = false
     }
 }
+
+
 
 // MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
 extension CALayer {
@@ -126,13 +132,14 @@ extension CALayer {
     }
 }
 
+
+
 // MARK: - Function to generate random colors
 extension CGFloat {
     static func random() -> CGFloat {
         return CGFloat(arc4random()) / CGFloat(UInt32.max)
     }
 }
-
 extension UIColor {
     static func randomColor() -> UIColor {
         return UIColor(red:   .random(),
@@ -141,6 +148,8 @@ extension UIColor {
                        alpha: 1)
     }
 }
+
+
 
 // MARK: - Extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
 extension MutableCollection where Indices.Iterator.Element == Index {

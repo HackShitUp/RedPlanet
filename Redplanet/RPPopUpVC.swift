@@ -27,6 +27,12 @@ extension RPPopUpVC {
     }
 }
 
+
+/*
+ Re-written from RCMantleViewController.swift (open-source).
+ Used to present stories and dismiss with UIPanGestureReognizers.
+ */
+
 open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationControllerDelegate, RPPopUpVCDelegate {
     
     open var scrollView: UIScrollView!

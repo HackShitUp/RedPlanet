@@ -16,6 +16,10 @@ import Bolts
 import SwipeNavigationController
 import SDWebImage
 
+/*
+ Class that allows users to follow public accounts before showing the Camera
+ */
+
 class Onboarding: UICollectionViewController {
     
     // Array to hold user object

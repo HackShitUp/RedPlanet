@@ -16,6 +16,11 @@ import Bolts
 import SDWebImage
 import DZNEmptyDataSet
 
+/*
+ UITableViewController class that shows all the people who've viewed a post.
+ Works with "ViewsCell.swift" and its respective UITableViewCell in Storyboard.
+ */
+
 class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Class configurable variable

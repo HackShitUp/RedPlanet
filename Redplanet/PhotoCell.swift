@@ -13,6 +13,16 @@ import Bolts
 import KILabel
 import SDWebImage
 
+
+/*
+ MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
+ UITableViewCell that presents a photo shared by a user.
+ 
+ • Refers to "ph" in the database class, "Posts", with a definitive value in <photoAsset> handled as a File value (PFFile).
+ 
+ PARENT CLASS IS ALWAYS "StoryScrollCell.swift"
+ */
+
 class PhotoCell: UITableViewCell {
 
     // PFObject; used to determine post type

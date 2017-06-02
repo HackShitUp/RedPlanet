@@ -22,7 +22,14 @@ import SwipeNavigationController
 var currentGeoFence = [CLPlacemark]()
 var temperature = [String]()
 
-class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate {
+
+
+/*
+ UIViewController class that allows users to filter and edit their photo-moments before sharing them. When red arrow button is tapped,
+ this class pushes to "ShareWith.swift" for sharing options
+ */
+
+class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, SwipeNavigationControllerDelegate {
     
     // MARK: - Class Variable
     var stillImage: UIImage?
@@ -370,7 +377,13 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         
         
-    }// end creating data
+    }
+    
+    
+    // Handle tap to show UITextField
+    func handleTap() {
+        self.textField.handleTap()
+    }
     
     // UPDATE NEW PICTURE
     fileprivate func updatePicture(_ newImage: UIImage) {
@@ -391,6 +404,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
 
 //MARK: - Extension SNSlider DataSource
+/*
+ MARK: - CapturedStill Extension; SNSliderDataSource Method
+ Used to configure image data when processing filters
+ */
 extension CapturedStill: SNSliderDataSource {
     
     func numberOfSlides(_ slider: SNSlider) -> Int {
@@ -406,9 +423,4 @@ extension CapturedStill: SNSliderDataSource {
     }
 }
 
-//MARK: - Extension Gesture Recognizer Delegate and touch Handler for TextField
-extension CapturedStill: UIGestureRecognizerDelegate {
-    func handleTap() {
-        self.textField.handleTap()
-    }
-}
+

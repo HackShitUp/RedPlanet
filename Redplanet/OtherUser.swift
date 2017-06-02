@@ -18,13 +18,20 @@ import Bolts
 import DZNEmptyDataSet
 import SDWebImage
 
-// Global variable to hold other user's object
+// Global array to hold other user's object
 var otherObject = [PFObject]()
-// Global variable to hold other user's username
+// Global array to hold other user's username
 var otherName = [String]()
 
-// Define Notification identifier
+// Define Notification Identifier
 let otherNotification = Notification.Name("otherUser")
+
+
+/*
+ UITableViewController class that presents the user's profile. Used with "OtherUserHeader.swift"
+ The UITableViewCells in this class, are referenced to "StoryCell.swift" in the NIBS/XIBS folder, 
+ and they show all the posts a user might have at a given time (ie: Today's Posts and Saved Posts).
+ */
 
 class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
     
@@ -667,7 +674,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
     
     
-    // MARK: - UITableView Delegate Method
+    // MARK: - UITableView Delegate Methods
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         if let cell = self.tableView.cellForRow(at: indexPath) {
             cell.contentView.backgroundColor = UIColor.groupTableViewBackground
@@ -686,7 +693,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         }
     }
     
-    // MARK: - UIScrollView Delegate Method
+    // MARK: - UIScrollView Delegate Methods
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         /*
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
@@ -710,7 +717,14 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
 }
 
 
-// MARK: - OtherUser; Interactive Functions Here
+
+/*
+ MARK: - OtherUser; Interactive functions are managed here
+ • Create Chat
+ • Create Space Post
+ • Block User
+ • Report User
+ */
 extension OtherUser {
     
     // FUNCTION - To Chat

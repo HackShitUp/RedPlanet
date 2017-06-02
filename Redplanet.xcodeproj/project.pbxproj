@@ -527,14 +527,14 @@
 			path = SwipeView;
 			sourceTree = "<group>";
 		};
-		7E43833F1DD9139300337007 /* #/SELECTED_STORIES */ = {
+		7E43833F1DD9139300337007 /* HASHTAGS/SELECTED_STORIES */ = {
 			isa = PBXGroup;
 			children = (
 				7E85C8701ECCC15200D5EF07 /* Hashtags.swift */,
 				7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */,
 				7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */,
 			);
-			name = "#/SELECTED_STORIES";
+			name = HASHTAGS/SELECTED_STORIES;
 			sourceTree = "<group>";
 		};
 		7E46EDD61DE4F4400034E434 /* Password */ = {
@@ -972,12 +972,12 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		7E9DA1891E14DA900001E8C0 /* NSBadge */ = {
+		7E9DA1891E14DA900001E8C0 /* EasyBadge */ = {
 			isa = PBXGroup;
 			children = (
 				7E9DA1871E14D9480001E8C0 /* NSBadge.swift */,
 			);
-			name = NSBadge;
+			name = EasyBadge;
 			sourceTree = "<group>";
 		};
 		7EA1C74E1E59835500FBE39B /* ShareWith */ = {
@@ -1094,7 +1094,7 @@
 				7E6A12E21E4D524C00CF108B /* Agrume */,
 				7EC005761E8CD95A00405530 /* AZDialogViewController */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
-				7E9DA1891E14DA900001E8C0 /* NSBadge */,
+				7E9DA1891E14DA900001E8C0 /* EasyBadge */,
 				7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */,
 				7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */,
 				7EBAFEF21ED7BAE800BB052D /* SubtleVolume */,
@@ -1112,7 +1112,7 @@
 				7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */,
 				7ED4A91F1DBEBE130016698F /* REACTIONS */,
 				7EECEE6A1E3C7B7E003FA134 /* NIBS/XIBS */,
-				7E43833F1DD9139300337007 /* #/SELECTED_STORIES */,
+				7E43833F1DD9139300337007 /* HASHTAGS/SELECTED_STORIES */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,

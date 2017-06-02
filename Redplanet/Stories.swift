@@ -25,6 +25,28 @@ import VIMVideoPlayer
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
+
+/*
+ UIViewController class reinforcing UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, and UITableViewDelegate
+ methods. This class presents all the stories for a given user by traversing the user's object in the last value of the above 
+ array, "storyObjects" and presents them in a UICollectionView. The UICollectionView then manages the configurations for data-binding in
+ its relative UICollectionViewCell.
+ 
+ 
+ *** The follow illustrates the hierarchy of views, from left to right presenting the lowest to highest executable configurations in this class:
+ 
+ UITableViewCell(?) --> UITableView(?) --> UICollectionViewCell --> UICollectionView (self)
+ 
+ *** The (?) indicate that the UITableView and UITableViewCell may or MAY NOT exist depending on the type of content presented. The content types, followed by a Boolean value indicate whether the UICollectionViewCell will have a UITableView and UITableViewCell in it:
+    (1) Text Post = True
+    (2) Photo = True
+    (3) Profile Photo = True
+    (4) Space Post = True
+    (5) Video = False
+    (6) Moment (Photo) = False
+    (6A) Moment (Video) = False
+*/
+
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
     
     // ScrollSets for database <contentType>
@@ -439,7 +461,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 
 
 
-// MARK: - Stories Extension used to configure StoryScrollCell.swift...
+/*
+ MARK: - Stories Extension; Manages to present posts in a UITableViewCell if they are...
+ • Text Posts
+ • Photos
+ • Profile Photos
+ • Space Posts
+ */
 extension Stories: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - UITableViewData Source Methods
@@ -500,7 +528,14 @@ extension Stories: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Stories Functions
+/*
+ MARK: - Stories Extension; Functions
+ • configureView() = Configures reactButton (Reactions) and adds spb (SegmentedProgressBar)
+ • like(_ ) = Likes/unlikes post
+ • saveViews(_ ) = Handles whether to save viewed data to server or not
+ • sendScreenShot(_ ) = Handles saving data and sending push notification if post was screenshotted
+ • showOption(_ ) = Shows options for a given post
+ */
 extension Stories {
     
     // FUNCTION - Configure view

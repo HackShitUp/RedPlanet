@@ -16,6 +16,11 @@ import Bolts
 import Onboard
 import OneSignal
 
+/*
+ Class that asks the user to create their bio and add their profile photo.
+ Both are optional.
+ */
+
 class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var rpUserProPic: PFImageView!

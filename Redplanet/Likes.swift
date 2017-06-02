@@ -16,6 +16,11 @@ import Bolts
 import SDWebImage
 import DZNEmptyDataSet
 
+
+/*
+ AMBIGUOUS NAME REFERENCE WARNING: This UITableViewController class shows the likes FOR A COMMENT.
+ */
+
 class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Class configurable variable

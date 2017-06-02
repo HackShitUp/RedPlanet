@@ -18,6 +18,27 @@ import SDWebImage
 import VIMVideoPlayer
 import DZNEmptyDataSet
 
+/*
+ UIViewController class reinforcing UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, and UITableViewDelegate
+ methods. This class presents all the stories for a given # post. The class first checks for public accounts, and fetches all the hashtag
+ posts if the user who shared them has a public account.
+ 
+ 
+ *** The follow illustrates the hierarchy of views, from left to right presenting the lowest to highest executable configurations in this class:
+ 
+ UITableViewCell(?) --> UITableView(?) --> UICollectionViewCell --> UICollectionView (self)
+ 
+ *** The (?) indicate that the UITableView and UITableViewCell may or MAY NOT exist depending on the type of content presented. The content types, followed by a Boolean value indicate whether the UICollectionViewCell will have a UITableView and UITableViewCell in it:
+ (1) Text Post = True
+ (2) Photo = True
+ (3) Profile Photo = True
+ (4) Space Post = True
+ (5) Video = False
+ (6) Moment (Photo) = False
+ (6A) Moment (Video) = False
+ 
+ */
+
 class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, ReactionFeedbackDelegate {
     
     // MARK: - Class Configureable Variable
@@ -393,7 +414,13 @@ class Hashtags: UIViewController, UICollectionViewDataSource, UICollectionViewDe
 
 
 
-// MARK: - Hashtags Extension
+/*
+ MARK: - Hashtags Extension that manages to present posts in a UITableViewCell if they are...
+ • Text Posts
+ • Photos
+ • Profile Photos
+ • Space Posts
+ */
 extension Hashtags: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - UITableViewData Source Methods
@@ -454,7 +481,14 @@ extension Hashtags: UITableViewDataSource, UITableViewDelegate {
 
 
 
-// MARK: - Stories Functions
+/*
+ MARK: - Hashtags Extension; Functions
+ • configureView() = Configures reactButton
+ • like(_ ) = Likes/unlikes post
+ • saveViews(_ ) = Handles whether to save viewed data to server or not
+ • sendScreenShot(_ ) = Handles saving data and sending push notification if post was screenshotted
+ • showOption(_ ) = Shows options for a given post
+*/
 extension Hashtags {
     
     // FUNCTION - Configure view

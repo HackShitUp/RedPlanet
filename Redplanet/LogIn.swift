@@ -13,7 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 
-
+/*
+ Class that allows users to Log In.
+ */
 
 class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
     

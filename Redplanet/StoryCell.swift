@@ -16,6 +16,15 @@ import ParseUI
 import Bolts
 import KILabel
 
+
+/*
+ UITableViewCell class that shows the preview of a story or post.
+ All of the UI configurations are executed in this class along with any related 
+ actions (ie: pushing to "Stories.swift" or pushing to "Story.swift"). The respective tap actions are also delegated here.
+ This class works with "OtherUser.swift", "CurrentUser.swift", and "Home.swift."
+ */
+
+
 class StoryCell: UITableViewCell {
     
     // Parent VC

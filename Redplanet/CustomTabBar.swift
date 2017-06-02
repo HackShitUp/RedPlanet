@@ -8,6 +8,10 @@
 
 import UIKit
 
+/*
+ Custom UITabBar class that minimizes default height of the tab bar.
+ */
+
 class CustomTabBar: UITabBar {
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var sizeThatFits = super.sizeThatFits(size)

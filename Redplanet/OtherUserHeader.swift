@@ -18,6 +18,20 @@ import Bolts
 import KILabel
 import OneSignal
 
+/*
+ UITableViewHeaderFooterView class that shows the user's profile.
+ This class references to the XIB file, "OtherUserHeader.xib" which presents the following:
+ • Number of Posts
+ • Number of Followers
+ • Number of Following
+ • Follow/Unfollow Button
+ • Current Relationship State Button (ie: Follow Requested).
+ • Block Button
+ • New Space Post Button
+ • Chat Button
+ Works with "OtherUser.swift", this class where the user's posts are shown.
+ */
+
 class OtherUserHeader: UITableViewHeaderFooterView {
     
     // Initialize parent VC
@@ -754,9 +768,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         }
         
         
-        // (7) Count best friends
-        
-
-    } // end awakeFromNib
+        // TODO::
+        // Count Best Friends!!!
+    }
 
 }

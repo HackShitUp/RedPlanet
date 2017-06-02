@@ -20,11 +20,21 @@ import OneSignal
 import SDWebImage
 import VIMVideoPlayer
 
+/*
+ UIViewController class that allows users to edit their posts. Only the following content types ("contentType" in database):
+ • Text Post - ("tp")
+ • Photo - ("ph")
+ • Profile Photo - ("pp")
+ • Video - ("vi")
+ • Space Post - ("sp")
+ 
+ Works with "UserCell.swift" and "UserCell.xib" when tagging users while editing posts.
+ */
+
 class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     
     // MARK: - Configurable class variables
     var editObject: PFObject?
-    
     
     // Array to hold user's objects
     var userObjects = [PFObject]()

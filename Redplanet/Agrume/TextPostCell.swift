@@ -19,6 +19,15 @@ import SDWebImage
 import SafariServices
 import ReadabilityKit
 
+/*
+ MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
+ UITableViewCell that presents a Text Post shared by a user.
+ 
+ • Refers to "tp" in the database class, "Posts", with a definitive value in <textPost> handled as a String.
+ 
+ PARENT CLASS IS ALWAYS "StoryScrollCell.swift"
+ */
+
 class TextPostCell: UITableViewCell {
     
     // Initialized PFObject

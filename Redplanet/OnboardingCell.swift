@@ -15,6 +15,12 @@ import Bolts
 
 import KILabel
 
+/*
+ UICollectionViewCell Class; Part of "Onboarding.swift"
+ • Binds the user's data to this class when allowing new users to follow public accounts.
+ • Manages the actions to follow/unfollow these public accounts.
+ */
+
 class OnboardingCell: UICollectionViewCell {
     
     // Set user's object

@@ -23,6 +23,11 @@ import SDWebImage
 // Define NotificationName
 let homeNotification = Notification.Name(rawValue: "home")
 
+/*
+ UITableViewController class that represents "Home" in the main interface of the app. This class is a relationship view controller
+ to "MasterUI.swift" and is the 1st of the 5 icons in the bottom tab-bar.
+ */
+
 class Home: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, TwicketSegmentedControlDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate Constant

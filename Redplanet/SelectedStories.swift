@@ -20,6 +20,15 @@ import SDWebImage
 import SwipeNavigationController
 
 
+/*
+ UIViewController class that reinforces UICollectionViewDataSource and UICollectionViewDelegate methods.
+ This UIViewController appears when a user taps on a news preview in the "Explore" tab of the main interface.
+ 
+ • Uses NewsApi.org
+ 
+ The data for the presentation of each news story, is binded in this class.
+ */
+
 class SelectedStories: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
     // MARK: - Class Variables

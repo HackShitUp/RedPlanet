@@ -21,6 +21,11 @@ import SDWebImage
 import SwipeNavigationController
 import VIMVideoPlayer
 
+/*
+ UIViewController that presents the selected photo or video from "Library.swift"
+ Also allows editing options if the selected asset was a photo. This class pushes to "ShareWith.swift" for sharing options.
+ */
+
 class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
     // MARK: - Class Variables
@@ -448,8 +453,12 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
 
 
 
-
-// MARK: - NewMedia; Class extensions to get PHAsset and show previews...
+/*
+ MARK: - NewMedia Extensions; Manages PHAsset and shows image or video previews...
+ • manageImageAsset()
+ • configureImageTap()
+ • manageVideoAsset()
+ */
 extension NewMedia {
     // FUNCTION - Get image from PHAsset
     func manageImageAsset() {

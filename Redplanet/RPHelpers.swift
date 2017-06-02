@@ -16,6 +16,11 @@ import Parse
 import ParseUI
 import Bolts
 
+
+/*
+ CUSTOM CLASS USED PERSISTENTLY THROUGHOUT THE APP
+ */
+
 class RPHelpers: NSObject {
     /**************************************************************************************************
     // MARK: - NotificationBanner; used to show statusbar progress/success/error --> Color variations

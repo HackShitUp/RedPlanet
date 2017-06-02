@@ -20,6 +20,11 @@ import OneSignal
 import SwipeNavigationController
 import VIMVideoPlayer
 
+/*
+ UIViewController class that shows the preview of the video-moment a user took with the camera. This class pushes to "ShareWith.swift"
+ to show sharing options.
+ */
+
 class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
 //, SwipeViewDelegate, SwipeViewDataSource {
     
@@ -301,7 +306,12 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
 
 
 
-// MARK: - CapturedVideo Extensions; used to manage video asset
+/*
+ MARK: - CapturedVideo Extensions; Configuration functions
+ • configureVolume()
+ • togglePlayPause()
+ • compressvideo( )
+ */
 extension CapturedVideo {
     // FUNCTION - Toggle volume on/off
     func configureVolume() {

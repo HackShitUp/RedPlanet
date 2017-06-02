@@ -13,6 +13,12 @@ import Parse
 import ParseUI
 import Bolts
 
+/*
+ UITableViewCell class that shows the following user's data:
+ • User's Profile Photo (ie: "userProfilePicture" in database).
+ • User's Username (ie: "username" in database).
+ • User's Full Name (ie: "realNameOfUser" in database).
+ */
 
 class UserCell: UITableViewCell {
 
