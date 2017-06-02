@@ -20,7 +20,7 @@ import DZNEmptyDataSet
 let requestsNotification = Notification.Name("FollowRequests")
 
 /*
- UICollectionViewController that shows new FollowRequests. References 
+ UICollectionViewController that shows new FollowRequests. References
  */
 
 class FollowRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {

@@ -152,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
                                                             }
-                                        L                })
+                                                         })
                                                     }
                                                 }
                                                 
