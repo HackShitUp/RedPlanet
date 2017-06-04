@@ -22,3 +22,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\
 See the License for the specific language governing permissions and\
 limitations under the License.\
 }
+
+The following (25 in total) open-source libraries are used in Redplanet for iOS:
+• Agrume
+• AnimatedCollectioniewLayout
+• AZDialogViewController
+• Bolts
+• CLImageEditor
+• DZNEmptyDataSet
+• HEAP
+• KILabel
+• NSBadge
+• NotificationBannerSwift  (MarqueeLabel/SnapKit)
+• Onboard
+• OneSignal
+• Parse
+• ParseUI
+• RCMantleViewController
+• SDWebImage
+• SegmentedProgressBar
+• SnapSliderFilters
+• SubtleVolume
+• SVProgressHUD
+• SwiftyCam
+• SwipeNavigationController
+• SwipeView
+• TRMosaicLayout
+• TwicketSegmentedControl

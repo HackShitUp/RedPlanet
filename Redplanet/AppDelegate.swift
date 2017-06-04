@@ -30,27 +30,34 @@
   - J Cole Sideline Story
   
   
-RED:
-• UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-• #FF0050
+Redplanet Red
+UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+#FF0050
 
-PURPLE
-• UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
-• #BD0FE1
+• Purple
+UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+#BD0FE1
 
-BLUE:
-• UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-• #00A1FF
+• Baby Blue
+UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+#00A1FF
 
-GOOD GRAY
-• UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
-• #CCCCCC
+• Gray
+UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
+#CCCCCC
 
-SUPER LIGHT GREY
-• UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
+• Super Light Gray
+UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
 
-YELLOW:
-• UIColor(red: 1, green: 0.86, blue: 0, alpha: 1)
+• Yellow
+UIColor(red: 1, green: 0.86, blue: 0, alpha: 1)
+  
+  
+  MARK: - Class documentation
+  This class executes the following crucial functions:
+  • login() - Checks if a current user exists (PFUser.current()!) and logs the user in. If not nil, then it loads the camera.
+  • queryRelationships() - Fetches the current user's relationships (ie: followers, following, requested, etc.)
+  
 */
 
 import UIKit
