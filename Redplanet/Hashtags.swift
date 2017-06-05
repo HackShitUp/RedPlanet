@@ -798,7 +798,7 @@ extension Hashtags {
             dialogController.addAction(delete)
             // Add saveButton
             dialogController.rightToolStyle = { (button) in
-                button.setImage(UIImage(named: "SaveWhite"), for: .normal)
+                button.setImage(UIImage(named: "SaveBlack"), for: .normal)
                 button.tintColor = .darkGray
                 return true
             }

@@ -17,12 +17,14 @@ class TableCollectionCell: UITableViewCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    // Initialize UICollectionViewFlowLayout
+    let layout = UICollectionViewFlowLayout()
+    
     func setCollectionViewDataSourceDelegate
         <D: UICollectionViewDataSource & UICollectionViewDelegate>
         (dataSourceDelegate: D, forRow row: Int) {
         // Configure Flow layout...
         if row == 0 || row == 1 {
-            let layout = UICollectionViewFlowLayout()
             layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             layout.itemSize = CGSize(width: 125, height: 175)
             layout.minimumInteritemSpacing = 0
@@ -30,7 +32,6 @@ class TableCollectionCell: UITableViewCell {
             layout.scrollDirection = .horizontal
             collectionView.collectionViewLayout = layout
         } else {
-            let layout = UICollectionViewFlowLayout()
             layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             layout.itemSize = CGSize(width: 215, height: 125)
             layout.minimumInteritemSpacing = 0
