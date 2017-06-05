@@ -86,11 +86,14 @@ class TextPostCell: UITableViewCell {
                 self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 17)
                 self.textPost.textColor = UIColor.black
             }
+            // Set text...
             self.textPost.text = text
             
             for var word in text.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                 // @'s
                 if word.hasPrefix("http") {
+                    // Replace word
+                    self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
                     
                     // MARK: - Readability
                     Readability.parse(url: URL(string: word)!, completion: { (data) in
@@ -98,11 +101,21 @@ class TextPostCell: UITableViewCell {
                         // Traverse image URL and hide views if no image exists
                         if let imageURL = data?.topImage {
                             // MARK: - SDWebImage
+                            self.webImage.sd_addActivityIndicator()
+                            self.webImage.sd_setIndicatorStyle(.white)
                             self.webImage.sd_setImage(with: URL(string: imageURL)!)
+                            
+                            // Show web previews
+                            self.webImage.isHidden = false
+                            self.webTitlePreview.isHighlighted = false
+                            
                             // Set title
                             if let title = data?.title {
                                 if let description = data?.description {
-                                    self.webTitlePreview.text = "\(title)\n\(description)"
+                                    // MARK: - RPExtensions
+                                    let formattedString = NSMutableAttributedString()
+                                    _ = formattedString.bold("\(title)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\n\(description)", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+                                    self.webTitlePreview.attributedText = formattedString
                                 }
                             }
                             
@@ -111,15 +124,7 @@ class TextPostCell: UITableViewCell {
                             self.webImage.layer.borderColor = UIColor.groupTableViewBackground.cgColor
                             self.webImage.layer.borderWidth = 0.5
                             self.webImage.clipsToBounds = true
-                            
-                            // Replace word
-                            self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
-                            
-                        } else {
-                            self.webImage.isHidden = true
-                            self.webTitlePreview.isHighlighted = true
                         }
-                        
                     })
                 }
             }
@@ -132,6 +137,9 @@ class TextPostCell: UITableViewCell {
         
         // Set frames
         self.contentView.frame = self.frame
+        
+        self.webImage.isHidden = true
+        self.webTitlePreview.isHighlighted = true
         
         // Add Profile Tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(visitProfile))

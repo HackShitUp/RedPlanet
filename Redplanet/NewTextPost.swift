@@ -335,11 +335,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 // Show tableView and reloadData
                 self.tableView!.isHidden = false
                 self.tableView!.reloadData()
-            } else if word.hasPrefix("http") {
-                let apiEndpoint: String = "http://tinyurl.com/api-create.php?url=\(word)"
-                let shortURL = try? String(contentsOf: URL(string: apiEndpoint)!, encoding: String.Encoding.ascii)
-                // Replace text
-                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: shortURL!, options: String.CompareOptions.literal, range: nil)
             } else {
                 self.tableView!.isHidden = true
             }
