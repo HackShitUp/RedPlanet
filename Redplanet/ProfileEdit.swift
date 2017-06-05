@@ -375,14 +375,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             PFUser.current()!.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    
-                    // Append new profile photo
-                    changedProPicImg.append(self.rpUserProPic.image!)
-                    
-                    // Present Popover
+
+                    // Initialize Popover, pass new profile photo to the pop over vc, and present pop over...
                     let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
                     newProPicVC.modalPresentationStyle = .popover
                     newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+                    newProPicVC.changedProPicImage = self.rpUserProPic.image!
                     
                     let popOverVC = newProPicVC.popoverPresentationController
                     popOverVC?.permittedArrowDirections = .any
@@ -679,10 +677,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     // Set image
                     self.rpUserProPic.image = chosenImage
                     
-                    
-                    // Append image
-                    changedProPicImg.append(chosenImage)
-                    
+                    // Pass selected profile photo to NewProfilePhoto view controller
+                    let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
+                    newProPicVC.changedProPicImage = self.rpUserProPic.image!
                     
                     // Dismiss view controller
                     self.dismiss(animated: true, completion: nil)

@@ -13,14 +13,15 @@ import Parse
 import ParseUI
 import Bolts
 
-// Array to hold changed profile photo
-var changedProPicImg = [UIImage]()
 
 /*
  UIViewController class that allows users to edit their Profile Photos' caption. Presented as a modal popover in "ProfileEdit.swift"
  */
 
 class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
+    
+    // MARK: - Configureable Class Variables
+    var changedProPicImage: UIImage?
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var proPicCaption: UITextView!
@@ -177,7 +178,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         
 
         // Set initial image
-        self.rpUserProPic.image = changedProPicImg.last!
+        self.rpUserProPic.image = self.changedProPicImage!
         
         // MARK: - RPHelpers extension
         self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)

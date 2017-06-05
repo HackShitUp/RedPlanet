@@ -39,6 +39,8 @@ class TextPostCell: UITableViewCell {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var textPost: KILabel!
+    @IBOutlet weak var webImage: UIImageView!
+    @IBOutlet weak var webTitlePreview: UILabel!
     
     // FUNCTION - Navigates to user's profile
     func visitProfile(sender: AnyObject) {
@@ -85,25 +87,42 @@ class TextPostCell: UITableViewCell {
                 self.textPost.textColor = UIColor.black
             }
             self.textPost.text = text
-
-            /*
+            
             for var word in text.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                 // @'s
                 if word.hasPrefix("http") {
-//                    let apiEndpoint: String = "http://tinyurl.com/api-create.php?url=\(word)"
-//                    let shortURL = try? String(contentsOf: URL(string: apiEndpoint)!, encoding: String.Encoding.ascii)
-                    // Replace text
+                    
+                    // MARK: - Readability
                     Readability.parse(url: URL(string: word)!, completion: { (data) in
-                        let title = data?.title
-                        let description = data?.description
-                        let keywords = data?.keywords
-                        let imageUrl = data?.topImage
-                        let videoUrl = data?.topVideo
-                        print(title)
+                        
+                        // Traverse image URL and hide views if no image exists
+                        if let imageURL = data?.topImage {
+                            // MARK: - SDWebImage
+                            self.webImage.sd_setImage(with: URL(string: imageURL)!)
+                            // Set title
+                            if let title = data?.title {
+                                if let description = data?.description {
+                                    self.webTitlePreview.text = "\(title)\n\(description)"
+                                }
+                            }
+                            
+                            // MARK: - RPHelpers
+                            self.webImage.roundAllCorners(sender: self.webImage)
+                            self.webImage.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+                            self.webImage.layer.borderWidth = 0.5
+                            self.webImage.clipsToBounds = true
+                            
+                            // Replace word
+                            self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
+                            
+                        } else {
+                            self.webImage.isHidden = true
+                            self.webTitlePreview.isHighlighted = true
+                        }
+                        
                     })
                 }
             }
-            */
         }
     }
 
@@ -111,6 +130,7 @@ class TextPostCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        // Set frames
         self.contentView.frame = self.frame
         
         // Add Profile Tap

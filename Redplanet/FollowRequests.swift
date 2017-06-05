@@ -190,7 +190,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         
         // UIRefreshControl - Pull to refresh
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
         collectionView!.addSubview(refresher)
