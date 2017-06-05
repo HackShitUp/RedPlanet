@@ -35,6 +35,10 @@ class TextPostCell: UITableViewCell {
     // Initialized parent UIViewController
     var superDelegate: UIViewController?
     
+    // Initialized STRING to show URL for Text Post
+    var webURL: String?
+    
+    
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
@@ -50,6 +54,13 @@ class TextPostCell: UITableViewCell {
         }
         let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.superDelegate?.navigationController?.pushViewController(otherUserVC, animated: true)
+    }
+    
+    // FUNCTION - Show URL by passing the URL here when tapped
+    func showURL(sender: AnyObject) {
+        // MARK: - SafariServices
+        let webVC = SFSafariViewController(url: URL(string: self.webURL!)!, entersReaderIfAvailable: false)
+        self.superDelegate?.navigationController?.present(webVC, animated: true, completion: nil)
     }
     
     // FUNCTION - Binds data to update UI
@@ -95,6 +106,9 @@ class TextPostCell: UITableViewCell {
                     // Replace word
                     self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
                     
+                    // Declare webURL
+                    self.webURL = word
+                    
                     // MARK: - Readability
                     Readability.parse(url: URL(string: word)!, completion: { (data) in
                         
@@ -124,6 +138,18 @@ class TextPostCell: UITableViewCell {
                             self.webImage.layer.borderColor = UIColor.groupTableViewBackground.cgColor
                             self.webImage.layer.borderWidth = 0.5
                             self.webImage.clipsToBounds = true
+                            
+                            // Add tap method to webImage
+                            let previewURLTap = UITapGestureRecognizer(target: self, action: #selector(self.showURL))
+                            previewURLTap.numberOfTapsRequired = 1
+                            self.webImage.isUserInteractionEnabled = true
+                            self.webImage.addGestureRecognizer(previewURLTap)
+                            
+                            // Add tap method to webTitlePreview
+                            let titleURLTap = UITapGestureRecognizer(target: self, action: #selector(self.showURL))
+                            titleURLTap.numberOfTapsRequired = 1
+                            self.webTitlePreview.isUserInteractionEnabled = true
+                            self.webTitlePreview.addGestureRecognizer(titleURLTap)
                         }
                     })
                 }
