@@ -65,6 +65,8 @@ class MomentPhoto: UICollectionViewCell {
         
         // (3) Set Photo
         if let photo = withObject!.value(forKey: "photoAsset") as? PFFile {
+            photoMoment.frame = self.bounds
+            photoMoment.layoutIfNeeded()
             // MARK: - SDWebImage
             photoMoment.sd_addActivityIndicator()
             photoMoment.sd_setIndicatorStyle(.gray)
