@@ -61,7 +61,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     @IBAction func moreAction(_ sender: Any) {
         // MARK: - AZDialogViewController
         let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                                      message: "Options")
+                                                      message: nil)
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
@@ -84,9 +84,10 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         }
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
+            button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.layer.masksToBounds = true
         }
         // Add Cancel button
@@ -181,82 +182,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     }
                 }
                 
-                // PRIVATE ACCOUNT
-                if otherObject.last!.value(forKey: "private") as! Bool == true {
-                    // (1) Follower
-                    if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        // MARK: - DZNEmptyDataSet
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                        
-                    } else if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // (2) Following
-                        if self.relativePosts.count == 0 {
-                            // MARK: - DZNEmptyDataSet
-                            self.dznType = "💩 No Posts Today"
-                            self.tableView.emptyDataSetSource = self
-                            self.tableView.emptyDataSetDelegate = self
-                            self.tableView.reloadEmptyDataSet()
-                        }
-                        
-                    } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                        // (3) Follower Requested
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        // MARK: - DZNEmptyDataSet
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                        
-                    } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                        // (4) Sent Follow Request
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        // MARK : -DZNEmptyDataSet
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                        
-                    } else if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // (5) Follower AND Following (AKA: Friends)
-                        if self.relativePosts.count == 0 {
-                            // MARK: - DZNEmptyDataSet
-                            self.dznType = "💩 No Posts Today"
-                            self.tableView.emptyDataSetSource = self
-                            self.tableView.emptyDataSetDelegate = self
-                            self.tableView.reloadEmptyDataSet()
-                        }
-                        
-                    } else {
-                        // (6) Not yet following
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                    }
-                    
-                } else {
-                    // PUBLIC ACCOUNT
-                    if self.relativePosts.count == 0 {
-                        self.dznType = "💩 No Posts Today"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                    }
-                }
-                
-                // Reload data in main thread
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                })
+                // Configure UIButton
+                self.configureButton(forPosts: self.relativePosts)
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -284,83 +211,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     self.relativePosts.append(object)
                 }
                 
-                // PRIVATE ACCOUNT
-                if otherObject.last!.value(forKey: "private") as! Bool == true {
-                    // (1) Follower
-                    if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        
-                        // MARK: - DZNEmptyDataSet
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                        
-                    } else if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // (2) Following
-                        if self.relativePosts.count == 0 {
-                            // MARK: - DZNEmptyDataSet
-                            self.dznType = "💩 No Saved Posts"
-                            self.tableView.emptyDataSetSource = self
-                            self.tableView.emptyDataSetDelegate = self
-                            self.tableView.reloadEmptyDataSet()
-                        }
-                        
-                    } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                        // (3) Follower Requested
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        // MARK: - DZNEmptyDataSet
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                        
-                    } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                        // (4) Sent Follow Request
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        // MARK : -DZNEmptyDataSet
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                        
-                    } else if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // (5) Follower AND Following (AKA: Friends)
-                        if self.relativePosts.count == 0 {
-                            // MARK: - DZNEmptyDataSet
-                            self.dznType = "💩 No Saved Posts"
-                            self.tableView.emptyDataSetSource = self
-                            self.tableView.emptyDataSetDelegate = self
-                            self.tableView.reloadEmptyDataSet()
-                        }
-                        
-                    } else {
-                        // Clear array
-                        self.relativePosts.removeAll(keepingCapacity: false)
-                        // (6) Not yet following
-                        self.dznType = "🔒 Private Account"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                    }
-                    
-                } else {
-                    // PUBLIC ACCOUNT
-                    if self.relativePosts.count == 0 {
-                        self.dznType = "💩 No Saved Posts"
-                        self.tableView.emptyDataSetSource = self
-                        self.tableView.emptyDataSetDelegate = self
-                        self.tableView.reloadEmptyDataSet()
-                    }
-                }
-                
-                // Reload data in main thread
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                })
+                // Configure UIButton
+                self.configureButton(forPosts: self.relativePosts)
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -368,6 +220,90 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         }
 
     }
+    
+    
+    // FUNCTION - Configure UIButton with user's profile
+    func configureButton(forPosts: [PFObject]) {
+        
+        // PRIVATE ACCOUNT
+        if otherObject.last!.value(forKey: "private") as! Bool == true {
+            // (1) Follower
+            if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                // Clear array
+                self.relativePosts.removeAll(keepingCapacity: false)
+                
+                // MARK: - DZNEmptyDataSet
+                self.dznType = "🔒 Private Account"
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+                
+            } else if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                // (2) Following
+                if self.relativePosts.count == 0 {
+                    // MARK: - DZNEmptyDataSet
+                    self.dznType = "💩 No Saved Posts"
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                }
+                
+            } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+                // (3) Follower Requested
+                // Clear array
+                self.relativePosts.removeAll(keepingCapacity: false)
+                // MARK: - DZNEmptyDataSet
+                self.dznType = "🔒 Private Account"
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+                
+            } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+                // (4) Sent Follow Request
+                // Clear array
+                self.relativePosts.removeAll(keepingCapacity: false)
+                // MARK : -DZNEmptyDataSet
+                self.dznType = "🔒 Private Account"
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+                
+            } else if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                // (5) Follower AND Following (AKA: Friends)
+                if self.relativePosts.count == 0 {
+                    // MARK: - DZNEmptyDataSet
+                    self.dznType = "💩 No Saved Posts"
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                }
+                
+            } else {
+                // Clear array
+                self.relativePosts.removeAll(keepingCapacity: false)
+                // (6) Not yet following
+                self.dznType = "🔒 Private Account"
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+            }
+            
+        } else {
+            // PUBLIC ACCOUNT
+            if self.relativePosts.count == 0 {
+                self.dznType = "💩 No Saved Posts"
+                self.tableView.emptyDataSetSource = self
+                self.tableView.emptyDataSetDelegate = self
+                self.tableView.reloadEmptyDataSet()
+            }
+        }
+        
+        // Reload data in main thread
+        DispatchQueue.main.async(execute: {
+            self.tableView.reloadData()
+        })
+    }
+    
 
     // FUNCTION - Stylize and set title of UINavigationBar
     func configureView() {
@@ -544,12 +480,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Hide and show buttons depending on relationship
         // Also set title depending on relationship state
         
-        // DEFAULT: Not Yet Connected
-        // Hide Relation button, and show Follow button: chat and report
-        header.relationType.isUserInteractionEnabled = true
-        header.relationType.isHidden = true
-        header.followButton.isHidden = false
-        header.followButton.isUserInteractionEnabled = true
+        // DEFAULT: Not Yet Connected --> show followButton, chatButton, and blockButton
         // Show Chat Button
         header.chatButton.isHidden = false
         header.chatButton.isUserInteractionEnabled = true
@@ -563,27 +494,22 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
 
         if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOWER
-            header.relationType.isHidden = false
-            header.relationType.setTitle("Follower", for: .normal)
+            header.configureButton(relationTitle: "Follower")
         }
         
         if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOWING
-            header.relationType.isHidden = false
-            header.relationType.setTitle("Following", for: .normal)
+            header.configureButton(relationTitle: "Following")
         }
         
         if currentRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || currentRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOW REQUESTED
-            header.relationType.isHidden = false
-            header.relationType.setTitle("Requested", for: .normal)
+            header.configureButton(relationTitle: "Requested")
         }
         
         if currentFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
         // FOLLOWER & FOLLOWING == FOLLOWING
-            header.relationType.isHidden = false
-            header.relationType.setTitle("Following", for: .normal)
-            
+            header.configureButton(relationTitle: "Following")
             // Hide Block Button
             header.blockButton.isHidden = true
             header.blockButton.isUserInteractionEnabled = false
@@ -595,7 +521,6 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Hide all buttons if user is PFUser.current()
         if otherObject.last!.objectId! == PFUser.current()!.objectId! {
             header.followButton.isHidden = true
-            header.relationType.isHidden = true
             header.chatButton.isHidden = true
             header.blockButton.isHidden = true
             header.newSpaceButton.isHidden = true
@@ -682,15 +607,8 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.segmentedControl.selectedSegmentIndex == 1 {
-            // Show Story
-            let storyVC = self.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
-            storyVC.storyObject = self.relativePosts[indexPath.row]
-            // MARK: - RPPopUpVC
-            let rpPopUpVC = RPPopUpVC()
-            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
-            self.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
-        }
+        /*
+         */
     }
     
     // MARK: - UIScrollView Delegate Methods

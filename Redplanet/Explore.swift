@@ -484,7 +484,6 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             
             // (2) Set cover photo
             if let urlToImage = self.articles[indexPath.item].value(forKey: "urlToImage") as? String {
-                print("\(urlToImage)")
                 // MARK: - SDWebImage
                 nCell.storyCover.sd_setImage(with: URL(string: urlToImage))
                 

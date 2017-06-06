@@ -42,7 +42,6 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var numberOfPosts: UIButton!
     @IBOutlet weak var numberOfFollowers: UIButton!
     @IBOutlet weak var numberOfFollowing: UIButton!
-    @IBOutlet weak var relationType: UIButton!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var fullName: UILabel!
     @IBOutlet weak var userBio: KILabel!
@@ -50,6 +49,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var chatButton: UIButton!
     @IBOutlet weak var newSpaceButton: UIButton!
     @IBOutlet weak var segmentView: UIView!
+    
     
     // FUNCTION - Zoom into photo
     func zoom(sender: AnyObject) {
@@ -110,6 +110,49 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     }
     
     
+    // FUNCTION - Configure UIButton
+    func configureButton(relationTitle: String) {
+        
+        // REQUESTED
+        // FOLLOW
+        // FOLLOWER
+        // FOLLOWING
+        
+        // Set up title
+        self.followButton.setTitle(relationTitle, for: .normal)
+        
+        switch relationTitle {
+            case "Requested", "Following", "Follower":
+                self.followButton.setTitleColor(UIColor.white, for: .normal)
+                self.followButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                self.followButton.layer.borderWidth = 3
+                self.followButton.layer.cornerRadius = 22.00
+                self.followButton.clipsToBounds = true
+            case "Follow":
+                self.followButton.backgroundColor = UIColor.white
+                self.followButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1), for: .normal)
+                self.followButton.layer.borderWidth = 3
+                self.followButton.layer.cornerRadius = 22.00
+                self.followButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
+                self.followButton.clipsToBounds = true
+        default:
+            self.followButton.backgroundColor = UIColor.white
+            self.followButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1), for: .normal)
+            self.followButton.layer.borderWidth = 3
+            self.followButton.layer.cornerRadius = 22.00
+            self.followButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
+            self.followButton.clipsToBounds = true
+        }
+        
+        
+        DispatchQueue.main.async(execute: {
+            // Re-enable followButton
+            self.followButton.isUserInteractionEnabled = true
+            self.followButton.isEnabled = true
+        })
+    }
+    
+    
     // FOLLOW ACTION
     @IBAction func followAction(_ sender: Any) {
         // MARK: - HEAP
@@ -118,129 +161,14 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         
-        // Disable Follow Button
+        // Disable buttons
         self.followButton.isUserInteractionEnabled = false
         self.followButton.isEnabled = false
-        
-        if otherObject.last!.value(forKey: "private") as! Bool == true {
-        // PRIVATE ACCOUNT
-            // FollowMe
-            let follow = PFObject(className: "FollowMe")
-            follow["followerUsername"] = PFUser.current()!.username!
-            follow["follower"] = PFUser.current()!
-            follow["followingUsername"] = otherName.last!
-            follow["following"] = otherObject.last!
-            follow["isFollowing"] = false
-            follow.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    
-                    // Show relationship button
-                    self.relationType.isHidden = false
-                    self.relationType.isUserInteractionEnabled = true
-                    self.relationType.isEnabled = true
-                    self.relationType.setTitle("Requested", for: .normal)
-                    
-                    // Send "follow requested" Notification
-                    let notifications = PFObject(className: "Notifications")
-                    notifications["from"] = PFUser.current()!.username!
-                    notifications["fromUser"] = PFUser.current()!
-                    notifications["forObjectId"] = follow.objectId!
-                    notifications["to"] = otherName.last!
-                    notifications["toUser"] = otherObject.last!
-                    notifications["type"] = "follow requested"
-                    notifications.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Successfully sent follow notification: \(notifications)")
-                            
-                            // Re enable buttons
-                            self.followButton.isUserInteractionEnabled = true
-                            self.followButton.isEnabled = true
-                            
-                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                            let rpHelpers = RPHelpers()
-                            rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Enable Follow Button
-                            self.followButton.isUserInteractionEnabled = true
-                            self.followButton.isEnabled = true
-                        }
-                    })
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Enable Follow Button
-                    self.followButton.isUserInteractionEnabled = true
-                    self.followButton.isEnabled = true
-                }
-            })
-            
-        } else {
-        // PUBLIC ACCOUNT
-            // FollowMe
-            let follow = PFObject(className: "FollowMe")
-            follow["followerUsername"] = PFUser.current()!.username!
-            follow["follower"] = PFUser.current()!
-            follow["followingUsername"] = otherName.last!
-            follow["following"] = otherObject.last!
-            follow["isFollowing"] = true
-            follow.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    print("Successfully saved follow: \(follow)")
-                    
-                    // Show relationship button
-                    self.relationType.isHidden = false
-                    self.relationType.setTitle("Following", for: .normal)
-                    
-                    // Send following notification
-                    let notifications = PFObject(className: "Notifications")
-                    notifications["from"] = PFUser.current()!.username!
-                    notifications["fromUser"] = PFUser.current()!
-                    notifications["forObjectId"] = otherObject.last!.objectId!
-                    notifications["to"] = otherName.last!
-                    notifications["toUser"] = otherObject.last!
-                    notifications["type"] = "followed"
-                    notifications.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Successfully sent notification: \(notifications)")
-                            
-                            // Enable Follow Button
-                            self.followButton.isUserInteractionEnabled = true
-                            self.followButton.isEnabled = true
-                            
-                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                            let rpHelpers = RPHelpers()
-                            rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-            
-        }
-    }// end followAction
 
-    
-    // RELATION ACTIONS
-    // (1) Following
-    // (2) Follower
-    // (3) Follow Requested
-    // (3A) Received Follow Request
-    // (3B) Sent Follow Request
-    @IBAction func relationAction(_ sender: Any) {
         
         // MARK: - AZDialogViewController
         let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                                      message: "Options")
+            message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
@@ -263,16 +191,119 @@ class OtherUserHeader: UITableViewHeaderFooterView {
             button.setTitle("CANCEL", for: [])
             return true
         }
-        
 
-        // (1)
-        // ============================================================================================================================
-        // ============================================================================================================================
-        // ======================================= F O L L O W I N G ==================================================================
-        // ============================================================================================================================
-        // ============================================================================================================================
-        // UNFOLLOW ===================================================================================================================
-        if self.relationType.titleLabel!.text! == "Following" {
+        // FOLLOW
+        if self.followButton.titleLabel?.text == "Follow" {
+            if otherObject.last!.value(forKey: "private") as! Bool == true {
+                
+                // PRIVATE ACCOUNT
+                let follow = PFObject(className: "FollowMe")
+                follow["followerUsername"] = PFUser.current()!.username!
+                follow["follower"] = PFUser.current()!
+                follow["followingUsername"] = otherName.last!
+                follow["following"] = otherObject.last!
+                follow["isFollowing"] = false
+                follow.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        
+                        // Configure button
+                        self.configureButton(relationTitle: "Requested")
+                        
+                        // Send "follow requested" Notification
+                        let notifications = PFObject(className: "Notifications")
+                        notifications["from"] = PFUser.current()!.username!
+                        notifications["fromUser"] = PFUser.current()!
+                        notifications["forObjectId"] = follow.objectId!
+                        notifications["to"] = otherName.last!
+                        notifications["toUser"] = otherObject.last!
+                        notifications["type"] = "follow requested"
+                        notifications.saveInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Successfully sent follow notification: \(notifications)")
+                                
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Re-enable followButton
+                                self.followButton.isUserInteractionEnabled = true
+                                self.followButton.isEnabled = true
+                            }
+                        })
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Re-enable followButton
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
+                    }
+                })
+                
+            } else {
+                
+                // PUBLIC ACCOUNT
+                let follow = PFObject(className: "FollowMe")
+                follow["followerUsername"] = PFUser.current()!.username!
+                follow["follower"] = PFUser.current()!
+                follow["followingUsername"] = otherName.last!
+                follow["following"] = otherObject.last!
+                follow["isFollowing"] = true
+                follow.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved follow: \(follow)")
+                        
+                        // Configure button
+                        self.configureButton(relationTitle: "Following")
+                        
+                        // Send following notification
+                        let notifications = PFObject(className: "Notifications")
+                        notifications["from"] = PFUser.current()!.username!
+                        notifications["fromUser"] = PFUser.current()!
+                        notifications["forObjectId"] = otherObject.last!.objectId!
+                        notifications["to"] = otherName.last!
+                        notifications["toUser"] = otherObject.last!
+                        notifications["type"] = "followed"
+                        notifications.saveInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Successfully sent notification: \(notifications)")
+                                
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Re-enable followButton
+                                self.followButton.isUserInteractionEnabled = true
+                                self.followButton.isEnabled = true
+                            }
+                        })
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Re-enable followButton
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
+                    }
+                })
+            }
+        }
+        
+        // RELATION ACTIONS
+        // (1) Following
+        // (2) Follower
+        // (3) Follow Requested
+        // (3A) Received Follow Request
+        // (3B) Sent Follow Request
+        
+        // FOLLOWING --> Unfollow
+        if self.followButton.titleLabel?.text == "Following" {
+            
             dialogController.addAction(AZDialogAction(title: "Unfollow", handler: { (dialog) -> (Void) in
                 // Dismiss
                 dialog.dismiss()
@@ -287,10 +318,9 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                     if error == nil {
                         for object in objects! {
                             object.deleteEventually()
-                            
-                            // Hide and show buttons
-                            self.relationType.isHidden = true
-                            self.followButton.isHidden = false
+
+                            // Configure Button
+                            self.configureButton(relationTitle: "Follow")
                             
                             // Delete from Notifications
                             let notifications = PFQuery(className: "Notifications")
@@ -305,12 +335,18 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                         }
                         
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
                     }
                 })
             }))
@@ -319,23 +355,17 @@ class OtherUserHeader: UITableViewHeaderFooterView {
             dialogController.show(in: self.delegate!)
         }
         
-        
-        // (2)
-        // ============================================================================================================================
-        // ============================================================================================================================
-        // ======================================= F O L L O W E R  ===================================================================
-        // ============================================================================================================================
-        // ============================================================================================================================
-        // FOLLOW BACK =============================================================================================================***
-        // REMOVE FOLLOWER =========================================================================================================***
-        if self.relationType.titleLabel!.text == "Follower" {
-        // (2A) FOLLOW BACK
+        // FOLLOWER
+        // • Follow Back
+        // • Remove Follower
+        if self.followButton.titleLabel?.text == "Follower" {
+            // FOLLOW BACK
             dialogController.addAction(AZDialogAction(title: "Follow Back", handler: { (dialog) -> (Void) in
                 // Dismiss
                 dialog.dismiss()
                 
                 if otherObject.last!.value(forKey: "private") as! Bool == true {
-                // PRIVATE ACCOUNT
+                    // PRIVATE ACCOUNT
                     let follow = PFObject(className: "FollowMe")
                     follow["followerUsername"] = PFUser.current()!.username!
                     follow["follower"] = PFUser.current()!
@@ -346,10 +376,9 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                         (success: Bool, error: Error?) in
                         if success {
                             print("Successfully saved follow: \(follow)")
-
-                            // Change sender button title
-                            self.relationType.isHidden = false
-                            self.relationType.setTitle("Requested", for: .normal)
+                            
+                            // Configure button
+                            self.configureButton(relationTitle: "Requested")
                             
                             // Send notification
                             let notifications = PFObject(className: "Notifications")
@@ -370,15 +399,21 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                             
                         } else {
                             print(error?.localizedDescription as Any)
+                            // Re-enable buttons
+                            self.followButton.isUserInteractionEnabled = true
+                            self.followButton.isEnabled = true
                         }
                     })
                 } else {
-                // PUBLIC ACCOUNT
+                    // PUBLIC ACCOUNT
                     let follow = PFObject(className: "FollowMe")
                     follow["followerUsername"] = PFUser.current()!.username!
                     follow["follower"] = PFUser.current()!
@@ -389,9 +424,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                         (success: Bool, error: Error?) in
                         if success {
                             
-                            // Change sender button title
-                            self.relationType.isHidden = false
-                            self.relationType.setTitle("Following", for: .normal)
+                            // Configure button
+                            self.configureButton(relationTitle: "Following")
                             
                             // Send notification
                             let notifications = PFObject(className: "Notifications")
@@ -412,17 +446,22 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                             
                         } else {
                             print(error?.localizedDescription as Any)
+                            // Re-enable buttons
+                            self.followButton.isUserInteractionEnabled = true
+                            self.followButton.isEnabled = true
                         }
                     })
                 }
             }))
-            
-        // (2B) REMOVE FOLLOWER
+            // REMOVE FOLLOWER
             dialogController.addAction(AZDialogAction(title: "Remove Follower", handler: { (dialog) -> (Void) in
                 // Dismiss
                 dialog.dismiss()
@@ -438,9 +477,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                         for object in objects! {
                             object.deleteEventually()
                             
-                            // Not following
-                            self.relationType.isHidden = true
-                            self.followButton.isUserInteractionEnabled = true
+                            // Configure button
+                            self.configureButton(relationTitle: "Follow")
                             
                             // Delete from Notifications
                             let notifications = PFQuery(className: "Notifications")
@@ -455,31 +493,29 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                         }
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
                     }
                 })
             }))
-            
             // Show
             dialogController.show(in: self.delegate!)
         }
         
-        
-        // (3)
-        // ============================================================================================================================
-        // ============================================================================================================================
-        // ======================================= F O L L O W     R E Q U E S T E D ==================================================
-        // ============================================================================================================================
-        // ============================================================================================================================
-        // CONFIRM =================================================================================================================***
-        // IGNORE ==================================================================================================================***
-        // RESCIND =================================================================================================================***
-        
-        if self.relationType.titleLabel!.text! == "Requested" {
+        // FOLLOW REQUESTED
+        // • Confirm
+        // • Ignore
+        // • Rescind
+        if self.followButton.titleLabel?.text == "Requested" {
             
             // CONFIRM
             let confirm = AZDialogAction(title: "Confirm", handler: { (dialog) -> (Void) in
@@ -499,10 +535,9 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             object.saveInBackground(block: {
                                 (success: Bool, error: Error?) in
                                 if success {
-
-                                    // Change button title
-                                    self.relationType.isHidden = false
-                                    self.relationType.setTitle("Follower", for: .normal)
+                                    
+                                    // Configure Button
+                                    self.configureButton(relationTitle: "Follower")
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                     let rpHelpers = RPHelpers()
@@ -510,11 +545,17 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                         }
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
                     }
                 })
             })
@@ -546,23 +587,30 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                         if error == nil {
                                             for object in objects! {
                                                 object.deleteEventually()
-                                                // Hide button
-                                                // Hide and show buttons
-                                                self.relationType.isHidden = true
-                                                self.followButton.isHidden = false
+                                                // Configure button
+                                                self.configureButton(relationTitle: "Follow")
                                             }
                                         } else {
                                             print(error?.localizedDescription as Any)
+                                            // Re-enable buttons
+                                            self.followButton.isUserInteractionEnabled = true
+                                            self.followButton.isEnabled = true
                                         }
                                     })
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                         }
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
                     }
                 })
             })
@@ -573,7 +621,6 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                 dialog.dismiss()
                 
                 // UNFOLLOW
-                // FollowMe
                 let follow = PFQuery(className: "FollowMe")
                 follow.whereKey("follower", equalTo: PFUser.current()!)
                 follow.whereKey("following", equalTo: otherObject.last!)
@@ -584,9 +631,8 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                         for object in objects! {
                             object.deleteEventually()
                             
-                            // Hide and show buttons
-                            self.relationType.isHidden = true
-                            self.followButton.isHidden = false
+                            // Configure UIButton
+                            self.configureButton(relationTitle: "Follow")
                             
                             // Delete in Notifications
                             let notifications = PFQuery(className: "Notifications")
@@ -601,16 +647,21 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)
+                                    // Re-enable buttons
+                                    self.followButton.isUserInteractionEnabled = true
+                                    self.followButton.isEnabled = true
                                 }
                             })
                         }
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
                     }
                 })
             })
             
-
             // CONFIRM/IGNORE REQUEST
             if currentRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 dialogController.addAction(confirm)
@@ -624,14 +675,14 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                 dialogController.show(in: self.delegate!)
             }
         }
-        
-        
-        
-    } // end RelationAction
+    }
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        // Show UIButton
+        self.followButton.isHidden = false
         
         // (1) Center text
         numberOfPosts.titleLabel!.textAlignment = NSTextAlignment.center
@@ -685,14 +736,11 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         })
         
         // (3) Design buttons
-        self.relationType.layer.cornerRadius = 22.00
-        self.relationType.clipsToBounds = true
-        
         self.followButton.backgroundColor = UIColor.white
-        self.followButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-        self.followButton.layer.borderWidth = 4.00
+        self.followButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1), for: .normal)
+        self.followButton.layer.borderWidth = 3
         self.followButton.layer.cornerRadius = 22.00
-        self.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        self.followButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
         self.followButton.clipsToBounds = true
         
         // (5) Handle KILabel taps

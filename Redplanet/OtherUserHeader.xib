@@ -57,7 +57,7 @@
                     </state>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMT-KU-90F" customClass="KILabel">
-                    <rect key="frame" x="8" y="385" width="359" height="32"/>
+                    <rect key="frame" x="8" y="403" width="359" height="14"/>
                     <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="359" id="3e7-D4-FhS"/>
@@ -74,26 +74,11 @@
                         <constraint firstAttribute="height" constant="44" id="zBz-C0-T66"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                    <state key="normal" title="follow">
+                    <state key="normal" title="Follow">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="followAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="wQB-2O-uKk"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">
-                    <rect key="frame" x="112" y="304" width="150" height="44"/>
-                    <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="150" id="McA-ol-cs2"/>
-                        <constraint firstAttribute="height" constant="44" id="aBu-AB-Wxh"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                    <state key="normal" title="following">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="relationAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="5xr-jf-pVS"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DhT-Yj-3hi">
@@ -121,7 +106,7 @@
                     <state key="normal" image="ChatsPurple"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2r-a2-Kmb">
-                    <rect key="frame" x="8" y="364" width="359" height="21"/>
+                    <rect key="frame" x="8" y="382" width="359" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="O3v-n5-HjR"/>
                         <constraint firstAttribute="width" constant="359" id="vtm-0Q-yce"/>
@@ -144,16 +129,13 @@
                 <constraint firstItem="5VT-qx-8fx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3iO-Zq-gpS"/>
                 <constraint firstItem="mrM-5U-Xcy" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="4vb-63-bZ8"/>
                 <constraint firstItem="857-lc-Tmw" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="51I-K0-JNb"/>
-                <constraint firstItem="sGi-mE-cqf" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="8" id="8Xl-KL-BCI"/>
                 <constraint firstAttribute="trailing" secondItem="DhT-Yj-3hi" secondAttribute="trailing" constant="45" id="Cwl-O7-W1c"/>
                 <constraint firstItem="5VT-qx-8fx" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="8" id="EAp-9U-Wau"/>
                 <constraint firstAttribute="bottom" secondItem="a7A-0w-Ch9" secondAttribute="bottom" constant="10" id="F3s-eW-Apb"/>
                 <constraint firstItem="DhT-Yj-3hi" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="13" id="G7L-lD-fFm"/>
                 <constraint firstItem="RrC-Vf-83E" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="47" id="HbS-tg-1hn"/>
                 <constraint firstItem="a7A-0w-Ch9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="LuJ-GD-sh6"/>
-                <constraint firstItem="sGi-mE-cqf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="MQv-dI-fOG"/>
                 <constraint firstItem="857-lc-Tmw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="U6Q-OU-jR6"/>
-                <constraint firstItem="A2r-a2-Kmb" firstAttribute="top" secondItem="sGi-mE-cqf" secondAttribute="bottom" constant="16" id="VFX-Rz-Yjo"/>
                 <constraint firstItem="mrM-5U-Xcy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Zda-gz-LIm"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aDc-Ke-DV8"/>
                 <constraint firstItem="IND-ke-LYZ" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="brW-Lc-oTP"/>
@@ -180,7 +162,6 @@
                 <outlet property="numberOfFollowers" destination="857-lc-Tmw" id="H9E-bV-xhy"/>
                 <outlet property="numberOfFollowing" destination="IND-ke-LYZ" id="i5b-YR-YHt"/>
                 <outlet property="numberOfPosts" destination="mrM-5U-Xcy" id="27P-mA-AZd"/>
-                <outlet property="relationType" destination="sGi-mE-cqf" id="rET-jE-S88"/>
                 <outlet property="rpUserProPic" destination="e4R-zD-fge" id="Jxc-QX-ZlE"/>
                 <outlet property="segmentView" destination="a7A-0w-Ch9" id="wP3-js-lz1"/>
                 <outlet property="userBio" destination="WMT-KU-90F" id="Tlj-Z0-LlU"/>
