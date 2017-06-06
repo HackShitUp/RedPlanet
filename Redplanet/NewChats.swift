@@ -274,7 +274,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
             // (3) Get and set userProfilePicture
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
         } else {
@@ -286,7 +286,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
             // (3) Get and set userProfilePicture
             if let proPic = self.following[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
         }
         

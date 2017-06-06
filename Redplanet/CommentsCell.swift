@@ -210,7 +210,7 @@ class CommentsCell: UITableViewCell {
                 // MARK: - SDWebImage
                 self.rpUserProPic.sd_setIndicatorStyle(.gray)
                 self.rpUserProPic.sd_showActivityIndicatorView()
-                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 // MARK: - RPExtensions
                 self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             }

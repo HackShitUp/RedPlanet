@@ -70,7 +70,7 @@ class MomentPhoto: UICollectionViewCell {
             // MARK: - SDWebImage
             photoMoment.sd_addActivityIndicator()
             photoMoment.sd_setIndicatorStyle(.gray)
-            photoMoment.sd_setImage(with: URL(string: photo.url!)!)
+            photoMoment.sd_setImage(with: URL(string: photo.url!))
         }
         
         // (4) Bring name/time to front and add subview

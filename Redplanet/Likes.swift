@@ -184,7 +184,7 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             // MARK: -SDWebImage
             cell.rpUserProPic.sd_addActivityIndicator()
             cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             // MARK: - RPExtensions
             cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         }

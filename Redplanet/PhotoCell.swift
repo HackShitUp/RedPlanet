@@ -62,7 +62,7 @@ class PhotoCell: UITableViewCell {
             // Set profile photo
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 // MARK: - RPExtensions
                 self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             }
@@ -96,7 +96,7 @@ class PhotoCell: UITableViewCell {
             // MARK: - SDWebImage
             self.photo.sd_addActivityIndicator()
             self.photo.sd_setIndicatorStyle(.gray)
-            self.photo.sd_setImage(with: URL(string: image.url!)!)
+            self.photo.sd_setImage(with: URL(string: image.url!))
         }
     }
     

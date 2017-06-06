@@ -125,7 +125,7 @@ class RPChatMediaCell: UITableViewCell {
             // MARK: - SDWebImage
             self.rpMediaPreview.sd_setShowActivityIndicatorView(true)
             self.rpMediaPreview.sd_setIndicatorStyle(.gray)
-            self.rpMediaPreview.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: self.rpMediaPreview.image)
+            self.rpMediaPreview.sd_setImage(with: URL(string: photo.url!), placeholderImage: self.rpMediaPreview.image)
             
             // (A) REGULAR:  PHOTO OR STICKER
             if withObject.value(forKey: "contentType") as! String == "ph" || withObject.value(forKey: "contentType") as! String == "sti" {

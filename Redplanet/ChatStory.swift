@@ -312,7 +312,7 @@ class ChatStory: UIViewController, UICollectionViewDataSource, UICollectionViewD
             // (3) Set Photo
             if let photo = self.chatPosts[indexPath.item].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
-                mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!)!)
+                mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!))
             }
             
             // (4) Bring name/time to front and add subview

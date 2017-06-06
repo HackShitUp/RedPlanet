@@ -145,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                                 proPicView.makeCircular(forView: proPicView, borderWidth: 0, borderColor: UIColor.clear)
                                                                 
                                                                 // MARK: - SDWebImage
-                                                                proPicView.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                                                                proPicView.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                                                                 
                                                                 // MARK: - NotitficationBanner
                                                                 let banner = NotificationBanner(title: "💭 \(fullMessage!)", subtitle: "", rightView: nil)
@@ -323,7 +323,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             Heap.addUserProperties([
                 "UserId": "\(PFUser.current()!.objectId!)",
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
-                "Email": "\(PFUser.current()!.email!)"
+                "Email": "\(PFUser.current()!.email!)",
+                "Version": "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)"
                 ])
             
             #if DEBUG

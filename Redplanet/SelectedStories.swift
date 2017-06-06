@@ -146,7 +146,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // MARK: - SDWebImage
         cell.coverPhoto.sd_addActivityIndicator()
         cell.publisherLogo.sd_setIndicatorStyle(.gray)
-        cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL)!)
+        cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL))
         // MARK: - RPHelpers
         cell.publisherLogo.roundAllCorners(sender: cell.publisherLogo)
 
@@ -158,7 +158,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
             // MARK: - SDWebImage
             cell.coverPhoto.sd_addActivityIndicator()
             cell.coverPhoto.sd_setIndicatorStyle(.gray)
-            cell.coverPhoto.sd_setImage(with: URL(string: urlToImage)!)
+            cell.coverPhoto.sd_setImage(with: URL(string: urlToImage))
             cell.storyStatus.text = "Tap anywhere to read the full story..."
         } else {
             cell.coverPhoto.backgroundColor = UIColor.randomColor()

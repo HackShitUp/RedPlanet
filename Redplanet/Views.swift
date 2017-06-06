@@ -267,7 +267,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
                 // Get and set userProfilePicture
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - RPExtensions
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
             // (2) Hide screenShotted
@@ -282,7 +282,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
                 // Get and set userProfilePicture
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - RPExtensions
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
             

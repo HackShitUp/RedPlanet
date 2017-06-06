@@ -274,7 +274,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         me.contentMode = .scaleAspectFill
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            me.sd_setImage(with: URL(string: proPic.url!)!)
+            me.sd_setImage(with: URL(string: proPic.url!))
         } else {
             me.image = UIImage(named: "GenderNeutralUser")
         }

@@ -72,7 +72,7 @@ class TextPostCell: UITableViewCell {
             // Set profile photo
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 // MARK: - RPExtensions
                 self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             }
@@ -117,7 +117,7 @@ class TextPostCell: UITableViewCell {
                             // MARK: - SDWebImage
                             self.webImage.sd_addActivityIndicator()
                             self.webImage.sd_setIndicatorStyle(.white)
-                            self.webImage.sd_setImage(with: URL(string: imageURL)!)
+                            self.webImage.sd_setImage(with: URL(string: imageURL))
                             
                             // Show web previews
                             self.webImage.isHidden = false

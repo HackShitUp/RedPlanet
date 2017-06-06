@@ -115,7 +115,7 @@ class StoryCell: UITableViewCell {
         } else {
             if let photo = withObject.value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
-                self.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
+                self.mediaPreview.sd_setImage(with: URL(string: photo.url!))
             } else if let video = withObject.value(forKey: "videoAsset") as? PFFile {
                 // MARK: - AVPlayer
                 let player = AVPlayer(url: URL(string: video.url!)!)

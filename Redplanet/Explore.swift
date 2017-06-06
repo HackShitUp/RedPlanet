@@ -484,8 +484,10 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             
             // (2) Set cover photo
             if let urlToImage = self.articles[indexPath.item].value(forKey: "urlToImage") as? String {
+                print("\(urlToImage)")
                 // MARK: - SDWebImage
-                nCell.storyCover.sd_setImage(with: URL(string: urlToImage)!)
+                nCell.storyCover.sd_setImage(with: URL(string: urlToImage))
+                
             } else {
                 nCell.storyCover.image = UIImage()
                 nCell.storyCover.backgroundColor = UIColor.randomColor()
@@ -528,7 +530,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             } else if let photo = self.featuredPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
             // PHOTO ASSET
                 // MARK: - SDWebImage
-                fCell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
+                fCell.mediaPreview.sd_setImage(with: URL(string: photo.url!))
                 fCell.mediaPreview.isHidden = false
             } else if let video = self.featuredPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
             // VIDEO ASSET

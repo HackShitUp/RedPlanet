@@ -421,7 +421,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
             // MARK: - SDWebImage
             cell.rpUserProPic.sd_setIndicatorStyle(.gray)
             cell.rpUserProPic.sd_showActivityIndicatorView()
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         
         return cell
