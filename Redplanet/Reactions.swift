@@ -253,7 +253,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Comment", message: "Options")
+                let dialogController = AZDialogViewController(title: "Comment", message: nil)
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
@@ -500,8 +500,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
-        refresher.tintColor = UIColor.white
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
         tableView.addSubview(refresher)
         
@@ -556,17 +556,28 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             // Layout views
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
+            
             // If table view's origin is 0 AND commenting...
-            if self.tableView!.frame.origin.y == 0 && self.textView.isFirstResponder {
-                // Move tableView up
-                self.tableView!.frame.origin.y -= self.keyboard.height
-                // Move chatbox up
-                self.commentContainer.frame.origin.y -= self.keyboard.height
-                // Scroll to the bottom
-                if self.reactionObjects.count > 0 && self.segmentedControl.selectedSegmentIndex == 1 {
-                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                    self.tableView.setContentOffset(bot, animated: false)
+            if self.tableView!.frame.origin.y == 0 {
+                
+                if self.textView.isFirstResponder {
+                    
+                    
+                    print("commentContainer y origin: \(self.commentContainer.frame.origin.y)")
+                    
+                    // Move chatbox up
+                    self.commentContainer.frame.origin.y -= self.keyboard.height
+
+                    // Move tableView up
+                    self.tableView!.frame.origin.y -= self.keyboard.height
+                    
+                    // Scroll to the bottom
+                    if self.reactionObjects.count > 0 && self.segmentedControl.selectedSegmentIndex == 1 {
+                        let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                        self.tableView.setContentOffset(bot, animated: false)
+                    }
                 }
+                
             }
         }
     }

@@ -120,6 +120,12 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Track who checked Views
+        Heap.track("CheckedViews", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
 
         // Query Views
         queryViews(completionHandler: { (count) in

@@ -222,7 +222,7 @@ class CommentsCell: UITableViewCell {
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         // MARK: - RPHelpers
-        self.time.text = difference.getFullTime(difference: difference, date: from)
+        self.time.text = difference.getShortTime(difference: difference, date: from)
         
         // (3) Set comment
         self.comment.text = (withObject.value(forKey: "commentOfContent") as! String)
