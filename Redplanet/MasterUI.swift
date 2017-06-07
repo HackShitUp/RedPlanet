@@ -31,7 +31,7 @@ import SwipeNavigationController
 
 class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationControllerDelegate {
     
-    // Class Variable;
+    // Initialize lastIndex for UITabBarController's selectedIndex
     var lastIndex: Int? = 0
     
     // Initialize AppDelegate
@@ -39,10 +39,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
     
     // Array to hold chats
     var unreadChats = [PFObject]()
-    
-    
-    
-    
+
     // FUNCTION - Show Camera
     func showShareUI() {
         DispatchQueue.main.async {
@@ -103,10 +100,11 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
     
     // MARK: - SwipeNavigationController Delegate Method
     func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        self.selectedIndex = self.lastIndex!
+        
     }
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        self.selectedIndex = self.lastIndex!
     }
     
     
@@ -148,13 +146,13 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         if let username = PFUser.current()!.value(forKey: "username") as? String {
             self.tabBar.items?[4].title = username.uppercased()
         }
-        
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.delegate = self
+        
         // Fetch Unread Chats
         self.fetchChatsQueue { (count) in
             if count != 0 {
@@ -195,9 +193,10 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
     
     // MARK: - UITabBarController Delegate Methods
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        
-        // Set lastIndex
-        self.lastIndex = self.selectedIndex
+        // Set lastIndex if not "Share"
+        if self.selectedIndex != 2 {
+            self.lastIndex! = self.selectedIndex
+        }
         
         if item.tag == 12 {
             // MARK: - SwipeNavigationController

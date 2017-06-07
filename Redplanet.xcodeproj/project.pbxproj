@@ -140,6 +140,7 @@
 		7EB40B5B1EC6618A0034E8AF /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5A1EC6618A0034E8AF /* Story.swift */; };
 		7EB40B5D1EC690520034E8AF /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5C1EC690520034E8AF /* ShareWith.swift */; };
 		7EBAFEF11ED7BAE300BB052D /* SubtleVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */; };
+		7EBDAF291EE7A5E500C645D9 /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDAF281EE7A5E500C645D9 /* UIImageColors.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
 		7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */; };
@@ -388,6 +389,7 @@
 		7EB40B5A1EC6618A0034E8AF /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Story.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EB40B5C1EC690520034E8AF /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
 		7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtleVolume.swift; sourceTree = "<group>"; };
+		7EBDAF281EE7A5E500C645D9 /* UIImageColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
 		7EC5D12F1DB2FE4F00437219 /* Redplanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redplanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1047,6 +1049,14 @@
 			name = SubtleVolume;
 			sourceTree = "<group>";
 		};
+		7EBDAF2A1EE7A5ED00C645D9 /* UIImageColors */ = {
+			isa = PBXGroup;
+			children = (
+				7EBDAF281EE7A5E500C645D9 /* UIImageColors.swift */,
+			);
+			name = UIImageColors;
+			sourceTree = "<group>";
+		};
 		7EC005761E8CD95A00405530 /* AZDialogViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1100,6 +1110,7 @@
 				7EBAFEF21ED7BAE800BB052D /* SubtleVolume */,
 				7E4199221E4C668000EFA065 /* SwipeView */,
 				7E8035381EB4113B00C9BA63 /* TwicketSegmentedControl */,
+				7EBDAF2A1EE7A5ED00C645D9 /* UIImageColors */,
 				7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */,
 				7EC5D1361DB2FE4F00437219 /* Main.storyboard */,
 				7EC5D13C1DB2FE4F00437219 /* Assets.xcassets */,
@@ -1701,6 +1712,7 @@
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
 				7E6D90DD1ECF9AD600F7FD6B /* NewMedia.swift in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
+				7EBDAF291EE7A5E500C645D9 /* UIImageColors.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,

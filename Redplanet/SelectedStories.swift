@@ -133,23 +133,21 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         return self.articleObjects.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? SelectedStoriesCell {
+//            // MARK: - UIImageColors
+//            cell.coverPhoto.image?.getColors { colors in
+//                cell.contentView.backgroundColor = colors.primaryColor
+//                cell.title.textColor = colors.backgroundColor
+//            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ssCell", for: indexPath) as! SelectedStoriesCell
-        
-        // CONFIGURE PUBLISHER PROPERTIES
-        // Set publisher name
-        cell.publisherName.text = self.publisherName
-        // MARK: - SDWebImage
-        cell.coverPhoto.sd_addActivityIndicator()
-        cell.publisherLogo.sd_setIndicatorStyle(.gray)
-        cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL))
-        // MARK: - RPHelpers
-        cell.publisherLogo.roundAllCorners(sender: cell.publisherLogo)
 
         // CONFIGURE STORY
-        // (1) Set title
-        cell.title.text = "\(self.articleObjects[indexPath.item].value(forKey: "title") as! String)"
-        // (2) Set cover photo
+        // (1) Set cover photo
         if let urlToImage = self.articleObjects[indexPath.item].value(forKey: "urlToImage") as? String {
             // MARK: - SDWebImage
             cell.coverPhoto.sd_addActivityIndicator()
@@ -157,20 +155,31 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
             cell.coverPhoto.sd_setImage(with: URL(string: urlToImage))
             cell.storyStatus.text = "Tap anywhere to read the full story..."
         } else {
-            cell.coverPhoto.backgroundColor = UIColor.randomColor()
+            // MARK: - SDWebImage
+            cell.coverPhoto.sd_addActivityIndicator()
+            cell.coverPhoto.sd_setIndicatorStyle(.gray)
+            cell.coverPhoto.sd_setImage(with: URL(string: self.logoURL))
             cell.storyStatus.text = "💩 There's no cover photo for this story..."
         }
         // MARK: - RPExtensions
         cell.storyStatus.layer.applyShadow(layer: cell.storyStatus.layer)
-        // (3) Set author and story description
-        if let author = self.articleObjects[indexPath.item].value(forKey: "author") as? String {
-            let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("By \(author)\n", withFont: UIFont(name: "AvenirNext-Demibold", size: 15)).normal("\(self.articleObjects[indexPath.item].value(forKey: "description") as! String)", withFont: UIFont(name: "AvenirNext-Medium", size: 17))
-            cell.storyDescription.attributedText = formattedString
-        } else {
-            cell.storyDescription.text = (self.articleObjects[indexPath.item].value(forKey: "description") as! String)
-        }
+        let formattedString = NSMutableAttributedString()
+        _ = formattedString.normal("\(self.publisherName.uppercased())\n", withFont: UIFont(name: "AvenirNext-Demibold", size: 17))
         
+        // (2) SET UP STORY
+        // Set Title
+        if let title = self.articleObjects[indexPath.item].value(forKey: "title") as? String {
+            _ = formattedString.bold("\n\(title)\n", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
+        }
+        // Set author
+        if let author = self.articleObjects[indexPath.item].value(forKey: "author") as? String {
+            _ = formattedString.bold("\n\(author)\n", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+        }
+        // Set Description
+        if let description = self.articleObjects[indexPath.item].value(forKey: "description") as? String {
+            _ = formattedString.bold("\(description)\n", withFont: UIFont(name: "AvenirNext-Medium", size: 17))
+        }
+        cell.title.attributedText = formattedString
         return cell
     }
     
