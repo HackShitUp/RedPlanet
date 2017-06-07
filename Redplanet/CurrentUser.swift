@@ -455,10 +455,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewDidAppear(animated)
         // Stylize title
         configureView()
-
-        // Set UITabBar isTranslucent boolean
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewDidLoad() {

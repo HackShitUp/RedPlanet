@@ -526,9 +526,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Configure UITabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
     }
 
     override func viewDidLoad() {

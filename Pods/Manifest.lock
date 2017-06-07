@@ -15,6 +15,7 @@ PODS:
   - Ji/Ji-libxml (2.0.1)
   - KILabel (1.0.1)
   - MarqueeLabel/Swift (3.0.5)
+  - NextGrowingTextView (1.0.0)
   - NotificationBannerSwift (1.2.0):
     - MarqueeLabel/Swift
     - SnapKit (~> 3.2.0)
@@ -45,6 +46,7 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - Heap
   - KILabel
+  - NextGrowingTextView
   - NotificationBannerSwift
   - Onboard
   - OneSignal
@@ -68,6 +70,7 @@ SPEC CHECKSUMS:
   Ji: 6bb602a28dd08b804158f64990e6051ed5de0110
   KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
   MarqueeLabel: 8a25b2cf02cf52165022f01369e63536c58fcc00
+  NextGrowingTextView: 44645800cdb3cdf726e3c951bb224b368aa81952
   NotificationBannerSwift: 77f96e1c418309600aad70b21247d9b3cbc360e3
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
@@ -84,6 +87,6 @@ SPEC CHECKSUMS:
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
   YXTMotionView: cef229d560c50fc8e4fd2897b3715bec208ac95f
 
-PODFILE CHECKSUM: f501f0eaece8ba51f0007e8326c98a9507eb9480
+PODFILE CHECKSUM: 8bfe647f7fae7fac8550d328ea9d426335991812
 
 COCOAPODS: 1.2.1

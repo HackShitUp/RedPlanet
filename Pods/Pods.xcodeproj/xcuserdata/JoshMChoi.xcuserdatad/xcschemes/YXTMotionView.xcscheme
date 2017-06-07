@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '688E4E7EBFD7D8DB07F7186711FCA6B5'
+               BlueprintIdentifier = 'EC04F8F37DFE758AB385F01AD6CF5B52'
                BlueprintName = 'YXTMotionView'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'YXTMotionView.framework'>

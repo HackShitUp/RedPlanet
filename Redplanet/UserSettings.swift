@@ -30,9 +30,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
 
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
-        // Set UITabBar isTranslucent boolean
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -66,7 +63,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // Configure UINavigationBar via extension
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default

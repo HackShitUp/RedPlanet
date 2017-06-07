@@ -65,8 +65,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     @IBOutlet weak var photosButton: UIButton!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var stickersButton: UIButton!
+    @IBOutlet weak var sendButton: UIButton!
     
     @IBAction func backButton(_ sender: AnyObject) {
+        
+        // Reset UITabBarController's UITabBar configurations
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
+        
         // Set bool
         chatCamera = false
         // Clear arrays
@@ -308,6 +314,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             handler(exportSession)
         }
     }
+    
+    
+    // FUNCTION - Refresh data
+    func refresh() {
+        // End refresher
+        self.refresher.endRefreshing()
+        // Query Chats
+        fetchChats()
+    }
 
     // FUNCTION - Fetch Chats
     func fetchChats() {
@@ -362,12 +377,46 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         })
     }
     
-    // FUNCTION - Refresh data
-    func refresh() {
-        // End refresher
-        self.refresher.endRefreshing()
-        // Query Chats
-        fetchChats()
+    @IBAction func sendChat(_ sender: Any) {
+        if self.textView.text!.isEmpty {
+            // Resign first responder
+            self.textView.resignFirstResponder()
+        } else {
+            // Track when chat was sent
+            Heap.track("SentChat", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            // Clear text to prevent sending again and set constant before sending for better UX
+            let chatText = self.textView.text!
+            // Clear chat
+            self.textView.text!.removeAll()
+            // Send to Chats
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chats["Message"] = chatText
+            chats["read"] = false
+            chats["saved"] = false
+            chats.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    // MARK: - RPHelpers; update ChatsQueue, and send push notification
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                    rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
+                    
+                    // Reload data
+                    self.fetchChats()
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // Reload data
+                    self.fetchChats()
+                }
+            }
+        }
     }
 
     // FUNCTION - Send Screenshot notification
@@ -380,7 +429,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // FUNCTION - Stylize navigationBar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21) {
             let navBarAttributesDictionary = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: navBarFont]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
@@ -488,6 +537,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         photosButton.roundAllCorners(sender: self.photosButton)
         stickersButton.backgroundColor = UIColor.white
         stickersButton.makeCircular(forView: self.stickersButton, borderWidth: 2, borderColor: UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1))
+        
+        // Configure sendButton UIButton
+        let sendImage = UIImage(cgImage: UIImage(named: "SentOpen")!.cgImage!, scale: 1, orientation: .rightMirrored)
+        self.sendButton.setImage(sendImage, for: .normal)
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -532,14 +585,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.textView.resignFirstResponder()
         // Remove observers
         self.removeObservers()
-        // Set isTranslucent to FALSE
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        // Set isTranslucent to FALSE
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -611,13 +660,57 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "is typing...")
     }
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if (text == "\n") {
-            self.sendChat()
-            return false
-        } else {
-            return true
+    func textViewDidChange(_ textView: UITextView) {
+        
+        // INCREASE UITextView Height
+        if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 130 {
+            
+            // Get difference of frame height
+            let difference = textView.contentSize.height - textView.frame.size.height
+            
+            // Redefine frame of UITextView; textView
+            // Subtract 1 because UITextView in Storyboard has 1 point constraint to its superview top marigin
+            textView.frame.origin.y = textView.frame.origin.y - difference + 1
+            textView.frame.size.height = textView.contentSize.height + 1
+            
+            // Redefine frame of UIView; frontView
+//            frontView.frame.origin.y = (frontView.frame.origin.y - difference) + 1
+//            frontView.frame.size.height = textView.contentSize.height + 1
+            
+//            // move up tableView
+//            if textView.contentSize.height + keyboard.height + textView.frame.origin.y >= self.tableView!.frame.size.height {
+//                self.tableView!.frame.origin.y -= difference
+//            }
+            
+
+            
+            // TODO: Move up UITableView
+            self.tableView!.frame.origin.y -= difference
+            self.tableView!.frame.size.height -= difference
+            
+            
+        } else if textView.contentSize.height < textView.frame.size.height {
+        // DECREASE UITextView Height
+            
+            // Get difference to deduct
+            let difference = textView.frame.size.height - textView.contentSize.height
+            
+            // redefine frame of commentTxt
+            textView.frame.origin.y = textView.frame.origin.y + difference
+            textView.frame.size.height = textView.contentSize.height
+            
+            // move donw tableViwe
+//            if textView.contentSize.height + keyboard.height + commentY > tableView.frame.size.height {
+//                tableView.frame.size.height = tableView.frame.size.height + difference
+//            }
+            
+            // Move UITableView down
+//            self.tableView!.frame.origin.y += difference
         }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return true
     }
     
     // MARK: - UIImagePickercontroller Delegate Method
@@ -764,54 +857,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
 /*
  MARK: - RPChatRoom Extension; Functions
- • sendChat() = Send or save chat to database/server.
  • chatOptions() = Show options to save, unsave, or delete a chat when the UITableViewCell was selected.
  */
 extension RPChatRoom {
-    
-    // FUNCTION - Send Chats
-    func sendChat() {
-        if self.textView.text!.isEmpty {
-            // Resign first responder
-            self.textView.resignFirstResponder()
-        } else {
-            // Track when chat was sent
-            Heap.track("SentChat", withProperties:
-                ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                ])
-            // Clear text to prevent sending again and set constant before sending for better UX
-            let chatText = self.textView.text!
-            // Clear chat
-            self.textView.text!.removeAll()
-            // Send to Chats
-            let chats = PFObject(className: "Chats")
-            chats["sender"] = PFUser.current()!
-            chats["senderUsername"] = PFUser.current()!.username!
-            chats["receiver"] = chatUserObject.last!
-            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chats["Message"] = chatText
-            chats["read"] = false
-            chats["saved"] = false
-            chats.saveInBackground {
-                (success: Bool, error: Error?) in
-                if error == nil {
-                    // MARK: - RPHelpers; update ChatsQueue, and send push notification
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                    rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-                    
-                    // Reload data
-                    self.fetchChats()
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Reload data
-                    self.fetchChats()
-                }
-            }
-        }
-    }
-    
     
     // FUNCTION - Delete chats
     func chatOptions(sender: UILongPressGestureRecognizer) {
