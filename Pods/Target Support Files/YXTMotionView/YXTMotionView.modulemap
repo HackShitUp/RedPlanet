@@ -1,0 +1,6 @@
+framework module YXTMotionView {
+  umbrella header "YXTMotionView-umbrella.h"
+
+  export *
+  module * { export * }
+}

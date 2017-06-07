@@ -227,17 +227,20 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         case .denied:
         // THIS might get a bit annoying
             
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            
             // MARK: - AZDialogViewController
-            let dialogController = AZDialogViewController(title: "Location Access Disabled",
-                                                          message: "To share Moments with location-based filters, and help your friends find you better, please allow Redplanet to access your location.")
+            let dialogController = AZDialogViewController(title: "Location Access Denied",
+                                                          message: "Please enable Location access so you can share Moments with geo-filters and help us find your friends better!")
             dialogController.dismissDirection = .bottom
             dialogController.dismissWithOutsideTouch = true
             dialogController.showSeparator = true
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             
@@ -246,18 +249,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 // Dismiss
                 dialog.dismiss()
                 // Show Settings
-                if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
-                    UIApplication.shared.openURL(url as URL)
-                }
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
             }))
             
             // Cancel
             dialogController.cancelButtonStyle = { (button,height) in
-                button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.setTitle("LATER", for: [])
                 return true
             }
-            
             dialogController.show(in: self)
             
         default:

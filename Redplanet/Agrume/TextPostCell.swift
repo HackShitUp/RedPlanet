@@ -90,11 +90,11 @@ class TextPostCell: UITableViewCell {
         if let text = withObject!.value(forKey: "textPost") as? String {
             // Manipulate font size and color depending on character count
             if text.characters.count < 140 {
-                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 25)
+                self.textPost.font = UIFont(name: "AvenirNext-Bold", size: 30)
                 // MARK: - RPExtensions
                 self.textPost.textColor = UIColor.randomColor()
             } else {
-                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 17)
+                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 21)
                 self.textPost.textColor = UIColor.black
             }
             // Set text...

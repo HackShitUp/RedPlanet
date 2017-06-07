@@ -339,8 +339,10 @@ class Explore: UITableViewController, UITextFieldDelegate {
         header.backgroundColor = UIColor.white
         if section == 0 {
             header.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-        } else {
+        } else if section == 1 {
             header.textColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+        } else {
+            header.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         }
         header.font = UIFont(name: "AvenirNext-Bold", size: 12)
         header.textAlignment = .left

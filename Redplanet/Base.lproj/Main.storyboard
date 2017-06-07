@@ -2171,10 +2171,10 @@
                     <connections>
                         <outlet property="cameraButton" destination="1R8-fR-g1h" id="eJX-SB-90Y"/>
                         <outlet property="frontView" destination="EoL-3b-BDW" id="gM8-Gv-b26"/>
-                        <outlet property="newChat" destination="yKx-5O-15d" id="dd9-DH-htx"/>
                         <outlet property="photosButton" destination="VvS-Wr-2nb" id="cAb-KS-E0K"/>
                         <outlet property="stickersButton" destination="qcf-O0-oxy" id="jzu-Jj-wTi"/>
                         <outlet property="tableView" destination="of3-49-Bwo" id="sho-Lt-Cel"/>
+                        <outlet property="textView" destination="yKx-5O-15d" id="iG1-uW-9fZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PuE-36-29Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4315,7 +4315,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="12" title="" image="SLRCamera" id="Ivv-rt-4oK"/>
+                    <tabBarItem key="tabBarItem" tag="12" title="" image="SLRCamera" id="Ivv-rt-4oK">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="TMu-6q-WbQ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfP-sj-gPa" userLabel="First Responder" sceneMemberID="firstResponder"/>

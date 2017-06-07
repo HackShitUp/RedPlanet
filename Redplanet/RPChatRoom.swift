@@ -61,7 +61,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var frontView: UIView!
-    @IBOutlet weak var newChat: UITextView!
+    @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var photosButton: UIButton!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var stickersButton: UIButton!
@@ -236,10 +236,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     @IBAction func showLibrary(_ sender: Any) {
+        
+        
         PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) in
             switch status{
             case .authorized:
                 // AUTHORIZED
+                print("Fired...")
                 self.present(self.imagePicker, animated: true, completion: nil)
 
             case .denied:
@@ -424,8 +427,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Re-enable done button
                     editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                     
-                    // Clear newChat
-                    self.newChat.text!.removeAll()
+                    // Clear UITextView
+                    self.textView.text!.removeAll()
                     // Dismiss view controller
                     self.dismiss(animated: true, completion: {
                         // Reload data
@@ -497,7 +500,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         // MARK: - UIImagePickerController
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -518,17 +524,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
             imagePicker.title = "Photos & Videos"
         }
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Resign first responder
-        self.newChat.resignFirstResponder()
+        // Resign UITextView
+        self.textView.resignFirstResponder()
         // Remove observers
         self.removeObservers()
         // Set isTranslucent to FALSE
@@ -682,8 +683,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                     rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                                     rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                                     
-                                    // Clear newChat
-                                    self.newChat.text!.removeAll()
+                                    // Clear UITextView
+                                    self.textView.text!.removeAll()
                                     
                                     // Reload data
                                     self.fetchChats()
@@ -755,7 +756,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UIScrollView Delegate Methods
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.newChat.resignFirstResponder()
+        self.textView.resignFirstResponder()
     }
 }
 
@@ -770,9 +771,9 @@ extension RPChatRoom {
     
     // FUNCTION - Send Chats
     func sendChat() {
-        if self.newChat.text!.isEmpty {
+        if self.textView.text!.isEmpty {
             // Resign first responder
-            self.newChat.resignFirstResponder()
+            self.textView.resignFirstResponder()
         } else {
             // Track when chat was sent
             Heap.track("SentChat", withProperties:
@@ -780,9 +781,9 @@ extension RPChatRoom {
                     "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                 ])
             // Clear text to prevent sending again and set constant before sending for better UX
-            let chatText = self.newChat.text!
+            let chatText = self.textView.text!
             // Clear chat
-            self.newChat.text!.removeAll()
+            self.textView.text!.removeAll()
             // Send to Chats
             let chats = PFObject(className: "Chats")
             chats["sender"] = PFUser.current()!
