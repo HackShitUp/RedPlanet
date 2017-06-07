@@ -562,9 +562,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
                 if self.textView.isFirstResponder {
                     
-                    
-                    print("commentContainer y origin: \(self.commentContainer.frame.origin.y)")
-                    
                     // Move chatbox up
                     self.commentContainer.frame.origin.y -= self.keyboard.height
 
@@ -703,6 +700,10 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
 
     // MARK: - UIScrollView Delegate Method
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.textView.resignFirstResponder()
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             // If posts on database are > than shown

@@ -4305,7 +4305,6 @@
         <!--ShareUI-->
         <scene sceneID="pLf-ZB-QPD">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hfP-sj-gPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="4Y4-85-ZHo" customClass="ShareUI" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sMg-jI-Ocf"/>
@@ -4319,6 +4318,7 @@
                     <tabBarItem key="tabBarItem" tag="12" title="" image="SLRCamera" id="Ivv-rt-4oK"/>
                     <navigationItem key="navigationItem" id="TMu-6q-WbQ"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hfP-sj-gPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-81" y="447"/>
         </scene>
@@ -4345,7 +4345,6 @@
         <!--Navigation Controller-->
         <scene sceneID="T7U-Wu-kR3">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="n5G-wk-8rj" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController restorationIdentifier="center" storyboardIdentifier="center" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="g62-Ev-qJ7" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -4360,6 +4359,7 @@
                         <segue destination="uTy-8V-6Fg" kind="relationship" relationship="rootViewController" id="WCl-6Y-dCk"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n5G-wk-8rj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-84" y="-2076"/>
         </scene>
