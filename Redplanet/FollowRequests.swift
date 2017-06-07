@@ -38,10 +38,8 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     // MARK: - TwicketSegmentedControl
     var segmentedControl: TwicketSegmentedControl!
 
-    @IBAction func contactsAction(_ sender: Any) {
-        // Pop VC
-        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-        self.navigationController?.pushViewController(contactsVC, animated: true)
+    @IBAction func refresh(_ sender: Any) {
+        self.handleCase()
     }
     
     @IBAction func backButton(_ sender: Any) {

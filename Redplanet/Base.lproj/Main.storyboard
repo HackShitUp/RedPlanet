@@ -1467,10 +1467,10 @@
                                 <action selector="backButton:" destination="WWE-KP-oje" id="ufD-zA-x0y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Contacts" id="DUn-qC-9Bw">
+                        <barButtonItem key="rightBarButtonItem" image="Refresh" id="DUn-qC-9Bw">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="contactsAction:" destination="WWE-KP-oje" id="mMe-uP-hXG"/>
+                                <action selector="refresh:" destination="WWE-KP-oje" id="YDi-au-rRd"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -3233,7 +3233,7 @@
                                 <action selector="backButton:" destination="1Re-0K-tP8" id="JZh-n9-XtK"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="CbI-ew-plc">
+                        <barButtonItem key="rightBarButtonItem" image="Refresh" id="CbI-ew-plc">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="refresh:" destination="1Re-0K-tP8" id="bvb-BH-m0G"/>
@@ -4363,11 +4363,11 @@
             </objects>
             <point key="canvasLocation" x="3353" y="1325"/>
         </scene>
-        <!--Post-->
+        <!--ShareUI-->
         <scene sceneID="pLf-ZB-QPD">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfP-sj-gPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="4Y4-85-ZHo" sceneMemberID="viewController">
+                <viewController id="4Y4-85-ZHo" customClass="ShareUI" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sMg-jI-Ocf"/>
                         <viewControllerLayoutGuide type="bottom" id="wrB-J9-EY1"/>
@@ -4377,7 +4377,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="12" title="Post" image="SLRCamera" id="Ivv-rt-4oK"/>
+                    <tabBarItem key="tabBarItem" tag="12" title="" image="SLRCamera" id="Ivv-rt-4oK"/>
                     <navigationItem key="navigationItem" id="TMu-6q-WbQ"/>
                 </viewController>
             </objects>
@@ -4785,7 +4785,6 @@
         <image name="AddUser" width="24" height="24"/>
         <image name="Camera" width="412" height="412"/>
         <image name="Chats" width="25" height="25"/>
-        <image name="Contacts" width="25" height="25"/>
         <image name="DeleteSmall" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>
         <image name="FlashOff" width="45" height="45"/>
