@@ -30,8 +30,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
 
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
-        // MARK: - RPHelpers; hide rpButton
-        rpButton.isHidden = false
         // Set UITabBar isTranslucent boolean
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.tabBar.isTranslucent = false
@@ -65,8 +63,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem!.title = "Settings"
         }
-        // MARK: - RPHelpers; hide rpButton
-        rpButton.isHidden = true
         // Configure UINavigationBar via extension
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true

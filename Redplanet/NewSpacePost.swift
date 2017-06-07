@@ -351,8 +351,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         super.viewDidAppear(animated)
         // Hide tab bar controller
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        // MARK: - RPHelpers; Hide rpButton
-        rpButton.isHidden = true
     }
     
     override func viewDidLoad() {
@@ -381,8 +379,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // MARK: - RPHelpers; Show rpButton
-        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

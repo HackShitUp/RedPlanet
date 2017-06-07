@@ -305,10 +305,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         
-        // MARK: - RPHelpers
-        // Hide rpButton
-        rpButton.isHidden = true
-        
         // Show UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
@@ -370,8 +366,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // MARK: - MasterUI; show rpButton
-        rpButton.isHidden = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {

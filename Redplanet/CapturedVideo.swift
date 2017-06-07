@@ -48,14 +48,9 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.capturedURL!)
         }) { (saved: Bool, error: Error?) in
             if saved {
-                DispatchQueue.main.async(execute: {
-                    UIView.animate(withDuration: 0.5) { () -> Void in
-                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-                    }
-                    UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
-                    }, completion: nil)
-                })
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showAction(withTitle: "Saved Video")
             } else {
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
@@ -260,7 +255,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
             self.containerSwipeNavigationController?.delegate = self
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false
-            self.containerSwipeNavigationController?.shouldShowCenterViewController = false
             self.containerSwipeNavigationController?.shouldShowBottomViewController = false
 
             // UITapGestureRecognizer method to toggle volume
@@ -287,6 +281,28 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
             }
             // Bring subtleVolume to front
             self.view.bringSubview(toFront: subtleVolume)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let buttons = [exitButton,
+                       saveButton,
+                       muteButton,
+                       continueButton] as [Any]
+        
+        for b in buttons {
+            let buttonView = (b as AnyObject) as! UIView
+            UIView.animate(withDuration: 0.3,
+                           animations: {
+                            buttonView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            },
+                           completion: { _ in
+                            UIView.animate(withDuration: 0.3) {
+                                buttonView.transform = .identity
+                            }
+            })
         }
     }
     

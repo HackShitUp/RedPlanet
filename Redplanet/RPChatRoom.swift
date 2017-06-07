@@ -386,8 +386,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.navigationController?.navigationBar.normalizeBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.tabBarController?.tabBar.isTranslucent = true
-        // MARK: - RPHelpers; hide rpButton
-        rpButton.isHidden = true
+        
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
@@ -399,51 +398,52 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
         // Disable done button
         editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
-        
-        // Send to Chats
-        let chats = PFObject(className: "Chats")
-        chats["sender"] = PFUser.current()!
-        chats["senderUsername"] = PFUser.current()!.username!
-        chats["receiver"] = chatUserObject.last!
-        chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
-        chats["contentType"] = "ph"
-        chats["read"] = false
-        chats["saved"] = false
-        chats.saveInBackground {
-            (success: Bool, error: Error?) in
-            if error == nil {
-                
-                // MARK: - RPHelpers; update ChatsQueue, show success, and push notification
-                let rpHelpers = RPHelpers()
-                rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                rpHelpers.showSuccess(withTitle: "Sent")
-                rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
-                
-                // Re-enable done button
-                editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
-                
-                // Clear newChat
-                self.newChat.text!.removeAll()
-                // Dismiss view controller
-                self.dismiss(animated: true, completion: {
-                    // Reload data
-                    self.fetchChats()
-                })
-            } else {
-                print(error?.localizedDescription as Any)
-                // Re-enable done button
-                editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
-                
-                // Dismiss view controller
-                self.dismiss(animated: true, completion: { 
-                    // Reload data
-                    self.fetchChats()
-                })
+        // Dismiss CLImageEditor
+        editor.dismiss(animated: true) {
+            
+            // Send to Chats
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
+            chats["contentType"] = "ph"
+            chats["read"] = false
+            chats["saved"] = false
+            chats.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    
+                    // MARK: - RPHelpers; update ChatsQueue, show success, and push notification
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                    rpHelpers.showSuccess(withTitle: "Sent")
+                    rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
+                    
+                    // Re-enable done button
+                    editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
+                    
+                    // Clear newChat
+                    self.newChat.text!.removeAll()
+                    // Dismiss view controller
+                    self.dismiss(animated: true, completion: {
+                        // Reload data
+                        self.fetchChats()
+                    })
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // Re-enable done button
+                    editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
+                    
+                    // Dismiss view controller
+                    self.dismiss(animated: true, completion: {
+                        // Reload data
+                        self.fetchChats()
+                    })
+                }
             }
         }
-        // Dismiss view controller
-        editor.dismiss(animated: true, completion: { _ in })
     }
     
     func imageEditorDidCancel(_ editor: CLImageEditor) {
@@ -506,7 +506,19 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.navigationBar.tintColor = UIColor.black
-        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        
+        imagePicker.navigationBar.whitenBar(navigator: imagePicker.navigationController)
+        imagePicker.view.roundAllCorners(sender: imagePicker.view)
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            imagePicker.title = "Photos & Videos"
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -521,8 +533,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.removeObservers()
         // Set isTranslucent to FALSE
         self.navigationController?.tabBarController?.tabBar.isTranslucent = false
-        // MARK: - MasterUI; hide rpButton
-        rpButton.isHidden = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -808,7 +818,7 @@ extension RPChatRoom {
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Chat", message: "Options")
+                let dialogController = AZDialogViewController(title: "Chat", message: nil)
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true

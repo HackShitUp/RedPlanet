@@ -91,11 +91,9 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     }
     
     
-    func textViewDidChange(_ textView: UITextView) -> Bool {
+    func textViewDidChange(_ textView: UITextView) {
         // Set bool for caption
         didChangeCaption = true
-        
-        return didChangeCaption
     }
     
 
@@ -167,16 +165,10 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         } else {
             self.proPicCaption.text! = "Say something about your profile photo..."
         }
-        
-        
-        
-        
-        
-        
+
         // Stylize title
         configureView()
         
-
         // Set initial image
         self.rpUserProPic.image = self.changedProPicImage!
         

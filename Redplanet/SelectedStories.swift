@@ -88,10 +88,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - MainTabUI
-        // Show button
-        rpButton.isHidden = false
-        
         // Fetch Stories
         self.fetchStories(mediaSource: self.sourceURL)
         

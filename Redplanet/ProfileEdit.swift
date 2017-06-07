@@ -335,13 +335,23 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     func changePhoto(sender: AnyObject) {
         
         // Instantiate UIImagePickerController
-        let image = UIImagePickerController()
-        image.delegate = self
-        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        image.allowsEditing = true
-        image.navigationBar.tintColor = UIColor.black
-        image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = true
+        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.view.roundAllCorners(sender: imagePicker.view)
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
+        }
+        
+        let rpPopUpVC = RPPopUpVC()
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: imagePicker)
         
         // MARK: - AZDialogViewController
         let dialogController = AZDialogViewController(title: "Profile Photo", message: "Options")
@@ -365,7 +375,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // (1) NEW PRO PIC
         let new = AZDialogAction(title: "New Profile Photo", handler: { (dialog) -> (Void) in
             // Present image picker
-            dialog.present(image, animated: false, completion: nil)
+            dialog.present(rpPopUpVC, animated: true, completion: nil)
         })
         
         // (2) EDIT PRO PIC CAPTION
@@ -380,7 +390,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
                     newProPicVC.modalPresentationStyle = .popover
                     newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-                    newProPicVC.changedProPicImage = self.rpUserProPic.image!
+                    newProPicVC.changedProPicImage = self.rpUserProPic.image
                     
                     let popOverVC = newProPicVC.popoverPresentationController
                     popOverVC?.permittedArrowDirections = .any
@@ -463,41 +473,44 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
-        // Set image
-        self.rpUserProPic.image = image
-        // Dismiss view controller
-        editor.dismiss(animated: true, completion: { _ in })
-        
-        // Present Popover
-        let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-        newProPicVC.modalPresentationStyle = .popover
-        newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-        
-        let popOverVC = newProPicVC.popoverPresentationController
-        popOverVC?.permittedArrowDirections = .any
-        popOverVC?.delegate = self
-        popOverVC?.sourceView = self.rpUserProPic
-        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        
-        self.present(newProPicVC, animated: true, completion: nil)
+        // Dismiss CLImageEditor and execute completion
+        editor.dismiss(animated: true) {
+            // Set image
+            self.rpUserProPic.image = image
+            
+            // Present Popover
+            let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
+            newProPicVC.modalPresentationStyle = .popover
+            newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+            newProPicVC.changedProPicImage = image
+            
+            let popOverVC = newProPicVC.popoverPresentationController
+            popOverVC?.permittedArrowDirections = .any
+            popOverVC?.delegate = self
+            popOverVC?.sourceView = self.rpUserProPic
+            popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+            self.present(newProPicVC, animated: true, completion: nil)
+        }
     }
     
     func imageEditorDidCancel(_ editor: CLImageEditor) {
-        // Dismiss view controller
-        editor.dismiss(animated: true, completion: { _ in })
-        
-        // Present Popover
-        let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-        newProPicVC.modalPresentationStyle = .popover
-        newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-        
-        let popOverVC = newProPicVC.popoverPresentationController
-        popOverVC?.permittedArrowDirections = .any
-        popOverVC?.delegate = self
-        popOverVC?.sourceView = self.rpUserProPic
-        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        
-        self.present(newProPicVC, animated: true, completion: nil)
+        // Dismiss CLImageEditor and execute completion
+        editor.dismiss(animated: true) { 
+            
+            // Present Popover
+            let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
+            newProPicVC.modalPresentationStyle = .popover
+            newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+            newProPicVC.changedProPicImage = self.rpUserProPic.image
+            
+            let popOverVC = newProPicVC.popoverPresentationController
+            popOverVC?.permittedArrowDirections = .any
+            popOverVC?.delegate = self
+            popOverVC?.sourceView = self.rpUserProPic
+            popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+            
+            self.present(newProPicVC, animated: true, completion: nil)
+        }
     }
     
     // Function to dismiss keybaord
@@ -516,8 +529,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Configure UITabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.tabBarController?.tabBar.isTranslucent = true
-        // MARK: - RPExtensions; Hide rpButton
-        rpButton.isHidden = true
     }
 
     override func viewDidLoad() {
@@ -532,7 +543,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         self.userBirthday.maximumDate = Date()
         
         // Configure textColor for rpUserBio
-        self.rpUserBio.textColor = UIColor.lightGray
+        self.rpUserBio.textColor = UIColor.darkGray
 
         // Add icons to UITextField
         let userIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
@@ -626,8 +637,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - RPExtensions; Show rpButton
-        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -674,23 +683,23 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 print("Saved Bool!")
                 // Set image
                 if let chosenImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-                    // Set image
-                    self.rpUserProPic.image = chosenImage
-                    
-                    // Pass selected profile photo to NewProfilePhoto view controller
-                    let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-                    newProPicVC.changedProPicImage = self.rpUserProPic.image!
-                    
-                    // Dismiss view controller
-                    self.dismiss(animated: true, completion: nil)
-                    
-                    // MARK: - CLImageEditor
-                    let editor = CLImageEditor(image: self.rpUserProPic.image!)
-                    editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-                    editor?.delegate = self
-                    let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
-                    tool?.title = "Emoji"
-                    self.present(editor!, animated: true, completion: nil)
+                    // Disimiss and execution completion block
+                    self.dismiss(animated: true, completion: { 
+                        // Set image
+                        self.rpUserProPic.image = chosenImage
+                        
+                        // Pass selected profile photo to NewProfilePhoto view controller
+                        let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
+                        newProPicVC.changedProPicImage = self.rpUserProPic.image
+                        
+                        // MARK: - CLImageEditor
+                        let editor = CLImageEditor(image: self.rpUserProPic.image)
+                        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+                        editor?.delegate = self
+                        let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+                        tool?.title = "Emoji"
+                        self.present(editor!, animated: true, completion: nil)
+                    })
                 }
             } else {
                 print(error?.localizedDescription as Any)
@@ -704,10 +713,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // Save bool
-        PFUser.current()!["proPicExists"] = false
-        PFUser.current()!.saveInBackground()
-        // Dismiss view controller
-        self.dismiss(animated: true, completion: nil)
+        // Dismiss UIImagePickerController
+        self.dismiss(animated: true) { 
+            // Save bool
+            PFUser.current()!["proPicExists"] = false
+            PFUser.current()!.saveInBackground()
+        }
     }
 }

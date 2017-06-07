@@ -54,13 +54,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     @IBAction func saveButton(_ sender: Any) {
         DispatchQueue.main.async(execute: {
             // Save photo
-            UIView.animate(withDuration: 0.5) { () -> Void in
-                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
-            }
-            UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
-            }, completion: nil)
             UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.stillPhoto)!, self, nil, nil)
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showAction(withTitle: "Saved Photo")
         })
     }
     
@@ -141,12 +138,16 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
         // Delegate
     }
-        
+    
+    
+    // FUNCTION - Clear arrays
     open func clearArrays() {
         currentGeoFence.removeAll(keepingCapacity: false)
         temperature.removeAll(keepingCapacity: false)
     }
 
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.isStatusBarHidden = true
@@ -187,6 +188,28 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
             self.stillPhoto.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.filterView.bringSubview(toFront: (b as AnyObject) as! UIView)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let buttons = [leaveButton,
+                       saveButton,
+                       textButton,
+                       completeButton] as [Any]
+        
+        for b in buttons {
+            let buttonView = (b as AnyObject) as! UIView
+            UIView.animate(withDuration: 0.3,
+                               animations: {
+                                buttonView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            },
+                               completion: { _ in
+                                UIView.animate(withDuration: 0.3) {
+                                    buttonView.transform = .identity
+                                }
+            })
         }
     }
 

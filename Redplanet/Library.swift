@@ -59,8 +59,19 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.allowsEditing = true
-        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        imagePicker.navigationBar.tintColor = UIColor.black
+        
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            imagePicker?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            imagePicker?.title = "Photos & Videos"
+        }
+        
+        
         navigationController?.present(self.imagePicker, animated: true, completion: nil)
     }
     
@@ -103,7 +114,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     // FUNCTION - Stylize and set title of UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont

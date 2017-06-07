@@ -74,9 +74,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
-        let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
-        stillVC.stillImage = photo
-        self.navigationController?.pushViewController(stillVC, animated: false)
+        DispatchQueue.main.async(execute: {
+            let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
+            stillVC.stillImage = photo
+            self.navigationController?.pushViewController(stillVC, animated: false)
+        })
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
@@ -142,7 +144,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     @IBAction func toggleFlash(_ sender: Any) {
         flashEnabled = !flashEnabled
-        
         if flashEnabled == true {
             flashButton.setImage(UIImage(named: "FlashOn"), for: .normal)
         } else {
@@ -388,6 +389,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // MARK: - SubtleVolume
+        subtleVolume = SubtleVolume(style: .dots)
+        subtleVolume.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        subtleVolume.delegate = self
+        self.view.addSubview(subtleVolume)
+        
         // Configure UIStatusBar
         UIApplication.shared.statusBarStyle = .lightContent
         UIApplication.shared.isStatusBarHidden = false
@@ -395,12 +403,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         
         // Change background color
         self.navigationController?.view.backgroundColor = UIColor.black
-        
-        // MARK: - SubtleVolume
-        subtleVolume = SubtleVolume(style: .dots)
-        subtleVolume.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        subtleVolume.delegate = self
-        self.view.addSubview(subtleVolume)
+
+        // Set UIView animations
+        UIView.setAnimationsEnabled(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -453,8 +453,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewDidAppear(animated)
         // Stylize title
         configureView()
-        // MARK: - RPHelpers; hide rpButton
-        rpButton.isHidden = false
+
         // Set UITabBar isTranslucent boolean
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.tabBar.isTranslucent = false

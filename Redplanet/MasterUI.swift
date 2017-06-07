@@ -17,15 +17,6 @@ import SDWebImage
 import SwipeNavigationController
 
 
-
-/*
- MARK: - Used to add UIButton to bottom center of UIView
- Hide rpButton in viewWillAppear and
- show rpButton in viewWillDisappear
- */
-let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
-
-
 /*
  UITabBarController Class that manages the bottom tab-bar of the Application
  ie: Home, Explore, Camera button, Chats, and Profile. 
@@ -38,7 +29,10 @@ let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
  
  */
 
-class MasterUI: UITabBarController, UITabBarControllerDelegate {
+class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationControllerDelegate {
+    
+    // Class Variable;
+    var lastIndex: Int? = 0
     
     // Initialize AppDelegate
     let appDelegate = AppDelegate()
@@ -46,17 +40,8 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     // Array to hold chats
     var unreadChats = [PFObject]()
     
-    // FUNCTION - Add rpButton
-    func setButton() {
-        // Add button to bottom/center of UITabBar
-        // Increase current # for y origin to place it higher on the y axis
-        rpButton.isHidden = false
-        rpButton.center = self.view.center
-        rpButton.frame.origin.y = self.view.bounds.height - 60
-        rpButton.setImage(UIImage(named: "SLRCamera"), for: .normal)
-        rpButton.backgroundColor = UIColor.clear
-        self.view.addSubview(rpButton)
-    }
+    
+    
     
     // FUNCTION - Show Camera
     func showShareUI() {
@@ -115,13 +100,19 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         completionHandler(currentRequestedFollowers.count)
     }
     
+    
+    // MARK: - SwipeNavigationController Delegate Method
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        self.selectedIndex = self.lastIndex!
+    }
+    
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+    }
+    
+    
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        // MARK: - RPExtension; add rpButton to center bottom of UIView
-        self.setButton()
-        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
         
         // Create corner radius for topLeft/topRight of UIView
         let shape = CAShapeLayer()
@@ -157,6 +148,9 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         if let username = PFUser.current()!.value(forKey: "username") as? String {
             self.tabBar.items?[4].title = username.uppercased()
         }
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -186,9 +180,6 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
                 self.tabBar.items?[4].badgeValue = nil
             }
         }
-        // MARK: - RPExtension; add rpButton to center bottom of UIView
-        self.setButton()
-        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
     }
     
     
@@ -200,5 +191,17 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-
+    
+    
+    // MARK: - UITabBarController Delegate Methods
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        // Set lastIndex
+        self.lastIndex = self.selectedIndex
+        
+        if item.tag == 12 {
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        }
+    }
 }

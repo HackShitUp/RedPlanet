@@ -820,5 +820,4 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // TODO::
         // Count Best Friends!!!
     }
-
 }
