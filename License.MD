@@ -23,7 +23,7 @@ See the License for the specific language governing permissions and\
 limitations under the License.\
 }
 
-The following (25 in total) open-source libraries are used in Redplanet for iOS:
+The following (26 in total) open-source libraries are used in Redplanet for iOS:
 • Agrume
 • AnimatedCollectioniewLayout
 • AZDialogViewController
@@ -49,3 +49,4 @@ The following (25 in total) open-source libraries are used in Redplanet for iOS:
 • SwipeView
 • TRMosaicLayout
 • TwicketSegmentedControl
+• YXTMotionView

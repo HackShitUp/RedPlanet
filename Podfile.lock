@@ -37,6 +37,7 @@ PODS:
   - SwipeNavigationController (2.0.2)
   - TRMosaicLayout (1.0.0)
   - VIMVideoPlayer (6.0.1)
+  - YXTMotionView (0.1)
 
 DEPENDENCIES:
   - AnimatedCollectionViewLayout
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - SwipeNavigationController
   - TRMosaicLayout
   - VIMVideoPlayer
+  - YXTMotionView
 
 SPEC CHECKSUMS:
   AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
@@ -80,7 +82,8 @@ SPEC CHECKSUMS:
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
+  YXTMotionView: cef229d560c50fc8e4fd2897b3715bec208ac95f
 
-PODFILE CHECKSUM: 2957594e04c6eab24262a50e4b1335f53fbb6e59
+PODFILE CHECKSUM: f501f0eaece8ba51f0007e8326c98a9507eb9480
 
 COCOAPODS: 1.2.1

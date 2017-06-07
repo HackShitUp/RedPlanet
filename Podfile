@@ -23,6 +23,7 @@ target 'Redplanet' do
 	pod 'SwipeNavigationController'
 	pod 'TRMosaicLayout'
 	pod 'VIMVideoPlayer'
+	pod 'YXTMotionView'
 
   target 'RedplanetTests' do
     inherit! :search_paths
