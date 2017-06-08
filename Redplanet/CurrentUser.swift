@@ -485,7 +485,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         tableView.backgroundColor = UIColor.white
         tableView.estimatedRowHeight = 75
         tableView.rowHeight = 75
-        tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        tableView.separatorColor = UIColor.groupTableViewBackground
         tableView.tableFooterView = UIView()
         tableView.estimatedSectionHeaderHeight = 425
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
@@ -494,7 +494,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
         tableView.addSubview(refresher)

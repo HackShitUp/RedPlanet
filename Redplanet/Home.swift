@@ -111,6 +111,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     func fetchFollowing() {
         
         // Refresh UIRefreshControl
+        self.refresher?.tintColor = UIColor.white
         self.refresher?.beginRefreshing()
         
         // MARK: - AppDelegate

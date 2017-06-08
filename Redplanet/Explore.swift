@@ -62,16 +62,24 @@ class Explore: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var searchBar: UITextField!
     
     func refresh() {
-        self.refresher.endRefreshing()
+        self.refresher?.endRefreshing()
     }
     
     // FUNCTION - Fetch News
     func fetchNews() {
+        
+        // Show UIRefreshControl
+        self.refresher?.tintColor = UIColor.white
+        self.refresher?.beginRefreshing()
+        
         let ads = PFQuery(className: "Ads")
         ads.order(byAscending: "createdAt")
         ads.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear arrays
                 self.sourceObjects.removeAll(keepingCapacity: false)
                 self.publisherNames.removeAll(keepingCapacity: false)

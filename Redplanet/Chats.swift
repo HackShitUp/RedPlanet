@@ -146,6 +146,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     // Query Parse; <ChatsQueue>
     func fetchQueues() {
+        
+        // Show UIRefreshControl
+        self.refresher?.tintColor = UIColor.white
+        self.refresher?.beginRefreshing()
+        
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
         let endChat = PFQuery(className: "ChatsQueue")
@@ -158,6 +163,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear array
                 self.chatQueues.removeAll(keepingCapacity: false)
                 for object in objects! {
@@ -168,6 +176,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // Fetch chats
                 self.fetchChats()
             } else {
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - RPHelpers
                     let rpHelpers = RPHelpers()

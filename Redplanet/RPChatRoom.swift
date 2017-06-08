@@ -328,6 +328,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func fetchChats() {
         
         // Begin UIRefreshControl
+        self.refresher?.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         self.refresher?.beginRefreshing()
         
         let sender = PFQuery(className: "Chats")
@@ -442,11 +443,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Redefine frame of UITextView; textView
             self.textView.frame.origin.y = self.textView.frame.origin.y + difference
             self.textView.frame.size.height = self.textView.contentSize.height
-            
-            // Move UITableView (tableView) down
-            // self.tableView!.frame.origin.y -= self.keyboard.height
-//            self.tableView.frame.origin.y = 0
-//            self.tableView.frame.size.height -= self.innerView.frame.size.height + self.textView.frame.size.height + 4 + self.keyboard.height
         }
     }
 
@@ -573,7 +569,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let sendImage = UIImage(cgImage: UIImage(named: "SentFilled")!.cgImage!, scale: 1, orientation: .rightMirrored)
         self.sendButton.setImage(sendImage, for: .normal)
         
-        
         // Configure UITextView
         // MARK: - RPHelpers
         self.textView.roundAllCorners(sender: self.textView)
@@ -591,7 +586,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
     }
@@ -697,7 +692,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if self.tableView!.frame.origin.y != 0 {
             // Move UITableView (tableView), UITextView (textView), and UIView (innerView) down
             self.tableView.frame.origin.y += self.keyboard.height
-//            self.tableView.frame.origin.y = 0
             self.innerView.frame.origin.y += self.keyboard.height
             self.textView.frame.origin.y += self.keyboard.height
         }
@@ -897,8 +891,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Resign First responder
         self.textView.resignFirstResponder()
         self.tableView.frame.origin.y = 0
-//        self.innerView.frame.origin.y += self.keyboard.height
-//        self.textView.frame.origin.y += self.keyboard.height
     }
 }
 
@@ -941,13 +933,21 @@ extension RPChatRoom {
                                                             if error == nil {
                                                                 print("Successfully deleted chat: \(object!)")
                                                                 
+                                                                // Update <ChatsQueue> with last object in array
+//                                                                let rpHelpers = RPHelpers()
+//                                                                _ = rpHelpers.updateQueue(chatQueue: self.messageObjects[indexPath.row]!, userObject: chatUserObject.last!)
+                                                                // MARK: - RPHelpers; Update <ChatsQueue> with last object in array
+                                                                let rpHelpers = RPHelpers()
+                                                                if let lastChat = self.messageObjects.last {
+                                                                    rpHelpers.updateQueue(chatQueue: lastChat, userObject: chatUserObject.last!)
+                                                                } else if let firstChat = self.messageObjects.first {
+                                                                    rpHelpers.updateQueue(chatQueue: firstChat, userObject: chatUserObject.last!)
+                                                                }
+                                                                
                                                                 // Delete from messageObjects and UITableView
                                                                 self.messageObjects.remove(at: indexPath.row)
                                                                 self.tableView!.deleteRows(at: [indexPath], with: .fade)
                                                                 
-                                                                // Update <ChatsQueue> with last object in array
-                                                                let rpHelpers = RPHelpers()
-                                                                _ = rpHelpers.updateQueue(chatQueue: self.messageObjects.last!, userObject: chatUserObject.last!)
                                                                 // Show success
                                                                 rpHelpers.showSuccess(withTitle: "Deleted")
                                                                 
