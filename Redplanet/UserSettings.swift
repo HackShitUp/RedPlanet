@@ -63,6 +63,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // Configure UINavigationBar via extension
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default

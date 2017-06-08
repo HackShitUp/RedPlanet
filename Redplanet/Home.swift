@@ -66,10 +66,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // QUERY: FRIENDS (MUTUAL)
     func fetchFriends() {
         
-        // Refresh UIRefreshControl
-        self.refresher?.tintColor = UIColor.white
-        self.refresher?.beginRefreshing()
-        
         // MARK: - AppDelegate
         _ = appDelegate.queryRelationships()
         
@@ -111,10 +107,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // QUERY: FOLLOWING
     func fetchFollowing() {
         
-        // Refresh UIRefreshControl
-        self.refresher?.tintColor = UIColor.white
-        self.refresher?.beginRefreshing()
-        
         // MARK: - AppDelegate
         _ = appDelegate.queryRelationships()
         
@@ -125,6 +117,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear array
                 self.following.removeAll(keepingCapacity: false)
                 for object in objects! {
@@ -300,6 +296,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
+        
+        // Refresh UIRefreshControl
+        self.refresher?.tintColor = UIColor.white
+        self.refresher?.beginRefreshing()
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -301,9 +301,11 @@ class RPHelpers: NSObject {
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
         frontChat.whereKey("endUser", equalTo: userObject!)
+        
         let endChat = PFQuery(className: "ChatsQueue")
         endChat.whereKey("endUser", equalTo: PFUser.current()!)
         endChat.whereKey("frontUser", equalTo: userObject!)
+        
         let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
         chats.whereKeyExists("lastChat")
         chats.includeKeys(["lastChat", "frontUser", "endUser"])

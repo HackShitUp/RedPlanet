@@ -351,11 +351,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
+                
                 for object in objects!.reversed() {
                     // Ephemeral Chat
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    // Append saved objects
+                    // Append objects that have not yet expired AND are saved...
                     if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
                         self.messageObjects.append(object)
                     } else {
@@ -418,6 +419,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             chats.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
+                    
                     // MARK: - RPHelpers; update ChatsQueue, and send push notification
                     let rpHelpers = RPHelpers()
                     rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
