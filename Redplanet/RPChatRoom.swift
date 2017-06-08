@@ -435,7 +435,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // FUNCTION - Reset UI
     func resetView() {
-        DispatchQueue.main.async { 
+        DispatchQueue.main.async {
             // Get difference to reset UI
             let difference = self.textView.frame.size.height - self.textView.contentSize.height
             
@@ -443,15 +443,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             self.textView.frame.origin.y = self.textView.frame.origin.y + difference
             self.textView.frame.size.height = self.textView.contentSize.height
             
-            // Move UITableView down
-            self.tableView.frame.origin.y -= difference + self.keyboard.height
-            self.tableView.frame.size.height -= difference + self.keyboard.height
-            
-            
-            // Move tableView up
-//            self.tableView.frame.origin.y -= self.keyboard.height
-            // Move chatbox up
-            self.innerView.frame.origin.y -= self.keyboard.height
+            // Move UITableView (tableView) down
+            // self.tableView!.frame.origin.y -= self.keyboard.height
+//            self.tableView.frame.origin.y = 0
+//            self.tableView.frame.size.height -= self.innerView.frame.size.height + self.textView.frame.size.height + 4 + self.keyboard.height
         }
     }
 
@@ -682,10 +677,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             self.view.layoutIfNeeded()
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
-                // Move tableView up
-                self.tableView!.frame.origin.y -= self.keyboard.height
-                 // Move chatbox up
+                // Move UITableView (tableView), UITextView (textView), and UIView (innerView) up
+                self.tableView.frame.origin.y -= self.keyboard.height
                 self.innerView.frame.origin.y -= self.keyboard.height
+                self.textView.frame.origin.y -= self.keyboard.height
+                
                 // Scroll to the bottom
                 if self.messageObjects.count > 0 {
                     let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
@@ -699,10 +695,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         if self.tableView!.frame.origin.y != 0 {
-            // Move table view up
-            self.tableView!.frame.origin.y += self.keyboard.height
-            // Move chatbox up
+            // Move UITableView (tableView), UITextView (textView), and UIView (innerView) down
+            self.tableView.frame.origin.y += self.keyboard.height
+//            self.tableView.frame.origin.y = 0
             self.innerView.frame.origin.y += self.keyboard.height
+            self.textView.frame.origin.y += self.keyboard.height
         }
     }
     
@@ -741,7 +738,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
             // Move UITableView up
             self.tableView.frame.origin.y -= difference
-            self.tableView.frame.size.height -= difference
             
         } else if textView.contentSize.height < textView.frame.size.height {
         // DECREASE UITextView Height
@@ -755,7 +751,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
             // Move UITableView down
             self.tableView!.frame.origin.y += difference
-            self.tableView!.frame.size.height += difference
         }
     }
     
@@ -901,6 +896,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // Resign First responder
         self.textView.resignFirstResponder()
+        self.tableView.frame.origin.y = 0
+//        self.innerView.frame.origin.y += self.keyboard.height
+//        self.textView.frame.origin.y += self.keyboard.height
     }
 }
 
