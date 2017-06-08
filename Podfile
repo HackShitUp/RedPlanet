@@ -10,7 +10,6 @@ target 'Redplanet' do
 	pod 'DZNEmptyDataSet'
 	pod ‘Heap’
 	pod 'KILabel'
-	pod 'NextGrowingTextView'
 	pod 'NotificationBannerSwift'
 	pod 'Onboard'
 	pod ‘OneSignal’
@@ -24,7 +23,6 @@ target 'Redplanet' do
 	pod 'SwipeNavigationController'
 	pod 'TRMosaicLayout'
 	pod 'VIMVideoPlayer'
-	pod 'YXTMotionView'
 
   target 'RedplanetTests' do
     inherit! :search_paths

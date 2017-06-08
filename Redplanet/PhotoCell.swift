@@ -12,9 +12,6 @@ import ParseUI
 import Bolts
 import KILabel
 import SDWebImage
-import YXTMotionView
-
-
 
 /*
  MARK: - THIS CLASS RELATES TO POSTS SHARED ON REDPLANET
@@ -40,37 +37,9 @@ class PhotoCell: UITableViewCell {
     
     // FUNCTION - Zoom into photo
     func zoom(sender: AnyObject) {
-        
-        
-        print("IMAGE SIZE \(self.photo.image!.size)")
-        
-        
-    
-        
-        
-        
-        let smallest: CGFloat = min(self.photo.image!.size.width, self.photo.image!.size.height)
-        let largest: CGFloat = max(self.photo.image!.size.width, self.photo.image!.size.height)
-        let ratio: CGFloat = largest / smallest
-        let maximumRatioForNonePanorama: CGFloat = 4 / 3
-        // set this yourself depending on
-        if ratio > maximumRatioForNonePanorama {
-            // it is probably a panorama
-            
-            let motionView = YXTMotionView(frame: self.contentView.bounds)
-            motionView.image = self.photo.image!
-            motionView.frame.origin.x = 0
-            self.contentView.addSubview(motionView)
-            self.contentView.bringSubview(toFront: motionView)
-            
-        } else {
-            // Mark: - Agrume
-            let agrume = Agrume(image: self.photo.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
-            agrume.showFrom(self.superDelegate!.self)
-        }
-        
-
-        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.photo.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+        agrume.showFrom(self.superDelegate!.self)
     }
     
     // FUNCTION - Navigates to user's profile

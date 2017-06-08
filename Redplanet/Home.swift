@@ -65,6 +65,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // QUERY: FRIENDS (MUTUAL)
     func fetchFriends() {
+        
+        // Refresh UIRefreshControl
+        self.refresher?.beginRefreshing()
+        
         // MARK: - AppDelegate
         _ = appDelegate.queryRelationships()
         
@@ -76,6 +80,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         mutuals.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear arrays
                 self.friends.removeAll(keepingCapacity: false)
                 self.friends.append(PFUser.current()!)
@@ -89,6 +97,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.fetchFirstPosts(forGroup: self.friends)
                 
             } else {
+                print(error?.localizedDescription as Any)
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
@@ -98,6 +109,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // QUERY: FOLLOWING
     func fetchFollowing() {
+        
+        // Refresh UIRefreshControl
+        self.refresher?.beginRefreshing()
+        
         // MARK: - AppDelegate
         _ = appDelegate.queryRelationships()
         
@@ -118,6 +133,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 
                 self.fetchFirstPosts(forGroup: self.following)
             } else {
+                print(error?.localizedDescription as Any)
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")

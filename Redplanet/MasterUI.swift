@@ -125,10 +125,6 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
         // Remove UITabBar border/configure UITabBar
         self.tabBar.backgroundImage = UIImage()
@@ -136,6 +132,10 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         self.tabBar.isTranslucent = false
         self.tabBar.tintColor = UIColor.black
         self.tabBar.barTintColor = UIColor.white
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         // Set UITabBar font
         UITabBarItem.appearance().setTitleTextAttributes(
@@ -152,6 +152,13 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         super.viewDidAppear(animated)
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.delegate = self
+
+        // Remove UITabBar border/configure UITabBar
+        self.tabBar.backgroundImage = UIImage()
+        self.tabBar.shadowImage = UIImage()
+        self.tabBar.isTranslucent = false
+        self.tabBar.tintColor = UIColor.black
+        self.tabBar.barTintColor = UIColor.white
         
         // Fetch Unread Chats
         self.fetchChatsQueue { (count) in

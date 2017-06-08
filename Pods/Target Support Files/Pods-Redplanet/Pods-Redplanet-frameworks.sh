@@ -95,7 +95,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Ji/Ji.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KILabel/KILabel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MarqueeLabel/MarqueeLabel.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NextGrowingTextView/NextGrowingTextView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NotificationBannerSwift/NotificationBannerSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Onboard/Onboard.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Parse/Parse.framework"
@@ -109,7 +108,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SwipeNavigationController/SwipeNavigationController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TRMosaicLayout/TRMosaicLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/VIMVideoPlayer/VIMVideoPlayer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/YXTMotionView/YXTMotionView.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AnimatedCollectionViewLayout/AnimatedCollectionViewLayout.framework"
@@ -118,7 +116,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Ji/Ji.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KILabel/KILabel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MarqueeLabel/MarqueeLabel.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/NextGrowingTextView/NextGrowingTextView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NotificationBannerSwift/NotificationBannerSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Onboard/Onboard.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Parse/Parse.framework"
@@ -132,7 +129,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SwipeNavigationController/SwipeNavigationController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TRMosaicLayout/TRMosaicLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/VIMVideoPlayer/VIMVideoPlayer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/YXTMotionView/YXTMotionView.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

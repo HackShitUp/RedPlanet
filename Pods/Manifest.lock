@@ -15,7 +15,6 @@ PODS:
   - Ji/Ji-libxml (2.0.1)
   - KILabel (1.0.1)
   - MarqueeLabel/Swift (3.0.5)
-  - NextGrowingTextView (1.0.0)
   - NotificationBannerSwift (1.2.0):
     - MarqueeLabel/Swift
     - SnapKit (~> 3.2.0)
@@ -38,7 +37,6 @@ PODS:
   - SwipeNavigationController (2.0.2)
   - TRMosaicLayout (1.0.0)
   - VIMVideoPlayer (6.0.1)
-  - YXTMotionView (0.1)
 
 DEPENDENCIES:
   - AnimatedCollectionViewLayout
@@ -46,7 +44,6 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - Heap
   - KILabel
-  - NextGrowingTextView
   - NotificationBannerSwift
   - Onboard
   - OneSignal
@@ -60,7 +57,6 @@ DEPENDENCIES:
   - SwipeNavigationController
   - TRMosaicLayout
   - VIMVideoPlayer
-  - YXTMotionView
 
 SPEC CHECKSUMS:
   AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
@@ -70,7 +66,6 @@ SPEC CHECKSUMS:
   Ji: 6bb602a28dd08b804158f64990e6051ed5de0110
   KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
   MarqueeLabel: 8a25b2cf02cf52165022f01369e63536c58fcc00
-  NextGrowingTextView: 44645800cdb3cdf726e3c951bb224b368aa81952
   NotificationBannerSwift: 77f96e1c418309600aad70b21247d9b3cbc360e3
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
@@ -85,8 +80,7 @@ SPEC CHECKSUMS:
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
-  YXTMotionView: cef229d560c50fc8e4fd2897b3715bec208ac95f
 
-PODFILE CHECKSUM: 8bfe647f7fae7fac8550d328ea9d426335991812
+PODFILE CHECKSUM: 2957594e04c6eab24262a50e4b1335f53fbb6e59
 
 COCOAPODS: 1.2.1

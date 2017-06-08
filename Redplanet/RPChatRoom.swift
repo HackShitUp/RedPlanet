@@ -60,7 +60,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     var imagePicker: UIImagePickerController!
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var frontView: UIView!
+    @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var photosButton: UIButton!
     @IBOutlet weak var cameraButton: UIButton!
@@ -326,6 +326,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
     // FUNCTION - Fetch Chats
     func fetchChats() {
+        
+        // Begin UIRefreshControl
+        self.refresher?.beginRefreshing()
+        
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", equalTo: chatUserObject.last!)
@@ -339,6 +343,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
@@ -370,6 +378,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
@@ -391,6 +401,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let chatText = self.textView.text!
             // Clear chat
             self.textView.text!.removeAll()
+
+            // Reset UI
+            self.resetView()
+            
             // Send to Chats
             let chats = PFObject(className: "Chats")
             chats["sender"] = PFUser.current()!
@@ -416,6 +430,28 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     self.fetchChats()
                 }
             }
+        }
+    }
+    
+    // FUNCTION - Reset UI
+    func resetView() {
+        DispatchQueue.main.async { 
+            // Get difference to reset UI
+            let difference = self.textView.frame.size.height - self.textView.contentSize.height
+            
+            // Redefine frame of UITextView; textView
+            self.textView.frame.origin.y = self.textView.frame.origin.y + difference
+            self.textView.frame.size.height = self.textView.contentSize.height
+            
+            // Move UITableView down
+            self.tableView.frame.origin.y -= difference + self.keyboard.height
+            self.tableView.frame.size.height -= difference + self.keyboard.height
+            
+            
+            // Move tableView up
+//            self.tableView.frame.origin.y -= self.keyboard.height
+            // Move chatbox up
+            self.innerView.frame.origin.y -= self.keyboard.height
         }
     }
 
@@ -539,8 +575,18 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         stickersButton.makeCircular(forView: self.stickersButton, borderWidth: 2, borderColor: UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1))
         
         // Configure sendButton UIButton
-        let sendImage = UIImage(cgImage: UIImage(named: "SentOpen")!.cgImage!, scale: 1, orientation: .rightMirrored)
+        let sendImage = UIImage(cgImage: UIImage(named: "SentFilled")!.cgImage!, scale: 1, orientation: .rightMirrored)
         self.sendButton.setImage(sendImage, for: .normal)
+        
+        
+        // Configure UITextView
+        // MARK: - RPHelpers
+        self.textView.roundAllCorners(sender: self.textView)
+        self.textView.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+        self.textView.layer.borderWidth = 1
+        self.textView.clipsToBounds = true
+        self.textView.text = "Share your message..."
+        self.textView.textColor = UIColor.lightGray
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -577,6 +623,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
             imagePicker.title = "Photos & Videos"
         }
+        
+        // Hide UITabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -589,6 +639,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // Reset UITabBarController's UITabBar configurations
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -632,7 +685,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Move tableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
                  // Move chatbox up
-                self.frontView.frame.origin.y -= self.keyboard.height
+                self.innerView.frame.origin.y -= self.keyboard.height
                 // Scroll to the bottom
                 if self.messageObjects.count > 0 {
                     let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
@@ -649,63 +702,60 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Move table view up
             self.tableView!.frame.origin.y += self.keyboard.height
             // Move chatbox up
-            self.frontView.frame.origin.y += self.keyboard.height
+            self.innerView.frame.origin.y += self.keyboard.height
         }
     }
     
     // MARK: - UITextView Delegate Methods
     func textViewDidBeginEditing(_ textView: UITextView) {
+        if self.textView.textColor == UIColor.lightGray {
+            self.textView.text = ""
+            self.textView.textColor = UIColor.black
+        }
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        
+        // Disable sendButton if there's no text...
+        let spacing = CharacterSet.whitespacesAndNewlines
+        if !textView.text.trimmingCharacters(in: spacing).isEmpty {
+            self.sendButton.isEnabled = true
+        } else {
+            self.sendButton.isEnabled = false
+        }
+        
         // MARK: - RPHelpers
         let rpHelpers = RPHelpers()
         rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "is typing...")
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
         
         // INCREASE UITextView Height
-        if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 130 {
+        if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 140 {
             
             // Get difference of frame height
             let difference = textView.contentSize.height - textView.frame.size.height
             
             // Redefine frame of UITextView; textView
-            // Subtract 1 because UITextView in Storyboard has 1 point constraint to its superview top marigin
-            textView.frame.origin.y = textView.frame.origin.y - difference + 1
-            textView.frame.size.height = textView.contentSize.height + 1
-            
-            // Redefine frame of UIView; frontView
-//            frontView.frame.origin.y = (frontView.frame.origin.y - difference) + 1
-//            frontView.frame.size.height = textView.contentSize.height + 1
-            
-//            // move up tableView
-//            if textView.contentSize.height + keyboard.height + textView.frame.origin.y >= self.tableView!.frame.size.height {
-//                self.tableView!.frame.origin.y -= difference
-//            }
-            
+            // Subtract 1 for UITextView's height because of the 1 point top margin constraint in Storyboard
+            textView.frame.origin.y = textView.frame.origin.y - difference
+            textView.frame.size.height = textView.contentSize.height
 
-            
-            // TODO: Move up UITableView
-            self.tableView!.frame.origin.y -= difference
-            self.tableView!.frame.size.height -= difference
-            
+            // Move UITableView up
+            self.tableView.frame.origin.y -= difference
+            self.tableView.frame.size.height -= difference
             
         } else if textView.contentSize.height < textView.frame.size.height {
         // DECREASE UITextView Height
             
             // Get difference to deduct
             let difference = textView.frame.size.height - textView.contentSize.height
-            
-            // redefine frame of commentTxt
+
+            // Redefine frame of UITextView; textView
             textView.frame.origin.y = textView.frame.origin.y + difference
             textView.frame.size.height = textView.contentSize.height
-            
-            // move donw tableViwe
-//            if textView.contentSize.height + keyboard.height + commentY > tableView.frame.size.height {
-//                tableView.frame.size.height = tableView.frame.size.height + difference
-//            }
-            
+
             // Move UITableView down
-//            self.tableView!.frame.origin.y += difference
+            self.tableView!.frame.origin.y += difference
+            self.tableView!.frame.size.height += difference
         }
     }
     
@@ -844,11 +894,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // MARK: - UITableView Delegate Methods
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = self.tableView.cellForRow(at: indexPath)
-        cell?.contentView.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        cell?.contentView.backgroundColor = UIColor.groupTableViewBackground
     }
     
     // MARK: - UIScrollView Delegate Methods
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign First responder
         self.textView.resignFirstResponder()
     }
 }
