@@ -67,6 +67,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     func fetchFriends() {
         
         // Refresh UIRefreshControl
+        self.refresher?.tintColor = UIColor.white
         self.refresher?.beginRefreshing()
         
         // MARK: - AppDelegate
@@ -295,7 +296,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         
         // UIRefreshControl - Pull to refresh
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)

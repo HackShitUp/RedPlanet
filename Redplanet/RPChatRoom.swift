@@ -541,6 +541,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chatCamera = false
         // Add observers
         self.createObservers()
+        
+        // Hide UITabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
     }
     
     override func viewDidLoad() {
@@ -556,10 +560,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.tableView.isUserInteractionEnabled = true
         self.tableView.addGestureRecognizer(hold)
         
-        // Configure UIButtons
+        // Configure UIButtons; photosButton and stickersButton
         // MARK: - RPExtensions
-        cameraButton.backgroundColor = UIColor.white
-        cameraButton.makeCircular(forView: self.cameraButton, borderWidth: 3.50, borderColor: UIColor(red: 0.80, green :0.80, blue: 0.80, alpha: 1))
         photosButton.backgroundColor = UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
         photosButton.roundAllCorners(sender: self.photosButton)
         stickersButton.backgroundColor = UIColor.white
@@ -613,10 +615,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
             imagePicker.title = "Photos & Videos"
         }
-        
-        // Hide UITabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -629,9 +627,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        // Reset UITabBarController's UITabBar configurations
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
 
     override func didReceiveMemoryWarning() {

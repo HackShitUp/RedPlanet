@@ -42,7 +42,7 @@ UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
 UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
 #00A1FF
 
-• Gray
+• Useful Gray
 UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
 #CCCCCC
 

@@ -125,6 +125,14 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
+
+        // Set UITabBar's tintColor
+        self.tabBar.tintColor = UIColor.black
+        self.tabBar.barTintColor = UIColor.white
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         // Remove UITabBar border/configure UITabBar
         self.tabBar.backgroundImage = UIImage()
@@ -132,10 +140,6 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         self.tabBar.isTranslucent = false
         self.tabBar.tintColor = UIColor.black
         self.tabBar.barTintColor = UIColor.white
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
         // Set UITabBar font
         UITabBarItem.appearance().setTitleTextAttributes(
@@ -152,13 +156,9 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         super.viewDidAppear(animated)
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.delegate = self
-
-        // Remove UITabBar border/configure UITabBar
-        self.tabBar.backgroundImage = UIImage()
-        self.tabBar.shadowImage = UIImage()
-        self.tabBar.isTranslucent = false
-        self.tabBar.tintColor = UIColor.black
-        self.tabBar.barTintColor = UIColor.white
+        
+        // Set delegate
+        self.tabBarController?.delegate = self
         
         // Fetch Unread Chats
         self.fetchChatsQueue { (count) in
@@ -200,14 +200,21 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
     
     // MARK: - UITabBarController Delegate Methods
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        // Set lastIndex if not "Share"
-        if self.selectedIndex != 2 {
-            self.lastIndex! = self.selectedIndex
-        }
-        
-        if item.tag == 12 {
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        // Pass last selectedIndex and pass it to class' variable; lastIndex
+        switch item {
+            case self.tabBar.items![0]:
+            self.lastIndex = 0
+            case self.tabBar.items![1]:
+            self.lastIndex = 1
+            case self.tabBar.items![2]:
+                // MARK: - SwipeNavigationController
+                self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+            case self.tabBar.items![3]:
+            self.lastIndex = 3
+            case self.tabBar.items![4]:
+            self.lastIndex = 4
+        default:
+            break;
         }
     }
 }

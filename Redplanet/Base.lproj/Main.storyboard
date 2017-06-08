@@ -2070,73 +2070,66 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ww4-uH-VmM">
                                 <rect key="frame" x="0.0" y="624" width="375" height="43"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1R8-fR-g1h">
-                                        <rect key="frame" x="170" y="0.0" width="35" height="35"/>
-                                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="f53-dN-iMo"/>
-                                            <constraint firstAttribute="width" constant="35" id="jG5-To-F0z"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="40"/>
-                                        <state key="normal">
-                                            <color key="titleColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showCamera:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="rD3-3P-Etu"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VvS-Wr-2nb">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VvS-Wr-2nb">
                                         <rect key="frame" x="8" y="5" width="25" height="25"/>
                                         <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="25" id="5mo-pN-4oy"/>
-                                            <constraint firstAttribute="width" constant="25" id="KLB-Hc-eBJ"/>
+                                            <constraint firstAttribute="width" secondItem="VvS-Wr-2nb" secondAttribute="height" multiplier="1:1" id="g3u-AN-Uh5"/>
                                         </constraints>
                                         <state key="normal" image="PhotosRoll"/>
                                         <connections>
                                             <action selector="showLibrary:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mp0-Yy-4uz"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RiU-Li-ACz">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RiU-Li-ACz">
                                         <rect key="frame" x="342" y="5" width="25" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="25" id="PFM-QE-MCq"/>
-                                            <constraint firstAttribute="height" constant="25" id="hUe-dv-Gx2"/>
+                                            <constraint firstAttribute="width" secondItem="RiU-Li-ACz" secondAttribute="height" multiplier="1:1" id="cPP-wb-Kts"/>
                                         </constraints>
-                                        <state key="normal" image="SentOpen"/>
+                                        <state key="normal" image="SentFilled"/>
                                         <connections>
                                             <action selector="sendChat:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="9wg-wt-KsO"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcf-O0-oxy">
-                                        <rect key="frame" x="89" y="5" width="25" height="25"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcf-O0-oxy">
+                                        <rect key="frame" x="119" y="5" width="25" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="25" id="9Wz-rH-HEQ"/>
-                                            <constraint firstAttribute="height" constant="25" id="If0-5Y-3RD"/>
+                                            <constraint firstAttribute="width" secondItem="qcf-O0-oxy" secondAttribute="height" multiplier="1:1" id="ffm-FL-kVu"/>
                                         </constraints>
                                         <state key="normal" image="Stickers"/>
                                         <connections>
                                             <action selector="showStickers:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mxG-Pl-57o"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1R8-fR-g1h">
+                                        <rect key="frame" x="230" y="3" width="25" height="30"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="1R8-fR-g1h" secondAttribute="height" multiplier="5:6" id="YNg-18-bAt"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="40"/>
+                                        <state key="normal" image="SLRCameraChats"/>
+                                        <connections>
+                                            <action selector="showCamera:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="rD3-3P-Etu"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="1R8-fR-g1h" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" id="0ON-eH-bMp"/>
-                                    <constraint firstItem="VvS-Wr-2nb" firstAttribute="leading" secondItem="Ww4-uH-VmM" secondAttribute="leading" constant="8" id="1Xd-kt-Fmi"/>
-                                    <constraint firstAttribute="bottom" secondItem="RiU-Li-ACz" secondAttribute="bottom" constant="13" id="2cW-bw-OTI"/>
-                                    <constraint firstItem="1R8-fR-g1h" firstAttribute="leading" secondItem="qcf-O0-oxy" secondAttribute="trailing" constant="56" id="2r9-bg-hr2"/>
+                                    <constraint firstItem="qcf-O0-oxy" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="5" id="5il-B5-u6N"/>
                                     <constraint firstAttribute="width" constant="375" id="6GO-vT-3Aw"/>
-                                    <constraint firstAttribute="bottom" secondItem="qcf-O0-oxy" secondAttribute="bottom" constant="13" id="CZT-zQ-apd"/>
-                                    <constraint firstItem="RiU-Li-ACz" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="5" id="GNB-5l-Lea"/>
-                                    <constraint firstAttribute="bottom" secondItem="VvS-Wr-2nb" secondAttribute="bottom" constant="13" id="J9x-7U-20R"/>
-                                    <constraint firstAttribute="bottom" secondItem="1R8-fR-g1h" secondAttribute="bottom" constant="8" id="U3C-aj-dV4"/>
-                                    <constraint firstItem="qcf-O0-oxy" firstAttribute="leading" secondItem="VvS-Wr-2nb" secondAttribute="trailing" constant="56" id="Vzq-uP-flA"/>
-                                    <constraint firstItem="VvS-Wr-2nb" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="5" id="YR5-QT-SwD"/>
-                                    <constraint firstItem="1R8-fR-g1h" firstAttribute="centerX" secondItem="Ww4-uH-VmM" secondAttribute="centerX" id="dAz-ib-1fj"/>
-                                    <constraint firstItem="qcf-O0-oxy" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="5" id="hda-nb-4UU"/>
-                                    <constraint firstAttribute="trailing" secondItem="RiU-Li-ACz" secondAttribute="trailing" constant="8" id="i0Z-DF-zAi"/>
+                                    <constraint firstItem="qcf-O0-oxy" firstAttribute="leading" secondItem="VvS-Wr-2nb" secondAttribute="trailing" constant="86" id="93z-Bi-twg"/>
+                                    <constraint firstItem="VvS-Wr-2nb" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="5" id="CH3-H7-A7c"/>
+                                    <constraint firstAttribute="bottom" secondItem="qcf-O0-oxy" secondAttribute="bottom" constant="13" id="EOi-wq-gk9"/>
+                                    <constraint firstItem="VvS-Wr-2nb" firstAttribute="leading" secondItem="Ww4-uH-VmM" secondAttribute="leading" constant="8" id="KoV-U2-vGV"/>
+                                    <constraint firstAttribute="bottom" secondItem="RiU-Li-ACz" secondAttribute="bottom" constant="13" id="PEb-T8-ozj"/>
+                                    <constraint firstItem="1R8-fR-g1h" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="3" id="SOc-80-L3Q"/>
+                                    <constraint firstAttribute="bottom" secondItem="1R8-fR-g1h" secondAttribute="bottom" constant="10" id="VlN-VX-a84"/>
+                                    <constraint firstItem="RiU-Li-ACz" firstAttribute="top" secondItem="Ww4-uH-VmM" secondAttribute="top" constant="5" id="WfZ-Bb-qeR"/>
+                                    <constraint firstItem="1R8-fR-g1h" firstAttribute="leading" secondItem="qcf-O0-oxy" secondAttribute="trailing" constant="86" id="iZJ-PQ-A65"/>
+                                    <constraint firstAttribute="bottom" secondItem="VvS-Wr-2nb" secondAttribute="bottom" constant="13" id="pl2-JI-oM7"/>
                                     <constraint firstAttribute="height" constant="43" id="vDA-y0-vC5"/>
+                                    <constraint firstAttribute="trailing" secondItem="RiU-Li-ACz" secondAttribute="trailing" constant="8" id="wS2-XP-hQB"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -4742,10 +4735,11 @@
         <image name="PhotosRoll" width="90" height="90"/>
         <image name="Refresh" width="22" height="22"/>
         <image name="SLRCamera" width="17" height="20"/>
+        <image name="SLRCameraChats" width="75" height="87"/>
         <image name="SaveWhite" width="85" height="85"/>
         <image name="Screenshot" width="70" height="87"/>
         <image name="Search" width="25" height="25"/>
-        <image name="SentOpen" width="47" height="47"/>
+        <image name="SentFilled" width="47" height="47"/>
         <image name="Settings" width="24" height="24"/>
         <image name="ShareOP" width="70" height="70"/>
         <image name="Stickers" width="75" height="75"/>
