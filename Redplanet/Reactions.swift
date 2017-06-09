@@ -69,22 +69,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     
     // FUNCTION - Query objects based on Switch Case...
     func handleCase() {
-        // Configure UI
-        self.refresher?.endRefreshing()
-        self.textView.resignFirstResponder()
         // Handle switched TwicketSegmentedControl
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             fetchLikes()
-            self.tableView.allowsSelection = true
         case 1:
             fetchComments()
-            // Add long press method in tableView
-            let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleComment))
-            hold.minimumPressDuration = 0.40
-            self.tableView.isUserInteractionEnabled = true
-            self.tableView.addGestureRecognizer(hold)
-            self.tableView.allowsSelection = true
         default:
             break;
         }
@@ -120,7 +110,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 } else {
                     // Reload data in main thread
                     DispatchQueue.main.async {
-                        self.tableView!.reloadData()
+                        self.tableView.allowsSelection = true
+                        self.tableView.reloadData()
                     }
                 }
                 
@@ -169,6 +160,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         self.tableView!.scrollToRow(at: IndexPath(row: self.reactionObjects.count - 1, section: 0), at: .bottom, animated: true)
                         
                     }
+                    // Add long press method in tableView
+                    let hold = UILongPressGestureRecognizer(target: self, action: #selector(self.handleComment))
+                    hold.minimumPressDuration = 0.40
+                    self.tableView.isUserInteractionEnabled = true
+                    self.tableView.addGestureRecognizer(hold)
+                    self.tableView.allowsSelection = true
                 }
                 
             } else {
@@ -419,8 +416,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         }
     }
 
-    
-    
     // MARK: - TwicketSegmentedControl
     func didSelect(_ segmentIndex: Int) {
         // Handle case
@@ -456,9 +451,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // MARK: - RPExtensions
-        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
-        // Configure UINavigationBar
+        // MARK: - RPHelpers; Configure UINavigationBar
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
         // Configure UIStatusBar
@@ -485,9 +478,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         self.textView.clipsToBounds = true
         self.textView.text = "Share your comment..."
         self.textView.textColor = UIColor.lightGray
-        
+
         // MARK: - TwicketSegmentedControl
-        let frame = CGRect(x: 5, y: view.frame.height/2 - 20, width: view.frame.width - 20, height: 40)
+        let frame = CGRect(x: 0, y: view.frame.height/2 - 20, width: view.frame.width, height: 40)
         segmentedControl.frame = frame
         segmentedControl.delegate = self
         segmentedControl.isSliderShadowHidden = false
@@ -522,15 +515,16 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        
         
         // NotificationCenter: Add Observers - (1) Keyboard, (2) Keyboard, (3) Reloading data...
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCase), name: reactNotification, object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -561,26 +555,44 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func keyboardWillShow(notification: NSNotification) {
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        
+        
+        // Layout views
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+        self.view.layoutSubviews()
+        
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
+        self.tableView.layoutSubviews()
+        
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
-            // Layout views
-            self.view.setNeedsLayout()
-            self.view.layoutIfNeeded()
             
             // If table view's origin is 0 AND commenting...
+//            if self.tableView!.frame.origin.y == 0 {
+            
+//                // Move UITableView (tableView), UITextView (textView), and UIView (innerView) up
+//                self.tableView.frame.origin.y -= self.keyboard.height
+//                self.textView.frame.origin.y -= self.keyboard.height
+//                self.commentContainer.frame.origin.y -= self.keyboard.height
+                
+//                // Scroll to the bottom
+//                if self.reactionObjects.count > 0 {
+//                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+//                    self.tableView.setContentOffset(bot, animated: false)
+//                }
+//            }
+            
             if self.tableView!.frame.origin.y == 0 {
-                
-                // Move UITableView (tableView), UITextView (textView), and UIView (innerView) up
-                self.tableView.frame.origin.y -= self.keyboard.height
+                // Move UITableView up
+                self.tableView!.frame.origin.y -= self.keyboard.height
+                self.commentContainer!.frame.origin.y -= self.keyboard.height
                 self.textView.frame.origin.y -= self.keyboard.height
-                self.commentContainer.frame.origin.y -= self.keyboard.height
-                
-                // Scroll to the bottom
-                if self.reactionObjects.count > 0 {
-                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                    self.tableView.setContentOffset(bot, animated: false)
-                }
             }
+            
+            
+            
         }
     }
     
@@ -588,12 +600,18 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         
-        if self.tableView!.frame.origin.y != 0 {
+//        if self.tableView!.frame.origin.y != 0 {
             // Move UITableView (tableView), UITextView (textView), and UIView (innerView) down
-            self.tableView.frame.origin.y += self.keyboard.height
-            self.textView.frame.origin.y += self.keyboard.height
-            self.commentContainer.frame.origin.y += self.keyboard.height
+//            self.tableView.frame.origin.y += self.keyboard.height
+//            self.textView.frame.origin.y += self.keyboard.height
+//            self.commentContainer.frame.origin.y += self.keyboard.height
+//        }
+        
+        if self.tableView.frame.origin.y != 0 {
+            print("UITableView Frame Origin is NOT 0")
         }
+        
+        
     }
     
     
@@ -735,7 +753,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-//            self.textView.resignFirstResponder()
+            self.textView.resignFirstResponder()
         }
         return true
     }

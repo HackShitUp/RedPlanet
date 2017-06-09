@@ -99,7 +99,6 @@ class Likes: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         super.viewWillAppear(animated)
         // MARK: - RPExtensions; whitenBar and roundTopCorners
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false

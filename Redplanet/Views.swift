@@ -108,9 +108,8 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - RPExtensions; whitenBar and roundTopCorners
+        // MARK: - RPExtensions; whitenBar
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false

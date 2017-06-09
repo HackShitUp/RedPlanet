@@ -970,15 +970,14 @@
                         <viewControllerLayoutGuide type="bottom" id="dBp-PD-kr9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="YXt-Zy-bkH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zKi-JK-Y7n">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="615"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="4NP-mM-Fkj"/>
-                                    <constraint firstAttribute="height" constant="615" id="k6j-7j-iJ0"/>
+                                    <constraint firstAttribute="width" secondItem="zKi-JK-Y7n" secondAttribute="height" multiplier="375:551" id="CWW-5o-lfF"/>
                                 </constraints>
                                 <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
@@ -1082,16 +1081,14 @@
                                     <outlet property="delegate" destination="4CN-4G-udn" id="EJA-6d-XWA"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udD-X0-VA5">
-                                <rect key="frame" x="0.0" y="615" width="375" height="52"/>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="udD-X0-VA5">
+                                <rect key="frame" x="0.0" y="551" width="375" height="52"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Tap to share your comment..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bSo-2F-RF3">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Tap to share your comment..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bSo-2F-RF3">
                                         <rect key="frame" x="8" y="8" width="326" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="326" id="xs4-91-Tnr"/>
-                                        </constraints>
                                         <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no"/>
@@ -1099,43 +1096,30 @@
                                             <outlet property="delegate" destination="4CN-4G-udn" id="f2r-CE-G8R"/>
                                         </connections>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJc-tU-iE4">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJc-tU-iE4">
                                         <rect key="frame" x="342" y="13" width="25" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="25" id="RpA-AX-hnL"/>
-                                            <constraint firstAttribute="height" constant="25" id="XoV-Bq-tnV"/>
-                                        </constraints>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="SentFilled"/>
                                         <connections>
                                             <action selector="sendComment:" destination="4CN-4G-udn" eventType="touchUpInside" id="aHh-Wx-qTG"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="rJc-tU-iE4" secondAttribute="bottom" constant="14" id="6AO-EJ-i9y"/>
-                                    <constraint firstItem="rJc-tU-iE4" firstAttribute="top" secondItem="udD-X0-VA5" secondAttribute="top" constant="13" id="8IS-Mf-G2s"/>
-                                    <constraint firstItem="bSo-2F-RF3" firstAttribute="top" secondItem="udD-X0-VA5" secondAttribute="top" constant="8" id="A12-im-6Bg"/>
-                                    <constraint firstAttribute="bottom" secondItem="bSo-2F-RF3" secondAttribute="bottom" constant="8" id="AOf-Ln-8H4"/>
-                                    <constraint firstAttribute="height" constant="52" id="HVb-cc-zhJ"/>
-                                    <constraint firstItem="bSo-2F-RF3" firstAttribute="leading" secondItem="udD-X0-VA5" secondAttribute="leading" constant="8" id="XTl-qO-x2h"/>
-                                    <constraint firstAttribute="width" constant="375" id="aBm-Fb-Q5N"/>
-                                    <constraint firstItem="rJc-tU-iE4" firstAttribute="leading" secondItem="bSo-2F-RF3" secondAttribute="trailing" constant="8" id="od0-zb-zgS"/>
-                                    <constraint firstAttribute="trailing" secondItem="rJc-tU-iE4" secondAttribute="trailing" constant="8" id="reR-o2-6xI"/>
+                                    <constraint firstAttribute="width" secondItem="udD-X0-VA5" secondAttribute="height" multiplier="375:52" id="xoz-ee-aKJ"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="udD-X0-VA5" firstAttribute="leading" secondItem="YXt-Zy-bkH" secondAttribute="leading" id="0ns-cQ-jdg"/>
-                            <constraint firstItem="udD-X0-VA5" firstAttribute="leading" secondItem="YXt-Zy-bkH" secondAttribute="leading" id="1R6-La-Z6T"/>
-                            <constraint firstAttribute="trailing" secondItem="zKi-JK-Y7n" secondAttribute="trailing" id="1nI-Kq-N7O"/>
-                            <constraint firstAttribute="bottom" secondItem="udD-X0-VA5" secondAttribute="bottom" id="24j-xf-fa6"/>
-                            <constraint firstAttribute="trailing" secondItem="udD-X0-VA5" secondAttribute="trailing" id="4oR-RB-BYa"/>
-                            <constraint firstItem="zKi-JK-Y7n" firstAttribute="leading" secondItem="YXt-Zy-bkH" secondAttribute="leading" id="HTt-Dr-SoK"/>
-                            <constraint firstItem="zKi-JK-Y7n" firstAttribute="top" secondItem="YXt-Zy-bkH" secondAttribute="top" id="aoH-hh-321"/>
-                            <constraint firstAttribute="trailing" secondItem="udD-X0-VA5" secondAttribute="trailing" id="d4l-3k-Qyf"/>
-                            <constraint firstItem="udD-X0-VA5" firstAttribute="top" secondItem="zKi-JK-Y7n" secondAttribute="bottom" id="iIy-GF-EQO"/>
+                            <constraint firstAttribute="trailing" secondItem="zKi-JK-Y7n" secondAttribute="trailing" id="1f1-6E-Y1e"/>
+                            <constraint firstItem="zKi-JK-Y7n" firstAttribute="top" secondItem="YXt-Zy-bkH" secondAttribute="top" id="47r-j6-8vQ"/>
+                            <constraint firstItem="udD-X0-VA5" firstAttribute="leading" secondItem="YXt-Zy-bkH" secondAttribute="leading" id="7zM-p4-QNg"/>
+                            <constraint firstItem="dBp-PD-kr9" firstAttribute="top" secondItem="udD-X0-VA5" secondAttribute="bottom" id="8hT-eP-Uer"/>
+                            <constraint firstItem="udD-X0-VA5" firstAttribute="top" secondItem="zKi-JK-Y7n" secondAttribute="bottom" id="cLi-Jc-p6J"/>
+                            <constraint firstAttribute="trailing" secondItem="udD-X0-VA5" secondAttribute="trailing" id="fbL-Ow-DEg"/>
+                            <constraint firstItem="zKi-JK-Y7n" firstAttribute="leading" secondItem="YXt-Zy-bkH" secondAttribute="leading" id="tZQ-Ej-HmE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="oOW-YM-D7R">
@@ -1152,7 +1136,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="commentContainer" destination="udD-X0-VA5" id="lfv-w8-DUq"/>
                         <outlet property="sendButton" destination="rJc-tU-iE4" id="j86-nS-F1n"/>
@@ -1704,7 +1688,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TR3-A7-3hc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3204" y="-2883"/>
+            <point key="canvasLocation" x="3685" y="-2075"/>
         </scene>
         <!--Views-->
         <scene sceneID="OFp-H5-Kld">
