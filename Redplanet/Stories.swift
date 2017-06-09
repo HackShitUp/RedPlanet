@@ -267,7 +267,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         let subtleVolume = SubtleVolume(style: .dots)
         subtleVolume.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 7)
         subtleVolume.animation = .fadeIn
-        subtleVolume.barTintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        subtleVolume.barTintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         subtleVolume.barBackgroundColor = UIColor.white
         self.view.addSubview(subtleVolume)
         subtleVolume.superview?.bringSubview(toFront: subtleVolume)
@@ -634,6 +634,7 @@ extension Stories {
         // Update "didScreenshot" attribute in "Views"
         let views = PFQuery(className: "Views")
         views.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        views.whereKey("byUser", equalTo: PFUser.current()!)
         views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 for object in objects! {
@@ -654,7 +655,6 @@ extension Stories {
                     let rpHelpers = RPHelpers()
                     rpHelpers.pushNotification(toUser: self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser,
                                                activityType: "screenshotted your post.")
-                    
                 }
             } else {
                 print(error?.localizedDescription as Any)

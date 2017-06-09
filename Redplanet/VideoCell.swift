@@ -107,7 +107,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             self.vimVideoPlayerView = videoPlayer!
             
             // MARK: - VIMVideoPlayer
-            videoPlayer!.player.isLooping = false
+            videoPlayer!.player.isLooping = true
             videoPlayer!.player.setURL(URL(string: video.url!)!)
             videoPlayer!.player.isMuted = false
             videoPlayer!.delegate = self

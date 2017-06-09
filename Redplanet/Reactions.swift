@@ -61,8 +61,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     @IBAction func refresh(_ sender: Any) {
-        // Begin UIRefreshControl
-        self.refresher?.beginRefreshing()
         // Reload data
         handleCase()
         // Scroll to top
@@ -74,9 +72,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Handle switched TwicketSegmentedControl
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            fetchLikes()
-        case 1:
             fetchComments()
+        case 1:
+            fetchLikes()
         default:
             break;
         }
@@ -119,7 +117,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 } else {
                     // Reload data in main thread
                     DispatchQueue.main.async {
-                        self.tableView.allowsSelection = true
                         self.tableView.reloadData()
                     }
                 }
@@ -168,6 +165,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
                 // Main Thread
                 DispatchQueue.main.async {
+                    self.tableView.layoutIfNeeded()
                     // Reload data
                     self.tableView.reloadData()
                     // Scroll to bottom
@@ -180,7 +178,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     hold.minimumPressDuration = 0.40
                     self.tableView.isUserInteractionEnabled = true
                     self.tableView.addGestureRecognizer(hold)
-                    self.tableView.allowsSelection = true
                 }
                 
             } else {
@@ -196,6 +193,10 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     
     // FUNCTION - Save comment to server
     @IBAction func sendComment(_ sender: Any) {
+        
+        // MARK: - TwicketSegmentedControl
+        self.segmentedControl.move(to: 0)
+        
         if self.textView.text.isEmpty {
             textView.resignFirstResponder()
         } else {
@@ -246,8 +247,20 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     
                     // Reload data
                     DispatchQueue.main.async {
-                        self.handleCase()
+                        // Get difference to reset UI
+                        let difference = self.textView.frame.size.height - self.textView.contentSize.height
+                        
+                        // Redefine frame of UITextView; textView
+                        self.textView.frame.origin.y = self.textView.frame.origin.y + difference
+                        self.textView.frame.size.height = self.textView.contentSize.height
+                        
+                        // Append new comment and reload UITableView data
+                        self.reactionObjects.append(comments)
+                        self.tableView.layoutIfNeeded()
+                        self.tableView.reloadData()
                     }
+                    
+                    
                 } else {
                     print(error?.localizedDescription as Any)
                     // MARK: - RPHelpers
@@ -451,9 +464,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            str = "💩\nNo Likes Yet."
-        } else {
             str = "💩\nNo Comments Yet."
+        } else {
+            str = "💩\nNo Likes Yet."
         }
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
@@ -475,9 +488,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        // Handle Switch Case
-        handleCase()
     }
 
     override func viewDidLoad() {
@@ -487,6 +497,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         let sendImage = UIImage(cgImage: UIImage(named: "SentFilled")!.cgImage!, scale: 1, orientation: .rightMirrored)
         self.sendButton.setImage(sendImage, for: .normal)
         
+        // Set UITextView Delegate
+        self.textView.delegate = self
         // Configure UITextView
         // MARK: - RPHelpers
         self.textView.roundAllCorners(sender: self.textView)
@@ -499,26 +511,30 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // MARK: - TwicketSegmentedControl
         let frame = CGRect(x: 0, y: view.frame.height/2 - 20, width: view.frame.width, height: 40)
         segmentedControl.frame = frame
-        segmentedControl.delegate = self
         segmentedControl.isSliderShadowHidden = false
-        segmentedControl.setSegmentItems(["Likes", "Comments"])
+        segmentedControl.setSegmentItems(["Comments", "Likes"])
         segmentedControl.defaultTextColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
         segmentedControl.sliderBackgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         segmentedControl.font = UIFont(name: "AvenirNext-Bold", size: 12)!
         self.navigationItem.titleView = segmentedControl
+        // MARK: - TwicketSegmentedControl; Set delegate
+        segmentedControl.delegate = self
         
         // Configure UITableView
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.estimatedRowHeight = 65
+        tableView.estimatedRowHeight = 70
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         tableView.tableFooterView = UIView()
+        tableView.allowsSelection = true
         // Register NIBs
         tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
         tableView.register(UINib(nibName: "ReactionsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "ReactionsHeader")
+        // Layout UITableView to prevent from snapping downwards...
+        self.tableView.layoutIfNeeded()
 
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
@@ -542,6 +558,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Handle Switch Case
+        handleCase()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -555,6 +573,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Remove observers
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: reactNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -586,9 +605,11 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 // Move UITableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
                 self.commentContainer!.frame.origin.y -= self.keyboard.height
-                self.textView.frame.origin.y -= self.keyboard.height
-            } 
+            }
+            
         }
+        
+        
     }
     
     func keyboardWillHide(notification: NSNotification) {
@@ -597,39 +618,84 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         
         if self.tableView!.frame.origin.y != 0 {
             // Move UITableView (tableView), UITextView (textView), and UIView (innerView) down
-            self.tableView.frame.origin.y += self.keyboard.height
-            self.textView.frame.origin.y += self.keyboard.height
+            self.tableView.frame.origin.y = 0
             self.commentContainer.frame.origin.y += self.keyboard.height
         }
+    }
+    
+    // MARK: - UITextViewDelegate Methods
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if self.textView.textColor == UIColor.lightGray {
+            self.textView.text = ""
+            self.textView.textColor = UIColor.black
+        }
+    }
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // INCREASE UITextView Height
+        if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 102 {
+            
+            // Get difference of frame height
+            let difference = textView.contentSize.height - textView.frame.size.height
+            
+            // Redefine frame of UITextView; textView
+            // Subtract 1 for UITextView's height because of the 1 point top margin constraint in Storyboard
+            textView.frame.origin.y = textView.frame.origin.y - difference
+            textView.frame.size.height = textView.contentSize.height
+            
+            // Move UITableView up
+            self.tableView.frame.origin.y -= difference
+            
+        } else if textView.contentSize.height < textView.frame.size.height {
+            // DECREASE UITextView Height
+            
+            // Get difference to deduct
+            let difference = textView.frame.size.height - textView.contentSize.height
+            
+            // Redefine frame of UITextView; textView
+            textView.frame.origin.y = textView.frame.origin.y + difference
+            textView.frame.size.height = textView.contentSize.height
+            
+            // Move UITableView down
+            self.tableView!.frame.origin.y += difference
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            self.textView.resignFirstResponder()
+        }
+        return true
     }
     
     
     // MARK: - UITableView Data Source Methods
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let reactionsHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ReactionsHeader") as! ReactionsHeader
-        reactionsHeader.contentView.backgroundColor = UIColor.white
-        reactionsHeader.reactionType.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-        reactionsHeader.reactionType.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ReactionsHeader") as! ReactionsHeader
+        header.contentView.backgroundColor = UIColor.white
+        header.reactionType.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        header.reactionType.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
 
-        switch self.segmentedControl.selectedSegmentIndex {
-        case 0:
-            reactionsHeader.likeButton.isHidden = false
+        // Set UITableViewHeaderFooter title
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+        // n# Comments
+            header.likeButton.isHidden = true
+            header.reactionType.text = "\(self.reactionObjects.count) Comments"
+        } else {
+        // n# Likes
+            header.likeButton.isHidden = false
             // Configure likeButton
-            reactionsHeader.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
+            header.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
             if reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                reactionsHeader.likeButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
+                header.likeButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
             } else {
-                reactionsHeader.likeButton.setImage(UIImage(named: "Like"), for: .normal)
+                header.likeButton.setImage(UIImage(named: "Like"), for: .normal)
             }
-            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Likes"
-        case 1:
-            reactionsHeader.likeButton.isHidden = true
-            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Comments"
-        default:
-            break;
+            header.reactionType.text = "\(self.reactionObjects.count) Likes"
         }
         
-        return reactionsHeader
+        return header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -651,8 +717,18 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if self.segmentedControl.selectedSegmentIndex == 0 {
-        // LIKES
+        // COMMENTS
             
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
+            cell.delegate = self                                                // Set parent UIViewController
+            cell.commentObject = self.reactionObjects[indexPath.row]            // Set PFObject
+            cell.updateView(withObject: self.reactionObjects[indexPath.row])    // Update UI
+            cell.countLikes(forObject: self.reactionObjects[indexPath.row])     // Count likes
+            return cell
+        }
+        
+        if self.segmentedControl.selectedSegmentIndex == 1 {
+        // LIKES
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
             
             // MARK: - RPExtensions
@@ -672,25 +748,20 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
-
-            return cell
             
-        } else {
-        // COMMENTS
-            
-            let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
-            cell.delegate = self                                                // Set parent UIViewController
-            cell.commentObject = self.reactionObjects[indexPath.row]            // Set PFObject
-            cell.updateView(withObject: self.reactionObjects[indexPath.row])    // Update UI
-            cell.countLikes(forObject: self.reactionObjects[indexPath.row])     // Count likes
             return cell
         }
+        
+        
+        
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        return cell
     }
 
     // MARK: - UITableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // LIKES
-        if self.segmentedControl.selectedSegmentIndex == 0 {
+        if self.segmentedControl.selectedSegmentIndex == 1 {
             // Append data
             otherObject.append(self.reactionObjects[indexPath.item].value(forKey: "fromUser") as! PFUser)
             otherName.append((self.reactionObjects[indexPath.item].value(forKey: "fromUser") as! PFUser).value(forKey: "username") as! String)
@@ -727,61 +798,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 // Fetch more objects
                 handleCase()
             }
-        }
-    }
-    
-    // MARK: - UITextViewDelegate Methods
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        self.textView.text = ""
-        self.textView.textColor = UIColor.black
-        // Fetch comments
-        self.fetchComments()
-        // MARK: - TwicketSegmentedControl
-        self.segmentedControl.move(to: 1)
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            self.textView.resignFirstResponder()
-        }
-        return true
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        // Disable sendButton if there's no text...
-        let spacing = CharacterSet.whitespacesAndNewlines
-        if !textView.text.trimmingCharacters(in: spacing).isEmpty {
-            self.sendButton.isEnabled = true
-        } else {
-            self.sendButton.isEnabled = false
-        }
-        
-        // INCREASE UITextView Height
-        if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 140 {
-            
-            // Get difference of frame height
-            let difference = textView.contentSize.height - textView.frame.size.height
-            
-            // Redefine frame of UITextView; textView
-            // Subtract 1 for UITextView's height because of the 1 point top margin constraint in Storyboard
-            textView.frame.origin.y = textView.frame.origin.y - difference
-            textView.frame.size.height = textView.contentSize.height
-            
-            // Move UITableView up
-            self.tableView.frame.origin.y -= difference
-            
-        } else if textView.contentSize.height < textView.frame.size.height {
-            // DECREASE UITextView Height
-            
-            // Get difference to deduct
-            let difference = textView.frame.size.height - textView.contentSize.height
-            
-            // Redefine frame of UITextView; textView
-            textView.frame.origin.y = textView.frame.origin.y + difference
-            textView.frame.size.height = textView.contentSize.height
-            
-            // Move UITableView down
-            self.tableView!.frame.origin.y += difference
         }
     }
 }

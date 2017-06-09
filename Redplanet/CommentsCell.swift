@@ -222,7 +222,11 @@ class CommentsCell: UITableViewCell {
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         // MARK: - RPHelpers
-        self.time.text = difference.getShortTime(difference: difference, date: from)
+        if difference.getShortTime(difference: difference, date: from) == "now" {
+            self.time.text = "now"
+        } else {
+            self.time.text = "\(difference.getShortTime(difference: difference, date: from)) ago"
+        }
         
         // (3) Set comment
         self.comment.text = (withObject.value(forKey: "commentOfContent") as! String)
