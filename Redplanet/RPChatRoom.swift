@@ -699,6 +699,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if self.textView.textColor == UIColor.lightGray {
             self.textView.text = ""
             self.textView.textColor = UIColor.black
+            
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "is typing...")
         }
     }
 
@@ -711,10 +715,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         } else {
             self.sendButton.isEnabled = false
         }
-        
-        // MARK: - RPHelpers
-        let rpHelpers = RPHelpers()
-        rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "is typing...")
         
         // INCREASE UITextView Height
         if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 140 {
