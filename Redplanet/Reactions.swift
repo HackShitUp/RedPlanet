@@ -48,6 +48,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - Initialize TwicketSegmentedControl
     let segmentedControl = TwicketSegmentedControl()
     
+    @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentContainer: UIView!
     @IBOutlet weak var textView: UITextView!
@@ -180,14 +181,14 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // FUNCTION - Save comment to server
-    func sendComment() {
+    @IBAction func sendComment(_ sender: Any) {
         if self.textView.text.isEmpty {
             textView.resignFirstResponder()
         } else {
             // Get comment and clear UITextView
             let commentText = self.textView.text!
             self.textView.text!.removeAll()
-
+            
             // Save to Comments
             let comments = PFObject(className: "Comments")
             comments["byUser"] = PFUser.current()!
@@ -215,7 +216,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
-
+                            
                             // Handle optional chaining for user object
                             if let user = reactionObject.last!.object(forKey: "byUser") as? PFUser {
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
@@ -457,8 +458,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         
         // MARK: - RPExtensions
         self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
         // Configure UINavigationBar
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
@@ -473,6 +472,19 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Configure sendButton UIButton
+        let sendImage = UIImage(cgImage: UIImage(named: "SentFilled")!.cgImage!, scale: 1, orientation: .rightMirrored)
+        self.sendButton.setImage(sendImage, for: .normal)
+        
+        // Configure UITextView
+        // MARK: - RPHelpers
+        self.textView.roundAllCorners(sender: self.textView)
+        self.textView.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+        self.textView.layer.borderWidth = 1
+        self.textView.clipsToBounds = true
+        self.textView.text = "Share your comment..."
+        self.textView.textColor = UIColor.lightGray
         
         // MARK: - TwicketSegmentedControl
         let frame = CGRect(x: 5, y: view.frame.height/2 - 20, width: view.frame.width - 20, height: 40)
@@ -510,15 +522,14 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        
-        // NotificationCenter: Add Observers
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Register to receive notification
+        
+        // NotificationCenter: Add Observers - (1) Keyboard, (2) Keyboard, (3) Reloading data...
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCase), name: reactNotification, object: nil)
     }
     
@@ -549,8 +560,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
         // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             // Layout views
@@ -560,32 +570,28 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             // If table view's origin is 0 AND commenting...
             if self.tableView!.frame.origin.y == 0 {
                 
-                if self.textView.isFirstResponder {
-                    
-                    // Move chatbox up
-                    self.commentContainer.frame.origin.y -= self.keyboard.height
-
-                    // Move tableView up
-                    self.tableView!.frame.origin.y -= self.keyboard.height
-                    
-                    // Scroll to the bottom
-                    if self.reactionObjects.count > 0 && self.segmentedControl.selectedSegmentIndex == 1 {
-                        let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                        self.tableView.setContentOffset(bot, animated: false)
-                    }
-                }
+                // Move UITableView (tableView), UITextView (textView), and UIView (innerView) up
+                self.tableView.frame.origin.y -= self.keyboard.height
+                self.textView.frame.origin.y -= self.keyboard.height
+                self.commentContainer.frame.origin.y -= self.keyboard.height
                 
+                // Scroll to the bottom
+                if self.reactionObjects.count > 0 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
+                }
             }
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
         // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        
         if self.tableView!.frame.origin.y != 0 {
-            // Move table view up
-            self.tableView!.frame.origin.y += self.keyboard.height
-            // Move chatbox up
+            // Move UITableView (tableView), UITextView (textView), and UIView (innerView) down
+            self.tableView.frame.origin.y += self.keyboard.height
+            self.textView.frame.origin.y += self.keyboard.height
             self.commentContainer.frame.origin.y += self.keyboard.height
         }
     }
@@ -615,7 +621,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         default:
             break;
         }
-        
         
         return reactionsHeader
     }
@@ -722,18 +727,55 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.textView.text = ""
         self.textView.textColor = UIColor.black
-        // MARK: - TwicketSegmentedControl
-        self.segmentedControl.move(to: 1)
         // Fetch comments
         self.fetchComments()
+        // MARK: - TwicketSegmentedControl
+        self.segmentedControl.move(to: 1)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            self.textView.resignFirstResponder()
-            self.sendComment()
+//            self.textView.resignFirstResponder()
         }
         return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // Disable sendButton if there's no text...
+        let spacing = CharacterSet.whitespacesAndNewlines
+        if !textView.text.trimmingCharacters(in: spacing).isEmpty {
+            self.sendButton.isEnabled = true
+        } else {
+            self.sendButton.isEnabled = false
+        }
+        
+        // INCREASE UITextView Height
+        if textView.contentSize.height > textView.frame.size.height && textView.frame.height < 140 {
+            
+            // Get difference of frame height
+            let difference = textView.contentSize.height - textView.frame.size.height
+            
+            // Redefine frame of UITextView; textView
+            // Subtract 1 for UITextView's height because of the 1 point top margin constraint in Storyboard
+            textView.frame.origin.y = textView.frame.origin.y - difference
+            textView.frame.size.height = textView.contentSize.height
+            
+            // Move UITableView up
+            self.tableView.frame.origin.y -= difference
+            
+        } else if textView.contentSize.height < textView.frame.size.height {
+            // DECREASE UITextView Height
+            
+            // Get difference to deduct
+            let difference = textView.frame.size.height - textView.contentSize.height
+            
+            // Redefine frame of UITextView; textView
+            textView.frame.origin.y = textView.frame.origin.y + difference
+            textView.frame.size.height = textView.contentSize.height
+            
+            // Move UITableView down
+            self.tableView!.frame.origin.y += difference
+        }
     }
 }
 

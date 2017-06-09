@@ -298,8 +298,8 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         tableView.addSubview(refresher)
         
         // Refresh UIRefreshControl
-        self.refresher?.tintColor = UIColor.white
-        self.refresher?.beginRefreshing()
+        self.refresher.tintColor = UIColor.white
+        self.refresher.beginRefreshing()
     }
     
     override func viewDidAppear(_ animated: Bool) {
