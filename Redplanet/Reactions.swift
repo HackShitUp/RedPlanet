@@ -61,6 +61,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     @IBAction func refresh(_ sender: Any) {
+        // Begin UIRefreshControl
+        self.refresher?.beginRefreshing()
         // Reload data
         handleCase()
         // Scroll to top
@@ -82,6 +84,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     
     // FUNCTION - Fetch likes
     func fetchLikes() {
+        // Resign UITextView
+        self.textView.resignFirstResponder()
+        
         // Fetch Relationships
         _ = appDelegate.queryRelationships()
         // Fetch Likes
@@ -93,6 +98,10 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear array
                 self.reactionObjects.removeAll(keepingCapacity: false)
                 // Append object
@@ -117,6 +126,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
@@ -137,6 +148,10 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         comments.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
+                
                 // Clear array
                 self.reactionObjects.removeAll(keepingCapacity: false)
                 for object in objects!.reversed() {
@@ -170,6 +185,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // End UIRefreshControl
+                self.refresher?.endRefreshing()
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
@@ -556,43 +573,21 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         
-        
         // Layout views
-        self.view.setNeedsLayout()
-        self.view.layoutIfNeeded()
-        self.view.layoutSubviews()
-        
-        self.tableView.setNeedsLayout()
-        self.tableView.layoutIfNeeded()
-        self.tableView.layoutSubviews()
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+        view.layoutSubviews()
         
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // If table view's origin is 0 AND commenting...
-//            if self.tableView!.frame.origin.y == 0 {
-            
-//                // Move UITableView (tableView), UITextView (textView), and UIView (innerView) up
-//                self.tableView.frame.origin.y -= self.keyboard.height
-//                self.textView.frame.origin.y -= self.keyboard.height
-//                self.commentContainer.frame.origin.y -= self.keyboard.height
-                
-//                // Scroll to the bottom
-//                if self.reactionObjects.count > 0 {
-//                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-//                    self.tableView.setContentOffset(bot, animated: false)
-//                }
-//            }
-            
             if self.tableView!.frame.origin.y == 0 {
                 // Move UITableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
                 self.commentContainer!.frame.origin.y -= self.keyboard.height
                 self.textView.frame.origin.y -= self.keyboard.height
-            }
-            
-            
-            
+            } 
         }
     }
     
@@ -600,18 +595,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         
-//        if self.tableView!.frame.origin.y != 0 {
+        if self.tableView!.frame.origin.y != 0 {
             // Move UITableView (tableView), UITextView (textView), and UIView (innerView) down
-//            self.tableView.frame.origin.y += self.keyboard.height
-//            self.textView.frame.origin.y += self.keyboard.height
-//            self.commentContainer.frame.origin.y += self.keyboard.height
-//        }
-        
-        if self.tableView.frame.origin.y != 0 {
-            print("UITableView Frame Origin is NOT 0")
+            self.tableView.frame.origin.y += self.keyboard.height
+            self.textView.frame.origin.y += self.keyboard.height
+            self.commentContainer.frame.origin.y += self.keyboard.height
         }
-        
-        
     }
     
     
