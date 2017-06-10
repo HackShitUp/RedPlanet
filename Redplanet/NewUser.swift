@@ -30,7 +30,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
     
     // Function to onboard the user
     func saveUser(sender: Any) {
-
+        
         // Convert image to PFFile
         let userPhoto = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
         let parseFile = PFFile(data: userPhoto!)
@@ -72,12 +72,11 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                     
                     // Load Onboarding tutorial
                     // Perform segueue
-                    let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to create and share organized stories!", image: nil, buttonText: nil) { () -> Void in
+                    let firstPage = OnboardingContentViewController(title: "Hello, \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)", body: "Welcome to Redplanet, a place to share stories that are meant to be spread.", image: nil, buttonText: nil) { () -> Void in
                     }
-                    let secondPage = OnboardingContentViewController(title: "Stories", body: "You have 2 types of stories: One by your friends, and one created by the people you're following.", image: nil, buttonText: nil) { () -> Void in
+                    let secondPage = OnboardingContentViewController(title: "Ephemeral", body: "By default, your stories disappear in 24 hours. You can save them to your profile later.", image: nil, buttonText: nil) { () -> Void in
                     }
-                    let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "By default, everything you share disappears in 24 hours!", image: nil, buttonText: "Continue") { () -> Void in
-                        
+                    let lastPage = OnboardingContentViewController(title: "Stories", body: "There are 2 types of stories: One by your friends, and one created by the people you're following.", image: nil, buttonText: "Continue") { () -> Void in
                         // Load Things to Follow interface
                         let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onboardingVC") as! Onboarding
                         self.navigationController?.pushViewController(onBoardVC, animated: true)
@@ -100,7 +99,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                     lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
                     lastPage.bottomPadding = 50
                     // Show Onboarding
-                    let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, lastPage])
+                    let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "Welcome"), contents: [firstPage, secondPage, lastPage])
                     onboardingVC?.view.frame = self.view.bounds
                     onboardingVC?.view.clipsToBounds = true
                     onboardingVC?.shouldFadeTransitions = true
@@ -108,7 +107,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 }))
                 
                 dialogController.show(in: self)
-
+                
             } else {
                 print(error?.localizedDescription as Any)
             }

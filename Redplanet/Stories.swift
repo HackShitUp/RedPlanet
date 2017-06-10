@@ -697,17 +697,7 @@ extension Stories {
             button.layer.masksToBounds = true
         }
         
-        // (1) Show Views for post
-        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
-            // Views VC
-            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            viewsVC.fetchObject = self.posts[self.currentIndex!]
-            self.navigationController?.pushViewController(viewsVC, animated: true)
-        })
-        
-        // (2) Delete Post
+        // (1) Delete Post
         let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
@@ -769,7 +759,7 @@ extension Stories {
             })
         })
         
-        // (3) Edit Post
+        // (2) Edit Post
         let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
@@ -780,7 +770,7 @@ extension Stories {
         })
         
         
-        // (4) SAVE or UNSAVE ACTION; add tool action
+        // (3) SAVE or UNSAVE ACTION; add tool action
         dialogController.rightToolAction = { (button) in
             // Query
             let posts = PFQuery(className: "Posts")
@@ -813,7 +803,7 @@ extension Stories {
             })
         }
 
-        // (5) Report
+        // (4) Report
         let report = AZDialogAction(title: "REPORT", handler: { (dialog) -> (Void) in
             // MARK: - UIAlertController
             let alert = UIAlertController(title: "Report Post",
@@ -855,7 +845,7 @@ extension Stories {
             dialog.present(alert, animated: true, completion: nil)
         })
         
-        // (6) CANCEL
+        // (5) CANCEL
         dialogController.cancelButtonStyle = { (button,height) in
             button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
             button.setTitle("CANCEL", for: [])
@@ -864,8 +854,7 @@ extension Stories {
         
         // Show options depending on who owns the post...
         if (self.posts[currentIndex!].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Views/Delete
-            dialogController.addAction(views)
+            // Delete
             dialogController.addAction(delete)
             // Add saveButton
             dialogController.rightToolStyle = { (button) in
