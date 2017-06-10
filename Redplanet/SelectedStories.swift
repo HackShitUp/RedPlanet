@@ -134,13 +134,13 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? SelectedStoriesCell {
+//        if let cell = collectionView.cellForItem(at: indexPath) as? SelectedStoriesCell {
 //            // MARK: - UIImageColors
 //            cell.coverPhoto.image?.getColors { colors in
 //                cell.contentView.backgroundColor = colors.primaryColor
 //                cell.title.textColor = colors.backgroundColor
 //            }
-        }
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

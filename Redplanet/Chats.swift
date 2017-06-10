@@ -149,21 +149,51 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.refresher?.tintColor = UIColor.white
         self.refresher?.beginRefreshing()
         
-        let frontChat = PFQuery(className: "ChatsQueue")
-        frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
-        let endChat = PFQuery(className: "ChatsQueue")
-        endChat.whereKey("endUser", equalTo: PFUser.current()!)
-        let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
-        chats.whereKeyExists("lastChat")
-        chats.includeKeys(["lastChat", "frontUser", "endUser"])
-        chats.order(byDescending: "updatedAt")
-        chats.limit = self.page
-        chats.findObjectsInBackground {
+//        let frontChat = PFQuery(className: "ChatsQueue")
+//        frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
+//        let endChat = PFQuery(className: "ChatsQueue")
+//        endChat.whereKey("endUser", equalTo: PFUser.current()!)
+//        let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
+//        chats.whereKeyExists("lastChat")
+//        chats.includeKeys(["lastChat", "frontUser", "endUser"])
+//        chats.order(byDescending: "updatedAt")
+//        chats.limit = self.page
+//        chats.findObjectsInBackground {
+//            (objects: [PFObject]?, error: Error?) in
+//            if error == nil {
+//                // End UIRefreshControl
+//                self.refresher?.endRefreshing()
+//                
+//                // Clear array
+//                self.chatQueues.removeAll(keepingCapacity: false)
+//                for object in objects! {
+//                    if let lastChat = object.object(forKey: "lastChat") as? PFObject {
+//                        self.chatQueues.append(lastChat.objectId!)
+//                    }
+//                    print(objects!.count)
+//                }
+//                // Fetch chats
+//                self.fetchChats()
+//            } else {
+//                // End UIRefreshControl
+//                self.refresher?.endRefreshing()
+//                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+//                    // MARK: - RPHelpers
+//                    let rpHelpers = RPHelpers()
+//                    rpHelpers.showError(withTitle: "Network Error")
+//                }
+//            }
+//        }
+ 
+        
+        let chatsQueue = PFQuery(className: "ChatsQueue")
+        chatsQueue.whereKeyExists("lastChat")
+        chatsQueue.whereKey("participants", equalTo: PFUser.current()!)
+        chatsQueue.includeKey("lastChat")
+        chatsQueue.order(byDescending: "updatedAt")
+        chatsQueue.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // End UIRefreshControl
-                self.refresher?.endRefreshing()
-                
                 // Clear array
                 self.chatQueues.removeAll(keepingCapacity: false)
                 for object in objects! {
@@ -171,8 +201,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         self.chatQueues.append(lastChat.objectId!)
                     }
                 }
-                // Fetch chats
                 self.fetchChats()
+                
             } else {
                 // End UIRefreshControl
                 self.refresher?.endRefreshing()
@@ -182,7 +212,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     rpHelpers.showError(withTitle: "Network Error")
                 }
             }
-        }
+        })
     }
     
     // Query Parse; <Chats>

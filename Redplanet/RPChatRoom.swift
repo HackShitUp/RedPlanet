@@ -242,14 +242,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     @IBAction func showLibrary(_ sender: Any) {
-        
-        
         PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) in
             switch status{
             case .authorized:
                 // AUTHORIZED
-                print("Fired...")
-                self.present(self.imagePicker, animated: true, completion: nil)
+                // Run in main thread or else it crashes...
+                DispatchQueue.main.async {
+                    self.present(self.imagePicker, animated: true, completion: nil)                    
+                }
 
             case .denied:
                 // MARK: - AZDialogViewController
