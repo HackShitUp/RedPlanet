@@ -571,8 +571,8 @@ extension Stories {
         
         // (3) Configure ReactionSelector
         reactionSelector.config = ReactionSelectorConfig {
-            $0.spacing = 12
-            $0.iconSize = 35
+            $0.spacing = 8
+            $0.iconSize = 40
             $0.stickyReaction = true
         }
         // (4) Set ReactionSelector

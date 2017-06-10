@@ -219,19 +219,22 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
                         self.searchedObjects.append(object)
                     }
                 }
-                
+
                 // Reload data
                 if self.searchedObjects.count != 0 {
-                    // Reload data
-                    self.tableView!.backgroundView = UIView()
-                    self.tableView!.reloadData()
+                    // De-allocate DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = nil
+                    self.tableView.emptyDataSetDelegate = nil
+                    // Reload UITableView
+                    self.tableView.reloadData()
                 } else {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
-                    // Reload data
-                    self.tableView!.reloadData()
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                    self.tableView.reloadData()
                 }
-                
+                      
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -333,8 +336,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
         self.searchBar.resignFirstResponder()
         // Clear searchBar
         self.searchBar.text! = ""
-        // Set tableView backgroundView
-        self.tableView.backgroundView = UIView()
         // Query Views
         queryViews(completionHandler: { (count) in})
     }

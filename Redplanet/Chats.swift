@@ -473,15 +473,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.searchBar.resignFirstResponder()
         // Clear text
         self.searchBar.text = ""
-        // Set tableView
-        self.tableView.backgroundView = UIView()
         // Reload data
         fetchQueues()
     }
     
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
         // Search by <username> and <realNameOfUser>
         let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
@@ -723,8 +719,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.searchBar.resignFirstResponder()
         // Clear text
         self.searchBar.text = ""
-        // Set tableView
-        self.tableView.backgroundView = UIView()
         // Reload data
         fetchQueues()
     }

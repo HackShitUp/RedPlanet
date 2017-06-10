@@ -14,6 +14,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import DZNEmptyDataSet
 import SDWebImage
 import SwipeNavigationController
 
@@ -25,9 +26,13 @@ var shareWithObject = [PFObject]()
  Holds "ShareWithCell.swift" to present each user, but binds the data in this class. If a user decides to post it, their own
  PFUser/PFObject is appended to an array in this class titled "usersToShareWith". When the "Done" button is tapped, the code checks
  for the current user's object and posts it if it exists.
+ 
+ NOTE: This class returns 1 section for searched users, and 2 sections when not searched.
+ In other words, the UITableView will by default have 2 sections; (1) Post, and (2) Show a list of people the current user is following
+ IF however, the user has searched for someone, the UITableView will have only 1 section.
 */
 
-class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SwipeNavigationControllerDelegate {
+class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SwipeNavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -329,6 +334,35 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         // EMPTY
     }
     
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        // If there are NO following OR searchBar is typing AND thre are no search results...
+        if self.abcFollowing.isEmpty || (self.searchBar.isFirstResponder && self.searchedUsers.isEmpty) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        var str: String?
+        
+        if self.searchBar.text == "" && self.abcFollowing.isEmpty {
+            // No Active Chats
+            str = "🙊\nNo Followings"
+        } else if self.searchedUsers.isEmpty {
+            // No Results
+            str = "💩\nNo Results"
+        }
+        
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
+    }
     
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -412,14 +446,18 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 }
                 // Reload data
                 if self.searchedUsers.count != 0 {
-                    // Reload data
-                    self.tableView!.backgroundView = UIView()
-                    self.tableView!.reloadData()
+                    // De-allocate DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = nil
+                    self.tableView.emptyDataSetDelegate = nil
+                    // Reload UITableView
+                    self.tableView.reloadData()
+                    print("SEARCHED: \(self.searchedUsers)")
                 } else {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
-                    // Reload data
-                    self.tableView!.reloadData()
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                    self.tableView.reloadData()
                 }
             } else {
                 print(error?.localizedDescription as Any)
@@ -430,30 +468,36 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
 
     // MARK: - UITableView DataSource Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if searchBar.text! != "" {
+        if searchBar.text != "" && self.searchBar.isFirstResponder {
+        // SEARCHED
             return 1
         } else {
+        // POST & FOLLOWING
             return 2
         }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchBar.text! != "" {
-            return self.searchedUsers.count
-        } else {
-            if section == 0 {
-                return 1
-            } else {
-                return self.abcFollowing.count
-            }
+        // # of Rows
+        var numberOfRows: Int?
+        // SEARCHED
+        if self.tableView.numberOfSections == 1 && self.searchBar.text != "" {
+            numberOfRows = self.searchedUsers.count
+        } else if self.tableView.numberOfSections == 2 && section == 0 {
+        // POST
+            numberOfRows = 1
+        } else if self.tableView.numberOfSections == 2 && section == 1 {
+        // FOLLOWING
+            numberOfRows = self.abcFollowing.count
         }
+        return numberOfRows!
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UILabel()
         header.backgroundColor = UIColor.white
-        header.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        header.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
+        header.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        header.font = UIFont(name: "AvenirNext-Bold", size: 12)
         header.textAlignment = .left
         if self.tableView.numberOfSections == 1 {
             header.text = "   Searched..."
@@ -468,19 +512,29 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // If post was NOT created, hide "Everyone" option
-        if shareWithObject.last!.objectId != nil && section == 0 {
+
+        // If post was NOT created (shareWithObject.last!.objectId == nil), hide "Public/Post" option
+        if shareWithObject.last!.objectId != nil && section == 0 && self.searchBar.text == "" {
             return 0
+        } else if self.searchBar.text != "" && section == 0 {
+            return 35
         } else {
             return 35
         }
+        
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // If post was NOT created, hide "Everyone" option
-        if shareWithObject.last!.objectId != nil && indexPath.row == 0 {
+        // If post was NOT created, hide "Public/Post" row
+        if shareWithObject.last!.objectId != nil && indexPath.row == 0 && self.searchBar.text == "" {
+        // NOT CREATED AND NOT SEARCHED
             return 0
+        } else if self.searchBar.text != "" && self.tableView.numberOfSections == 1 {
+        // SEARCHED
+            return 50
         } else {
+        // NOT SEARCHED
             return 50
         }
     }
@@ -564,7 +618,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             // Append searched object
             if !self.usersToShareWith.contains(where: {$0.objectId! == self.searchedUsers[indexPath.row].objectId!}) {
                 self.usersToShareWith.append(self.searchedUsers[indexPath.row])
-                print("Appeneding: \(self.usersToShareWith)")
             }
 
         case 2:

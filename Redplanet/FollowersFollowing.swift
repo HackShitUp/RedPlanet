@@ -165,7 +165,8 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if userObjects.count == 0 {
+        // If there are NO users OR searchBar is typing AND thre are no search results...
+        if self.userObjects.isEmpty || (self.searchBar.isFirstResponder && self.searchedObjects.isEmpty) {
             return true
         } else {
             return false
@@ -173,13 +174,22 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nNo \(self.followersFollowing!)"
-        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        var str: String?
+        if self.searchBar.text == "" && self.userObjects.isEmpty {
+            // No Followers or Following
+            str = "💩\nNo \(self.followersFollowing!)"
+        } else if self.searchedObjects.isEmpty {
+            // No Results
+            str = "💩\nNo Results"
+        }
+        
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
-        return NSAttributedString(string: str, attributes: attributeDictionary)
+        
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
     
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
@@ -282,14 +292,17 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
                 
                 // Reload data
                 if self.searchedObjects.count != 0 {
-                    // Reload data
-                    self.tableView!.backgroundView = UIView()
-                    self.tableView!.reloadData()
+                    // De-allocate DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = nil
+                    self.tableView.emptyDataSetDelegate = nil
+                    // Reload UITableView
+                    self.tableView.reloadData()
                 } else {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
-                    // Reload data
-                    self.tableView!.reloadData()
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                    self.tableView.reloadData()
                 }
                 
             } else {
@@ -380,8 +393,6 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         self.searchBar.resignFirstResponder()
         // Clear searchBar
         self.searchBar.text! = ""
-        // Set tableView backgroundView
-        self.tableView.backgroundView = UIView()
         // Reload data
         handleFetch()
     }

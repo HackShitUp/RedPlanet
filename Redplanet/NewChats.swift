@@ -160,7 +160,8 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if self.following.count == 0 {
+        // If there are NO users OR searchBar is typing AND thre are no search results...
+        if self.following.isEmpty || (self.searchBar.isFirstResponder && self.searchObjects.isEmpty) {
             return true
         } else {
             return false
@@ -169,15 +170,23 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nNo Followings Yet"
-        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        var str: String?
+        if self.searchBar.text == "" && self.following.isEmpty {
+            // No Active Chats
+            str = "💩\nNo Followings Yet"
+        } else if self.searchObjects.isEmpty {
+            // No Results
+            str = "💩\nNo Results"
+        }
+        
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
+
 
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
@@ -220,15 +229,17 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                 
                 // Reload data
                 if self.searchObjects.count != 0 {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIView()
-                    // Reload data
-                    self.tableView!.reloadData()
+                    // De-allocate DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = nil
+                    self.tableView.emptyDataSetDelegate = nil
+                    // Reload UITableView
+                    self.tableView.reloadData()
                 } else {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
-                    // Reload data
-                    self.tableView!.reloadData()
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                    self.tableView.reloadData()
                 }
                 
             } else {
@@ -324,8 +335,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         self.searchBar.text = ""
         // Resign first responder status
         self.searchBar.resignFirstResponder()
-        // Set tableView background
-        self.tableView.backgroundView = UIView()
         // Reload data
         queryFollowing()
     }
