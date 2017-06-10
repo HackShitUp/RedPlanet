@@ -65,13 +65,18 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var spb: SegmentedProgressBar!
     // MARK: - VIMVideoPlayer
     var vimVideoPlayerView: VIMVideoPlayerView?
-    // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
+    // MARK: - Reactions; Initialize...
+    // (1) ReactionButton
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+    // (2) Reaction Selector
     let reactionSelector = ReactionSelector()
-    let reactions = [Reaction(id: "rpLike", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
-                     Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
-                     Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!),
-                     Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
+    // (3) Reactions
+    let rpLike = Reaction(id: "rpLike", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!)
+    let rpComment = Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!)
+    let rpShare = Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)
+    let rpViews = Reaction(id: "rpViews", title: "Views", color: .lightGray, icon: UIImage(named: "Views")!)
+    let rpMore = Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)
+    
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -206,6 +211,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     shareWithObject.append(self.posts[self.currentIndex!])
                     let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                     self.navigationController?.pushViewController(shareWithVC, animated: true)
+                case "rpViews":
+                // VIEWS
+                    let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                    viewsVC.fetchObject = self.posts[self.currentIndex!]
+                    self.navigationController?.pushViewController(viewsVC, animated: true)
             default:
                 break;
             }
@@ -266,7 +276,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // MARK: - SubtleVolume
         let subtleVolume = SubtleVolume(style: .dots)
         subtleVolume.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 7)
-        subtleVolume.animation = .fadeIn
+        subtleVolume.animation = .slideDown
         subtleVolume.barTintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         subtleVolume.barBackgroundColor = UIColor.white
         self.view.addSubview(subtleVolume)
@@ -551,9 +561,13 @@ extension Stories {
         self.spb.startAnimation()
         
         // MARK: - Reactions
-        // (2) Create ReactionSelector and add Reactions from <1>
+        // (2) Create ReactionSelector and add Reactions from <1> depending on the owner of the story
         reactionSelector.feedbackDelegate = self
-        reactionSelector.setReactions(reactions)
+        if (storyObjects.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            reactionSelector.setReactions([rpLike, rpComment, rpShare, rpViews, rpMore])
+        } else {
+            reactionSelector.setReactions([rpLike, rpComment, rpShare, rpMore])
+        }
         
         // (3) Configure ReactionSelector
         reactionSelector.config = ReactionSelectorConfig {
@@ -571,6 +585,7 @@ extension Stories {
             $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
             $0.neutralTintColor = UIColor.black
         }
+        
         reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
         reactButton.center = self.view.center
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
@@ -661,7 +676,6 @@ extension Stories {
             }
         }
     }
-    
     
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {
