@@ -49,8 +49,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     // Search Bar
     var searchBar = UISearchBar()
-    // Boolean to determine what to show in UITableView
-    var searchActive: Bool = false
     // Refresher
     var refresher: UIRefreshControl!
     // Page size
@@ -61,7 +59,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
         // MARK: - AZDialogViewController
         let dialogController = AZDialogViewController(title: "Delete all Chats?",
-            message: "They can never be restored once they're deleted.")
+            message: "Are you sure you'd like to delete all your current conversation queues?")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
@@ -131,7 +129,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             ["byUserId": "\(PFUser.current()!.objectId!)",
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
-         // Show new view controller
+        // Show NewChats.swift view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
         self.navigationController!.pushViewController(newChatsVC, animated: true)
     }
@@ -215,6 +213,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     // MARK: - DZNEmptyDataSet
                     self.tableView.emptyDataSetSource = self
                     self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
                 } else {
                     // Reload data in main thread
                     DispatchQueue.main.async {
@@ -227,27 +226,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             }
         })
     }
-
     
-    func showChatRoom() {
-        // Push View controller
-        let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
-        self.navigationController!.pushViewController(chatRoom, animated: true)
-    }
-    
-    
-    // Function to load more
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= chatObjects.count {
-            // Increase page size to load more posts
-            page = page + 500000
-            // Query friends
-            self.fetchQueues()
-        }
-    }
-    
-    // Function to delete chats
+    // FUNCTION - Delete single chats in <ChatsQueue>
     func deleteChat(sender: UILongPressGestureRecognizer) {
         
         if sender.state == .began {
@@ -347,7 +327,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
     }
     
-    // Stylize title
+    // FUNCTION - Stylize UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
@@ -370,9 +350,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
 
     
-    // MARK: DZNEmptyDataSet Framework
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if chatObjects.count == 0 {
+        // If there are NO chats OR searchBar is typing AND thre are no search results...
+        if self.chatObjects.isEmpty || (self.searchBar.isFirstResponder && self.searchObjects.isEmpty) {
             return true
         } else {
             return false
@@ -380,14 +361,23 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🙊\nNo Active Chats"
+        var str: String?
+        
+        if self.searchBar.text == "" && self.chatObjects.isEmpty {
+        // No Active Chats
+            str = "🙊\nNo Active Chats"
+        } else if self.searchObjects.isEmpty {
+        // No Results
+            str = "💩\nNo Results"
+        }
+        
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         
-        return NSAttributedString(string: str, attributes: attributeDictionary)
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
     
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
@@ -417,11 +407,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         
-        // Add searchbar to header
+        // Configure UISearchBar
         self.searchBar.delegate = self
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
+        
+        // Configure UITableView
         self.tableView.tableHeaderView = self.searchBar
         self.tableView.tableHeaderView?.layer.borderWidth = 0.5
         self.tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
@@ -476,10 +468,17 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     
     // MARK: - UISearchBarDelegate methods
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Set boolean
-        searchActive = true
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        // Resign first responder status
+        self.searchBar.resignFirstResponder()
+        // Clear text
+        self.searchBar.text = ""
+        // Set tableView
+        self.tableView.backgroundView = UIView()
+        // Reload data
+        fetchQueues()
     }
+    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
@@ -505,14 +504,15 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // Reload data
                 if self.searchObjects.count != 0 {
                     // Reload data
-                    self.tableView!.reloadData()
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView()
+                    self.tableView.reloadData()
+                    self.tableView.emptyDataSetSource = nil
+                    self.tableView.emptyDataSetDelegate = nil
                 } else {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
-                    // Reload data
-                    self.tableView!.reloadData()
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                    self.tableView.reloadEmptyDataSet()
+                    self.tableView.reloadData()
                 }
                 
             } else {
@@ -531,7 +531,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // MARK: - UITableViewDataSource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if searchActive == true && searchBar.text != "" {
+        if searchBar.text != "" {
             // Return searched users
             return searchObjects.count
             
@@ -572,7 +572,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         /*
          IF SEARCHED FOR CHATS
          */
-        if searchActive == true && searchBar.text != "" {
+        if searchBar.text != "" {
             
             // Hide read receipts
             cell.status.isHidden = true
@@ -684,7 +684,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // MARK: - UITableView Delegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // SEARCHED
-        if searchActive == true && searchBar.text != "" {
+        if searchBar.text != "" {
             // Append to <chatUserObject>
             // and <chatUsername>
             // Append user's object
@@ -703,8 +703,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser).username!)
             }
         }
-        // Push VC
-        self.showChatRoom()
+
+        // Push to View controller
+        let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+        self.navigationController!.pushViewController(chatRoom, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -720,9 +722,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Resign first responder status
         self.searchBar.resignFirstResponder()
         // Clear text
-        self.searchBar.text! = ""
-        // Set Boolean
-        searchActive = false
+        self.searchBar.text = ""
         // Set tableView
         self.tableView.backgroundView = UIView()
         // Reload data
@@ -731,7 +731,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            loadMore()
+            // If posts on server are > than shown
+            if page <= chatObjects.count {
+                // Increase page size to load more posts
+                page = page + 500000
+                // Query friends
+                self.fetchQueues()
+            }
         }
     }
     

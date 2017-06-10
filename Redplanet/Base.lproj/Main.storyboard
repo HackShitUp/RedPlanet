@@ -1069,7 +1069,7 @@
                                 <action selector="editAction:" destination="Ac7-BO-mTV" id="5Hf-hU-wa5"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="New" id="0Lw-Dv-lX4">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0Lw-Dv-lX4">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="newChat:" destination="Ac7-BO-mTV" id="5PM-Em-nlZ"/>
@@ -4754,7 +4754,6 @@
         <image name="Left_50" width="25" height="25"/>
         <image name="Like" width="50" height="50"/>
         <image name="MoreButtonSmall" width="25" height="25"/>
-        <image name="New" width="25" height="25"/>
         <image name="NewsFeeds" width="25" height="25"/>
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
