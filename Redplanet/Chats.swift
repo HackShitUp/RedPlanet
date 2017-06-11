@@ -183,34 +183,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 }
             }
         }
- 
-        
-//        let chatsQueue = PFQuery(className: "ChatsQueue")
-//        chatsQueue.whereKeyExists("lastChat")
-//        chatsQueue.whereKey("participants", equalTo: PFUser.current()!)
-//        chatsQueue.includeKey("lastChat")
-//        chatsQueue.order(byDescending: "updatedAt")
-//        chatsQueue.findObjectsInBackground(block: {
-//            (objects: [PFObject]?, error: Error?) in
-//            if error == nil {
-//                // Clear array
-//                self.chatObjects.removeAll(keepingCapacity: false)
-//                for object in objects! {
-//                    if let lastChat = object.object(forKey: "lastChat") as? PFObject {
-//                        self.chatObjects.append(lastChat)
-//                    }
-//                }
-//                
-//            } else {
-//                // End UIRefreshControl
-//                self.refresher?.endRefreshing()
-//                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-//                    // MARK: - RPHelpers
-//                    let rpHelpers = RPHelpers()
-//                    rpHelpers.showError(withTitle: "Network Error")
-//                }
-//            }
-//        })
     }
     
     // Query Parse; <Chats>

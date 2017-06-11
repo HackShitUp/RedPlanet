@@ -140,6 +140,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -632,8 +632,18 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         self.view.addGestureRecognizer(tap)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Hide UITabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {

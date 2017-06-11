@@ -737,7 +737,7 @@ extension Story {
         }
         
         // (5) Report
-        let report = AZDialogAction(title: "REPORT", handler: { (dialog) -> (Void) in
+        let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
             // MARK: - UIAlertController
             let alert = UIAlertController(title: "Report Post",
                                           message: "Please provide your reason for reporting this Post",
