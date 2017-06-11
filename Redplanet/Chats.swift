@@ -238,7 +238,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 
                 // MARK: - AZDialogViewController
                 let dialogController = AZDialogViewController(title: "\(fullName)",
-                    message: "Delete Chat?\nIt can't be restored once it's forever deleted.")
+                    message: "Delete Chat?\nAre you sure you'd like to delete this conversation queue?")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true

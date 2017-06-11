@@ -246,8 +246,18 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             switch status{
             case .authorized:
                 // AUTHORIZED
-                // Run in main thread or else it crashes...
+                // Run in main thread or else it crashes...?
                 DispatchQueue.main.async {
+                    // Change the font and size of nav bar text
+                    if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+                        let navBarAttributesDictionary: [String: AnyObject]? = [
+                            NSForegroundColorAttributeName: UIColor.black,
+                            NSFontAttributeName: navBarFont
+                        ]
+                        self.imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                    }
+                    self.imagePicker.navigationController?.navigationBar.whitenBar(navigator: self.imagePicker.navigationController)
+                    self.imagePicker.view.roundTopCorners(sender: self.imagePicker.view)
                     self.present(self.imagePicker, animated: true, completion: nil)                    
                 }
 
@@ -543,10 +553,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chatCamera = false
         // Add observers
         self.createObservers()
-        
-        // Hide UITabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
     }
     
     override func viewDidLoad() {
@@ -581,6 +587,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.textView.clipsToBounds = true
         self.textView.text = "Share your message..."
         self.textView.textColor = UIColor.lightGray
+        
+        
+        // MARK: - UIImagePickerController
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
+        imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
+        imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
+        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.navigationBar.whitenBar(navigator: imagePicker.navigationController)
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -597,26 +614,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // MARK: - UIImagePickerController
-        imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
-        imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
-        imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
-        imagePicker.navigationBar.tintColor = UIColor.black
-        
-        imagePicker.navigationBar.whitenBar(navigator: imagePicker.navigationController)
-        imagePicker.view.roundAllCorners(sender: imagePicker.view)
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            imagePicker.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            imagePicker.title = "Photos & Videos"
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -929,10 +926,7 @@ extension RPChatRoom {
                                                         object!.deleteInBackground(block: { (success: Bool, error: Error?) in
                                                             if error == nil {
                                                                 print("Successfully deleted chat: \(object!)")
-                                                                
-                                                                // Update <ChatsQueue> with last object in array
-//                                                                let rpHelpers = RPHelpers()
-//                                                                _ = rpHelpers.updateQueue(chatQueue: self.messageObjects[indexPath.row]!, userObject: chatUserObject.last!)
+    
                                                                 // MARK: - RPHelpers; Update <ChatsQueue> with last object in array
                                                                 let rpHelpers = RPHelpers()
                                                                 if let lastChat = self.messageObjects.last {

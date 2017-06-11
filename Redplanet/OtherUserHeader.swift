@@ -181,6 +181,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
+            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
             button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             button.layer.masksToBounds = true

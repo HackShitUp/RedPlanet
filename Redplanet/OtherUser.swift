@@ -87,7 +87,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
             button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
             button.setTitleColor(UIColor.white, for: .normal)
-            button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 15)
+            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.layer.masksToBounds = true
         }
         // Add Cancel button

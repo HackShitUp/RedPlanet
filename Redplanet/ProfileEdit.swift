@@ -367,6 +367,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
+            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
             button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
             button.layer.masksToBounds = true
@@ -526,10 +527,14 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Hide UITabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Add border to top of container
         let upperBorder = CALayer()
         upperBorder.backgroundColor = UIColor.darkGray.cgColor
@@ -634,8 +639,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Hide UITabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {

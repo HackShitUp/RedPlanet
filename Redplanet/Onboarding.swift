@@ -49,7 +49,7 @@ class Onboarding: UICollectionViewController {
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
                 chats["saved"] = false
-                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us @teamrp if you have any questions or concerns using Redplanet. If you're having difficulty using Redplanet, head over to https://medium.com/@redplanetmedia to find tutorials.\n-Redplanet"
+                chats["Message"] = "🎊😜🚀👾👏\nHi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community. Feel free to chat us @teamrp if you have any questions or concerns using Redplanet! You can also head over to https://www.redplanetapp.com/news to find tutorials if you need help. Thanks for you signing up!\n❤️, Redplanet"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
@@ -165,7 +165,7 @@ class Onboarding: UICollectionViewController {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Follow People!"
+            self.title = "Follow Public Accounts"
         }
         
         // Configure nav bar && show tab bar (last line)

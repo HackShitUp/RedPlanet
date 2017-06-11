@@ -99,7 +99,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                     lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
                     lastPage.bottomPadding = 50
                     // Show Onboarding
-                    let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "Welcome"), contents: [firstPage, secondPage, lastPage])
+                    let onboardingVC = OnboardingViewController(backgroundImage: UIImage(), contents: [firstPage, secondPage, lastPage])
                     onboardingVC?.view.frame = self.view.bounds
                     onboardingVC?.view.clipsToBounds = true
                     onboardingVC?.shouldFadeTransitions = true
