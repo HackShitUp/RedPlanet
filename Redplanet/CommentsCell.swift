@@ -64,7 +64,7 @@ class CommentsCell: UITableViewCell {
                         // Re-enable button
                         self.likeButton.isUserInteractionEnabled = true
                         // Set Button Image
-                        self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
+                        self.likeButton.setImage(UIImage(named: "LikeBlack"), for: .normal)
                         // Animate like button
                         UIView.animate(withDuration: 0.6 ,
                                        animations: { self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
@@ -190,7 +190,7 @@ class CommentsCell: UITableViewCell {
                 if self.likers.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                     self.likeButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
                 } else {
-                    self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "LikeBlack"), for: .normal)
                 }
                 
             } else {

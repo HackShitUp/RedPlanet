@@ -118,7 +118,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // FOLLOWER
         // FOLLOWING
         
-        // Set up title
+        // Set UIButton title
         self.followButton.setTitle(relationTitle, for: .normal)
         
         switch relationTitle {

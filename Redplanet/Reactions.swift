@@ -690,7 +690,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             if reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 header.likeButton.setImage(UIImage(named: "HeartFilled"), for: .normal)
             } else {
-                header.likeButton.setImage(UIImage(named: "Like"), for: .normal)
+                header.likeButton.setImage(UIImage(named: "LikeBlack"), for: .normal)
             }
             header.reactionType.text = "\(self.reactionObjects.count) Likes"
         }
@@ -896,7 +896,7 @@ extension Reactions {
                     // Re-enable button
                     andButton.isUserInteractionEnabled = true
                     // Set Button Image
-                    andButton.setImage(UIImage(named: "Like"), for: .normal)
+                    andButton.setImage(UIImage(named: "LikeBlack"), for: .normal)
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
                                    animations: { andButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },

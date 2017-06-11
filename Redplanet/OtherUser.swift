@@ -242,7 +242,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 // (2) Following
                 if self.relativePosts.count == 0 {
                     // MARK: - DZNEmptyDataSet
-                    self.dznType = "💩 No Saved Posts"
+                    self.dznType = "💩 No Posts"
                     self.tableView.emptyDataSetSource = self
                     self.tableView.emptyDataSetDelegate = self
                     self.tableView.reloadEmptyDataSet()
@@ -272,7 +272,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 // (5) Follower AND Following (AKA: Friends)
                 if self.relativePosts.count == 0 {
                     // MARK: - DZNEmptyDataSet
-                    self.dznType = "💩 No Saved Posts"
+                    self.dznType = "💩 No Posts"
                     self.tableView.emptyDataSetSource = self
                     self.tableView.emptyDataSetDelegate = self
                     self.tableView.reloadEmptyDataSet()
@@ -291,7 +291,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         } else {
             // PUBLIC ACCOUNT
             if self.relativePosts.count == 0 {
-                self.dznType = "💩 No Saved Posts"
+                self.dznType = "💩 No Posts"
                 self.tableView.emptyDataSetSource = self
                 self.tableView.emptyDataSetDelegate = self
                 self.tableView.reloadEmptyDataSet()
@@ -492,18 +492,19 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         header.newSpaceButton.isUserInteractionEnabled = false
         
 
-        if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-        // FOLLOWER
+        
+        if !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+        // FOLLOWER ONLY
             header.configureButton(relationTitle: "Follower")
         }
         
-        if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-        // FOLLOWING
+        if !currentFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        // FOLLOWING ONLY
             header.configureButton(relationTitle: "Following")
         }
         
         if currentRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || currentRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-        // FOLLOW REQUESTED
+        // REQUESTED
             header.configureButton(relationTitle: "Requested")
         }
         
@@ -518,7 +519,7 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             header.newSpaceButton.isUserInteractionEnabled = true
         }
         
-        // Hide all buttons if user is PFUser.current()
+        // CURRENT USER
         if otherObject.last!.objectId! == PFUser.current()!.objectId! {
             header.followButton.isHidden = true
             header.chatButton.isHidden = true
