@@ -109,7 +109,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         photo["byUser"] = PFUser.current()!
         photo["byUsername"] = PFUser.current()!.username!.lowercased()
         photo["contentType"] = "ph"
-        photo["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 1)!)
+        photo["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 0.5)!)
         photo["textPost"] = self.textPost.text
         photo["saved"] = false
         // Append PFObject
@@ -117,7 +117,6 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.navigationController?.pushViewController(shareWithVC, animated: true)
     }
-    
     
     // FUNCTION - Share video
     func shareVideo() {
@@ -140,12 +139,13 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
             case .completed:
                 do {
                     let videoData = try Data(contentsOf: compressedURL)
+                    let videoFile = PFFile(name: "video.mp4", data: videoData)
                     // Create PFObject
                     let video = PFObject(className: "Posts")
                     video["byUser"] = PFUser.current()!
                     video["byUsername"] = PFUser.current()!.username!.lowercased()
                     video["contentType"] = "vi"
-                    video["videoAsset"] = PFFile(name: "video.mp4", data: videoData)
+                    video["videoAsset"] = videoFile
                     video["textPost"] = self.textPost.text
                     video["saved"] = false
                     DispatchQueue.main.async(execute: {

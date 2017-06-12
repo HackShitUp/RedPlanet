@@ -660,7 +660,7 @@ extension Hashtags {
                         // Replace userProfilePicture if contentType is "pp"
                         if object.value(forKey: "contentType") as! String == "pp" {
                             // Save PFFile context
-                            let proPicData = UIImageJPEGRepresentation(UIImage(named: "GenderNeutralUser")!, 1)
+                            let proPicData = UIImageJPEGRepresentation(UIImage(named: "GenderNeutralUser")!, 0.5)
                             let parseFile = PFFile(data: proPicData!)
                             // Replace with "GenderNeutralUser"
                             PFUser.current()!["userProfilePicture"] = parseFile
