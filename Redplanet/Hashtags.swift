@@ -577,6 +577,7 @@ extension Hashtags {
         // Update "didScreenshot" attribute in "Views"
         let views = PFQuery(className: "Views")
         views.whereKey("forObjectId", equalTo: self.posts[self.currentIndex!].objectId!)
+        views.whereKey("byUser", equalTo: PFUser.current()!)
         views.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 for object in objects! {
