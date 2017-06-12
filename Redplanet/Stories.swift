@@ -133,7 +133,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         postsClass.whereKey("byUser", equalTo: storyObjects.last!.object(forKey: "byUser") as! PFUser)
         postsClass.includeKeys(["byUser", "toUser"])
         postsClass.order(byDescending: "createdAt")
-        postsClass.limit = 10
+        postsClass.limit = 1000
         postsClass.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
