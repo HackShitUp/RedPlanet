@@ -68,14 +68,18 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     var spb: SegmentedProgressBar!
     // MARK: - VIMVideoPlayer
     var vimVideoPlayerView: VIMVideoPlayerView?
-    
-    // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
+    // MARK: - Reactions; Initialize...
+    // (1) ReactionButton
     let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+    // (2) Reaction Selector
     let reactionSelector = ReactionSelector()
-    let reactions = [Reaction(id: "rpLike", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
-                     Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
-                     Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!),
-                     Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)]
+    // (3) Reactions
+    let rpLike = Reaction(id: "rpLike", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!)
+    let rpComment = Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!)
+    let rpShare = Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)
+    let rpViews = Reaction(id: "rpViews", title: "Views", color: .lightGray, icon: UIImage(named: "Views")!)
+    let rpMore = Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)
+
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -498,14 +502,18 @@ extension Story {
         self.spb.startAnimation()
         
         // MARK: - Reactions
-        // (2) Create ReactionSelector and add Reactions from <1>
+        // (2) Create ReactionSelector and add Reactions from <1> depending on the owner of the story
         reactionSelector.feedbackDelegate = self
-        reactionSelector.setReactions(reactions)
+        if (self.storyObject!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            reactionSelector.setReactions([rpLike, rpComment, rpShare, rpViews, rpMore])
+        } else {
+            reactionSelector.setReactions([rpLike, rpComment, rpShare, rpMore])
+        }
         
         // (3) Configure ReactionSelector
         reactionSelector.config = ReactionSelectorConfig {
-            $0.spacing = 12
-            $0.iconSize = 35
+            $0.spacing = 8
+            $0.iconSize = 40
             $0.stickyReaction = true
         }
         // (4) Set ReactionSelector
@@ -518,6 +526,7 @@ extension Story {
             $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
             $0.neutralTintColor = UIColor.black
         }
+        
         reactButton.reaction = Reaction(id: "rpReact", title: "", color: .lightGray, icon: UIImage(named: "ReactButton")!)
         reactButton.center = self.view.center
         reactButton.frame.origin.y = self.view.bounds.height - reactButton.frame.size.height
@@ -631,17 +640,7 @@ extension Story {
             button.layer.masksToBounds = true
         }
         
-        // (1) Show Views for post
-        let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
-            // Views VC
-            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            viewsVC.fetchObject = self.posts[self.currentIndex!]
-            self.navigationController?.pushViewController(viewsVC, animated: true)
-        })
-        
-        // (2) Delete Post
+        // (1) Delete Post
         let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
@@ -676,12 +675,22 @@ extension Story {
                         // Reload data
                         self.posts.remove(at: self.currentIndex!)
                         self.collectionView.deleteItems(at: [IndexPath(item: self.currentIndex!, section: 0)])
-                        if self.currentIndex! == 0 {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
-                                                             at: .right, animated: true)
-                        } else if self.currentIndex! == self.posts.count {
-                            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
-                                                             at: .right, animated: true)
+                        
+                        if self.posts.count == 0 {
+                            // Hide reactButton
+                            self.reactButton.isHidden = true
+                            // Set DZN
+                            self.collectionView.emptyDataSetSource = self
+                            self.collectionView.emptyDataSetDelegate = self
+                            self.collectionView.reloadEmptyDataSet()
+                        } else {
+                            if self.currentIndex! == 0 {
+                                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! + 1, section: 0),
+                                                                 at: .right, animated: true)
+                            } else if self.currentIndex! == self.posts.count {
+                                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex! - 1, section: 0),
+                                                                 at: .right, animated: true)
+                            }
                         }
                     }
                 } else {
@@ -693,7 +702,7 @@ extension Story {
             })
         })
         
-        // (3) Edit Post
+        // (2) Edit Post
         let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
@@ -704,7 +713,7 @@ extension Story {
         })
         
         
-        // (4) SAVE or UNSAVE ACTION; add tool action
+        // (3) SAVE or UNSAVE ACTION; add tool action
         dialogController.rightToolAction = { (button) in
             // Query
             let posts = PFQuery(className: "Posts")
@@ -737,7 +746,7 @@ extension Story {
             })
         }
         
-        // (5) Report
+        // (4) Report
         let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
             // MARK: - UIAlertController
             let alert = UIAlertController(title: "Report Post",
@@ -779,7 +788,7 @@ extension Story {
             dialog.present(alert, animated: true, completion: nil)
         })
         
-        // (6) CANCEL
+        // (5) CANCEL
         dialogController.cancelButtonStyle = { (button,height) in
             button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
             button.setTitle("CANCEL", for: [])
@@ -788,8 +797,7 @@ extension Story {
         
         // Show options depending on who owns the post...
         if (self.posts[currentIndex!].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Views/Delete
-            dialogController.addAction(views)
+            // Delete
             dialogController.addAction(delete)
             // Add saveButton
             dialogController.rightToolStyle = { (button) in

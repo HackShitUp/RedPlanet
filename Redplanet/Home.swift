@@ -91,9 +91,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                         self.friends.append(object.object(forKey: "follower") as! PFUser)
                     }
                 }
-                
-                print(currentFollowing.count)
-                
+
                 self.fetchFirstPosts(forGroup: self.friends)
                 
             } else {
