@@ -74,6 +74,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         mutuals.includeKeys(["follower", "following"])
         mutuals.whereKey("following", equalTo: PFUser.current()!)
         mutuals.whereKey("isFollowing", equalTo: true)
+        mutuals.limit = 1000000
         mutuals.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -90,6 +91,8 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                         self.friends.append(object.object(forKey: "follower") as! PFUser)
                     }
                 }
+                
+                print(currentFollowing.count)
                 
                 self.fetchFirstPosts(forGroup: self.friends)
                 
@@ -114,6 +117,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         following.includeKeys(["follower", "following"])
         following.whereKey("follower", equalTo: PFUser.current()!)
         following.whereKey("isFollowing", equalTo: true)
+        following.limit = 1000000
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -147,6 +151,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         postsClass.whereKey("byUser", containedIn: forGroup)
         postsClass.includeKeys(["byUser", "toUser"])
         postsClass.order(byDescending: "createdAt")
+        postsClass.limit = 1000000
         postsClass.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {

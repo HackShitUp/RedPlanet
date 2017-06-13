@@ -363,6 +363,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         following.includeKey("following")
         following.whereKey("follower", equalTo: PFUser.current()!)
         following.order(byDescending: "createdAt")
+        following.limit = 1000000
         following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -395,6 +396,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         followers.includeKey("follower")
         followers.whereKey("following", equalTo: PFUser.current()!)
         followers.order(byDescending: "createdAt")
+        followers.limit = 1000000
         followers.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -430,6 +432,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         blockedTo.whereKey("byUser", notEqualTo: PFUser.current()!)
         let block = PFQuery.orQuery(withSubqueries: [blockedBy, blockedTo])
         block.includeKeys(["byUser", "toUser"])
+        block.limit = 1000000
         block.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
