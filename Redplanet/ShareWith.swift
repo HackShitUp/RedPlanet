@@ -294,7 +294,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     // FUNCTION - Stylize UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -355,7 +355,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             str = "💩\nNo Results"
         }
         
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let font = UIFont(name: "AvenirNext-Medium", size: 30)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!

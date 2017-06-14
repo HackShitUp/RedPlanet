@@ -87,7 +87,8 @@ class RPHelpers: NSObject {
                                             let kelvin = main["temp"] as! Double
                                             let farenheit = (kelvin * 1.8) - 459.67
                                             let celsius = kelvin - 273.15
-                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
+//                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
+                                            let both = "\(Int(farenheit))°F"
                                             // Append Temperature as String
                                             temperature.append(both)
                                         }

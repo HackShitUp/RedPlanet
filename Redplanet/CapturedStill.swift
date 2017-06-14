@@ -258,7 +258,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let dayOfWeek = dayFormatter.string(from: Date())
         
         // I TIME STAMP
-        let time = UILabel(frame: self.view.bounds)
+        let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
         time.font = UIFont(name: "Futura-Medium", size: 65)
         time.textColor = UIColor.white
         time.layer.applyShadow(layer: time.layer)
@@ -270,7 +270,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         UIGraphicsEndImageContext()
         
         // II DAY
-        let day = UILabel(frame: self.view.bounds)
+        let day = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
         day.font = UIFont(name: "AvenirNext-Demibold", size: 50)
         day.textColor = UIColor.white
         day.layer.applyShadow(layer: day.layer)
@@ -343,10 +343,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
                             "nil"])
             SNFilter.filterIdentities.append(contentsOf: rpFilters)
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+            // Red
             self.data[5].addSticker(SNSticker(frame: self.view.bounds, image: redFilter!, atZPosition: 0))
-            self.data[6].addSticker(SNSticker(frame: self.view.bounds, image: timeStamp!, atZPosition: 0))
-            self.data[7].addSticker(SNSticker(frame: self.view.bounds, image: dayStamp!, atZPosition: 0))
-            self.data[8].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
+            // Time
+            self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
+            // Day
+            self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
+            // Profile Photo
+            self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
+            
         } else {
         // GEOLOCATION ENABLED ===================================================
 
@@ -389,11 +394,17 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
                                           "nil"])
             SNFilter.filterIdentities.append(contentsOf: rpFilters)
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+            // Red
             self.data[5].addSticker(SNSticker(frame: self.view.bounds, image: redFilter!, atZPosition: 0))
-            self.data[6].addSticker(SNSticker(frame: self.view.bounds, image: timeStamp!, atZPosition: 0))
-            self.data[7].addSticker(SNSticker(frame: self.view.bounds, image: dayStamp!, atZPosition: 0))
+            // Time
+            self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
+            // Day
+            self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
+            // Location
             self.data[8].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
-            self.data[9].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
+            // Temperature
+            self.data[9].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: tempFilter!, atZPosition: 0))
+            // Profile Photo
             self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
         }
 
