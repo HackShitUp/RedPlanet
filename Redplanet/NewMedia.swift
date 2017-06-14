@@ -223,7 +223,7 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     
     // FUNCTION - Stylize UINavigationBar, and configure UI
     func configureView() {
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21) {
             let navBarAttributesDictionary = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: navBarFont]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             if mediaType == "image" {

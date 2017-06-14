@@ -354,7 +354,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
         }
         header.font = UIFont(name: "AvenirNext-Bold", size: 12)
         header.textAlignment = .left
-        header.text = "      \(self.exploreTitles[section])"
+        header.text = "   \(self.exploreTitles[section])"
         return header
     }
     

@@ -330,7 +330,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // FUNCTION - Stylize UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
