@@ -100,20 +100,29 @@ class TextPostCell: UITableViewCell {
             // Set text...
             self.textPost.text = text
             
+            
+            
             for var word in text.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                 // @'s
-                if word.hasPrefix("http") {
+                if word.hasPrefix("http") || word.hasPrefix("https") {
+                    
                     // Replace word
-                    self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
+//                    self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
                     
                     // Declare webURL
                     self.webURL = word
                     
                     // MARK: - Readability
                     Readability.parse(url: URL(string: word)!, completion: { (data) in
+
                         
+                        // IMAGE
                         // Traverse image URL and hide views if no image exists
                         if let imageURL = data?.topImage {
+                            
+                            // Replace word
+                            self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
+                            
                             // MARK: - SDWebImage
                             self.webImage.sd_addActivityIndicator()
                             self.webImage.sd_setIndicatorStyle(.white)

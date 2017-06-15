@@ -215,12 +215,12 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // MARK: - SVProgressHUD
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor.groupTableViewBackground)
         SVProgressHUD.setFont(UIFont(name: "AvenirNext-Medium", size: 21))
-        SVProgressHUD.show()
+        SVProgressHUD.show(withStatus: "\((self.storyObject!.object(forKey: "byUser") as! PFUser).username!.lowercased())")
         
         // Fetch Single Story
         fetchSingle()
