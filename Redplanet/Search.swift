@@ -100,8 +100,9 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         // Configure UISearchBar
         searchBar.delegate = self
         searchBar.frame = CGRect(x: 58, y: 7, width: self.view.frame.size.width - 100, height: 30)
-        searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        searchBar.backgroundColor = UIColor.groupTableViewBackground
+        searchBar.font = UIFont(name: "AvenirNext-Medium", size: 17)
         searchBar.textColor = UIColor.black
         
         // Back swipe implementation

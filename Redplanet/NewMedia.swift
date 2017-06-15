@@ -287,9 +287,11 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         tableView.isHidden = true
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
         
         // Set UITextView delegate
         textPost.delegate = self
+        textPost.textColor = UIColor.darkGray
         
         // Implement back swipe method
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
@@ -350,48 +352,51 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     
     // MARK: - UITextView Delegate Methods
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textPost.text! == "Say something about this photo..." || self.textPost.text! == "Say something about this video..." {
+        if self.textPost.textColor == UIColor.darkGray {
             self.textPost.text! = ""
             self.textPost.textColor = UIColor.black
         }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-        // Define word
-        for var word in words {
-            // #####################
-            if word.hasPrefix("@") {
-                // Cut all symbols
-                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                // Find the user
-                let fullName = PFUser.query()!
-                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                let theUsername = PFUser.query()!
-                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
-                search.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        // Clear arrays
-                        self.userObjects.removeAll(keepingCapacity: false)
-                        for object in objects! {
-                            self.userObjects.append(object)
-                        }
-                    } else {
-                        print(error?.localizedDescription as Any)
+        // Access UITextView's content, and get the LAST WORD/TEXT entered
+        let stringsSeparatedBySpace = textPost.text.components(separatedBy: " ")
+        // Then, check whether the last word/text has a "@" prefix...
+        var lastString = stringsSeparatedBySpace.last!
+        if lastString.hasPrefix("@") {
+            // Cut all symbols
+            lastString = lastString.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+            lastString = lastString.trimmingCharacters(in: CharacterSet.symbols)
+            // Find the user
+            let realNameOfUser = PFUser.query()!
+            realNameOfUser.whereKey("realNameOfUser", matchesRegex: "(?i)" + lastString)
+            let username = PFUser.query()!
+            username.whereKey("username", matchesRegex: "(?i)" + lastString)
+            let search = PFQuery.orQuery(withSubqueries: [realNameOfUser, username])
+            search.limit = 100000
+            search.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear arrays
+                    self.userObjects.removeAll(keepingCapacity: false)
+                    for object in objects! {
+                        self.userObjects.append(object)
                     }
-                })
-                // Show UITableView and reload data in main thread
-                DispatchQueue.main.async {
-                    self.tableView.isHidden = false
-                    self.tableView.reloadData()
+                    
+                    // Show UITableView and reloadData in main thread
+                    DispatchQueue.main.async {
+                        self.tableView!.isHidden = false
+                        self.tableView!.reloadData()
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
                 }
-            } else {
-                self.tableView.isHidden = true
-            }
+            })
+        } else {
+            self.tableView!.isHidden = true
         }
+        
         return true
     }
     
@@ -430,15 +435,17 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     
     // MARK: - UITableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Loop through words
-        for var word in self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-            // @@@@@@@@@@@@@@@@@@@@@@@@@@@
-            if word.hasPrefix("@") {
-                // Cut all symbols
-                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                // Replace text
-                self.textPost.text! = self.textPost.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+        // Access UITextView's content, and get the LAST WORD/TEXT entered
+        let stringsSeparatedBySpace = self.textPost.text.components(separatedBy: " ")
+        // Then, check whether the last word/text has a "@" prefix...
+        var lastString = stringsSeparatedBySpace.last!
+        if lastString.hasPrefix("@") {
+            // Cut all symbols
+            lastString = lastString.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+            lastString = lastString.trimmingCharacters(in: CharacterSet.symbols)
+            // Replace text
+            if let username = self.userObjects[indexPath.row].value(forKey: "username") as? String {
+                self.textPost.text = self.textPost.text.replacingOccurrences(of: "\(lastString)", with: username, options: String.CompareOptions.literal, range: nil)
             }
         }
         // Clear array

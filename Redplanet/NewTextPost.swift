@@ -198,16 +198,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         super.viewWillAppear(animated)
         // Stylize title
         configureView()
-        // Set placeholder
-        self.textView.textColor = UIColor.darkGray
-        let randomInt = arc4random()
-        if randomInt % 2 == 0 {
-            // Even
-            self.textView.text! = "What are you doing?"
-        } else {
-            // Odd
-            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
-        }
         
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
@@ -223,10 +213,23 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Stylize title
         configureView()
         
+        // Configure UITextView; set placeholder and delegate
+        self.textView.textColor = UIColor.darkGray
+        self.textView.delegate = self
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            self.textView.text! = "What are you doing?"
+        } else {
+            // Odd
+            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
+        }
+        
         // Configure UITableView
         tableView.isHidden = true
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         // Register NIB
         tableView.register(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: "UserCell")
         
@@ -251,6 +254,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Remove observers
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // Hide UITableView
+        self.tableView?.isHidden = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -293,7 +302,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // MARK: - UITextView delegate methods
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView!.text! == "What are you doing?" || self.textView!.text! == "Thoughts are preludes to revolutionary movements..." {
+        if self.textView!.textColor == UIColor.darkGray {
             self.textView.text! = ""
             self.textView.textColor = UIColor.black
         }
@@ -304,42 +313,44 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Count characters
         countRemaining()
         
-        // Define words
-        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-        
-        // Define single word
-        for var word in words {
-            // @'s
-            if word.hasPrefix("@") {
-                // Cut all symbols
-                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                // Find the user
-                let fullName = PFUser.query()!
-                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                let theUsername = PFUser.query()!
-                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
-                search.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        // Clear arrays
-                        self.userObjects.removeAll(keepingCapacity: false)
-                        for object in objects! {
-                            self.userObjects.append(object)
-                        }
-                    } else {
-                        print(error?.localizedDescription as Any)
+        // Access UITextView's content, and get the LAST WORD/TEXT entered
+        let stringsSeparatedBySpace = textView.text.components(separatedBy: " ")
+        // Then, check whether the last word/text has a "@" prefix...
+        var lastString = stringsSeparatedBySpace.last!
+        if lastString.hasPrefix("@") {
+            // Cut all symbols
+            lastString = lastString.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+            lastString = lastString.trimmingCharacters(in: CharacterSet.symbols)
+            // Find the user
+            let realNameOfUser = PFUser.query()!
+            realNameOfUser.whereKey("realNameOfUser", matchesRegex: "(?i)" + lastString)
+            let username = PFUser.query()!
+            username.whereKey("username", matchesRegex: "(?i)" + lastString)
+            let search = PFQuery.orQuery(withSubqueries: [realNameOfUser, username])
+            search.limit = 100000
+            search.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear arrays
+                    self.userObjects.removeAll(keepingCapacity: false)
+                    for object in objects! {
+                        self.userObjects.append(object)
                     }
-                })
-                // Show tableView and reloadData
-                self.tableView!.isHidden = false
-                self.tableView!.reloadData()
-            } else {
-                self.tableView!.isHidden = true
-            }
+                    
+                    // Show UITableView and reloadData in main thread
+                    DispatchQueue.main.async {
+                        self.tableView!.isHidden = false
+                        self.tableView!.reloadData()
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        } else {
+            self.tableView!.isHidden = true
         }
-        
+
         return true
     }
     
@@ -365,9 +376,15 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // (1) Set realNameOfUser
-        cell.rpFullName.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        if let fullName = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
+            cell.rpFullName.text = fullName
+        }
+        
         // (2) Set username
-        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "username") as! String
+        if let username = self.userObjects[indexPath.row].value(forKey: "username") as? String {
+            cell.rpUsername.text = username
+        }
+        
         // (3) Get and set userProfilePicture
         if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
@@ -382,17 +399,20 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // MARK: - UITableViewdelegeate Method
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Loop through words
-        for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-            // @@@@@@@@@@@@@@@@@@@@@@@@@@@
-            if word.hasPrefix("@") {
-                // Cut all symbols
-                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                // Replace text
-                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+        // Access UITextView's content, and get the LAST WORD/TEXT entered
+        let stringsSeparatedBySpace = textView.text.components(separatedBy: " ")
+        // Then, check whether the last word/text has a "@" prefix...
+        var lastString = stringsSeparatedBySpace.last!
+        if lastString.hasPrefix("@") {
+            // Cut all symbols
+            lastString = lastString.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+            lastString = lastString.trimmingCharacters(in: CharacterSet.symbols)
+            // Replace text
+            if let username = self.userObjects[indexPath.row].value(forKey: "username") as? String {
+                self.textView.text = self.textView.text.replacingOccurrences(of: "\(lastString)", with: username, options: String.CompareOptions.literal, range: nil)
             }
         }
+
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
         // Hide UITableView
