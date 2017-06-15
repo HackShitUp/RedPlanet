@@ -21,7 +21,7 @@ extension RPPopUpVC {
         vc?.draggableToSides = false
         vc?.appearFromTop = true
         vc?.bottomDismissible = false
-        vc?.appearOffset = CGFloat(20)
+        vc?.appearOffset = CGFloat(10)
         vc?.setUpScrollView()
         vc?.addToScrollViewNewController(popOverVC!)
     }

@@ -141,7 +141,7 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    // MARK: - Reactions Delegate Method
+    // MARK: - Reactions; Delegate Method
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
             switch reactionSelector.selectedReaction!.id {
@@ -161,6 +161,11 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                 shareWithObject.append(self.posts[self.currentIndex!])
                 let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
                 self.navigationController?.pushViewController(shareWithVC, animated: true)
+            case "rpViews":
+                // VIEWS
+                let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                viewsVC.fetchObject = self.posts[self.currentIndex!]
+                self.navigationController?.pushViewController(viewsVC, animated: true)
             default:
                 break;
             }
@@ -611,14 +616,12 @@ extension Story {
                     let rpHelpers = RPHelpers()
                     rpHelpers.pushNotification(toUser: self.posts[self.currentIndex!].object(forKey: "byUser") as! PFUser,
                                                activityType: "screenshotted your post.")
-                    
                 }
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
     }
-    
     
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {
@@ -634,8 +637,8 @@ extension Story {
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1).cgColor
-            button.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.layer.masksToBounds = true
         }
@@ -790,7 +793,7 @@ extension Story {
         
         // (5) CANCEL
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.setTitle("CANCEL", for: [])
             return true
         }
@@ -817,3 +820,5 @@ extension Story {
         }
     }
 }
+
+

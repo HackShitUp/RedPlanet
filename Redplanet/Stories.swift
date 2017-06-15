@@ -191,7 +191,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    // MARK: - Reactions Delegate Method
+    // MARK: - Reactions; Delegate Method
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
         if feedback == nil || feedback == .tapToSelectAReaction {
             switch reactionSelector.selectedReaction!.id {
@@ -691,8 +691,8 @@ extension Stories {
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1).cgColor
-            button.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.layer.masksToBounds = true
         }
@@ -847,7 +847,7 @@ extension Stories {
         
         // (5) CANCEL
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.setTitle("CANCEL", for: [])
             return true
         }

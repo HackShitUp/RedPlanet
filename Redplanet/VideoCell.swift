@@ -152,8 +152,10 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             self.textPost.layer.applyShadow(layer: self.textPost.layer)
             self.videoView.bringSubview(toFront: self.textPost)
             self.vimVideoPlayerView?.player.pause()
+            self.playButton.setImage(UIImage(named: "Pause"), for: .normal)
         } else {
             self.vimVideoPlayerView?.player.play()
+            self.playButton.setImage(UIImage(named: "Play"), for: .normal)
         }
     }
     
