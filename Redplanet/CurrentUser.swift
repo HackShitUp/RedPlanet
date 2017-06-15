@@ -286,8 +286,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             
@@ -301,7 +301,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             // Cancel
             dialogController.cancelButtonStyle = { (button,height) in
-                button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.setTitle("LATER", for: [])
                 return true
             }

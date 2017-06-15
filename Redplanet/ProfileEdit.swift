@@ -63,8 +63,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
             button.layer.masksToBounds = true
         }
         
@@ -109,8 +109,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Add Skip and verify button
@@ -134,8 +134,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Add Skip and verify button
@@ -160,8 +160,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Add Skip and verify button
@@ -337,8 +337,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Instantiate UIImagePickerController
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        imagePicker.allowsEditing = false
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.view.roundAllCorners(sender: imagePicker.view)
         // Change the font and size of nav bar text
@@ -354,22 +354,22 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: imagePicker)
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Profile Photo", message: "Options")
+        let dialogController = AZDialogViewController(title: "Profile Photo", message: nil)
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
         // Add Cancel button
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.setTitle("CANCEL", for: [])
             return true
         }
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+//            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
             button.layer.masksToBounds = true
         }
         
@@ -692,15 +692,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             if success {
                 print("Saved Bool!")
                 // Set image
-                if let chosenImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+                if let chosenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                    print(chosenImage)
                     // Disimiss and execution completion block
-                    self.dismiss(animated: true, completion: { 
+                    self.dismiss(animated: false, completion: {
                         // Set image
                         self.rpUserProPic.image = chosenImage
-                        
-                        // Pass selected profile photo to NewProfilePhoto view controller
-                        let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-                        newProPicVC.changedProPicImage = self.rpUserProPic.image
                         
                         // MARK: - CLImageEditor
                         let editor = CLImageEditor(image: self.rpUserProPic.image)

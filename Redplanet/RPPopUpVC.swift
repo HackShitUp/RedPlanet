@@ -21,7 +21,7 @@ extension RPPopUpVC {
         vc?.draggableToSides = false
         vc?.appearFromTop = true
         vc?.bottomDismissible = false
-        vc?.appearOffset = CGFloat(10)
+        vc?.appearOffset = CGFloat(3)
         vc?.setUpScrollView()
         vc?.addToScrollViewNewController(popOverVC!)
     }
@@ -34,6 +34,8 @@ extension RPPopUpVC {
  */
 
 open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationControllerDelegate, RPPopUpVCDelegate {
+    
+    var selectedColor: UIColor?
     
     open var scrollView: UIScrollView!
     fileprivate var contentView: UIView!
@@ -123,6 +125,7 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        self.selectedColor = UIColor.randomColor()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
@@ -137,9 +140,9 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
     
     // Creates the ScrollView and the ContentView (UIView), don't move
     fileprivate func createMantleViewController() {
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = self.selectedColor!
         scrollView = UIScrollView()
-        scrollView.backgroundColor = UIColor.clear
+        scrollView.backgroundColor = self.selectedColor!
         view.addSubview(scrollView)
         
         let top = NSLayoutConstraint(item: scrollView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0)
@@ -150,7 +153,7 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         contentView = UIView()
-        contentView.backgroundColor = UIColor.clear
+        contentView.backgroundColor = self.selectedColor!
         contentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
         
@@ -233,7 +236,7 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         controllers.append(controller)
      
         // Make view background randomColor
-        contentView.backgroundColor = UIColor.randomColor()
+        contentView.backgroundColor = self.selectedColor!
     }
     
     open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
