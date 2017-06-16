@@ -15,6 +15,7 @@
 		7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */; };
 		7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A12281EA813CB00663207 /* RPHelpers.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
+		7E2AC0121EF32AD200827574 /* EmailPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2AC0111EF32AD200827574 /* EmailPassword.swift */; };
 		7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3066461E90F7D800CDEABD /* CurrentUser.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
@@ -129,7 +130,7 @@
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
-		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
+		7EA45CCA1DB6A1B900A466D9 /* CreateProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* CreateProfile.swift */; };
 		7EA4E4D51E738060000163AD /* BlockedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA4E4D41E738060000163AD /* BlockedUsers.swift */; };
 		7EA570B61EC01F3F00A57C70 /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */; };
 		7EA570B81EC02C4A00A57C70 /* ReactionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570B71EC02C4A00A57C70 /* ReactionsHeader.swift */; };
@@ -151,7 +152,6 @@
 		7EC5D14B1DB2FE4F00437219 /* RedplanetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D14A1DB2FE4F00437219 /* RedplanetTests.swift */; };
 		7EC5D1561DB2FE4F00437219 /* RedplanetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1551DB2FE4F00437219 /* RedplanetUITests.swift */; };
 		7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */; };
-		7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1681DB31B2500437219 /* SignUp.swift */; };
 		7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1921DB33CD400437219 /* UserSettings.swift */; };
 		7EC5D1961DB353E000437219 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1951DB353E000437219 /* Chats.swift */; };
 		7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1971DB353F300437219 /* ChatsCell.swift */; };
@@ -209,6 +209,7 @@
 		7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
 		7E1A12281EA813CB00663207 /* RPHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPHelpers.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
+		7E2AC0111EF32AD200827574 /* EmailPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailPassword.swift; sourceTree = "<group>"; };
 		7E3066461E90F7D800CDEABD /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
@@ -389,7 +390,7 @@
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
 		7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWithCell.swift; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
-		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
+		7EA45CC91DB6A1B900A466D9 /* CreateProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfile.swift; sourceTree = "<group>"; };
 		7EA4E4D41E738060000163AD /* BlockedUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsers.swift; sourceTree = "<group>"; };
 		7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CommentsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EA570B71EC02C4A00A57C70 /* ReactionsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsHeader.swift; sourceTree = "<group>"; };
@@ -417,7 +418,6 @@
 		7EC5D1551DB2FE4F00437219 /* RedplanetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedplanetUITests.swift; sourceTree = "<group>"; };
 		7EC5D1571DB2FE4F00437219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUp.swift; sourceTree = "<group>"; };
-		7EC5D1681DB31B2500437219 /* SignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		7EC5D1921DB33CD400437219 /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		7EC5D1951DB353E000437219 /* Chats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
 		7EC5D1971DB353F300437219 /* ChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsCell.swift; sourceTree = "<group>"; };
@@ -557,16 +557,6 @@
 				7E989A251DE4F17E000215A1 /* NewPassword.swift */,
 			);
 			name = Password;
-			sourceTree = "<group>";
-		};
-		7E480E441ED39F5700B9F469 /* NewUserInfo */ = {
-			isa = PBXGroup;
-			children = (
-				7E5A98031DDCFFFA006DA985 /* FullName.swift */,
-				7EA45CC71DB6A1A600A466D9 /* Birthday.swift */,
-				7EA45CC91DB6A1B900A466D9 /* NewUser.swift */,
-			);
-			name = NewUserInfo;
 			sourceTree = "<group>";
 		};
 		7E607DC11ED64ECE0029292D /* VIEWS */ = {
@@ -1192,8 +1182,10 @@
 			children = (
 				7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */,
 				7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */,
-				7EC5D1681DB31B2500437219 /* SignUp.swift */,
-				7E480E441ED39F5700B9F469 /* NewUserInfo */,
+				7E5A98031DDCFFFA006DA985 /* FullName.swift */,
+				7EA45CC71DB6A1A600A466D9 /* Birthday.swift */,
+				7E2AC0111EF32AD200827574 /* EmailPassword.swift */,
+				7EA45CC91DB6A1B900A466D9 /* CreateProfile.swift */,
 				7EA45CCF1DB6A1F800A466D9 /* Onboarding */,
 			);
 			name = LOGIN_SIGNUP;
@@ -1690,7 +1682,7 @@
 				7E972FE71EA95B180047F4D4 /* MomentPhoto.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
-				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
+				7EA45CCA1DB6A1B900A466D9 /* CreateProfile.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
@@ -1721,6 +1713,7 @@
 				7E9B2E181ECACB48000F1AD2 /* TableCollectionCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
+				7E2AC0121EF32AD200827574 /* EmailPassword.swift in Sources */,
 				7E6D90DD1ECF9AD600F7FD6B /* NewMedia.swift in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7EBDAF291EE7A5E500C645D9 /* UIImageColors.swift in Sources */,
@@ -1778,7 +1771,6 @@
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */,
 				7E8B558B1E4EF67F004D3F31 /* SNSticker.swift in Sources */,
-				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */,
 				7E01A5201EB81C8100CD7FBF /* StoryScrollCell.swift in Sources */,

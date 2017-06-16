@@ -26,8 +26,11 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     @IBOutlet weak var signUpButton: UIButton!
     
     @IBAction func signUp(_ sender: Any) {
+//        // Push VC
+//        let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "signUpVC") as! SignUp
+//        self.navigationController?.pushViewController(signUpVC, animated: true)
         // Push VC
-        let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "signUpVC") as! SignUp
+        let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
     

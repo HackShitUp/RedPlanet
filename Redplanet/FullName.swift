@@ -20,11 +20,15 @@ import Bolts
  */
 
 class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
-
+    
     @IBOutlet weak var firstName: UITextField!
     @IBOutlet weak var lastName: UITextField!
     @IBOutlet weak var continueButton: UIButton!
     
+    @IBOutlet weak var backButton: UIButton!
+    @IBAction func back(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
     
     // Function to save name
     func saveName(sender: Any) {
@@ -39,8 +43,8 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             
@@ -62,8 +66,8 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             
@@ -76,42 +80,14 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
             dialogController.show(in: self)
             
         } else {
-            // Set fullName
-            let fullName = "\(self.firstName.text!) \(self.lastName.text!)"
+            // Create new PFObject
+            let userObject = PFUser()
+            userObject["realNameOfUser"] = "\(self.firstName.text!) \(self.lastName.text!)"
             
-            PFUser.current()!["realNameOfUser"] = fullName
-            PFUser.current()!.saveInBackground {
-                (success: Bool, error: Error?) in
-                if success {                    
-                    // Push VC
-                    let birthdayVC = self.storyboard?.instantiateViewController(withIdentifier: "birthdayVC") as! Birthday
-                    self.navigationController?.pushViewController(birthdayVC, animated: true)
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "💩\nNetwork Error", message: "There appears to be poor connection.")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                        button.layer.masksToBounds = true
-                    }
-                    
-                    // Add settings button
-                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                        // Dismiss
-                        dialog.dismiss()
-                    }))
-                    
-                    dialogController.show(in: self)
-                }
-            }
+            // Push to bdayVC and pass PFObject to class
+            let bdayVC = self.storyboard?.instantiateViewController(withIdentifier: "birthdayVC") as! Birthday
+            bdayVC.newUserObject = userObject
+            self.navigationController?.pushViewController(bdayVC, animated: true)
         }
     }
     
@@ -129,16 +105,16 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
         
         // Design button's corner radius
         self.continueButton.layer.cornerRadius = 25.00
-
+        
+        // Design backButton
+        self.backButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+        // MARK: - RPExtensions
+        self.backButton.makeCircular(forView: self.backButton, borderWidth: 1.5, borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-
-    
     
     // MARK: - UITextFieldDelegate method
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

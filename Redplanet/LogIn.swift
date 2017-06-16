@@ -24,6 +24,7 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
     @IBOutlet weak var rpPassword: UITextField!
     @IBOutlet weak var loginButton: UIButton!
 
+    @IBOutlet weak var backButton: UIButton!
     @IBAction func exit(_ sender: Any) {
         // Dismiss keyboards
         dismissKeyboard()
@@ -56,8 +57,8 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
                                             // Configure style
                                             dialogController.buttonStyle = { (button,height,position) in
                                                 button.setTitleColor(UIColor.white, for: .normal)
-                                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                                                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                                                 button.layer.masksToBounds = true
                                             }
                                             // Add Skip and verify button
@@ -80,8 +81,8 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
                                             // Configure style
                                             dialogController.buttonStyle = { (button,height,position) in
                                                 button.setTitleColor(UIColor.white, for: .normal)
-                                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                                                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                                                 button.layer.masksToBounds = true
                                             }
                                             // Add Skip and verify button
@@ -189,8 +190,8 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.layer.masksToBounds = true
         }
         // Add Skip and verify button
@@ -250,6 +251,11 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
         tap.numberOfTapsRequired = 1
         self.loginButton.isUserInteractionEnabled = true
         self.loginButton.addGestureRecognizer(tap)
+        
+        // Design backButton
+        self.backButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+        // MARK: - RPExtensions
+        self.backButton.makeCircular(forView: self.backButton, borderWidth: 1.5, borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
     }
     
     

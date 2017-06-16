@@ -22,15 +22,23 @@ import Bolts
 
 class Birthday: UIViewController, UINavigationControllerDelegate {
     
+    // MARK: - Class variable; used to store new user's attributes as they sign up and enter their credentials
+    var newUserObject: PFUser?
+    
     
     @IBOutlet weak var birthday: UIDatePicker!
     @IBOutlet weak var continueButton: UIButton!
     
+    @IBOutlet weak var backButton: UIButton!
+    @IBAction func backAction(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
     @IBAction func skipAction(_ sender: Any) {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "🎁\nSkip Birthday?",
-                                                      message: "By skipping you confirm you're of eligible age to use Redplanet.")
+        let dialogController = AZDialogViewController(title: "🎂\nSkip Birthday?",
+                                                      message: "By skipping this you agree you're of eligible age to use Redplanet.")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
@@ -38,33 +46,33 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.layer.masksToBounds = true
         }
         // Add Skip and verify button
         dialogController.addAction(AZDialogAction(title: "Skip and Confirm", handler: { (dialog) -> (Void) in
-            // Save current bday
+
             // Save user's birthday
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d yyyy"
             let stringDate = dateFormatter.string(from: self.birthday.date)
             
-            // Save Birthday
-            PFUser.current()!["birthday"] = stringDate
-            PFUser.current()!.saveInBackground()
+            // Add birthday attribute to new PFUser object
+            self.newUserObject!["birthday"] = stringDate
             
             // Dismiss
             dialog.dismiss()
             
-            // Push to NewUserVC
-            let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
-            self.navigationController?.pushViewController(userVC, animated: true)
+            // Push to EmailPassword VC
+            let emailPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "emailPasswordVC") as! EmailPassword
+            emailPasswordVC.newUserObject = self.newUserObject!
+            self.navigationController?.pushViewController(emailPasswordVC, animated: true)
 
         }))
         // Cancel
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.setTitle("CANCEL", for: [])
             return true
         }
@@ -93,22 +101,12 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Add ok buttion
             dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
-                // Save current bday
-                // Save user's birthday
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MMM d yyyy"
-                let stringDate = dateFormatter.string(from: self.birthday.date)
-                
-                // Save Birthday
-                PFUser.current()!["birthday"] = stringDate
-                PFUser.current()!.saveInBackground()
-                
                 // Dismiss
                 dialog.dismiss()
             }))
@@ -121,44 +119,18 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
             dateFormatter.dateFormat = "MMM d yyyy"
             let stringDate = dateFormatter.string(from: self.birthday.date)
             
-            // Save Birthday
-            PFUser.current()!["birthday"] = stringDate
-            PFUser.current()!.saveInBackground {
-                (success: Bool, error: Error?) in
-                if success {
-                    // Push to NewUserVC
-                    let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
-                    self.navigationController?.pushViewController(userVC, animated: true)
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "💩\nNetwork Error", message: "There appears to be poor connection.")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                        button.layer.masksToBounds = true
-                    }
-                    
-                    // Add settings button
-                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                        // Dismiss
-                        dialog.dismiss()
-                    }))
-                    
-                    dialogController.show(in: self)
-                }
-            }
+            // Add birthday attribute to new PFUser object
+            self.newUserObject!["birthday"] = stringDate
+            
+            // Push to EmailPassword VC
+            let emailPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "emailPasswordVC") as! EmailPassword
+            emailPasswordVC.newUserObject = self.newUserObject!
+            self.navigationController?.pushViewController(emailPasswordVC, animated: true)
         }
     }
     
 
+    // MARK: - UIView Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -174,8 +146,13 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
         self.continueButton.isUserInteractionEnabled = true
         self.continueButton.addGestureRecognizer(nextTap)
         
-        // Design button's corner radius
+        // Set continueButton's corner radius
         self.continueButton.layer.cornerRadius = 25.00
+        
+        // Design backButton
+        self.backButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+        // MARK: - RPExtensions
+        self.backButton.makeCircular(forView: self.backButton, borderWidth: 1.5, borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
     }
 
     override func didReceiveMemoryWarning() {
