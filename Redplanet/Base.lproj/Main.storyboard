@@ -2949,7 +2949,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Hb5-4s-j8P">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Search..." borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="7V5-Wi-I5H">
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Search Redplanet" textAlignment="center" minimumFontSize="17" id="7V5-Wi-I5H">
                             <rect key="frame" x="16" y="7" width="343" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>

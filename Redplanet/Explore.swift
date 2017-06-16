@@ -304,7 +304,9 @@ class Explore: UITableViewController, UITextFieldDelegate {
         // Configure UITextField
         searchBar.delegate = self
         searchBar.backgroundColor = UIColor.groupTableViewBackground
-        searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width - 32, height: 30)
+        searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
+        searchBar.layer.cornerRadius = 15
+        searchBar.clipsToBounds = true
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
