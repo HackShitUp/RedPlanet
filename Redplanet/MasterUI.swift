@@ -148,7 +148,8 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         
         // Set username to 4th UITabBar item
         if let username = PFUser.current()!.value(forKey: "username") as? String {
-            self.tabBar.items?[4].title = username.uppercased()
+            let firstSix = String(username.characters.prefix(6))
+            self.tabBar.items?[4].title = "\(firstSix.uppercased())"
         }
     }
     

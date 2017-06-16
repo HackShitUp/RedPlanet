@@ -350,7 +350,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
         } else {
             header.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         }
-        header.font = UIFont(name: "AvenirNext-Bold", size: 12)
+        header.font = UIFont(name: "AvenirNext-Heavy", size: 12)
         header.textAlignment = .left
         header.text = "   \(self.exploreTitles[section])"
         return header
