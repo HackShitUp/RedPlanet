@@ -332,7 +332,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -416,9 +416,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Configure UITableView
         self.tableView.tableHeaderView = self.searchBar
         self.tableView.tableHeaderView?.layer.borderWidth = 0.5
-        self.tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+        self.tableView.tableHeaderView?.layer.borderColor = UIColor.groupTableViewBackground.cgColor
         self.tableView.tableHeaderView?.clipsToBounds = true
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView.separatorColor = UIColor.groupTableViewBackground
         self.tableView.tableFooterView = UIView()
         
         // Add long press method in tableView
@@ -429,7 +429,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.tintColor = UIColor.white
         tableView!.addSubview(refresher)
         

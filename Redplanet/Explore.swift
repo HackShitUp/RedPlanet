@@ -36,7 +36,7 @@ import SDWebImage
  UICollectionViewCell --> UICollectionView --> UITableViewCell --> UITableView (self)
  */
 
-class Explore: UITableViewController, UITextFieldDelegate {
+class Explore: UITableViewController, UISearchBarDelegate {
     
     // Arrays to hold publisherNames and Objects for Stories
     var sourceObjects = [PFObject]() // used for Selected Stories
@@ -59,7 +59,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
     // Titles for header
     var exploreTitles = ["NEWS", "FEATURED", "SUGGESTED ACCOUNTS", "PEOPLE NEAR ME"]
     
-    @IBOutlet weak var searchBar: UITextField!
+    // UISearchBar
+    var searchBar = UISearchBar()
     
     func refresh() {
         self.refresher?.endRefreshing()
@@ -278,9 +279,48 @@ class Explore: UITableViewController, UITextFieldDelegate {
         })
     }
     
+    // FUNCTION - Stylize and set title of UINavigationBar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Explore"
+        }
+        // MARK: - RPExtensions
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     // MARK: - UIView Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Configure UISearchBar
+        self.searchBar.delegate = self
+        self.searchBar.placeholder = "Search rp for other humans or posts..."
+        self.searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        self.searchBar.barTintColor = UIColor.white
+        self.searchBar.sizeToFit()
+        
+        // Configure UITableView
+        self.tableView.tableHeaderView = self.searchBar
+        self.tableView.tableHeaderView?.layer.borderWidth = 0.5
+        self.tableView.tableHeaderView?.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+        self.tableView.tableHeaderView?.clipsToBounds = true
         
         // Determine randomized integer that SHUFFLES OBJECTS
         let randomInt = arc4random()
@@ -301,22 +341,21 @@ class Explore: UITableViewController, UITextFieldDelegate {
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorColor = UIColor.groupTableViewBackground
         
-        // Configure UITextField
-        searchBar.delegate = self
-        searchBar.backgroundColor = UIColor.groupTableViewBackground
-        searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
-        searchBar.layer.cornerRadius = 15
-        searchBar.clipsToBounds = true
-        
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView.addSubview(refresher)
-        
-        // MARK: - RPHelpers
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.searchBar.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -328,8 +367,12 @@ class Explore: UITableViewController, UITextFieldDelegate {
         SDImageCache.shared().clearDisk()
     }
     
-    // MARK: - UITextField Delegate Methods
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    // MARK: - UISearchBar Delegate Methods
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // Push to Search
         let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! Search
         self.navigationController?.pushViewController(searchVC, animated: true)

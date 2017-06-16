@@ -50,7 +50,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         if self.searchBar.text == "" {
-            str = "Search for people to follow or prefix '#' to search for Hashtags..."
+            str = "Search for humans to follow, prefix '#' to search for Hashtags, or prefix '🔥' to find posts..."
         } else if self.searchObjects.isEmpty || self.searchHashes.isEmpty {
             str = "💩\nNo Results"
         }
@@ -60,6 +60,7 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
+        
         return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
     
@@ -97,13 +98,22 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         // MARK: - DZNEmptyDataSet
         tableView.emptyDataSetSource = self
         
-        // Configure UISearchBar
+        // Configure UITextField; searchBar
         searchBar.delegate = self
-        searchBar.frame = CGRect(x: 58, y: 7, width: self.view.frame.size.width - 100, height: 30)
+        searchBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width - 100, height: 30)
         searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         searchBar.backgroundColor = UIColor.groupTableViewBackground
         searchBar.font = UIFont(name: "AvenirNext-Medium", size: 17)
         searchBar.textColor = UIColor.black
+        searchBar.layer.cornerRadius = 15
+        searchBar.clipsToBounds = true
+        // Add icons to UITextField
+        let searchIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
+        searchIcon.contentMode = .scaleAspectFit
+        searchIcon.image = UIImage(named: "Search")
+        searchBar.leftViewMode = .always
+        searchBar.leftView = searchIcon
+        searchBar.addSubview(searchIcon)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -167,6 +177,42 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
                     }
                 })
                 
+            } else if searchBar.text!.hasPrefix("🔥") {
+
+                let postWord = self.searchBar.text!.replacingOccurrences(of: "🔥", with: "")
+                
+                // Looking for POSTS
+                let postsClass = PFQuery(className: "Posts")
+                postsClass.whereKey("textPost", contains: postWord)
+                postsClass.includeKeys(["byUser", "toUser"])
+                postsClass.order(byDescending: "createdAt")
+                postsClass.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // USERNAME: Clear arrays
+                        self.searchObjects.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            
+                            // Configure time to check for "Ephemeral" content
+                            let components : NSCalendar.Unit = .hour
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                            // Skip Blocked and Expired Posts
+                            if !blockedUsers.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && (difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true) {
+                                self.searchObjects.append(object)
+                            }
+                        }
+                        
+                        // Reload data
+                        self.tableView!.reloadData()
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                
+                
             } else {
                 // Looking for humans...
                 // Search for user
@@ -219,8 +265,8 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
         
         // Set cell's parent vc
         cell.delegate = self
-
-        
+    
+        // HASHTAGS
         if searchBar.text!.hasPrefix("#") {
             // De-allocate UITableViewCell's PFObject
             cell.userObject = nil
@@ -230,7 +276,60 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
             cell.rpFullName.isHidden = false
             // Set hashtag word
             cell.rpFullName.text! = self.searchHashes[indexPath.row]
+        
+        // POSTS
+        } else if searchBar.text!.hasPrefix("🔥") {
             
+            // Set user's object
+            cell.userObject = searchObjects[indexPath.row]
+            // Configure UI
+            cell.rpUserProPic.isHidden = false
+            cell.rpFullName.isHidden = false
+            cell.rpUsername.isHidden = false
+            cell.rpFullName.font = UIFont(name: "AvenirNext-Medium", size: 17)
+            
+            // MARK: - RPHelpers extension
+            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            
+            // Get user's object
+            if let user = self.searchObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
+                // (1) Set user's full name
+                cell.rpFullName.text! = user.value(forKey: "realNameOfUser") as! String
+                
+                // (2) Set time
+                let from = self.searchObjects[indexPath.row].createdAt!
+                let now = Date()
+                let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                // MARK: - RPExtensions
+                let time = difference.getShortTime(difference: difference, date: from)
+                
+                // (3) Set title
+                switch self.searchObjects[indexPath.row].value(forKey: "contentType") as! String {
+                    case "tp":
+                    cell.rpUsername.text! = "shared a Text Post \(time) ago"
+                    case "ph":
+                    cell.rpUsername.text! = "shared a Photo \(time) ago"
+                    case "pp":
+                    cell.rpUsername.text! = "updated their Profile Photo \(time) ago"
+                    case "vi":
+                    cell.rpUsername.text! = "uploaded a Video \(time) ago"
+                    case "sp":
+                    cell.rpUsername.text! = "shared a Space Post \(time) ago"
+                    case "itm":
+                    cell.rpUsername.text! = "shared a Moment \(time) ago"
+                default:
+                    break;
+                }
+                
+                // (3) Get and set user's profile photo
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+            }
+        
+        // PEOPLE
         } else {
             // Set user's object
             cell.userObject = searchObjects[indexPath.row]

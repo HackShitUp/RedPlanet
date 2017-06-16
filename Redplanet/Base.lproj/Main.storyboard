@@ -347,7 +347,6 @@
         <!--Email Password-->
         <scene sceneID="IFR-b2-lEi">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dEC-Nk-0NW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="emailPasswordVC" id="KPv-CI-ocz" customClass="EmailPassword" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iqc-zE-wtP"/>
@@ -475,6 +474,7 @@
                         <outlet property="switchButton" destination="r6L-nf-GV8" id="wRp-cD-j7Q"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dEC-Nk-0NW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1059.5" y="-3912.5"/>
         </scene>
@@ -2655,7 +2655,7 @@
                     <navigationItem key="navigationItem" id="JdH-db-BaH">
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" style="plain" id="BuB-L2-r2q">
-                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="cUJ-B1-3OO">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="cUJ-B1-3OO">
                                 <rect key="frame" x="16" y="7" width="275" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -2949,19 +2949,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Hb5-4s-j8P">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Search Redplanet" textAlignment="center" minimumFontSize="17" id="7V5-Wi-I5H">
-                            <rect key="frame" x="16" y="7" width="343" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <color key="textColor" red="0.39942183355437666" green="0.39942183355437666" blue="0.39942183355437666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
                     </navigationItem>
-                    <connections>
-                        <outlet property="searchBar" destination="7V5-Wi-I5H" id="EQR-IK-oqj"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iz3-F0-9iJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4835,7 +4823,7 @@
     </scenes>
     <resources>
         <image name="AddUser" width="24" height="24"/>
-        <image name="Camera" width="412" height="412"/>
+        <image name="Camera" width="81" height="81"/>
         <image name="Chats" width="25" height="25"/>
         <image name="DeleteSmall" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>

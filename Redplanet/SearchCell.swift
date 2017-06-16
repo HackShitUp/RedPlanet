@@ -39,7 +39,15 @@ class SearchCell: UITableViewCell {
             let rpPopUpVC = RPPopUpVC()
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: hashtagsVC)
             self.delegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
-            
+          
+        } else if self.rpUsername.text!.hasPrefix("shared") {
+            let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
+            storyVC.storyObject = self.userObject!
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
+            self.delegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+        
         } else {
             // Append other user
             otherObject.append(self.userObject!)
