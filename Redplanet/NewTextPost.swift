@@ -80,7 +80,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
             dialogController.show(in: self)
             
-        } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revolutionary movements..." {
+        } else if self.textView.textColor == UIColor.darkGray {
             
             // Vibrate device
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -246,7 +246,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         let randomInt = arc4random()
         if randomInt % 2 == 0 {
             // Even
-            self.textView.text! = "What are you doing?"
+            self.textView.text! = "What's up?"
         } else {
             // Odd
             self.textView.text! = "Thoughts are preludes to revolutionary movements..."

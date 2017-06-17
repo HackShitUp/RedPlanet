@@ -305,6 +305,12 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView?.register(UINib(nibName: "VideoCell", bundle: nil), forCellWithReuseIdentifier: "VideoCell")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
         
+        // Add long press method in UICollectionView
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(showOption(sender:)))
+        hold.minimumPressDuration = 0.40
+        self.collectionView!.isUserInteractionEnabled = true
+        self.collectionView!.addGestureRecognizer(hold)
+        
         // MARK: - HEAP
         // Set App ID
         Heap.setAppId("3455525110");
@@ -679,6 +685,7 @@ extension Stories {
     
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {
+        
         // Set edit-able contentType's
         let editTypes = ["tp", "ph", "pp", "sp", "vi"]
         

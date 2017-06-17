@@ -122,6 +122,8 @@
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
 		7E99272C1EF505E500610A6E /* TextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99272A1EF505E500610A6E /* TextPostCell.swift */; };
 		7E99272D1EF505E500610A6E /* TextPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E99272B1EF505E500610A6E /* TextPostCell.xib */; };
+		7E99272F1EF517A700610A6E /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99272E1EF517A700610A6E /* Onboarding.swift */; };
+		7E9927311EF517B200610A6E /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9927301EF517B200610A6E /* OnboardingCell.swift */; };
 		7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* FollowRequests.swift */; };
 		7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */; };
 		7E99CA081E90E42700661B78 /* MasterUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99CA071E90E42700661B78 /* MasterUI.swift */; };
@@ -378,6 +380,8 @@
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
 		7E99272A1EF505E500610A6E /* TextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPostCell.swift; sourceTree = "<group>"; };
 		7E99272B1EF505E500610A6E /* TextPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextPostCell.xib; sourceTree = "<group>"; };
+		7E99272E1EF517A700610A6E /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		7E9927301EF517B200610A6E /* OnboardingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingCell.swift; sourceTree = "<group>"; };
 		7E9955601DC975E5003D9D73 /* FollowRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsCell.swift; sourceTree = "<group>"; };
 		7E99CA071E90E42700661B78 /* MasterUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterUI.swift; sourceTree = "<group>"; };
@@ -991,6 +995,8 @@
 		7EA45CCF1DB6A1F800A466D9 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				7E99272E1EF517A700610A6E /* Onboarding.swift */,
+				7E9927301EF517B200610A6E /* OnboardingCell.swift */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -1788,6 +1794,7 @@
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
 				7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */,
 				7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */,
+				7E99272F1EF517A700610A6E /* Onboarding.swift in Sources */,
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
@@ -1803,6 +1810,7 @@
 				7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */,
 				7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */,
 				7E85C8711ECCC15200D5EF07 /* Hashtags.swift in Sources */,
+				7E9927311EF517B200610A6E /* OnboardingCell.swift in Sources */,
 				7E80DAAB1EB420D7003F0067 /* Palette.swift in Sources */,
 				7EBAFEF11ED7BAE300BB052D /* SubtleVolume.swift in Sources */,
 				7E80DAAD1EB420D7003F0067 /* UIViewShadowExtension.swift in Sources */,

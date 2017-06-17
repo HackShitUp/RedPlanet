@@ -308,7 +308,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         
         // MARK: - RPHelpers; whiten UINavigationBar and roundAllCorners
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         
         // Show UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
