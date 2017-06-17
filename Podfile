@@ -11,7 +11,6 @@ target 'Redplanet' do
 	pod ‘Heap’
 	pod 'KILabel'
 	pod 'NotificationBannerSwift'
-	pod 'Onboard'
 	pod ‘OneSignal’
 	pod ‘Parse’
 	pod ‘ParseUI’

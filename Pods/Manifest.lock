@@ -18,7 +18,6 @@ PODS:
   - NotificationBannerSwift (1.3.2):
     - MarqueeLabel/Swift
     - SnapKit (~> 3.2)
-  - Onboard (2.3.1)
   - OneSignal (2.5.4)
   - Parse (1.14.4):
     - Bolts/Tasks (~> 1.8)
@@ -45,7 +44,6 @@ DEPENDENCIES:
   - Heap
   - KILabel
   - NotificationBannerSwift
-  - Onboard
   - OneSignal
   - Parse
   - ParseUI
@@ -67,7 +65,6 @@ SPEC CHECKSUMS:
   KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
   MarqueeLabel: 061d04687ee5485ac035b45c8e292274a87afe01
   NotificationBannerSwift: c32329eb085ed7b4342939f80d5fa32d8b772924
-  Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: da994bcf6a2efbdceaf71e389e1d05245c562899
   Parse: b0aa91d2c435e53d4a9af26e741e014c9b35c42e
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
@@ -81,6 +78,6 @@ SPEC CHECKSUMS:
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
 
-PODFILE CHECKSUM: 2d47de22fcd3d8560752cd44402937324e28bee1
+PODFILE CHECKSUM: 583b66759f84f103ad9d3d49ebfa6ffae44b088c
 
 COCOAPODS: 1.2.1
