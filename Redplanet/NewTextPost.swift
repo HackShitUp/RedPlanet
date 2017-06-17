@@ -193,7 +193,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         characterCount.text = String(remainingCharacters)
     }
 
-
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title
@@ -212,18 +212,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
 
         // Stylize title
         configureView()
-        
-        // Configure UITextView; set placeholder and delegate
-        self.textView.textColor = UIColor.darkGray
-        self.textView.delegate = self
-        let randomInt = arc4random()
-        if randomInt % 2 == 0 {
-            // Even
-            self.textView.text! = "What are you doing?"
-        } else {
-            // Odd
-            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
-        }
         
         // Configure UITableView
         tableView.isHidden = true
@@ -245,6 +233,24 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        // Configure UITextView; set placeholder and delegate
+        self.textView.textColor = UIColor.darkGray
+        self.textView.delegate = self
+        
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            self.textView.text! = "What are you doing?"
+        } else {
+            // Odd
+            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -598,9 +598,9 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 fCell.mediaPreview.isHidden = false
             }
 
-            // MARK: - RPExtensions
-            fCell.textPreview.makeCircular(forView: fCell.textPreview, borderWidth: 0, borderColor: UIColor.clear)
-            fCell.mediaPreview.makeCircular(forView: fCell.mediaPreview, borderWidth: 0, borderColor: UIColor.clear)
+            // MARK: - RPExtensions            
+            fCell.textPreview.roundAllCorners(sender: fCell.textPreview)
+            fCell.mediaPreview.roundAllCorners(sender: fCell.mediaPreview)
             
             return fCell
             

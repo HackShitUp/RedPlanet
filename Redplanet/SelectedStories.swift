@@ -86,11 +86,35 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         self.present(webVC, animated: true, completion: nil)
     }
     
+    // FUNCTION - Copy URL
+    func copyURL(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let touchedAt = sender.location(in: self.collectionView)
+            if let indexPath = self.collectionView.indexPathForItem(at: touchedAt) {
+                if let storyURL = self.articleObjects[indexPath.item].value(forKey: "url") as? String {
+                    // Copy to UIPasteboard
+                    UIPasteboard.general.string = storyURL
+                    
+                    // "Shake" UIViewController
+                    let animation = CABasicAnimation(keyPath: "position")
+                    animation.duration = 0.06
+                    animation.repeatCount = 4
+                    animation.autoreverses = true
+                    animation.fromValue = CGPoint(x: self.view.center.x - 10, y: self.view.center.y)
+                    animation.toValue = CGPoint(x: self.view.center.x + 10, y: self.view.center.y)
+                    self.view.layer.add(animation, forKey: "position")
+                    
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showSuccess(withTitle: "Copied Story URL!")
+                }
+            }
+        }
+    }
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Fetch Stories
-        self.fetchStories(mediaSource: self.sourceURL)
-        
         // Hide UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
@@ -99,6 +123,14 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        rpHelpers.showError(withTitle: "\(self.publisherName.uppercased())")
+
+        // Fetch Stories
+        self.fetchStories(mediaSource: self.sourceURL)
+        
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
@@ -111,6 +143,12 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         self.collectionView!.isPagingEnabled = true
         self.collectionView!.frame = self.view.bounds
         self.collectionView!.backgroundColor = UIColor.white
+        
+        // Add long press method in UICollectionView
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(copyURL))
+        hold.minimumPressDuration = 0.40
+        self.collectionView!.isUserInteractionEnabled = true
+        self.collectionView!.addGestureRecognizer(hold)
     }
     
     override func didReceiveMemoryWarning() {
@@ -172,13 +210,15 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         if let description = self.articleObjects[indexPath.item].value(forKey: "description") as? String {
             _ = formattedString.bold("\n\(description)", withFont: UIFont(name: "AvenirNext-Medium", size: 17))
         }
+        // Set text
         cell.title.attributedText = formattedString
+
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // MARK: - SafariServices
-        let webVC = SFSafariViewController(url: URL(string: self.articleObjects[indexPath.row].value(forKey: "url") as! String)!, entersReaderIfAvailable: false)
+        let webVC = SFSafariViewController(url: URL(string: self.articleObjects[indexPath.item].value(forKey: "url") as! String)!, entersReaderIfAvailable: false)
         self.present(webVC, animated: true, completion: nil)
     }
     
