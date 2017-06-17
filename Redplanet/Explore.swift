@@ -598,7 +598,7 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 fCell.mediaPreview.isHidden = false
             }
 
-            // MARK: - RPExtensions            
+            // MARK: - RPExtensions
             fCell.textPreview.roundAllCorners(sender: fCell.textPreview)
             fCell.mediaPreview.roundAllCorners(sender: fCell.mediaPreview)
             

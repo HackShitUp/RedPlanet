@@ -67,6 +67,7 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
              • username
              */
             
+            /*
             let newUser = PFUser()
             newUser["realNameOfUser"] = self.newUserObject!.value(forKey: "realNameOfUser") as! String
             newUser["birthday"] = self.newUserObject!.value(forKey: "birthday") as! String
@@ -86,66 +87,67 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
                     installation!["user"] = PFUser.current()
                     installation!["username"] = PFUser.current()!.username!
                     installation!.saveEventually()
-
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "😅\nAlmost Finished",
-                                                                  message: "We're almost done. But first, a tutorial!")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
                     
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
-                        button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                        button.layer.masksToBounds = true
-                    }
-                    // Add Skip and verify button
-                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                        // Dismiss
-                        dialog.dismiss()
-                        // Resign keyboard
-                        self.rpUserBio.resignFirstResponder()
-                        
-                        // Load Onboarding tutorial
-                        // Perform segueue
-                        let firstPage = OnboardingContentViewController(title: "Hello, \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)", body: "Welcome to Redplanet, a place to share stories that are meant to be spread.", image: nil, buttonText: nil) { () -> Void in
-                        }
-                        let secondPage = OnboardingContentViewController(title: "Ephemeral", body: "By default, your stories disappear in 24 hours. You can save them to your profile later.", image: nil, buttonText: nil) { () -> Void in
-                        }
-                        let lastPage = OnboardingContentViewController(title: "Stories", body: "There are 2 types of stories: One by your friends, and one created by the people you're following.", image: nil, buttonText: "Continue") { () -> Void in
-                            // Load Things to Follow interface
-                            let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onboardingVC") as! Onboarding
-                            self.navigationController?.pushViewController(onBoardVC, animated: true)
-                        }
-                        
-                        // Set fonts and padding
-                        firstPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
-                        firstPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
-                        firstPage.topPadding = 0
-                        firstPage.underIconPadding = 0
-                        secondPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
-                        secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
-                        secondPage.topPadding = 0
-                        secondPage.underIconPadding = 0
-                        lastPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
-                        lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
-                        lastPage.topPadding = 0
-                        lastPage.underIconPadding = 0
-                        // Continue button
-                        lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
-                        lastPage.bottomPadding = 50
-                        // Show Onboarding
-                        let onboardingVC = OnboardingViewController(backgroundImage: UIImage(), contents: [firstPage, secondPage, lastPage])
-                        onboardingVC?.view.frame = self.view.bounds
-                        onboardingVC?.view.clipsToBounds = true
-                        onboardingVC?.shouldFadeTransitions = true
-                        self.navigationController?.pushViewController(onboardingVC!, animated: true)
-                    }))
-                    
-                    dialogController.show(in: self)
+//                    // Load Things to Follow interface
+//                    let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onboardingVC") as! Onboarding
+//                    self.navigationController?.pushViewController(onBoardVC, animated: true)
 
+//                    // MARK: - AZDialogViewController
+//                    let dialogController = AZDialogViewController(title: "😅\nAlmost Finished",
+//                                                                  message: "We're almost done. But first, a tutorial!")
+//                    dialogController.dismissDirection = .bottom
+//                    dialogController.dismissWithOutsideTouch = true
+//                    dialogController.showSeparator = true
+//                    
+//                    // Configure style
+//                    dialogController.buttonStyle = { (button,height,position) in
+//                        button.setTitleColor(UIColor.white, for: .normal)
+//                        button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+//                        button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+//                        button.layer.masksToBounds = true
+//                    }
+//                    // Add Skip and verify button
+//                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+//                        // Dismiss
+//                        dialog.dismiss()
+//                        // Resign keyboard
+//                        self.rpUserBio.resignFirstResponder()
+//                        
+//                        // Load Onboarding tutorial
+//                        // Perform segueue
+//                        let firstPage = OnboardingContentViewController(title: "Hello, \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)", body: "Welcome to Redplanet, a place to share stories that are meant to be spread.", image: nil, buttonText: nil) { () -> Void in
+//                        }
+//                        let secondPage = OnboardingContentViewController(title: "Ephemeral", body: "By default, your stories disappear in 24 hours. You can save them to your profile later.", image: nil, buttonText: nil) { () -> Void in
+//                        }
+//                        let lastPage = OnboardingContentViewController(title: "Stories", body: "There are 2 types of stories: One by your friends, and one created by the people you're following.", image: nil, buttonText: "Continue") { () -> Void in
+//                            
+//                        }
+//                        
+//                        // Set fonts and padding
+//                        firstPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
+//                        firstPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+//                        firstPage.topPadding = 0
+//                        firstPage.underIconPadding = 0
+//                        secondPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
+//                        secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+//                        secondPage.topPadding = 0
+//                        secondPage.underIconPadding = 0
+//                        lastPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
+//                        lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+//                        lastPage.topPadding = 0
+//                        lastPage.underIconPadding = 0
+//                        // Continue button
+//                        lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
+//                        lastPage.bottomPadding = 50
+//                        // Show Onboarding
+//                        let onboardingVC = OnboardingViewController(backgroundImage: UIImage(), contents: [firstPage, secondPage, lastPage])
+//                        onboardingVC?.view.frame = self.view.bounds
+//                        onboardingVC?.view.clipsToBounds = true
+//                        onboardingVC?.shouldFadeTransitions = true
+//                        self.navigationController?.pushViewController(onboardingVC!, animated: true)
+//                    }))
+//                    
+//                    dialogController.show(in: self)
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -154,6 +156,7 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
                     rpHelpers.showError(withTitle: "Network Error")
                 }
             })
+            */
         }
     }
     

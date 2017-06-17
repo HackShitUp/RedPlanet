@@ -172,7 +172,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             case .denied:
                 // MARK: - AZDialogViewController
                 let dialogController = AZDialogViewController(title: "Photos Access Denied",
-                                                              message: "Please allow Redplanet access your Photos.")
+                                                              message: "Please allow Redplanet to access your Photos.")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true

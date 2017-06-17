@@ -138,7 +138,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         self.tabBar.backgroundImage = UIImage()
         self.tabBar.shadowImage = UIImage()
         self.tabBar.isTranslucent = false
-        self.tabBar.tintColor = UIColor.black
+        self.tabBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         self.tabBar.barTintColor = UIColor.white
 
         // Set UITabBar font
@@ -148,8 +148,12 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         
         // Set username to 4th UITabBar item
         if let username = PFUser.current()!.value(forKey: "username") as? String {
-            let firstSix = String(username.characters.prefix(6))
-            self.tabBar.items?[4].title = "\(firstSix.uppercased())"
+            if username.characters.count > 6 {
+                let firstSix = String(username.characters.prefix(6))
+                self.tabBar.items?[4].title = "\(firstSix.uppercased())..."
+            } else {
+                self.tabBar.items?[4].title = "\(username.uppercased())"
+            }
         }
     }
     
