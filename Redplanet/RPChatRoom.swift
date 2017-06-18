@@ -435,12 +435,22 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                     rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                     
-                    // Reload data
-                    self.fetchChats()
+                    // Append new PFObject and reload UITableView instead of re-querying data
+                    self.messageObjects.append(chats)
+                    
+                    // Reload data and scroll to bottom in main thread if messageObjects isn't empty
+                    if self.messageObjects.count > 0 {
+                        DispatchQueue.main.async(execute: {
+                            self.tableView.reloadData()
+                            self.tableView.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
+                        })
+                    }
+                    
                 } else {
                     print(error?.localizedDescription as Any)
-                    // Reload data
-                    self.fetchChats()
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error - Chat Failed to Send")
                 }
             }
         }
@@ -519,18 +529,24 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     self.textView.text!.removeAll()
                     // Dismiss view controller
                     self.dismiss(animated: true, completion: {
-                        // Reload data
-                        self.fetchChats()
+                        // Append new PFObject and reload UITableView instead of re-querying data
+                        self.messageObjects.append(chats)
+                        
+                        // Reload data and scroll to bottom in main thread if messageObjects isn't empty
+                        if self.messageObjects.count > 0 {
+                            DispatchQueue.main.async(execute: {
+                                self.tableView.reloadData()
+                                self.tableView.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
+                            })
+                        }
                     })
+                    
                 } else {
                     print(error?.localizedDescription as Any)
-                    // Re-enable done button
-                    editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
-                    
                     // Dismiss view controller
                     self.dismiss(animated: true, completion: {
-                        // Reload data
-                        self.fetchChats()
+                        // Re-enable done button
+                        editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                     })
                 }
             }
@@ -812,16 +828,32 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                     // Clear UITextView
                                     self.textView.text!.removeAll()
                                     
-                                    // Reload data
-                                    self.fetchChats()
                                     // Dismiss
-                                    self.imagePicker.dismiss(animated: true, completion: nil)
+                                    self.imagePicker.dismiss(animated: true, completion: { 
+                                        // Append new PFObject and reload UITableView instead of re-querying data
+                                        self.messageObjects.append(chats)
+                                        
+                                        // Reload data and scroll to bottom in main thread if messageObjects isn't empty
+                                        if self.messageObjects.count > 0 {
+                                            DispatchQueue.main.async(execute: {
+                                                self.tableView.reloadData()
+                                                self.tableView.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
+                                            })
+                                        }
+                                    })
+                                    
                                 } else {
                                     print(error?.localizedDescription as Any)
-                                    // Reload data
-                                    self.fetchChats()
-                                    // Dismiss
-                                    self.imagePicker.dismiss(animated: true, completion: nil)
+                                    // MARK: - RPHelpers
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.showError(withTitle: "Video Failed to Send")
+                                    
+                                    // Dismiss and reload data
+                                    self.imagePicker.dismiss(animated: true, completion: { 
+                                        // Append object and reload data
+                                        self.messageObjects.append(chats)
+                                        self.tableView.reloadData()
+                                    })
                                 }
                             })
                         })
@@ -909,8 +941,8 @@ extension RPChatRoom {
                 // Configure style
                 dialogController.buttonStyle = { (button,height,position) in
                     button.setTitleColor(UIColor.white, for: .normal)
-                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                    button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                     button.layer.masksToBounds = true
                 }
                 // (1) Delete button
@@ -1025,7 +1057,7 @@ extension RPChatRoom {
                 })
                 // Add Cancel button
                 dialogController.cancelButtonStyle = { (button,height) in
-                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.tintColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                     button.setTitle("CANCEL", for: [])
                     return true
                 }

@@ -87,8 +87,7 @@ class RPHelpers: NSObject {
                                             let kelvin = main["temp"] as! Double
                                             let farenheit = (kelvin * 1.8) - 459.67
                                             let celsius = kelvin - 273.15
-//                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
-                                            let both = "\(Int(farenheit))°F"
+                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
                                             // Append Temperature as String
                                             temperature.append(both)
                                         }
@@ -354,9 +353,9 @@ class RPHelpers: NSObject {
             var sentence: String?
             // Distinguish between Chats or something else...
             if activityType == "from" {
-                sentence = "from \(PFUser.current()!.username!.lowercased())"
+                sentence = "from \(PFUser.current()!.username!.uppercased())"
             } else {
-                sentence = "\(PFUser.current()!.username!.lowercased()) \(activityType!)"
+                sentence = "\(PFUser.current()!.username!.uppercased()) \(activityType!)"
             }
             
             // MARK: - OneSignal
@@ -367,7 +366,4 @@ class RPHelpers: NSObject {
                  "ios_badgeCount": 1])
         }
     }
-   
-    
-    
 }

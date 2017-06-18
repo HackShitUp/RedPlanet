@@ -135,6 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                     // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
                                                     // Reload data for Chats
                                                     NotificationCenter.default.post(name: rpChat, object: nil)
+                                                    print("Fired...")
                                                     
                                                 } else if fullMessage!.hasSuffix("is typing...") {
                                                     

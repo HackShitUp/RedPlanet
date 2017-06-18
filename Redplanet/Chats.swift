@@ -148,7 +148,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Show UIRefreshControl
         self.refresher?.tintColor = UIColor.white
         self.refresher?.beginRefreshing()
-        
+
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
         let endChat = PFQuery(className: "ChatsQueue")
