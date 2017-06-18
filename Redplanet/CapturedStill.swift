@@ -259,7 +259,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         
         // I TIME STAMP
         let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-        time.font = UIFont(name: "Futura-Medium", size: 65)
+        time.font = UIFont(name: "AvenirNext-Demibold", size: 60)
         time.textColor = UIColor.white
         time.layer.applyShadow(layer: time.layer)
         time.text = "\(timeFormatter.string(from: NSDate() as Date))"
@@ -271,7 +271,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         
         // II DAY
         let day = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-        day.font = UIFont(name: "AvenirNext-Demibold", size: 50)
+        day.font = UIFont(name: "GillSans-Bold", size: 60)
         day.textColor = UIColor.white
         day.layer.applyShadow(layer: day.layer)
         day.text = "\(dayOfWeek)"
@@ -403,7 +403,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             // Location
             self.data[8].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
             // Temperature
-            self.data[9].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: tempFilter!, atZPosition: 0))
+            self.data[9].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
             // Profile Photo
             self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
         }

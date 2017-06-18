@@ -106,22 +106,17 @@ class TextPostCell: UITableViewCell {
                 // @'s
                 if word.hasPrefix("http") || word.hasPrefix("https") {
                     
-                    // Replace word
-//                    self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
+                    // Replace URL WORD with ""
+                    self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
                     
                     // Declare webURL
                     self.webURL = word
                     
                     // MARK: - Readability
                     Readability.parse(url: URL(string: word)!, completion: { (data) in
-
-                        
                         // IMAGE
                         // Traverse image URL and hide views if no image exists
                         if let imageURL = data?.topImage {
-                            
-                            // Replace word
-                            self.textPost.text = text.replacingOccurrences(of: "\(word)", with: "")
                             
                             // MARK: - SDWebImage
                             self.webImage.sd_addActivityIndicator()
@@ -159,7 +154,12 @@ class TextPostCell: UITableViewCell {
                             titleURLTap.numberOfTapsRequired = 1
                             self.webTitlePreview.isUserInteractionEnabled = true
                             self.webTitlePreview.addGestureRecognizer(titleURLTap)
+                            
+                        } else {
+                            // Re-append URL WORD
+                            self.textPost.text?.append(" \(word)")
                         }
+                        
                     })
                 }
             }

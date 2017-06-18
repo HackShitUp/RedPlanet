@@ -48,7 +48,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
                 chats["saved"] = false
-                chats["Message"] = "🎊😜🚀👾👏\nHi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community. Feel free to chat us @teamrp if you have any questions or concerns using Redplanet! You can also head over to https://www.redplanetapp.com/news to find tutorials if you need help. Thanks for you signing up!\n❤️, Redplanet"
+                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), feel free to chat us if you have any questions or feedback using Redplanet! You can also head over to https://www.redplanetapp.com/news to find tutorials if you need help. Thanks for signing up!\nP.S. This app might be more fun when you invite your friends 😜...\n❤️, @teamrp"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
@@ -68,7 +68,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
                         
                         // MARK: - AZDialogViewController
                         let dialogController = AZDialogViewController(title: "🙈\nPlease Allow Access",
-                                                                      message: "Redplanet needs access for the following...\n\n• Location\n• Camera\n• Photos\n• Microphone")
+                                                                      message: "Redplanet needs access for the following...\n• Location\n• Camera\n• Photos\n• Microphone")
                         dialogController.dismissDirection = .bottom
                         dialogController.dismissWithOutsideTouch = true
                         dialogController.showSeparator = true
@@ -127,7 +127,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
     // FUNCTION - Fetch these users
     func fetchUsers() {
         // Fetch Relationships
-//        _ = appDelegate.queryRelationships()
+        _ = appDelegate.queryRelationships()
         
         let people = PFUser.query()!
         people.whereKey("private", equalTo: false)
@@ -228,7 +228,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "onboardingCell", for: indexPath) as! OnboardingCell
         
         // Query Relationships
-//        _ = appDelegate.queryRelationships()
+        _ = appDelegate.queryRelationships()
         
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)

@@ -264,8 +264,8 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Contacts"
-        let font = UIFont(name: "AvenirNext-Medium", size: 21.0)
+        let str = "No Contacts"
+        let font = UIFont(name: "AvenirNext-Medium", size: 21)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
@@ -276,9 +276,8 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        
-        let str = "No New Friends.\nRedplanet is more fun with your friends! Find friends in your contacts, by tapping the 📞 button at the top right to get started."
-        let font = UIFont(name: "AvenirNext-Medium", size: 15.0)
+        let str = "No New Friends.\nRedplanet is more fun with your friends! Find friends in your contacts, by tapping the button at the top right!"
+        let font = UIFont(name: "AvenirNext-Medium", size: 15)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
@@ -290,7 +289,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Change the font and size of nav bar text
     func configureView() {
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [ NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: navBarFont]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Contacts"
@@ -358,15 +357,15 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
-        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        label.textAlignment = .center
+        label.font = UIFont(name: "AvenirNext-Bold", size: 12)
+        label.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        label.textAlignment = .left
         
         if section == 0 {
-            label.text = "REDPLANETERS IN CONTACTS"
+            label.text = "   REDPLANETERS IN CONTACTS"
             return label
         } else {
-            label.text = "FOLLOWING"
+            label.text = "   FOLLOWING"
             return label
         }
     }

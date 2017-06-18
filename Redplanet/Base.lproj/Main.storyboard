@@ -510,7 +510,7 @@
                                     <constraint firstAttribute="height" constant="29" id="gp9-wD-y2b"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBoldItalic" family="Avenir Next" pointSize="12"/>
-                                <state key="normal" title="Numeric Passcode">
+                                <state key="normal" title="Alphanumeric Passcode">
                                     <color key="titleColor" red="0.2550490359" green="0.2550490359" blue="0.2550490359" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -553,7 +553,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="go" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="go" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -2927,6 +2927,18 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Hb5-4s-j8P">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" image="Invite" id="MDa-9P-0kZ">
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="invite:" destination="dg9-Yq-WQJ" id="X8Z-pU-qe6"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="Contacts" id="rX5-xZ-gqJ">
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="contacts:" destination="dg9-Yq-WQJ" id="gLW-xd-ybE"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iz3-F0-9iJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3208,7 +3220,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="pPC-un-c5n">
-                        <barButtonItem key="leftBarButtonItem" image="iOSPhotos" id="j3H-Qa-ZRr">
+                        <barButtonItem key="leftBarButtonItem" image="CameraRoll" id="j3H-Qa-ZRr">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="picker:" destination="ZXI-yA-aQy" id="EBh-fF-7Au"/>
@@ -3716,7 +3728,7 @@
                                 <action selector="backButton:" destination="jQC-kq-hWo" id="x8Y-nf-gv5"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="OTk-Ui-OzY">
+                        <barButtonItem key="rightBarButtonItem" image="Invite" id="OTk-Ui-OzY">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="invitePeople:" destination="jQC-kq-hWo" id="cVL-Yk-3Ru"/>
@@ -4802,11 +4814,14 @@
     <resources>
         <image name="AddUser" width="24" height="24"/>
         <image name="Camera" width="81" height="81"/>
+        <image name="CameraRoll" width="22" height="22"/>
         <image name="Chats" width="25" height="25"/>
+        <image name="Contacts" width="25" height="25"/>
         <image name="DeleteSmall" width="25" height="25"/>
-        <image name="Exit" width="750" height="750"/>
+        <image name="Exit" width="62" height="62"/>
         <image name="FlashOff" width="45" height="45"/>
         <image name="GenderNeutralUser" width="256" height="256"/>
+        <image name="Invite" width="22" height="22"/>
         <image name="Left_50" width="25" height="25"/>
         <image name="LikeBlack" width="49" height="45"/>
         <image name="MoreButtonSmall" width="25" height="25"/>
@@ -4821,13 +4836,12 @@
         <image name="Search" width="25" height="25"/>
         <image name="SentFilled" width="45" height="45"/>
         <image name="Settings" width="24" height="24"/>
-        <image name="ShareOP" width="70" height="70"/>
+        <image name="ShareOP" width="50" height="50"/>
         <image name="Stickers" width="75" height="75"/>
         <image name="SwapCamera" width="100" height="100"/>
         <image name="User_48" width="24" height="24"/>
         <image name="Views" width="50" height="50"/>
         <image name="VolumeOn" width="57" height="57"/>
-        <image name="iOSPhotos" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

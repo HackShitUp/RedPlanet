@@ -40,7 +40,7 @@ class SearchCell: UITableViewCell {
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: hashtagsVC)
             self.delegate?.navigationController?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
           
-        } else if self.rpUsername.text!.hasPrefix("shared") {
+        } else if self.rpUsername.text!.hasPrefix("shared") || self.rpUsername.text!.hasPrefix("uploaded") || self.rpUsername.text!.hasPrefix("updated") {
             let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
             storyVC.storyObject = self.userObject!
             // MARK: - RPPopUpVC

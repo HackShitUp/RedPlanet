@@ -41,7 +41,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         // Show Activity
-        let textToShare = "🤗\nFollow me on Redplanet, my username is @\(PFUser.current()!.username!)"
+        let textToShare = "Yo this app is 🔥! Follow me on Redplanet, my username is @\(PFUser.current()!.username!)"
         if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
             let objectsToShare = [textToShare, myWebsite] as [Any]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
@@ -52,7 +52,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -194,7 +194,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         refresher.tintColor = UIColor.clear
         self.tableView!.addSubview(refresher)
         
@@ -255,7 +255,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
         title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
         title.textColor = UIColor.lightGray
-        title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
+        title.backgroundColor = UIColor.groupTableViewBackground
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
         view.addSubview(title)
@@ -362,7 +362,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                         "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                     ])
                 // Show Activity
-                let textToShare = "🤗\nFollow me on Redplanet, my username is @\(PFUser.current()!.username!)"
+                let textToShare = "Yo this app is 🔥! Follow me on Redplanet, my username is @\(PFUser.current()!.username!)"
                 if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
                     let objectsToShare = [textToShare, myWebsite] as [Any]
                     let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)

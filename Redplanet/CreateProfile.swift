@@ -54,10 +54,6 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
             
         } else {
         // (2) Passed, create new user
-            // Create new PFObject; PFUser, and pass attributes from class variable, "newUserObject"
-            // Load Things to Follow interface
-            let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onboardingVC") as! Onboarding
-            self.navigationController?.pushViewController(onBoardVC, animated: true)
             
             /*
              • realNameOfUser
@@ -70,7 +66,6 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
              • username
              */
             
-            /*
             let newUser = PFUser()
             newUser["realNameOfUser"] = self.newUserObject!.value(forKey: "realNameOfUser") as! String
             newUser["birthday"] = self.newUserObject!.value(forKey: "birthday") as! String
@@ -90,8 +85,8 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
                     installation!["user"] = PFUser.current()
                     installation!["username"] = PFUser.current()!.username!
                     installation!.saveEventually()
-                    
-                    // Load Things to Follow interface
+
+                    // Load People to Follow interface
                     let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onboardingVC") as! Onboarding
                     self.navigationController?.pushViewController(onBoardVC, animated: true)
 
@@ -102,7 +97,6 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
                     rpHelpers.showError(withTitle: "Network Error")
                 }
             })
-            */
         }
     }
     

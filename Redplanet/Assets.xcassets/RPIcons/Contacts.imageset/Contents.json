@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ChatsPurple.png",
+      "filename" : "Contacts.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ChatsPurple-1.png",
+      "filename" : "Contacts-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ChatsPurple-2.png",
+      "filename" : "Contacts-2.png",
       "scale" : "3x"
     }
   ],

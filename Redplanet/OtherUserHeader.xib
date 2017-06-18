@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-DemiBold</string>
+            <string>AvenirNext-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -98,12 +104,12 @@
                     <state key="normal" image="CSpacePost"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RrC-Vf-83E">
-                    <rect key="frame" x="47" y="311" width="30" height="30"/>
+                    <rect key="frame" x="47" y="309" width="35" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="30" id="KpX-Zc-cR9"/>
-                        <constraint firstAttribute="height" constant="30" id="xLr-Gj-eOg"/>
+                        <constraint firstAttribute="width" constant="35" id="KpX-Zc-cR9"/>
+                        <constraint firstAttribute="height" constant="35" id="xLr-Gj-eOg"/>
                     </constraints>
-                    <state key="normal" image="ChatsPurple"/>
+                    <state key="normal" image="ChatsNew"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2r-a2-Kmb">
                     <rect key="frame" x="8" y="382" width="359" height="21"/>
@@ -140,7 +146,7 @@
                 <constraint firstItem="e4R-zD-fge" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aDc-Ke-DV8"/>
                 <constraint firstItem="IND-ke-LYZ" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="brW-Lc-oTP"/>
                 <constraint firstAttribute="trailing" secondItem="HCm-Dh-77F" secondAttribute="trailing" constant="45" id="fn1-lM-jPa"/>
-                <constraint firstItem="RrC-Vf-83E" firstAttribute="top" secondItem="mrM-5U-Xcy" secondAttribute="bottom" constant="15" id="kF5-JV-bDU"/>
+                <constraint firstItem="RrC-Vf-83E" firstAttribute="top" secondItem="mrM-5U-Xcy" secondAttribute="bottom" constant="13" id="kF5-JV-bDU"/>
                 <constraint firstItem="WMT-KU-90F" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="kzT-7N-1aV"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nBG-98-Ycf"/>
                 <constraint firstAttribute="trailing" secondItem="IND-ke-LYZ" secondAttribute="trailing" id="oFN-aa-rR5"/>
@@ -171,7 +177,7 @@
     </objects>
     <resources>
         <image name="CSpacePost" width="75" height="75"/>
-        <image name="ChatsPurple" width="92" height="92"/>
+        <image name="ChatsNew" width="75" height="75"/>
         <image name="ReportBlock" width="75" height="75"/>
     </resources>
 </document>

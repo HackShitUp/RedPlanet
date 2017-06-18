@@ -13,6 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import NotificationBannerSwift
 import SafariServices
 
 /*
@@ -26,9 +27,13 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     @IBOutlet weak var signUpButton: UIButton!
     
     @IBAction func signUp(_ sender: Any) {
-//        // Push VC
-//        let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "signUpVC") as! SignUp
-//        self.navigationController?.pushViewController(signUpVC, animated: true)
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: "🔥💫😍😜 HUMANS F-💣 LUVVV EMOJI RIGHT? 👾❤️👽😘", style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor.black
+        banner.duration = 0.5
+        banner.show()
+        
         // Push VC
         let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
         self.navigationController?.pushViewController(signUpVC, animated: true)

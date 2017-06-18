@@ -66,6 +66,27 @@ class Explore: UITableViewController, UISearchBarDelegate {
         self.refresher?.endRefreshing()
     }
     
+    @IBAction func contacts(_ sender: Any) {
+        // Push to Contacts VC
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.navigationController!.pushViewController(contactsVC, animated: true)
+    }
+    
+    @IBAction func invite(_ sender: Any) {
+        // Track when user taps the invite button
+        Heap.track("TappedInvite", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
+        // Show Activity
+        let textToShare = "Yo this app is 🔥! Follow me on Redplanet, my username is @\(PFUser.current()!.username!)"
+        if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
+            let objectsToShare = [textToShare, myWebsite] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
+        }
+    }
+    
     // FUNCTION - Fetch News
     func fetchNews() {
         

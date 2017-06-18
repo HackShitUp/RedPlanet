@@ -186,7 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
          MARK: - OneSignal
          Call when you want to prompt the user to accept push notifications.
          Only call once and only if you set kOSSettingsKeyAutoPrompt in AppDelegate to false.
-         */
+        */
         // (1) Add observers
         OneSignal.add(self as OSPermissionObserver)
         OneSignal.add(self as OSSubscriptionObserver)

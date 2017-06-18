@@ -170,7 +170,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
