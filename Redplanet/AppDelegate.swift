@@ -118,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                             let fullMessage = payload?.body
 
                                             // Banner for notification
-                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") {
+                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") {
                                                 // If PFUser.currentUser()! sent notification to self, do nothing
                                                 print("Received notification for the current user...")
                                                 
