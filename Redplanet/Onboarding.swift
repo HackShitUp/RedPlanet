@@ -36,6 +36,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
         // Disable button
         self.doneButton.isEnabled = false
         
+        
         // Send user chat from TeamRP
         PFUser.query()!.getObjectInBackground(withId: "NgIJplW03t") {
             (object: PFObject?, error: Error?) in
@@ -65,14 +66,13 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
                                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                             ])
                         
-                        
-                        
                         // MARK: - AZDialogViewController
                         let dialogController = AZDialogViewController(title: "🙈\nPlease Allow Access",
-                                                                      message: "Before you start using Redplanet, it needs access for the following...\n• Location\n• Camera\n• Photos\n• Microphone")
+                                                                      message: "Redplanet needs access for the following...\n\n• Location\n• Camera\n• Photos\n• Microphone")
                         dialogController.dismissDirection = .bottom
                         dialogController.dismissWithOutsideTouch = true
                         dialogController.showSeparator = true
+                        
                         // Configure style
                         dialogController.buttonStyle = { (button,height,position) in
                             button.setTitleColor(UIColor.white, for: .normal)
@@ -82,7 +82,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
                         }
                         
                         // Add settings button
-                        dialogController.addAction(AZDialogAction(title: "Continue", handler: { (dialog) -> (Void) in
+                        dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
                             // Dismiss
                             dialog.dismiss()
                             // Show main interface once succeeded
@@ -107,6 +107,7 @@ class Onboarding: UITableViewController, UINavigationControllerDelegate {
                 self.showMain()
             }
         }
+        
     }
     
     // FUNCTION - Show main interface

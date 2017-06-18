@@ -219,11 +219,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            str = "💩\nYour Friends'\nFeed Is Empty Today."
+            str = "😛 FRIENDS\n\nStories shared by people who follow you back would show up here..."
         } else {
-            str = "💩\nYour Following\nFeed Is Empty Today."
+            str = "💩 FOLLOWING\n\nStories shared by people who DON'T follow you back would show up here..."
         }
-        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 21)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!]
@@ -233,9 +233,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Find Friends"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1),
             NSFontAttributeName: font!
         ]
         return NSAttributedString(string: str, attributes: attributeDictionary)
