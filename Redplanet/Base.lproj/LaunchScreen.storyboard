@@ -7,11 +7,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-DemiBold</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -76,7 +71,7 @@
                                     <constraint firstAttribute="height" constant="30" id="5iL-Qf-PWo"/>
                                     <constraint firstAttribute="width" constant="30" id="RXe-Yw-BGt"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="21"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -84,13 +79,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I m a g i n e" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOr-qa-p2m">
-                                <rect key="frame" x="82.5" y="306" width="211" height="55"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBoldItalic" family="Avenir Next" pointSize="40"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <size key="shadowOffset" width="5" height="-1"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -105,9 +93,7 @@
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Hvl-yi-PIY" secondAttribute="bottom" id="Xmw-5e-zJa"/>
                             <constraint firstItem="AVK-EB-Ucu" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YOR-0g-VnR"/>
                             <constraint firstItem="17A-bs-yJ7" firstAttribute="top" secondItem="AVK-EB-Ucu" secondAttribute="bottom" constant="26" id="btY-CV-1V2"/>
-                            <constraint firstItem="FOr-qa-p2m" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="gtA-Xu-QU5"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Dzx-Ir-gEt" secondAttribute="bottom" constant="16" id="iKz-cf-oRf"/>
-                            <constraint firstItem="FOr-qa-p2m" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="igU-9o-lDe"/>
                             <constraint firstItem="17A-bs-yJ7" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="kW6-Vv-Aqh"/>
                             <constraint firstAttribute="trailing" secondItem="Hvl-yi-PIY" secondAttribute="trailing" id="kqE-Wh-zOs"/>
                             <constraint firstAttribute="trailing" secondItem="Dzx-Ir-gEt" secondAttribute="trailing" constant="16" id="mdJ-xe-D7u"/>

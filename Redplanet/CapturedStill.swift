@@ -281,7 +281,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let dayStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        // II RED FILTER
+        // III RED FILTER
         let red = UIView()
         red.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         red.alpha = 0.25
@@ -292,7 +292,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         UIGraphicsEndImageContext()
 
         
-        // III "Me, Myself, and I"
+        // IV "Me, Myself, and I"
         let me = UIImageView(frame: self.view.bounds)
         me.contentMode = .scaleAspectFill
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
@@ -364,7 +364,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             city.numberOfLines = 0
             // Manipulate font size of CLPlacemark's name attribute
             let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("\(currentGeoFence.last!.name!)", withFont: UIFont(name: "AvenirNext-Bold", size: 17)).normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 40))
+            _ = formattedString.bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 30)).normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
             city.attributedText = formattedString
             city.layer.applyShadow(layer: city.layer)
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
