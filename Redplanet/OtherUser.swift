@@ -470,6 +470,20 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // (2) Get and set realNameOfUser
         if let realNameOfUser = otherObject.last!.value(forKey: "realNameOfUser") as? String {
             header.fullName.text = realNameOfUser
+            
+            // Check for verification
+            if let isVerified = otherObject.last!["isVerified"] as? Bool {
+                if isVerified == true {
+                    let attachment = NSTextAttachment()
+                    attachment.image = UIImage(named: "Verified")
+                    attachment.bounds = CGRect(x: 0, y: -5, width: attachment.image!.size.width, height: attachment.image!.size.height)
+                    let attachmentString = NSAttributedString(attachment: attachment)
+                    let myString = NSMutableAttributedString(string: "\(header.fullName.text!)")
+                    myString.append(attachmentString)
+                    header.fullName.attributedText = myString
+                }
+            }
+            
         }
         // (3) Get and set userBiography
         if let userBiography = otherObject.last!.value(forKey: "userBiography") as? String {
@@ -490,7 +504,6 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Hide Space Button
         header.newSpaceButton.isHidden = true
         header.newSpaceButton.isUserInteractionEnabled = false
-        
 
         
         if !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {

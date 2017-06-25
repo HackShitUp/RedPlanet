@@ -63,6 +63,7 @@ class Explore: UITableViewController, UISearchBarDelegate {
     var searchBar = UISearchBar()
     
     func refresh() {
+        fetchFeatured()
         self.refresher?.endRefreshing()
     }
     

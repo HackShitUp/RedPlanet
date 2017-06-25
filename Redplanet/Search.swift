@@ -348,7 +348,20 @@ class Search: UITableViewController, UINavigationControllerDelegate, UITextField
             // (2) Set username
             cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "username") as! String
             
-            // (3) Get and set user's profile photo
+            // (3) Check if account is verified
+            if let isVerified = self.searchObjects[indexPath.row].value(forKey: "isVerified") as? Bool {
+                if isVerified == true {
+                    let attachment = NSTextAttachment()
+                    attachment.image = UIImage(named: "Verified")
+                    attachment.bounds = CGRect(x: 0, y: 0, width: attachment.image!.size.width/2, height: attachment.image!.size.height/2)
+                    let attachmentString = NSAttributedString(attachment: attachment)
+                    let myString = NSMutableAttributedString(string: "\(cell.rpUsername.text!)")
+                    myString.append(attachmentString)
+                    cell.rpUsername.attributedText = myString
+                }
+            }
+            
+            // (4) Get and set user's profile photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))

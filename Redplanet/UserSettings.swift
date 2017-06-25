@@ -84,8 +84,8 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Ok Action
@@ -103,15 +103,15 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // Public account
             // MARK: - AZDialogViewController
             let dialogController = AZDialogViewController(title: "Public Account",
-                                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile will also be part of the EXPLORE page in the second bottom tab.")
+                                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile and posts will also be part of Explore's 'Featued Posts.'")
             dialogController.dismissDirection = .bottom
             dialogController.dismissWithOutsideTouch = true
             dialogController.showSeparator = true
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Ok Action

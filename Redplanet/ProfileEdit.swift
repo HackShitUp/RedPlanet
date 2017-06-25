@@ -40,8 +40,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     @IBOutlet weak var rpUsername: UITextField!
     @IBOutlet weak var rpName: UITextField!
     @IBOutlet weak var rpEmail: UITextField!
+    @IBOutlet weak var birthdayText: UILabel!
     @IBOutlet weak var userBirthday: UIDatePicker!
-    @IBOutlet weak var container: UIView!
     
     
     @IBOutlet weak var backButton: UIBarButtonItem!
@@ -194,14 +194,13 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             let proPicData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
             let proPicFile = PFFile(data: proPicData!)
             
-            // (C) Configure username and fullname
+            // (C) Configure username and fullname and remove any emojis
             var rUsername = self.rpUsername.text!
-            rUsername = rUsername.replacingOccurrences(of: " ", with: "")
-            rUsername = rUsername.replacingOccurrences(of: "🚀", with: "")
-            rUsername = rUsername.replacingOccurrences(of: "💫", with: "")
+            rUsername = rUsername.stringByRemovingEmoji()
+            
             var fullName = self.rpName.text!
-            fullName = fullName.replacingOccurrences(of: "🚀", with: "")
-            fullName = fullName.replacingOccurrences(of: "💫", with: "")
+            fullName = fullName.stringByRemovingEmoji()
+            
             
             // =====================================================================================================================
             // I) BASIC CREDENTIAL UPDATE ==========================================================================================
@@ -259,7 +258,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 self.backButton.isEnabled = true
                             }
                         })
-                    }// END PROFILE PHOTO UPDATE
+                    }
+                    
                     // =====================================================================================================
                     // III) PROFILE PHOTO CAPTION UPDATE ===================================================================
                     // =====================================================================================================
@@ -318,11 +318,16 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     self.showDialogAlert()
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.showError(withTitle: "Network Error")
                     // Re-enable backButton
                     self.backButton.isEnabled = true
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    
+                    if error?.localizedDescription == "Account already exists for this username." {
+                        rpHelpers.showError(withTitle: "This username is already taken...")
+                    } else {
+                        rpHelpers.showError(withTitle: "Network Error")
+                    }
                 }
             })
         }
@@ -367,7 +372,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-//            button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
             button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
             button.layer.masksToBounds = true
@@ -514,13 +518,17 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         }
     }
     
-    // Function to dismiss keybaord
+    // FUNCTION - Dismiss keybaord
     func dismissKeyboard() {
         // Resign First Responders
         rpUserBio.resignFirstResponder()
         rpName.resignFirstResponder()
         rpEmail.resignFirstResponder()
         rpUsername.resignFirstResponder()
+        
+        // Show Bday
+        self.birthdayText.textColor = UIColor.black
+        self.userBirthday.tintColor = UIColor.black
     }
     
     
@@ -534,16 +542,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Add border to top of container
-        let upperBorder = CALayer()
-        upperBorder.backgroundColor = UIColor.darkGray.cgColor
-        upperBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(self.view.frame.width), height: CGFloat(0.50))
-        self.container.layer.addSublayer(upperBorder)
-        
+
         // Set maximum birthday
         self.userBirthday.maximumDate = Date()
-        
         // Configure textColor for rpUserBio
         self.rpUserBio.textColor = UIColor.darkGray
 
@@ -569,9 +570,13 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         self.rpEmail.leftView = emailIcon
         self.rpEmail.addSubview(emailIcon)
         
-        // (A) Configure User's Profile Photo
-        // MARK: - RPExtensions
-        self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 3, borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
+        // MARK: - RPExtensions; Add bottom borders to UITextFields
+        self.rpUsername.addBottomLayerBorder(forView: self.rpUsername, height: CGFloat(1), color: UIColor.groupTableViewBackground)
+        self.rpName.addBottomLayerBorder(forView: self.rpName, height: CGFloat(1), color: UIColor.groupTableViewBackground)
+        self.rpEmail.addBottomLayerBorder(forView: self.rpEmail, height: CGFloat(1), color: UIColor.groupTableViewBackground)
+
+        // (A) MARK: - RPExtensions; Configure User's Profile Photo
+        self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0, borderColor: UIColor.clear)
         
         // (B) If there exists, a current user...
         if PFUser.current() != nil {
@@ -591,7 +596,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             if let RPBiography = PFUser.current()!["userBiography"] as? String {
                 if RPBiography.isEmpty {
                     // Set biography
-                    rpUserBio.text = "Who are you?"
+                    rpUserBio.text = "You don't have a bio yet... Share something about yourself!"
                 } else {
                     rpUserBio.text = RPBiography
                 }
@@ -631,9 +636,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // (D) Add Tap to hide keyboard
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.numberOfTapsRequired = 1
-        self.container.isUserInteractionEnabled = true
         self.view.isUserInteractionEnabled = true
-        self.container.addGestureRecognizer(tap)
         self.view.addGestureRecognizer(tap)
     }
     
@@ -660,23 +663,25 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     // MARK: - UITextField Delegate Method
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.rpUsername?.resignFirstResponder()
-        self.rpName?.resignFirstResponder()
-        self.rpEmail?.resignFirstResponder()
+        self.dismissKeyboard()
         return true
     }
     
     // MARK: - UITextView Delegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
-        self.rpUserBio.textColor = UIColor.black
-        if self.rpUserBio.text == "Introduce yourself..." {
+        
+        if self.rpUserBio.textColor == UIColor.darkGray {
+            self.rpUserBio.textColor = UIColor.black
+        }
+        
+        if self.rpUserBio.text == "Introduce yourself..." && self.rpUserBio.textColor == UIColor.darkGray {
             self.rpUserBio.text = ""
         }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            self.rpUserBio.resignFirstResponder()
+            self.dismissKeyboard()
         }
         return true
     }

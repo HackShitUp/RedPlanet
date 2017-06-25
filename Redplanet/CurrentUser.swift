@@ -549,8 +549,22 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
             let underlineAttributedString = NSAttributedString(string: "\(header.fullName.text!)", attributes: underlineAttribute)
             header.fullName.attributedText = underlineAttributedString
+            
+
+            // Verified
+            if let isVerified = PFUser.current()!["isVerified"] as? Bool {
+                if isVerified == true {
+                    let attachment = NSTextAttachment()
+                    attachment.image = UIImage(named: "Verified")
+                    let attachmentString = NSAttributedString(attachment: attachment)
+                    let myString = NSMutableAttributedString(string: header.fullName.text!)
+                    myString.append(attachmentString)
+                    header.fullName.attributedText = myString
+                }
+            }
+            
         }
-        
+
         // (3) Set current user's biography
         if let userBiography = PFUser.current()!.value(forKey: "userBiography") as? String {
             header.userBio.text = userBiography

@@ -51,11 +51,8 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     
     @IBAction func backButton(_ sender: Any) {
-        // Quyery relationships
-        appDelegate.queryRelationships()
-        
         // POP VC
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func phoneNumber(_ sender: Any) {

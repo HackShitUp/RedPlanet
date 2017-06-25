@@ -111,10 +111,10 @@
                     </constraints>
                     <state key="normal" image="ChatsNew"/>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2r-a2-Kmb">
-                    <rect key="frame" x="8" y="382" width="359" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2r-a2-Kmb">
+                    <rect key="frame" x="8" y="366" width="359" height="29"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="O3v-n5-HjR"/>
+                        <constraint firstAttribute="height" constant="29" id="Lpm-Nt-r0l"/>
                         <constraint firstAttribute="width" constant="359" id="vtm-0Q-yce"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
@@ -151,7 +151,7 @@
                 <constraint firstItem="e4R-zD-fge" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nBG-98-Ycf"/>
                 <constraint firstAttribute="trailing" secondItem="IND-ke-LYZ" secondAttribute="trailing" id="oFN-aa-rR5"/>
                 <constraint firstItem="a7A-0w-Ch9" firstAttribute="top" secondItem="WMT-KU-90F" secondAttribute="bottom" constant="8" id="p5G-PN-gVC"/>
-                <constraint firstItem="WMT-KU-90F" firstAttribute="top" secondItem="A2r-a2-Kmb" secondAttribute="bottom" id="qIw-eg-GJF"/>
+                <constraint firstItem="WMT-KU-90F" firstAttribute="top" secondItem="A2r-a2-Kmb" secondAttribute="bottom" constant="8" id="qIw-eg-GJF"/>
                 <constraint firstAttribute="trailing" secondItem="a7A-0w-Ch9" secondAttribute="trailing" constant="16" id="sT8-Yl-gon"/>
                 <constraint firstAttribute="trailing" secondItem="WMT-KU-90F" secondAttribute="trailing" constant="8" id="sVd-Pf-2zI"/>
                 <constraint firstItem="a7A-0w-Ch9" firstAttribute="top" secondItem="WMT-KU-90F" secondAttribute="bottom" constant="8" id="vDA-tZ-FAo"/>

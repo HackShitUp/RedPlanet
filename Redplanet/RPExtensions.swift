@@ -64,6 +64,24 @@ extension UIView {
         forView!.layer.borderWidth = borderWidth!
         forView!.clipsToBounds = true
     }
+    
+    
+    // Function to add colored-border to top of UIView
+    func addTopLayerBorder(forView: UIView?, height: CGFloat, color: UIColor?) {
+        let topBorder = CALayer()
+        topBorder.backgroundColor = color!.cgColor
+        topBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(forView!.frame.width), height: height)
+        forView!.layer.addSublayer(topBorder)
+    }
+    
+    // Function to add colored-border to bottom of UIView
+    func addBottomLayerBorder(forView: UIView?, height: CGFloat, color: UIColor?) {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = color!.cgColor
+        bottomBorder.frame = CGRect(x: CGFloat(0), y: forView!.frame.size.height - 2, width: CGFloat(forView!.frame.size.width), height: height)
+        forView!.layer.addSublayer(bottomBorder)
+    }
+    
 }
 
 
@@ -86,6 +104,20 @@ extension NSMutableAttributedString {
     }
 }
 
+
+// MARK: - String and Character
+extension Character {
+    func isEmoji() -> Bool {
+        return Character(UnicodeScalar(UInt32(0x1d000))!) <= self && self <= Character(UnicodeScalar(UInt32(0x1f77f))!)
+            || Character(UnicodeScalar(UInt32(0x2100))!) <= self && self <= Character(UnicodeScalar(UInt32(0x26ff))!)
+    }
+}
+
+extension String {
+    func stringByRemovingEmoji() -> String {
+        return String(self.characters.filter { !$0.isEmoji() })
+    }
+}
 
 
 // MARK: - UINavigationBar design configurations

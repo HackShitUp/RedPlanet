@@ -344,7 +344,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
             // Call relationships function
-            _ = queryRelationships()
+//            _ = queryRelationships()
             
         } else {
             // Login or Sign Up

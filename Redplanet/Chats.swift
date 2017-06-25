@@ -245,14 +245,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // add image
                 dialogController.imageHandler = { (imageView) in
                     if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                imageView.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
+                        imageView.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
                     } else {
                         imageView.image = UIImage(named: "GenderNeutralUser")
                     }
@@ -727,28 +720,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.searchBar.resignFirstResponder()
         // Clear text
         self.searchBar.text = ""
-        // Reload data
-        fetchQueues()
-    }
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            // If posts on server are > than shown
-            if page <= chatObjects.count {
-                // Increase page size to load more posts
-                page = page + 500000
-                // Query friends
-                self.fetchQueues()
-            }
-        }
-    }
-    
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y <= -140.00 {
-            refresher.endRefreshing()
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-        } else {
-            refresh()
-        }
+        // Clear searchObjects and reload UITableViewData
+        self.searchObjects.removeAll(keepingCapacity: false)
+        self.tableView.reloadData()
     }
 }

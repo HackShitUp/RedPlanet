@@ -1,5 +1,5 @@
 PODS:
-  - AnimatedCollectionViewLayout (0.3.0)
+  - AnimatedCollectionViewLayout (0.2.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -38,7 +38,7 @@ PODS:
   - VIMVideoPlayer (6.0.1)
 
 DEPENDENCIES:
-  - AnimatedCollectionViewLayout
+  - AnimatedCollectionViewLayout (= 0.2.0)
   - Bolts
   - DZNEmptyDataSet
   - Heap
@@ -57,7 +57,7 @@ DEPENDENCIES:
   - VIMVideoPlayer
 
 SPEC CHECKSUMS:
-  AnimatedCollectionViewLayout: 504b992a4258eb39d2dd2b2b48e84b4b95860fd7
+  AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
@@ -78,6 +78,6 @@ SPEC CHECKSUMS:
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
 
-PODFILE CHECKSUM: 169d7a5cb5ef8432cd93d4a5b2acf512b79f2d3d
+PODFILE CHECKSUM: a6233c36633e5813867aaecb136d89c887db6b8d
 
 COCOAPODS: 1.2.1
