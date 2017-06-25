@@ -65,7 +65,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     func configureNumber(sender: Any) {
         // Present PhoneNumber
         let numberVC = self.storyboard?.instantiateViewController(withIdentifier: "currentUserNumberVC") as! CurrentUserNumber
-        self.navigationController?.pushViewController(numberVC, animated: false)
+        self.navigationController?.pushViewController(numberVC, animated: true)
     }
     
     // Function to fetch user's contacts

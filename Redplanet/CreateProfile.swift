@@ -64,7 +64,7 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
              • userProfilePicture
              • proPicExists
              • username
-             */
+            */
             
             let newUser = PFUser()
             newUser["realNameOfUser"] = self.newUserObject!.value(forKey: "realNameOfUser") as! String

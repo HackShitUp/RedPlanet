@@ -282,9 +282,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         // Define Notification to reload data
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: homeNotification, object: nil)
         
-        // Set UITabBarController Delegate
-        self.tabBarController?.delegate = self
-        
         // Configure UITableView
         self.tableView.layoutIfNeeded()
         self.tableView.setNeedsLayout()
@@ -307,6 +304,8 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Set UITabBarController Delegate
+        self.tabBarController?.delegate = self
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
@@ -327,9 +326,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            DispatchQueue.main.async {
-                self.tableView!.setContentOffset(CGPoint.zero, animated: true)
-            }
+            self.tableView?.setContentOffset(CGPoint.zero, animated: true)
         }
     }
     

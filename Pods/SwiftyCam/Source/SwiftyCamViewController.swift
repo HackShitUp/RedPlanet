@@ -372,19 +372,25 @@ open class SwiftyCamViewController: UIViewController {
 			capturePhotoAsyncronously(completionHandler: { (_) in })
 
 		} else if device.hasFlash == false && flashEnabled == true && currentCamera == .front {
+            
+            // Create "FlashView"
 			flashView = UIView(frame: view.frame)
-			flashView?.alpha = 0.0
+			flashView?.alpha = 0
 			flashView?.backgroundColor = UIColor.white
 			previewLayer.addSubview(flashView!)
             
+            
+            // CONFIGURED: Raise device's brightness to max value
+            // Set brightness to max value
+            UIScreen.main.brightness = CGFloat(1)
+            
             // CRITICAL MODIFICATION: Flash configuration animation --> withDuration: 0.20, delay: 0.15
 			UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
-				self.flashView?.alpha = 1.0
-
+				self.flashView?.alpha = 1
 			}, completion: { (_) in
 				self.capturePhotoAsyncronously(completionHandler: { (success) in
 					UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
-						self.flashView?.alpha = 0.0
+						self.flashView?.alpha = 0
 					}, completion: { (_) in
 						self.flashView?.removeFromSuperview()
 					})
@@ -922,9 +928,10 @@ open class SwiftyCamViewController: UIViewController {
 		}
 
 		do{
-            // CRITICAL MODIFICATION: Audio configuration --> .allowBluetooth, and .mixWithOthers
+            // CRITICAL MODIFICATION: Audio configuration --> .allowBluetooth, and .mixWithOthers and .defaultToSpeaker(?)
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: [.allowBluetooth, .mixWithOthers])
+                                                            with: [.allowBluetooth, .mixWithOthers, .defaultToSpeaker])
+            // TODO:: TEST .defaultToSpeaker w BlueTooth
             session.automaticallyConfiguresApplicationAudioSession = false
 		}
 		catch {

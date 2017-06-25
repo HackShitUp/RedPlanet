@@ -30,7 +30,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
     
     @IBAction func dismiss(_ sender: Any) {
         // Pop VC
-        _ = self.navigationController?.popViewController(animated: false)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func saveAction(_ sender: Any) {

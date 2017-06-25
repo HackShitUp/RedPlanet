@@ -36,7 +36,7 @@ import SDWebImage
  UICollectionViewCell --> UICollectionView --> UITableViewCell --> UITableView (self)
  */
 
-class Explore: UITableViewController, UISearchBarDelegate {
+class Explore: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate {
     
     // Arrays to hold publisherNames and Objects for Stories
     var sourceObjects = [PFObject]() // used for Selected Stories
@@ -373,6 +373,8 @@ class Explore: UITableViewController, UISearchBarDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Set UITabBarController delegate
+        self.tabBarController?.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -387,6 +389,13 @@ class Explore: UITableViewController, UISearchBarDelegate {
         URLCache.shared.removeAllCachedResponses()
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
+    }
+    
+    // MARK: - UITabBarController Delegate Methods
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if self.navigationController?.tabBarController?.selectedIndex == 1 {
+            self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+        }
     }
     
     // MARK: - UISearchBar Delegate Methods
@@ -563,8 +572,11 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
                 nCell.storyCover.sd_setImage(with: URL(string: urlToImage))
                 
             } else {
-                nCell.storyCover.image = UIImage()
-                nCell.storyCover.backgroundColor = UIColor.randomColor()
+                // Set background photo as the publisher's logo
+                if let coverLogo = self.sourceObjects[indexPath.item].value(forKey: "photo") as? PFFile {
+                    // MARK: - SDWebImage
+                    nCell.storyCover.sd_setImage(with: URL(string: coverLogo.url!)!)
+                }
             }
             
             // (3) Set title

@@ -237,10 +237,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        
+
         // Configure UITextView; set placeholder and delegate
         self.textView.textColor = UIColor.darkGray
+        self.textView.font = UIFont(name: "AvenirNext-Medium", size: 30)
         self.textView.delegate = self
         
         let randomInt = arc4random()
@@ -311,6 +311,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         if self.textView!.textColor == UIColor.darkGray {
             self.textView.text! = ""
             self.textView.textColor = UIColor.black
+            self.textView.font = UIFont(name: "AvenirNext-Regular", size: 21)
         }
     }
     

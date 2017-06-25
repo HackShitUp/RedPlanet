@@ -289,9 +289,6 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         
-        // Set UITextView delegate
-        textPost.delegate = self
-        textPost.textColor = UIColor.darkGray
         
         // Implement back swipe method
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
@@ -302,6 +299,9 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Configure and set UITextView delegate
+        textPost.delegate = self
+        textPost.textColor = UIColor.darkGray
     }
     
     override func viewWillDisappear(_ animated: Bool) {

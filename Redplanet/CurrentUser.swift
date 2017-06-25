@@ -443,21 +443,22 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Stylize bar
-        configureView()
-        // Handle Follow Requests
-        handleRequests()
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Handle Follow Requests
+        handleRequests()
         // Stylize title
         configureView()
         // Show UITaBBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.tabBar.isTranslucent = false
+        
+        // Set UITabBarController Delegate
+        self.navigationController?.tabBarController?.delegate = self
     }
     
     override func viewDidLoad() {
@@ -465,8 +466,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Fetch data
         handleCase()
-        // Stylize and set title
-        configureView()
         // Check for permissions
         checkPermissions()
         
@@ -501,9 +500,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
         tableView.addSubview(refresher)
-        
-        // Set UITabBarController Delegate
-        self.navigationController?.tabBarController?.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -517,7 +513,9 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        self.tableView.setContentOffset(CGPoint.zero, animated: true)
+        if self.navigationController?.tabBarController?.selectedIndex == 4 {
+            self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+        }
     }
     
     // MARK: - UITableView Data Source Methods
@@ -549,20 +547,17 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
             let underlineAttributedString = NSAttributedString(string: "\(header.fullName.text!)", attributes: underlineAttribute)
             header.fullName.attributedText = underlineAttributedString
-            
 
-            // Verified
-            if let isVerified = PFUser.current()!["isVerified"] as? Bool {
-                if isVerified == true {
-                    let attachment = NSTextAttachment()
-                    attachment.image = UIImage(named: "Verified")
-                    let attachmentString = NSAttributedString(attachment: attachment)
-                    let myString = NSMutableAttributedString(string: header.fullName.text!)
-                    myString.append(attachmentString)
-                    header.fullName.attributedText = myString
-                }
+            // Check for verification
+            if PFUser.current()!.value(forKey: "isVerified") as! Bool == true {
+                let attachment = NSTextAttachment()
+                attachment.image = UIImage(named: "Verified")
+                attachment.bounds = CGRect(x: 0, y: -7, width: attachment.image!.size.width, height: attachment.image!.size.height)
+                let attachmentString = NSAttributedString(attachment: attachment)
+                let myString = NSMutableAttributedString(string: "\(header.fullName.text!)")
+                myString.append(attachmentString)
+                header.fullName.attributedText = myString
             }
-            
         }
 
         // (3) Set current user's biography
