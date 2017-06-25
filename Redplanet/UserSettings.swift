@@ -180,7 +180,6 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // Add function method to 'privacy'
         self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
         

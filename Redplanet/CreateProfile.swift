@@ -76,6 +76,7 @@ class CreateProfile: UIViewController, UIImagePickerControllerDelegate, UITextVi
             newUser["userBiography"] = self.rpUserBio.text!
             newUser["username"] = self.newUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
             newUser["private"] = false
+            newUser["isVerified"] = false
             newUser.signUpInBackground(block: { (success: Bool, error: Error?) in
                 if success {
                     print("Successfully signed up user...")
