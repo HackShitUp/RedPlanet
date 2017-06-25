@@ -17,6 +17,7 @@ import ParseUI
 import Bolts
 
 import OneSignal
+import SVProgressHUD
 import SwipeNavigationController
 import VIMVideoPlayer
 
@@ -44,17 +45,14 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
     
     @IBOutlet weak var saveButton: UIButton!
     @IBAction func saveVideo(_ sender: Any) {
+        // Save video to PHPhotoLibrary
         PHPhotoLibrary.shared().performChanges({
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.capturedURL!)
         }) { (saved: Bool, error: Error?) in
             if saved {
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showAction(withTitle: "Saved Video")
-            } else {
-                // MARK: - RPHelpers
-                let rpHelpers = RPHelpers()
-                rpHelpers.showProgress(withTitle: "Saving video...")
+                // MARK: - SVProgressHUD
+                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
+                SVProgressHUD.showSuccess(withStatus: "Saved Video!")
             }
         }
     }

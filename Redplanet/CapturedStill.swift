@@ -15,13 +15,13 @@ import Bolts
 
 import OneSignal
 import SDWebImage
+import SVProgressHUD
 import SwipeNavigationController
 
 
 // Array to hold user's location
 var currentGeoFence = [CLPlacemark]()
 var temperature = [String]()
-
 
 
 /*
@@ -55,9 +55,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         DispatchQueue.main.async(execute: {
             // Save photo
             UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.stillPhoto)!, self, nil, nil)
-            // MARK: - RPHelpers
-            let rpHelpers = RPHelpers()
-            rpHelpers.showAction(withTitle: "Saved Photo")
+            // MARK: - SVProgressHUD
+            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
+            SVProgressHUD.showSuccess(withStatus: "Saved Photo!")
         })
     }
     

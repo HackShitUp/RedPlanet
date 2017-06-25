@@ -138,30 +138,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                     print("Fired...")
                                                     
                                                 } else if fullMessage!.hasSuffix("is typing...") {
-                                                    
-                                                    if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
-                                                        proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
-                                                            if error == nil {
-                                                                let proPicView = UIImageView()
-                                                                proPicView.makeCircular(forView: proPicView, borderWidth: 0, borderColor: UIColor.clear)
-                                                                
-                                                                // MARK: - SDWebImage
-                                                                proPicView.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                                                                
-                                                                // MARK: - NotitficationBanner
-                                                                let banner = NotificationBanner(title: "💭 \(fullMessage!)", subtitle: "", rightView: nil)
-                                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                                                banner.titleLabel?.textColor = UIColor.white
-                                                                banner.roundAllCorners(sender: banner)
-                                                                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                                                                banner.duration = 0.20
-                                                                banner.show()
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                         })
-                                                    }
+                                                    // MARK: - NotitficationBanner
+                                                    let banner = NotificationBanner(title: "👾 \(fullMessage!)", subtitle: "", style: .success)
+                                                    banner.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 15)
+                                                    banner.titleLabel?.textColor = UIColor.black
+                                                    banner.backgroundColor = UIColor.white
+                                                    banner.roundAllCorners(sender: banner)
+                                                    banner.duration = 0.20
+                                                    banner.show()
                                                 }
                                                 
                                             } else {
@@ -343,8 +327,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
-            // Call relationships function
-//            _ = queryRelationships()
             
         } else {
             // Login or Sign Up
