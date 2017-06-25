@@ -15,7 +15,6 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import MessageUI
 import OneSignal
 
 
@@ -23,7 +22,7 @@ import OneSignal
  UITableViewController class that shows the settings options for the current user.
  */
 
-class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, OSPermissionObserver, OSSubscriptionObserver {
+class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPermissionObserver, OSSubscriptionObserver {
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -194,7 +193,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        refresher.backgroundColor = UIColor.white
         refresher.tintColor = UIColor.clear
         self.tableView!.addSubview(refresher)
         
@@ -369,63 +368,17 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     self.present(activityVC, animated: true, completion: nil)
                 }
             } else if indexPath.row == 1 {
-                if MFMailComposeViewController.canSendMail() {
-                    let mail = MFMailComposeViewController()
-                    mail.mailComposeDelegate = self
-                    mail.setToRecipients(["redplanethub@gmail.com", "redplanetmediahub@gmail.com"])
-                    mail.setSubject("What I Think About Redplanet")
-                    mail.setMessageBody("🚀🦄🚀\nBe Brutally Honest\n\n3 Things I Like About Redplanet\n1.)\n2.)\n3.)\n\n3 Things I Don't Like About Redplanet\n1.)\n2.)\n3.)\n", isHTML: false)
-                    present(mail, animated: true)
-                } else {
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "Something Went Wrong",
-                                                                  message: "Configure your email to this device to send us feedback!")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                        button.layer.masksToBounds = true
-                    }
-                    // Ok Action
-                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                        // Dismiss
-                        dialog.dismiss()
-                    }))
-                    dialogController.show(in: self)
-                }
+
+                // FEEDBACK
+                // MARK: - SafariServices
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/contact/")!, entersReaderIfAvailable: false)
+                self.present(webVC, animated: true, completion: nil)
+                
             } else {
-                if MFMailComposeViewController.canSendMail() {
-                    let mail = MFMailComposeViewController()
-                    mail.mailComposeDelegate = self
-                    mail.setToRecipients(["redplanethub@gmail.com"])
-                    mail.setSubject("Verify My Account")
-                    mail.setMessageBody("🦄\nI'd Like to Verify My Account!\n\n\n1.) My Email is: \n2.) My Number is: \n3.) My Username on Redplanet is: \(PFUser.current()!.username!)\n\n\nI'd like to verify my account because:", isHTML: false)
-                    present(mail, animated: true)
-                } else {
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "Something Went Wrong",
-                                                                  message: "Configure your email to this device to send us feedback!")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                        button.layer.masksToBounds = true
-                    }
-                    // Ok Action
-                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                        // Dismiss
-                        dialog.dismiss()
-                    }))
-                    dialogController.show(in: self)
-                }
+                // VERIFICATION
+                // MARK: - SafariServices
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/verification/")!, entersReaderIfAvailable: false)
+                self.present(webVC, animated: true, completion: nil)
             }
             
         
@@ -437,8 +390,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 // ABOUT US
                 // MARK: - SafariServices
                 let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/about/")!, entersReaderIfAvailable: false)
-                webVC.view.layer.cornerRadius = 8.00
-                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
 
             } else if indexPath.row == 1 {
@@ -451,33 +402,22 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 
                 // MARK: - SafariServices
                 let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/licenses/")!, entersReaderIfAvailable: false)
-                webVC.view.layer.cornerRadius = 8.00
-                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
                 
             } else if indexPath.row == 2 {
                 // TOS
                 // MARK: - SafariServices
                 let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/terms-of-service/")!, entersReaderIfAvailable: false)
-                webVC.view.layer.cornerRadius = 8.00
-                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
             } else {
                 // PRIVACY POLICY
                 // MARK: - SafariServices
                 let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: false)
-                webVC.view.layer.cornerRadius = 8.00
-                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
             }
             
-        } // end indexPath
+        }
+        
     }// end didSelectRowAt
-    
-    
-    // MARK: MessagesUI Delegate
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
-    }
 
 }
