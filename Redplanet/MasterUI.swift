@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -133,6 +135,14 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Configure AVAudioSession
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
+                                                            with: [.duckOthers, .defaultToSpeaker])
+        } catch {
+            print("AVAudioSession; failed to set background audio preference")
+        }
         
         // Remove UITabBar border/configure UITabBar
         self.tabBar.backgroundImage = UIImage()

@@ -928,10 +928,10 @@ open class SwiftyCamViewController: UIViewController {
 		}
 
 		do{
-            // CRITICAL MODIFICATION: Audio configuration --> .allowBluetooth, and .mixWithOthers and .defaultToSpeaker(?)
+            // CRITICAL MODIFICATION: Audio configuration --> .allowBluetooth, and .mixWithOthers and .defaultToSpeaker
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
                                                             with: [.allowBluetooth, .mixWithOthers, .defaultToSpeaker])
-            // TODO:: TEST .defaultToSpeaker w BlueTooth
+            // TODO:: FIX BLUETOOTH...
             session.automaticallyConfiguresApplicationAudioSession = false
 		}
 		catch {

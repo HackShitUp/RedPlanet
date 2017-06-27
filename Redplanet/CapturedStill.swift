@@ -36,9 +36,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
 
     // MARK: - SnapSliderFilters
     let filterView = SNSlider(frame: UIScreen.main.bounds)
-    let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
-    let tapGesture = UITapGestureRecognizer()
     var data:[SNFilter] = []
+    
+    // MARK: - InstaCaptionContainer
+    let captionContainer = RPCaptionContainer(frame: UIScreen.main.bounds)
+    let tapGesture = UITapGestureRecognizer()
     
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
@@ -71,7 +73,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     
     @IBOutlet weak var textButton: UIButton!
     @IBAction func text(_ sender: Any) {
-        self.handleTap()
+        self.wakeInstaCaptionContainer()
     }
     
     @IBOutlet weak var continueButton: UIButton!
@@ -84,7 +86,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             itmPhoto["byUsername"] = PFUser.current()!.username!
             itmPhoto["contentType"] = "itm"
             itmPhoto["saved"] = false
-            itmPhoto["textPost"] = self.textField.text
+            itmPhoto["textPost"] = self.captionContainer.textView.text
             itmPhoto["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             // Show ShareWith View Controller
             shareWithObject.append(itmPhoto)
@@ -162,10 +164,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         // Enable interaction with stillPhoto for filterView
         self.stillPhoto.isUserInteractionEnabled = true
 
+        // MARK: - InstaCaptionContainer
+        self.captionContainer.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self, action: #selector(wakeInstaCaptionContainer))
+        
         // MARK: - SnapSliderFilters
         self.setupSlider()
-        self.setupTextField()
-        tapGesture.addTarget(self, action: #selector(handleTap))
 
         // MARK:- SwipeNavigationController
         self.containerSwipeNavigationController?.delegate = self
@@ -216,7 +220,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         clearArrays()
-        NotificationCenter.default.removeObserver(textField)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -234,14 +237,25 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     }
     
     
+    
+    // MARK: - InstaCaptionContainer; Function to "wake up" InstaCaptionContainer and bring to front...
+    func wakeInstaCaptionContainer() {
+        self.captionContainer.configurate()
+        self.view.addSubview(self.captionContainer)
+        _ = self.captionContainer.becomeFirstResponder()
+    }
+    
+    
+    // FUNCTION - Setup SnapSliderFilters
     func setupSlider() {
         // Setup slider
         self.stillPhoto.image = self.stillImage!
         self.createData(self.stillImage!)
         self.filterView.dataSource = self
         self.filterView.isUserInteractionEnabled = true
-        self.filterView.isMultipleTouchEnabled = false
+        self.filterView.isMultipleTouchEnabled = true
         self.filterView.isExclusiveTouch = false
+        self.filterView.addGestureRecognizer(tapGesture)
         self.stillPhoto.addSubview(filterView)
         self.filterView.reloadData()
     }
@@ -407,33 +421,14 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             // Profile Photo
             self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
         }
+    }
 
-        
-        
-        
-    }
-    
-    
-    // Handle tap to show UITextField
-    func handleTap() {
-        self.textField.handleTap()
-    }
-    
     // UPDATE NEW PICTURE
     fileprivate func updatePicture(_ newImage: UIImage) {
         createData(newImage)
         self.filterView.reloadData()
     }
-    
-    // MARK: - SNTextField
-    fileprivate func setupTextField() {
-        self.tapGesture.delegate = self
-        self.filterView.addSubview(textField)
-        self.filterView.addGestureRecognizer(tapGesture)
-        NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardTypeChanged(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-    }
+
 }
 
 

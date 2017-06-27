@@ -246,7 +246,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         let randomInt = arc4random()
         if randomInt % 2 == 0 {
             // Even
-            self.textView.text! = "What's up?"
+            self.textView.text! = "What's up? 😜"
         } else {
             // Odd
             self.textView.text! = "Thoughts are preludes to revolutionary movements..."

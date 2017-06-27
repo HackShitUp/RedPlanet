@@ -82,7 +82,7 @@ var currentRequestedFollowing = [PFObject]()
 var blockedUsers = [PFObject]()
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, OSPermissionObserver {
+class AppDelegate: UIResponder, UIApplicationDelegate, SwipeNavigationControllerDelegate, OSSubscriptionObserver, OSPermissionObserver {
 
     // UIWindow
     var window: UIWindow?
@@ -131,11 +131,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                             
                                             } else if chatUsername.count != 0 && chatUserObject.count != 0 {
                                                 if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {
-                                                    // if notificaiton titles: "from <Username>"
-                                                    // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
-                                                    // Reload data for Chats
+                                                    /* 
+                                                     IF notificaiton titles: "from <Username>" &&
+                                                     PFUser.currentUser! is CURRENTLY talking to OtherUser...
+                                                     Reload data for Chats
+                                                    */
                                                     NotificationCenter.default.post(name: rpChat, object: nil)
-                                                    print("Fired...")
                                                     
                                                 } else if fullMessage!.hasSuffix("is typing...") {
                                                     // MARK: - NotitficationBanner
@@ -206,7 +207,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         }
         
         // Call Login Function
-        // Which also calls queryRelationships()
         login()
         
         return true
@@ -288,11 +288,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
     }
     
     
+    // MARK: - SwipeNavigationController Delegate Method
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        // Code
+    }
     
-    // FUNCTION - Login; Uses iPhone disk CoreData and UserDefaults to check whether is currently logged in or not.
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        // Code
+    }
+    
+    // FUNCTION - Login; Uses Parse' PFUser object to check if nil or not
     func login() {
-        // Remember user's login
-        // By setting their username
+        // Check if PFUser exists or not
         if PFUser.current() != nil {
             
             // MARK: - HEAP
@@ -316,18 +323,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                 Heap.enableVisualizer();
             #endif
             
+            // Create and reference UIStoryboard
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             // MARK: - SwipeNavigationController
-            let cameraVC = storyboard.instantiateViewController(withIdentifier: "center") as! UINavigationController
-            let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
+            let swipeNavigationController = SwipeNavigationController(centerViewController: storyboard.instantiateViewController(withIdentifier: "center") as! UINavigationController)
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "masterUI") as! MasterUI
-            // Make rootVC
+            swipeNavigationController.delegate = self
+            
+            // Define frame of UIWindow
             self.window = UIWindow(frame: UIScreen.main.bounds)
+            // Set SwipeNavigationController as RootViewcontroller
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
-            
+
         } else {
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

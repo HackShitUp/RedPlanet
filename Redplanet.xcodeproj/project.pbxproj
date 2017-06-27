@@ -13,6 +13,8 @@
 		7E01A5201EB81C8100CD7FBF /* StoryScrollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E01A51E1EB81C8100CD7FBF /* StoryScrollCell.swift */; };
 		7E01A5211EB81C8100CD7FBF /* StoryScrollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */; };
 		7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */; };
+		7E1347BA1F007C4D002398E1 /* InstaCaptionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1347B81F007C4D002398E1 /* InstaCaptionContainer.swift */; };
+		7E1347BB1F007C4D002398E1 /* InstaTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1347B91F007C4D002398E1 /* InstaTextView.swift */; };
 		7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A12281EA813CB00663207 /* RPHelpers.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
 		7E2AC0121EF32AD200827574 /* EmailPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2AC0111EF32AD200827574 /* EmailPassword.swift */; };
@@ -207,6 +209,8 @@
 		7E01A51E1EB81C8100CD7FBF /* StoryScrollCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryScrollCell.swift; sourceTree = "<group>"; };
 		7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryScrollCell.xib; sourceTree = "<group>"; };
 		7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
+		7E1347B81F007C4D002398E1 /* InstaCaptionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstaCaptionContainer.swift; sourceTree = "<group>"; };
+		7E1347B91F007C4D002398E1 /* InstaTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstaTextView.swift; sourceTree = "<group>"; };
 		7E1A12281EA813CB00663207 /* RPHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPHelpers.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
 		7E2AC0111EF32AD200827574 /* EmailPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailPassword.swift; sourceTree = "<group>"; };
@@ -511,6 +515,15 @@
 				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 			);
 			name = StoryScrollCell;
+			sourceTree = "<group>";
+		};
+		7E1347BC1F007C53002398E1 /* InstaCaptionView */ = {
+			isa = PBXGroup;
+			children = (
+				7E1347B81F007C4D002398E1 /* InstaCaptionContainer.swift */,
+				7E1347B91F007C4D002398E1 /* InstaTextView.swift */,
+			);
+			name = InstaCaptionView;
 			sourceTree = "<group>";
 		};
 		7E3E4FBF1DC2E7F800A7B5FC /* ProfileEditing */ = {
@@ -1254,6 +1267,7 @@
 		7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */ = {
 			isa = PBXGroup;
 			children = (
+				7E1347BC1F007C53002398E1 /* InstaCaptionView */,
 				7EDB846B1EB96D41005E805E /* RPExtensions.swift */,
 				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
 				7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */,
@@ -1694,6 +1708,7 @@
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7EA570B81EC02C4A00A57C70 /* ReactionsHeader.swift in Sources */,
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
+				7E1347BA1F007C4D002398E1 /* InstaCaptionContainer.swift in Sources */,
 				7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
@@ -1822,6 +1837,7 @@
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* Search.swift in Sources */,
+				7E1347BB1F007C4D002398E1 /* InstaTextView.swift in Sources */,
 				7E79483E1EB5BD9D002DD324 /* Explore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

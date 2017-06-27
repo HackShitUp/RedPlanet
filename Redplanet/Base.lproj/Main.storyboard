@@ -3315,7 +3315,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
-                                <rect key="frame" x="267" y="20" width="25" height="25"/>
+                                <rect key="frame" x="267" y="22" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Pen"/>
                                 <connections>
@@ -3323,7 +3323,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fui-fV-1S5">
-                                <rect key="frame" x="213" y="15" width="46" height="30"/>
+                                <rect key="frame" x="213" y="17" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="Done">
@@ -3331,7 +3331,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YwU-Wf-DIY">
-                                <rect key="frame" x="159" y="15" width="46" height="30"/>
+                                <rect key="frame" x="159" y="17" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="Undo">
@@ -3339,7 +3339,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
-                                <rect key="frame" x="16" y="607" width="30" height="30"/>
+                                <rect key="frame" x="16" y="617" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="f3c-W2-WgM"/>
                                     <constraint firstAttribute="height" constant="30" id="rMB-39-dwT"/>
@@ -3349,14 +3349,16 @@
                                     <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxd-Dj-dc7">
-                                <rect key="frame" x="334" y="20" width="25" height="25"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxd-Dj-dc7">
+                                <rect key="frame" x="309" y="20" width="50" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="cHN-c6-D29"/>
                                     <constraint firstAttribute="height" constant="25" id="pJL-2C-H3s"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="30"/>
-                                <state key="normal" title="T"/>
+                                <state key="normal" title="Tt">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="text:" destination="oby-Mu-zdT" eventType="touchUpInside" id="IUw-7d-0q8"/>
                                 </connections>
@@ -3372,7 +3374,7 @@
                             <constraint firstAttribute="trailing" secondItem="KuK-8b-F8c" secondAttribute="trailing" constant="16" id="Jxy-7e-msK"/>
                             <constraint firstItem="s65-ak-j9e" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" constant="16" id="QY3-Vc-Nui"/>
                             <constraint firstAttribute="trailing" secondItem="IHD-kG-Qo1" secondAttribute="trailing" id="YwZ-Eo-d8h"/>
-                            <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="Fbn-Va-JDg" secondAttribute="bottom" constant="30" id="bQs-rN-8iy"/>
+                            <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="Fbn-Va-JDg" secondAttribute="bottom" constant="20" id="bQs-rN-8iy"/>
                             <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="IHD-kG-Qo1" secondAttribute="bottom" id="nHY-SK-d0E"/>
                             <constraint firstAttribute="trailing" secondItem="kxd-Dj-dc7" secondAttribute="trailing" constant="16" id="oud-5T-H65"/>
                             <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="KuK-8b-F8c" secondAttribute="bottom" constant="20" id="tzq-Xp-FE1"/>
@@ -3506,6 +3508,9 @@
                                                         <constraint firstAttribute="height" constant="31" id="m1n-zu-tJ5"/>
                                                     </constraints>
                                                     <color key="onTintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="privacyOptionsAction:" destination="jQC-kq-hWo" eventType="valueChanged" id="9lL-uO-vsF"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy 🔐" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NdU-WB-sDv">
                                                     <rect key="frame" x="16" y="4" width="294" height="35"/>
@@ -3537,7 +3542,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="LOGOUT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yr3-jp-F6S">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Log Out" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yr3-jp-F6S">
                                                     <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="17"/>
@@ -3585,12 +3590,40 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="tc0-bu-uNT" style="IBUITableViewCellStyleDefault" id="pB3-q6-EMg">
+                                        <rect key="frame" x="0.0" y="452" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pB3-q6-EMg" id="84j-Pz-WFy">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kMo-5v-IDY">
+                                                    <rect key="frame" x="318" y="6" width="51" height="31"/>
+                                                    <color key="onTintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="launchOptionsAction:" destination="jQC-kq-hWo" eventType="valueChanged" id="omg-Q0-qB3"/>
+                                                    </connections>
+                                                </switch>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Launch on Camera" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tc0-bu-uNT">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kMo-5v-IDY" firstAttribute="centerY" secondItem="tc0-bu-uNT" secondAttribute="centerY" id="7Al-Hs-Hch"/>
+                                                <constraint firstItem="kMo-5v-IDY" firstAttribute="trailing" secondItem="84j-Pz-WFy" secondAttribute="trailingMargin" id="zBW-Rc-piQ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="MORE" id="L75-E1-udv">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="smq-01-UKr" style="IBUITableViewCellStyleDefault" id="I0u-gg-QtU">
-                                        <rect key="frame" x="0.0" y="480" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="524" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I0u-gg-QtU" id="o0z-Ua-qlS">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3607,7 +3640,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Xan-nR-AaM" style="IBUITableViewCellStyleDefault" id="odZ-su-m6m">
-                                        <rect key="frame" x="0.0" y="524" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="568" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="odZ-su-m6m" id="m5c-vU-UMs">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3624,7 +3657,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="RYO-tT-BmV" style="IBUITableViewCellStyleDefault" id="TSD-2U-Wfs">
-                                        <rect key="frame" x="0.0" y="568" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="612" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TSD-2U-Wfs" id="Wet-KY-DQU">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3645,7 +3678,7 @@
                             <tableViewSection headerTitle="ABOUT" id="MBO-31-r45">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="ZYf-50-Bcp" style="IBUITableViewCellStyleDefault" id="ZoW-VK-rLZ" userLabel="AboutUs">
-                                        <rect key="frame" x="0.0" y="640" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="684" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZoW-VK-rLZ" id="8tt-8R-bbW">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3662,7 +3695,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="S2Q-Hn-hPQ" style="IBUITableViewCellStyleDefault" id="8mv-Nh-cxp" userLabel="Licenses">
-                                        <rect key="frame" x="0.0" y="684" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="728" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8mv-Nh-cxp" id="snT-Wa-DGM">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3679,7 +3712,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Tg1-OX-i4Q" style="IBUITableViewCellStyleDefault" id="8Mh-fd-hhC" userLabel="TOS">
-                                        <rect key="frame" x="0.0" y="728" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="772" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Mh-fd-hhC" id="POB-z1-p0A">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3696,7 +3729,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="aSS-5m-ABI" style="IBUITableViewCellStyleDefault" id="ESJ-lY-N4J" userLabel="PP">
-                                        <rect key="frame" x="0.0" y="772" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="816" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ESJ-lY-N4J" id="BoV-nq-SMT">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -3738,6 +3771,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="launchOptions" destination="kMo-5v-IDY" id="Pdc-Sc-W7i"/>
                         <outlet property="privacy" destination="l1z-Iy-S6z" id="Kko-lP-HSS"/>
                     </connections>
                 </tableViewController>
@@ -4745,7 +4779,7 @@
         <scene sceneID="KwM-L7-tM4">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KxF-QD-ug5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="NewsFeeds" id="YiN-DN-cYB"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="Home" id="YiN-DN-cYB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="EGd-5x-mdx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -4809,11 +4843,11 @@
         <image name="Exit" width="62" height="62"/>
         <image name="FlashOff" width="45" height="45"/>
         <image name="GenderNeutralUser" width="256" height="256"/>
+        <image name="Home" width="22" height="18"/>
         <image name="Invite" width="22" height="22"/>
         <image name="Left_50" width="25" height="25"/>
         <image name="LikeBlack" width="49" height="45"/>
         <image name="MoreButtonSmall" width="25" height="25"/>
-        <image name="NewsFeeds" width="25" height="25"/>
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
         <image name="PhotosRoll" width="90" height="90"/>

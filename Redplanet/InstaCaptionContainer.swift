@@ -1,14 +1,15 @@
 //
-//  RPCaptionContainer.swift
-//  Redplanet
+//  InstaCaptionContainer.swift
+//  InstagramCaption
 //
-//  Created by Joshua Choi on 4/17/17.
-//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
+//  Created by NAH on 2/11/17.
+//  Copyright © 2017 NAH. All rights reserved.
 //
-import UIKit
-import Foundation
 
-class RPCaptionContainer: UIView {
+import Foundation
+import UIKit
+
+class InstaCaptionContainer: UIView {
     
     struct ViewState {
         var transform = CGAffineTransform.identity
@@ -16,7 +17,7 @@ class RPCaptionContainer: UIView {
     }
     
     open var textViewContainer = UIView()
-    open var textView = RPTextView()
+    open var textView = InstaTextView()
     
     fileprivate var pinchGesture: UIPinchGestureRecognizer!
     fileprivate var panGesture: UIPanGestureRecognizer!
@@ -47,15 +48,13 @@ class RPCaptionContainer: UIView {
     override var isFirstResponder: Bool {
         return textView.isFirstResponder
     }
-    
+
     override func becomeFirstResponder() -> Bool {
-        self.superview?.bringSubview(toFront: self)
+        print("isFirstResponder --> \(self.isFirstResponder)")
         return textView.becomeFirstResponder()
     }
     
     override func resignFirstResponder() -> Bool {
-        print("Resigning")
-//        self.superview!.insertSubview(self, belowSubview: self.superview!)
         return textView.resignFirstResponder()
     }
     
@@ -65,13 +64,18 @@ class RPCaptionContainer: UIView {
         
         textViewContainer.frame.size = defaultSize
         textViewContainer.clipsToBounds = false
-        textViewContainer.backgroundColor = UIColor.clear
         addSubview(textViewContainer)
         
         textView.frame = textViewContainer.bounds
         textViewContainer.addSubview(textView)
         textView.configurate()
         textView.delegate = self
+        self.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        
+        // PAN
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
+        panGesture.delegate = self
+        self.textViewContainer.addGestureRecognizer(panGesture)
         
         // PINCH
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(_:)))
@@ -83,11 +87,6 @@ class RPCaptionContainer: UIView {
         rotateGesture.delegate = self
         self.textViewContainer.addGestureRecognizer(rotateGesture)
         
-        // PAN
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
-        panGesture.delegate = self
-        self.textViewContainer.addGestureRecognizer(panGesture)
-        
         // TAP
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(_:)))
         tapGesture.delegate = self
@@ -95,8 +94,13 @@ class RPCaptionContainer: UIView {
         
         viewState = getInitState()
         updateState(viewState)
+
+        textView.alpha = 1
+        textView.backgroundColor = UIColor.clear
+        textViewContainer.alpha = 1
+        textViewContainer.backgroundColor = UIColor.clear
     }
-    
+
     fileprivate func getInitState() -> ViewState {
         var viewState = ViewState()
         viewState.center = defaultCenter
@@ -109,22 +113,18 @@ class RPCaptionContainer: UIView {
         self.viewState = viewState
         textViewContainer.center = viewState.center
         textViewContainer.transform = viewState.transform
-//        self.center = viewState.center
-//        self.transform = viewState.transform
-        self.frame = self.textView.frame
-        self.clipsToBounds = true
     }
 }
 
 // MARK: - UIGestureRecognizer Delegate
-extension RPCaptionContainer: UIGestureRecognizerDelegate {
+extension InstaCaptionContainer: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }
 
 // MARK: - Gesture Handler
-extension RPCaptionContainer {
+extension InstaCaptionContainer {
     
     func tapAction(_ gesture: UITapGestureRecognizer) {
         textView.becomeFirstResponder()
@@ -155,14 +155,22 @@ extension RPCaptionContainer {
     }
 }
 
-// MARK: - UITextView Delegate ---> THIS WORKS; ALLOWS FILTER SWIPES BUT CANNOT TOUCH AND RESIZE IT. CONFIGRAUTION IS ALSO VERY BAD
-extension RPCaptionContainer: UITextViewDelegate {
+// MARK: - UITextView Delegate
+extension InstaCaptionContainer: UITextViewDelegate {
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            _ = self.resignFirstResponder()
+        }
+        
+        return true
+    }
+
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.bounds.size = textViewContainer.bounds.size
         textView.clipsToBounds = true
         textView.isScrollEnabled = true
-        
+
         lastState = viewState
         UIView.animate(withDuration: 0.3) { [unowned self] in
             self.updateState(self.getInitState())
@@ -174,21 +182,9 @@ extension RPCaptionContainer: UITextViewDelegate {
         textView.clipsToBounds = false
         textView.isScrollEnabled = false
         textView.bounds.size = contentSize
-
-//        self.textViewContainer.frame = self.textView.frame
-//        self.textViewContainer.clipsToBounds = true
-        self.frame = self.textView.frame
-        self.clipsToBounds = true
-
+        
         UIView.animate(withDuration: 0.3) { [unowned self] in
-//            self.updateState(self.lastState)
+            self.updateState(self.lastState)
         }
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            _ = self.resignFirstResponder()
-        }
-        return true
     }
 }

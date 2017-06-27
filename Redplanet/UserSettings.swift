@@ -23,11 +23,118 @@ import OneSignal
  */
 
 class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPermissionObserver, OSSubscriptionObserver {
-    
-    // Refresher
-    var refresher: UIRefreshControl!
 
     @IBOutlet weak var privacy: UISwitch!
+    @IBAction func privacyOptionsAction(_ sender: Any) {
+        
+        // Private Account
+        if self.privacy.isOn {
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Private Account",
+                                                          message: "\n• Follow requests must be confirmed.\n• Only your followers can view your posts now.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = false
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                button.layer.masksToBounds = true
+            }
+            // Ok Action
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // MARK: - Parse
+                let user = PFUser.current()
+                user!["private"] = true
+                user!.saveEventually()
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+            
+        } else {
+            // Public account
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Public Account",
+                                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile and posts will also be part of Explore's 'Featued Posts.'")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = false
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                button.layer.masksToBounds = true
+            }
+            // Ok Action
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // MARK: - Parse
+                let user = PFUser.current()
+                user!["private"] = false
+                user!.saveEventually()
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+        }
+    }
+    
+    @IBOutlet weak var launchOptions: UISwitch!
+    @IBAction func launchOptionsAction(_ sender: Any) {
+        // Private Account
+        if launchOptions.isOn {
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Launch on Camera",
+                                                          message: "Redplanet will open to the camera when you first launch the app.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = false
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                button.layer.masksToBounds = true
+            }
+            // Ok Action
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // Set UserDefaults' "launchOnCamera" to true
+                UserDefaults.standard.set(true, forKey: "launchOnCamera")
+                UserDefaults.standard.synchronize()
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+            
+        } else {
+            // Public account
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Launch on Home",
+                                                          message: "Redplanet will open to the home feed and the main interface when you first launch the app.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = false
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                button.layer.masksToBounds = true
+            }
+            // Ok Action
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // Set UserDefaults' "launchOnCamera" to false
+                UserDefaults.standard.set(false, forKey: "launchOnCamera")
+                UserDefaults.standard.synchronize()
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+        }
+    }
+    
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
@@ -48,7 +155,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
         }
     }
 
-    // Function to stylize and set title of navigation bar
+    // FUNCTION - Stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
@@ -69,64 +176,6 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
         self.setNeedsStatusBarAppearanceUpdate()
     }
 
-    // Function to set privacy
-    func setPrivacy(sender: UISwitch) {
-
-        // Private Account
-        if sender.isOn {
-            // MARK: - AZDialogViewController
-            let dialogController = AZDialogViewController(title: "Private Account",
-                                                          message: "\n• Follow requests must be confirmed.\n• Only your followers can view your posts now.")
-            dialogController.dismissDirection = .bottom
-            dialogController.dismissWithOutsideTouch = true
-            dialogController.showSeparator = true
-            // Configure style
-            dialogController.buttonStyle = { (button,height,position) in
-                button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
-                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                button.layer.masksToBounds = true
-            }
-            // Ok Action
-            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                // MARK: - Parse
-                let user = PFUser.current()
-                user!["private"] = true
-                user!.saveEventually()
-                // Dismiss
-                dialog.dismiss()
-            }))
-            dialogController.show(in: self)
-
-        } else {
-        // Public account
-            // MARK: - AZDialogViewController
-            let dialogController = AZDialogViewController(title: "Public Account",
-                                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile and posts will also be part of Explore's 'Featued Posts.'")
-            dialogController.dismissDirection = .bottom
-            dialogController.dismissWithOutsideTouch = true
-            dialogController.showSeparator = true
-            // Configure style
-            dialogController.buttonStyle = { (button,height,position) in
-                button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
-                button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                button.layer.masksToBounds = true
-            }
-            // Ok Action
-            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                // MARK: - Parse
-                let user = PFUser.current()
-                user!["private"] = false
-                user!.saveEventually()
-                // Dismiss
-                dialog.dismiss()
-            }))
-            dialogController.show(in: self)
-        }
-        
-    }
-    
     
     // Deep link user to change settings
     func openSettings() {
@@ -180,21 +229,20 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add function method to 'privacy'
-        self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
-        
-        // Set privacy
+        // Configure UISwitch...
+        // (1) Privacy; Current User's Privacy Settings and show in UISwitch; privacy
         if PFUser.current()!.value(forKey: "private") as! Bool == true {
             self.privacy.setOn(true, animated: false)
         } else {
             self.privacy.setOn(false, animated: false)
         }
         
-        // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor.white
-        refresher.tintColor = UIColor.clear
-        self.tableView!.addSubview(refresher)
+        // (2) Launch Preference; Current User's Launch Preferences and show in UISwitch; launchOptions
+        if UserDefaults.standard.bool(forKey: "launchOnCamera") == false {
+            self.launchOptions.setOn(false, animated: false)
+        } else {
+            self.launchOptions.setOn(true, animated: false)
+        }
         
         // Add UITableFooterView
         let versionView = UIView()
@@ -237,7 +285,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
             return 7
         } else if section == 1 {
             // DEVICE
-            return 2
+            return 3
         } else if section == 2{
             // MORE
             return 3
@@ -251,8 +299,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
         let view = UIView()
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
-        title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
-        title.textColor = UIColor.lightGray
+        title.font = UIFont(name: "AvenirNext-Heavy", size: 12)
+        title.textColor = UIColor.black
         title.backgroundColor = UIColor.groupTableViewBackground
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
@@ -291,15 +339,11 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
             } else if indexPath.row == 6 {
             // LOGOUT
                 // Remove logged in user from app memory
-                PFUser.logOutInBackground(block: {
-                    (error: Error?) in
+                PFUser.logOutInBackground(block: { (error: Error?) in
                     if error == nil {
-                        // Remove logged in user from App Memory
-                        DispatchQueue.main.async {
-                            // Logout
-                            let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
-                            self.present(logoutToStart, animated: true, completion: nil)
-                        }
+                        // Logout
+                        let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
+                        self.present(logoutToStart, animated: true, completion: nil)
                     }
                 })
             }
@@ -320,7 +364,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
                 let dialogController = AZDialogViewController(title: "Cleared Cache",
                                                               message: "Redplanet's network cache policy and storage was successfully reset!")
                 dialogController.dismissDirection = .bottom
-                dialogController.dismissWithOutsideTouch = true
+                dialogController.dismissWithOutsideTouch = false
                 dialogController.showSeparator = true
                 // Configure style
                 dialogController.buttonStyle = { (button,height,position) in
@@ -345,10 +389,14 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
                 dialogController.show(in: self)
                 
             } else if indexPath.row == 1 {
-            // Show permissions
+            // PERMISSIONS
                 // Show Settings
                 UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            } else {
+            // SET LAUNCH OPTIONS
             }
+            
+            
         } else if indexPath.section == 2 {
         // ====================================================================
         // MORE ===============================================================

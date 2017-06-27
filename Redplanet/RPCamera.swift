@@ -288,6 +288,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         // Stylize title
         configureView()
         
@@ -370,6 +371,12 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Determine LaunchPreferences
+        if UserDefaults.standard.bool(forKey: "launchOnCamera") == false {
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+        }
+        
         // MARK: - SwiftyCam
         // Set delegate for camera view
         self.cameraDelegate = self

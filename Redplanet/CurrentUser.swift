@@ -548,15 +548,17 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             let underlineAttributedString = NSAttributedString(string: "\(header.fullName.text!)", attributes: underlineAttribute)
             header.fullName.attributedText = underlineAttributedString
 
-            // Check for verification
-            if PFUser.current()!.value(forKey: "isVerified") as! Bool == true {
-                let attachment = NSTextAttachment()
-                attachment.image = UIImage(named: "Verified")
-                attachment.bounds = CGRect(x: 0, y: -7, width: attachment.image!.size.width, height: attachment.image!.size.height)
-                let attachmentString = NSAttributedString(attachment: attachment)
-                let myString = NSMutableAttributedString(string: "\(header.fullName.text!)")
-                myString.append(attachmentString)
-                header.fullName.attributedText = myString
+            if let isVerified = PFUser.current()!["isVerified"] as? Bool {
+                // Check for verification
+                if isVerified == true {
+                    let attachment = NSTextAttachment()
+                    attachment.image = UIImage(named: "Verified")
+                    attachment.bounds = CGRect(x: 0, y: -7, width: attachment.image!.size.width, height: attachment.image!.size.height)
+                    let attachmentString = NSAttributedString(attachment: attachment)
+                    let myString = NSMutableAttributedString(string: "\(header.fullName.text!)")
+                    myString.append(attachmentString)
+                    header.fullName.attributedText = myString
+                }
             }
         }
 
