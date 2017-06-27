@@ -25,7 +25,7 @@ import SwipeNavigationController
  This class also manages 3 important functions. Also, 2 of the last noted below are open functions accessible anywhere:
  
  (1) fetchChatsQueue() - Gets unread chats from the database class, "ChatsQueue" and configures the UITabBar badge icon.
- (2) getNewRequests() - Gets new follow requests from the database class, "FollowMe" and configures the UITabBar badge icon.
+ (2) fetchNewRequests() - Gets new follow requests from the database class, "FollowMe" and configures the UITabBar badge icon.
  
  */
 
@@ -89,18 +89,33 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
     }
     
     // FUNCTION - Get new follow requests
-    open func getNewRequests(completionHandler: @escaping (_ count: Int) -> ()) {
-        // MARK: - AppDelegate Query Relationships
-        appDelegate.queryRelationships()
-        
-        // Pass new followRequests count in completionHandler
-        completionHandler(currentRequestedFollowers.count)
+    open func fetchNewRequests(completionHandler: @escaping (_ newRequests: [PFObject]) -> ()) {
+        let newRequests = PFQuery(className: "FollowMe")
+        newRequests.limit = 1000000
+        newRequests.whereKey("isFollowing", equalTo: false)
+        newRequests.whereKey("following", equalTo: PFUser.current()!)
+        newRequests.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                currentRequestedFollowers.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    currentRequestedFollowers.append(object)
+                }
+                
+                // Pass in completionHandler
+                completionHandler(currentRequestedFollowers)
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+            
+        })
     }
+    
     
     
     // MARK: - SwipeNavigationController Delegate Method
     func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        
+        // TODO...
     }
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
@@ -176,29 +191,24 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
         // Fetch Unread Chats
         self.fetchChatsQueue { (count) in
             if count != 0 {
-                DispatchQueue.main.async(execute: {
-                    if #available(iOS 10.0, *) {
-                        self.tabBar.items?[3].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
-                    }
-                    self.tabBar.items?[3].badgeValue = "\(count)"
-                })
+                if #available(iOS 10.0, *) {
+                    self.tabBar.items?[3].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                }
+                self.tabBar.items?[3].badgeValue = "\(count)"
             } else {
                 self.tabBar.items?[3].badgeValue = nil
             }
         }
         // Get New Follow Requests
-        self.getNewRequests { (count) in
-            // Set UITabBar badge icon
-            if count != 0 {
+        self.fetchNewRequests { (objects) in
+            if objects.count != 0 {
                 if #available(iOS 10.0, *) {
                     self.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 }
-                print("Fired...")
-                self.tabBar.items?[4].badgeValue = "\(currentRequestedFollowers.count)"
-            } else {
-                self.tabBar.items?[4].badgeValue = nil
+                self.tabBar.items?[4].badgeValue = "\(objects.count)"
             }
         }
+        
     }
     
     

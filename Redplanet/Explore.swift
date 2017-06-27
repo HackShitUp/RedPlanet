@@ -597,8 +597,19 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             // (1) Set user's name
             if let user = self.featuredPosts[indexPath.item].object(forKey: "byUser") as? PFUser {
                 fCell.rpUsername.text = (user.value(forKey: "username") as! String)
+                // Check if account is verified
+                if let isVerified = user.value(forKey: "isVerified") as? Bool {
+                    if isVerified == true {
+                        let attachment = NSTextAttachment()
+                        attachment.image = UIImage(named: "Verified")
+                        attachment.bounds = CGRect(x: 0, y: 0, width: attachment.image!.size.width/2, height: attachment.image!.size.height/2)
+                        let attachmentString = NSAttributedString(attachment: attachment)
+                        let myString = NSMutableAttributedString(string: "\(fCell.rpUsername.text!)")
+                        myString.append(attachmentString)
+                        fCell.rpUsername.attributedText = myString
+                    }
+                }
             }
-
             
             // (4) Set mediaPreview or textPreview
             fCell.textPreview.isHidden = true

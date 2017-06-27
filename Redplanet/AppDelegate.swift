@@ -125,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SwipeNavigationController
                                             } else if fullMessage!.hasSuffix("requested to follow you") {
                                                 // Reload data
                                                 let masterUI = MasterUI()
-                                                masterUI.getNewRequests { (count) in
+                                                masterUI.fetchNewRequests { (count) in
                                                     print("TODO: Update new request in real time...")
                                                 }
                                             
@@ -346,8 +346,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SwipeNavigationController
             window?.rootViewController = login
         }
     }
-    
-    
+
     // FUNCTION - Query Relationships; Checks all of the current user's friends, followers, and followings, and blocked users
     func queryRelationships() {
         // (1) Query Following

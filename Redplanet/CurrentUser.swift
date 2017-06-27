@@ -82,13 +82,13 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // MARK: - MasterUI; reset UITabBar badge value and peopleButton badge with new follow requests
         let masterUI = MasterUI()
-        masterUI.getNewRequests { (count) in
+        masterUI.fetchNewRequests { (objects) in
             // Set UITabBar badge icon
-            if count != 0 {
+            if objects.count != 0 {
                 if #available(iOS 10.0, *) {
                     self.navigationController?.tabBarController?.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 }
-                self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(count)"
+                self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = "\(objects.count)"
             } else {
                 self.navigationController?.tabBarController?.tabBar.items?[4].badgeValue = nil
             }

@@ -359,7 +359,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // MARK: - UITableView Delegate Methods
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
+        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.groupTableViewBackground
     }
     
     override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
