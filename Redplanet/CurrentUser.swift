@@ -443,6 +443,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }

@@ -177,11 +177,11 @@ extension RPCaptionView: UITextViewDelegate {
 
 //        self.textViewContainer.frame = self.textView.frame
 //        self.textViewContainer.clipsToBounds = true
-        self.frame = self.textView.frame
-        self.clipsToBounds = true
+//        self.frame = self.textView.frame
+//        self.clipsToBounds = true
 
         UIView.animate(withDuration: 0.3) { [unowned self] in
-            self.updateState(self.lastState)
+//            self.updateState(self.lastState)
         }
     }
     

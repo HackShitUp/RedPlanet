@@ -181,6 +181,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         self.undoButton.isHidden = true
         self.completeButton.isHidden = true
         self.drawButton.isHidden = true
+        
+        self.textButton.setTitle("Tt", for: .normal)
 
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,

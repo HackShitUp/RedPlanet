@@ -24,10 +24,8 @@ import SwipeNavigationController
  ie: Home, Explore, Camera button, Chats, and Profile. 
  This class also manages 3 important functions. Also, 2 of the last noted below are open functions accessible anywhere:
  
- 
- (1) setButton() - Configures the camera button in the tab bar.
- (2) fetchChatsQueue() - Gets unread chats from the database class, "ChatsQueue" and configures the UITabBar badge icon.
- (3) getNewRequests() - Gets new follow requests from the database class, "FollowMe" and configures the UITabBar badge icon.
+ (1) fetchChatsQueue() - Gets unread chats from the database class, "ChatsQueue" and configures the UITabBar badge icon.
+ (2) getNewRequests() - Gets new follow requests from the database class, "FollowMe" and configures the UITabBar badge icon.
  
  */
 
@@ -195,6 +193,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate, SwipeNavigationC
                 if #available(iOS 10.0, *) {
                     self.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
                 }
+                print("Fired...")
                 self.tabBar.items?[4].badgeValue = "\(currentRequestedFollowers.count)"
             } else {
                 self.tabBar.items?[4].badgeValue = nil

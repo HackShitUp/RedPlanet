@@ -650,6 +650,20 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             if collectionView.tag == 2 {
                 // (1) Set username
                 eCell.rpUsername.text! = (self.randomUsers[indexPath.item].value(forKey: "username") as! String).lowercased()
+                
+                // Check if account is verified
+                if let isVerified = self.randomUsers[indexPath.row].value(forKey: "isVerified") as? Bool {
+                    if isVerified == true {
+                        let attachment = NSTextAttachment()
+                        attachment.image = UIImage(named: "Verified")
+                        attachment.bounds = CGRect(x: 0, y: 0, width: attachment.image!.size.width/2, height: attachment.image!.size.height/2)
+                        let attachmentString = NSAttributedString(attachment: attachment)
+                        let myString = NSMutableAttributedString(string: "\(eCell.rpUsername.text!)")
+                        myString.append(attachmentString)
+                        eCell.rpUsername.attributedText = myString
+                    }
+                }
+                
                 // (2) Set fullName
                 eCell.rpFullName.text! = (self.randomUsers[indexPath.item].value(forKey: "realNameOfUser") as! String)
                 // (3) Get and set profile photo
@@ -672,6 +686,20 @@ extension Explore: UICollectionViewDelegate, UICollectionViewDataSource, DZNEmpt
             // GEOCODE
                 // (1) Set username
                 eCell.rpUsername.text! = (self.geocodeUsers[indexPath.item].value(forKey: "username") as! String).lowercased()
+                
+                // Check if account is verified
+                if let isVerified = self.geocodeUsers[indexPath.row].value(forKey: "isVerified") as? Bool {
+                    if isVerified == true {
+                        let attachment = NSTextAttachment()
+                        attachment.image = UIImage(named: "Verified")
+                        attachment.bounds = CGRect(x: 0, y: 0, width: attachment.image!.size.width/2, height: attachment.image!.size.height/2)
+                        let attachmentString = NSAttributedString(attachment: attachment)
+                        let myString = NSMutableAttributedString(string: "\(eCell.rpUsername.text!)")
+                        myString.append(attachmentString)
+                        eCell.rpUsername.attributedText = myString
+                    }
+                }
+                
                 // (2) Set fullName
                 eCell.rpFullName.text! = (self.geocodeUsers[indexPath.item].value(forKey: "realNameOfUser") as! String)
                 // (3) Get and set profile photo
