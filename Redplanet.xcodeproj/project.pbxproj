@@ -17,6 +17,8 @@
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
 		7E2AC0121EF32AD200827574 /* EmailPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2AC0111EF32AD200827574 /* EmailPassword.swift */; };
 		7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3066461E90F7D800CDEABD /* CurrentUser.swift */; };
+		7E371A891F0228AA0086351D /* RPCaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E371A871F0228AA0086351D /* RPCaptionView.swift */; };
+		7E371A8A1F0228AA0086351D /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E371A881F0228AA0086351D /* RPTextView.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
 		7E4199251E4C668000EFA065 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4199241E4C668000EFA065 /* SwipeView.m */; };
@@ -166,8 +168,6 @@
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
 		7EDB846C1EB96D41005E805E /* RPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDB846B1EB96D41005E805E /* RPExtensions.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
-		7EDEB9F41EA5684400EEE4E1 /* RPCaptionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */; };
-		7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */; };
 		7EDEB9F91EA5A3AA00EEE4E1 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */; };
 		7EE35EAF1EB0073300C14FAD /* RPPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */; };
 		7EE79A4D1EDBB52C005D91AD /* Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE79A4C1EDBB52C005D91AD /* Likes.swift */; };
@@ -212,6 +212,8 @@
 		7E2AC0111EF32AD200827574 /* EmailPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailPassword.swift; sourceTree = "<group>"; };
 		7E3066461E90F7D800CDEABD /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		7E371A871F0228AA0086351D /* RPCaptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionView.swift; sourceTree = "<group>"; };
+		7E371A881F0228AA0086351D /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
 		7E3FFB201EF2416800694D82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -433,8 +435,6 @@
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
 		7EDB846B1EB96D41005E805E /* RPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPExtensions.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
-		7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionContainer.swift; sourceTree = "<group>"; };
-		7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
 		7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPPopUpVC.swift; sourceTree = "<group>"; };
 		7EE79A4C1EDBB52C005D91AD /* Likes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likes.swift; sourceTree = "<group>"; };
 		7EE79A4E1EDBB969005D91AD /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
@@ -511,6 +511,15 @@
 				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 			);
 			name = StoryScrollCell;
+			sourceTree = "<group>";
+		};
+		7E371A8B1F0228B20086351D /* RPCaptionView */ = {
+			isa = PBXGroup;
+			children = (
+				7E371A871F0228AA0086351D /* RPCaptionView.swift */,
+				7E371A881F0228AA0086351D /* RPTextView.swift */,
+			);
+			name = RPCaptionView;
 			sourceTree = "<group>";
 		};
 		7E3E4FBF1DC2E7F800A7B5FC /* ProfileEditing */ = {
@@ -595,15 +604,6 @@
 				7E6D90E11ECF9D0C00F7FD6B /* CollectionCell.xib */,
 			);
 			name = CollectionCell;
-			sourceTree = "<group>";
-		};
-		7E6E24BE1EBC5C6800D52490 /* RPCaption */ = {
-			isa = PBXGroup;
-			children = (
-				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
-				7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */,
-			);
-			name = RPCaption;
 			sourceTree = "<group>";
 		};
 		7E7E38BD1DD533CF00DEC27B /* CONTACTS */ = {
@@ -1254,10 +1254,10 @@
 		7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */ = {
 			isa = PBXGroup;
 			children = (
+				7E371A8B1F0228B20086351D /* RPCaptionView */,
 				7EDB846B1EB96D41005E805E /* RPExtensions.swift */,
 				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
 				7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */,
-				7E6E24BE1EBC5C6800D52490 /* RPCaption */,
 			);
 			name = RPCustomClasses;
 			sourceTree = "<group>";
@@ -1718,6 +1718,7 @@
 				7EBDAF291EE7A5E500C645D9 /* UIImageColors.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
+				7E371A891F0228AA0086351D /* RPCaptionView.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
 				7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */,
 				7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */,
@@ -1745,6 +1746,7 @@
 				7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7E99CA081E90E42700661B78 /* MasterUI.swift in Sources */,
+				7E371A8A1F0228AA0086351D /* RPTextView.swift in Sources */,
 				7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
@@ -1759,7 +1761,6 @@
 				7E4199251E4C668000EFA065 /* SwipeView.m in Sources */,
 				7E972FDF1EA93E8B0047F4D4 /* StoryCell.swift in Sources */,
 				7E95F54D1ECB9A6F007E4507 /* FeaturedCell.swift in Sources */,
-				7EDEB9F41EA5684400EEE4E1 /* RPCaptionContainer.swift in Sources */,
 				7EE79A4D1EDBB52C005D91AD /* Likes.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
 				7E98E9451DB75057001B7329 /* CLHighlightShadowEffect.m in Sources */,
@@ -1817,7 +1818,6 @@
 				7E80352E1EB4102700C9BA63 /* Home.swift in Sources */,
 				7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
-				7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */,
 				7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */,
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,

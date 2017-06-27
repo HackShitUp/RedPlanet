@@ -9,7 +9,7 @@
     </dependencies>
     <customFonts key="customFonts">
         <array key="AvenirNext.ttc">
-            <string>AvenirNext-DemiBold</string>
+            <string>AvenirNext-Bold</string>
         </array>
     </customFonts>
     <scenes>
@@ -26,20 +26,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17A-bs-yJ7">
-                                <rect key="frame" x="137" y="283" width="100" height="100"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="60"/>
+                                <rect key="frame" x="0.0" y="145" width="375" height="376"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="60"/>
                                 <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <color key="shadowColor" red="0.2550490359" green="0.2550490359" blue="0.2550490359" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="shadowOffset" width="3" height="1"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="17A-bs-yJ7" secondAttribute="bottom" constant="284" id="I3b-yP-bM1"/>
-                            <constraint firstItem="17A-bs-yJ7" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="283" id="KH7-cY-5BW"/>
-                            <constraint firstItem="17A-bs-yJ7" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="137" id="O4a-Rw-p0v"/>
-                            <constraint firstAttribute="trailing" secondItem="17A-bs-yJ7" secondAttribute="trailing" constant="138" id="gBR-Qn-8SS"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="17A-bs-yJ7" secondAttribute="bottom" constant="146" id="I3b-yP-bM1"/>
+                            <constraint firstItem="17A-bs-yJ7" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="145" id="KH7-cY-5BW"/>
+                            <constraint firstItem="17A-bs-yJ7" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="O4a-Rw-p0v"/>
+                            <constraint firstAttribute="trailing" secondItem="17A-bs-yJ7" secondAttribute="trailing" id="gBR-Qn-8SS"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>

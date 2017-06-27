@@ -3349,11 +3349,11 @@
                                     <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxd-Dj-dc7">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxd-Dj-dc7">
                                 <rect key="frame" x="309" y="20" width="50" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="25" id="cHN-c6-D29"/>
-                                    <constraint firstAttribute="height" constant="25" id="pJL-2C-H3s"/>
+                                    <constraint firstAttribute="width" constant="50" id="cHN-c6-D29"/>
+                                    <constraint firstAttribute="height" constant="30" id="pJL-2C-H3s"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="30"/>
                                 <state key="normal" title="Tt">

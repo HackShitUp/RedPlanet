@@ -1,5 +1,5 @@
 //
-//  RPCaptionContainer.swift
+//  RPCaptionView.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 4/17/17.
@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 
-class RPCaptionContainer: UIView {
+class RPCaptionView: UIView {
     
     struct ViewState {
         var transform = CGAffineTransform.identity
@@ -117,14 +117,14 @@ class RPCaptionContainer: UIView {
 }
 
 // MARK: - UIGestureRecognizer Delegate
-extension RPCaptionContainer: UIGestureRecognizerDelegate {
+extension RPCaptionView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }
 
 // MARK: - Gesture Handler
-extension RPCaptionContainer {
+extension RPCaptionView {
     
     func tapAction(_ gesture: UITapGestureRecognizer) {
         textView.becomeFirstResponder()
@@ -156,7 +156,7 @@ extension RPCaptionContainer {
 }
 
 // MARK: - UITextView Delegate ---> THIS WORKS; ALLOWS FILTER SWIPES BUT CANNOT TOUCH AND RESIZE IT. CONFIGRAUTION IS ALSO VERY BAD
-extension RPCaptionContainer: UITextViewDelegate {
+extension RPCaptionView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.bounds.size = textViewContainer.bounds.size

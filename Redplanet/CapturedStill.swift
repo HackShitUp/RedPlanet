@@ -39,7 +39,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     var data:[SNFilter] = []
     
     // MARK: - InstaCaptionContainer
-    let captionContainer = RPCaptionContainer(frame: UIScreen.main.bounds)
+    let captionContainer = RPCaptionView(frame: UIScreen.main.bounds)
     let tapGesture = UITapGestureRecognizer()
     
     @IBOutlet weak var undoButton: UIButton!
@@ -241,8 +241,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     // MARK: - InstaCaptionContainer; Function to "wake up" InstaCaptionContainer and bring to front...
     func wakeInstaCaptionContainer() {
         self.captionContainer.configurate()
-        self.view.addSubview(self.captionContainer)
-        _ = self.captionContainer.becomeFirstResponder()
+        self.filterView.addSubview(self.captionContainer)
+//        _ = self.captionContainer.becomeFirstResponder()
     }
     
     
