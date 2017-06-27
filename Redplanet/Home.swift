@@ -188,8 +188,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                         self.tableView.emptyDataSetSource = self
                         self.tableView.emptyDataSetDelegate = self
                         self.tableView.reloadEmptyDataSet()
+                    } else {
+                        self.tableView?.reloadData()
                     }
-                    self.tableView?.reloadData()
                 })
 
             } else {
@@ -258,12 +259,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Fetch Friends' or Following's Stories depending on index
-        if segmentedControl.selectedSegmentIndex == 0 {
-            fetchFriends()
-        } else {
-            fetchFollowing()
-        }
     }
     
     override func viewDidLoad() {
@@ -302,6 +297,14 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         refresher.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
+        
+        
+        // Fetch Friends' or Following's Stories depending on index
+        if segmentedControl.selectedSegmentIndex == 0 {
+            fetchFriends()
+        } else {
+            fetchFollowing()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

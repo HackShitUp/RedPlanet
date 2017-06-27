@@ -923,21 +923,20 @@ open class SwiftyCamViewController: UIViewController {
 	/// Sets whether SwiftyCam should enable background audio from other applications or sources
 
 	fileprivate func setBackgroundAudioPreference() {
-		guard allowBackgroundAudio == true else {
-			return
-		}
-
-		do{
-            // CRITICAL MODIFICATION: Audio configuration --> .allowBluetooth, and .mixWithOthers and .defaultToSpeaker
+        guard allowBackgroundAudio == true else {
+            return
+        }
+        
+        do{
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: [.allowBluetooth, .mixWithOthers, .defaultToSpeaker])
-            // TODO:: FIX BLUETOOTH...
+                                                            with: [.duckOthers, .defaultToSpeaker])
+            
             session.automaticallyConfiguresApplicationAudioSession = false
-		}
-		catch {
-			print("[SwiftyCam]: Failed to set background audio preference")
-
-		}
+        }
+        catch {
+            print("[SwiftyCam]: Failed to set background audio preference")
+            
+        }
 	}
 }
 

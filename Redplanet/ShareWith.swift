@@ -238,8 +238,8 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
-            button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+            button.layer.borderColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1).cgColor
+            button.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             button.layer.masksToBounds = true
         }
         // Add OK button
@@ -318,7 +318,8 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     // MARK: - SwipeNavigationControllerDelegate Method
     func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
         let vcCount = self.navigationController?.viewControllers.count
-        // If position is center
+        
+        // Center
         if position == .center {
             // Pop 2 VC's and push to bot || pop 1 VC
             if self.navigationController?.viewControllers.count == vcCount {
@@ -327,10 +328,16 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 _ = self.navigationController?.popViewController(animated: true)
             }
         }
+        
+        // Main UI
+        if position == .bottom {
+            NotificationCenter.default.post(name: homeNotification, object: nil)
+        }
+        
     }
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-        // EMPTY
+        // Code
     }
     
     // MARK: - DZNEmptyDataSet

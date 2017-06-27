@@ -151,63 +151,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
     }
     
-    
-    // MARK: - CoreLocation Delegate Methods
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations[0]
-        // MARK: - CLGeocoder
-        // Reverse engineer coordinates, and get address
-        geoLocation.reverseGeocodeLocation(location) {
-            (placemarks: [CLPlacemark]?, error: Error?) in
-            if error == nil {
-                if placemarks!.count > 0 {
-                    let pm = placemarks![0]
-                    // Save PFGeoPoint
-                    let geoPoint = PFGeoPoint(latitude: pm.location!.coordinate.latitude, longitude: pm.location!.coordinate.longitude)
-                    PFUser.current()!["location"] = geoPoint
-                    PFUser.current()!.saveInBackground()
-                    
-                    if currentGeoFence.isEmpty {
-                        // Append: CLPlacemark
-                        currentGeoFence.append(pm)
-                        
-                        // MARK: - RPHelpers; Get weather data
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
-                        
-                        // MARK: - CLLocationManager
-                        manager.stopUpdatingLocation()
-                    } else {
-                        // End queues
-                        self.geoLocation.cancelGeocode()
-                        // MARK: - CLLocationManager
-                        manager.stopUpdatingLocation()
-                    }
-                }
-            } else {
-                print("Reverse geocoderfailed with error: \(error?.localizedDescription as Any)")
-                if (error?.localizedDescription as Any) as! String == "The operation couldn’t be completed. (kCLErrorDomain error 2.)" {
-                    // End queues
-                    self.geoLocation.cancelGeocode()
-                    // MARK: - CLLocationManager
-                    manager.stopUpdatingLocation()
-                }
-            }
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("locationManager:\(manager) didFailWithError:\(error)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse {
-            // Trigger location
-            self.triggerLocation()
-        }
-    }
-    
-    // Function to trigger location
+    // FUNCTION - Trigger location
     func triggerLocation() {
         // MARK: - CoreLocation
         manager.delegate = self
@@ -217,7 +161,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     
-    // Function to authorize user's location
+    // FUNCTION - Authorize user's location
     func authorizeLocation() {
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse:
@@ -308,16 +252,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.cameraDelegate = self
         // Set delegate to record video
         self.captureButton.delegate = self
-        // Set video duration and length
-        self.maximumVideoDuration = 10.00
-        // Set tap to focus
-        self.tapToFocus = true
-        // Double tap to switch camera
-        self.doubleTapCameraSwitch = true
-        // Allow background music
-        self.allowBackgroundAudio = true
-        // Add boost
-        self.lowLightBoost = true
+
         
         // MARK: - SnapSliderFilters
         // Set bool so images aren't flipped and reloaded
@@ -334,38 +269,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         } else {
             self.libraryButton.isHidden = false
             self.newTextButton.isHidden = false
-        }
-        
-        // Tap button to take photo
-        let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
-        captureTap.numberOfTapsRequired = 1
-        captureButton.isUserInteractionEnabled = true
-        captureButton.addGestureRecognizer(captureTap)
-        
-        // Hold button to take record video
-        let holdRecord = UILongPressGestureRecognizer(target: self, action: #selector(startVideoRecording))
-        holdRecord.minimumPressDuration = 1.50
-        captureButton.isUserInteractionEnabled = true
-        captureButton.addGestureRecognizer(holdRecord)
-
-        // Tap to show ProfileUI
-        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showMainUI))
-        proPicTap.numberOfTapsRequired = 1
-        rpUserProPic.isUserInteractionEnabled = true
-        rpUserProPic.addGestureRecognizer(proPicTap)
-        
-        // Bring buttons to front
-        let buttons = [self.rpUserProPic,
-                       self.flashButton,
-                       self.searchButton,
-                       self.swapCameraButton,
-                       self.libraryButton,
-                       self.newTextButton] as [Any]
-        for b in buttons {
-            // MARK: - RPHelpers
-            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
-            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-            self.view.bringSubview(toFront: self.captureButton)
         }
     }
     
@@ -392,6 +295,38 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.allowBackgroundAudio = true
         // Add boost
         self.lowLightBoost = true
+
+        // Tap button to take photo
+        let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
+        captureTap.numberOfTapsRequired = 1
+        captureButton.isUserInteractionEnabled = true
+        captureButton.addGestureRecognizer(captureTap)
+        
+        // Hold button to take record video
+        let holdRecord = UILongPressGestureRecognizer(target: self, action: #selector(startVideoRecording))
+        holdRecord.minimumPressDuration = 1.50
+        captureButton.isUserInteractionEnabled = true
+        captureButton.addGestureRecognizer(holdRecord)
+        
+        // Tap to show ProfileUI
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showMainUI))
+        proPicTap.numberOfTapsRequired = 1
+        rpUserProPic.isUserInteractionEnabled = true
+        rpUserProPic.addGestureRecognizer(proPicTap)
+        
+        // Bring buttons to front
+        let buttons = [self.rpUserProPic,
+                       self.flashButton,
+                       self.searchButton,
+                       self.swapCameraButton,
+                       self.libraryButton,
+                       self.newTextButton] as [Any]
+        for b in buttons {
+            // MARK: - RPHelpers
+            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+            self.view.bringSubview(toFront: self.captureButton)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -430,6 +365,63 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
+    
+    // MARK: - CoreLocation Delegate Methods
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations[0]
+        // MARK: - CLGeocoder
+        // Reverse engineer coordinates, and get address
+        geoLocation.reverseGeocodeLocation(location) {
+            (placemarks: [CLPlacemark]?, error: Error?) in
+            if error == nil {
+                if placemarks!.count > 0 {
+                    let pm = placemarks![0]
+                    // Save PFGeoPoint
+                    let geoPoint = PFGeoPoint(latitude: pm.location!.coordinate.latitude, longitude: pm.location!.coordinate.longitude)
+                    PFUser.current()!["location"] = geoPoint
+                    PFUser.current()!.saveInBackground()
+                    
+                    if currentGeoFence.isEmpty {
+                        // Append: CLPlacemark
+                        currentGeoFence.append(pm)
+                        
+                        // MARK: - RPHelpers; Get weather data
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
+                        
+                        // MARK: - CLLocationManager
+                        manager.stopUpdatingLocation()
+                    } else {
+                        // End queues
+                        self.geoLocation.cancelGeocode()
+                        // MARK: - CLLocationManager
+                        manager.stopUpdatingLocation()
+                    }
+                }
+            } else {
+                print("Reverse geocoderfailed with error: \(error?.localizedDescription as Any)")
+                if (error?.localizedDescription as Any) as! String == "The operation couldn’t be completed. (kCLErrorDomain error 2.)" {
+                    // End queues
+                    self.geoLocation.cancelGeocode()
+                    // MARK: - CLLocationManager
+                    manager.stopUpdatingLocation()
+                }
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("locationManager:\(manager) didFailWithError:\(error)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            // Trigger location
+            self.triggerLocation()
+        }
+    }
+
+    
 }
 
 
