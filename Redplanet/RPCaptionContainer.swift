@@ -181,7 +181,7 @@ extension RPCaptionContainer: UITextViewDelegate {
         self.clipsToBounds = true
 
         UIView.animate(withDuration: 0.3) { [unowned self] in
-//            self.updateState(self.lastState)
+            self.updateState(self.lastState)
         }
     }
     
