@@ -48,11 +48,11 @@ public class NotificationBannerQueue: NSObject {
             banners.append(banner)
             
             if banners.index(of: banner) == 0 {
-                banner.show(placeOnQueue: false)
+                banner.show(placeOnQueue: false, bannerPosition: banner.bannerPosition)
             }
             
         } else {
-            banner.show(placeOnQueue: false)
+            banner.show(placeOnQueue: false, bannerPosition: banner.bannerPosition)
             
             if let firstBanner = banners.first {
                 firstBanner.suspend()
@@ -68,8 +68,10 @@ public class NotificationBannerQueue: NSObject {
         -parameter callback: The closure to execute after a banner is shown or when the queue is empty
     */
     func showNext(callback: ((_ isEmpty: Bool) -> Void)) {
-    
-        banners.remove(at: 0)
+
+        if !banners.isEmpty {
+          banners.removeFirst()
+        }
         guard let banner = banners.first else {
             callback(true)
             return
