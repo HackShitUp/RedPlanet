@@ -154,18 +154,17 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     // FUNCTION - Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Edit Post"
+            self.title = "Editing..."
         }
         
         // MARK: - RPExtensions; whitenBar and roundTopCorners
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.view.roundTopCorners(sender: self.navigationController?.view)
         // Hide UITabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         

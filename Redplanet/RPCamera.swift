@@ -121,6 +121,23 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
         // Tapped preview layer
+        let focusView = UILabel(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        focusView.text = String().randomEmoji()
+        focusView.alpha = 0.5
+        focusView.center = point
+        focusView.alpha = 0.0
+        view.addSubview(focusView)
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseInOut, animations: {
+            focusView.alpha = 1.0
+            focusView.transform = CGAffineTransform(scaleX: 1.25, y: 1.25)
+        }, completion: { (success) in
+            UIView.animate(withDuration: 0.15, delay: 0.5, options: .curveEaseInOut, animations: {
+                focusView.alpha = 0.0
+                focusView.transform = CGAffineTransform(translationX: 0.6, y: 0.6)
+            }, completion: { (success) in
+                focusView.removeFromSuperview()
+            })
+        })
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didChangeZoomLevel zoom: CGFloat) {
@@ -282,19 +299,19 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         
         // MARK: - SwiftyCam
         // Set delegate for camera view
-        self.cameraDelegate = self
+        cameraDelegate = self
         // Set delegate to record video
-        self.captureButton.delegate = self
+        captureButton.delegate = self
         // Set video duration and length
-        self.maximumVideoDuration = 10.00
+        maximumVideoDuration = 10.00
         // Set tap to focus
-        self.tapToFocus = true
+        tapToFocus = true
         // Double tap to switch camera
-        self.doubleTapCameraSwitch = true
+        doubleTapCameraSwitch = true
         // Allow background music
-        self.allowBackgroundAudio = true
+        allowBackgroundAudio = true
         // Add boost
-        self.lowLightBoost = true
+        lowLightBoost = true
 
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))

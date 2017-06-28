@@ -138,15 +138,12 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     func refresh() {
         // Reload data
         fetchQueues()
-        // End refresher
-        self.refresher.endRefreshing()
     }
     
     // Query Parse; <ChatsQueue>
     func fetchQueues() {
         
         // Show UIRefreshControl
-        self.refresher?.tintColor = UIColor.white
         self.refresher?.beginRefreshing()
 
         let frontChat = PFQuery(className: "ChatsQueue")
@@ -424,6 +421,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .allEvents)
         tableView!.addSubview(refresher)
         
         // Tap to dismiss keyboard

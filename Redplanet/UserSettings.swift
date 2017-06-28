@@ -300,14 +300,14 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, OSPer
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
         title.font = UIFont(name: "AvenirNext-Heavy", size: 12)
-        title.textColor = UIColor.black
+        title.textColor = UIColor.darkGray
         title.backgroundColor = UIColor.groupTableViewBackground
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
         view.addSubview(title)
         return view
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
         // ====================================================================

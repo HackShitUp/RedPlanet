@@ -40,6 +40,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     
     // MARK: - InstaCaptionContainer
     let captionContainer = RPCaptionView(frame: UIScreen.main.bounds)
+    let textView = UITextView(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height/2))
     let tapGesture = UITapGestureRecognizer()
     
     @IBOutlet weak var undoButton: UIButton!
@@ -163,6 +164,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         
         // Enable interaction with stillPhoto for filterView
         self.stillPhoto.isUserInteractionEnabled = true
+        // Set textButton title
+        self.textButton.setTitle("Aa", for: .normal)
 
         // MARK: - InstaCaptionContainer
         self.captionContainer.addGestureRecognizer(tapGesture)
@@ -181,8 +184,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         self.undoButton.isHidden = true
         self.completeButton.isHidden = true
         self.drawButton.isHidden = true
-        
-        self.textButton.setTitle("Tt", for: .normal)
 
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,

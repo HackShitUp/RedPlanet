@@ -39,8 +39,6 @@
 	<string>To share photos from your library and save photos to your Camera Roll.</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>audio</string>
-		<string>bluetooth-central</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
