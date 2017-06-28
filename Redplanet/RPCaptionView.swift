@@ -31,7 +31,7 @@ class RPCaptionView: UIView {
     }
     
     var defaultCenter: CGPoint {
-        return CGPoint(x: bounds.width/2, y: bounds.height/2)
+        return CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
     }
     
     var defaultTransform: CGAffineTransform {
@@ -106,7 +106,8 @@ class RPCaptionView: UIView {
         self.viewState = viewState
         textViewContainer.center = viewState.center
         textViewContainer.transform = viewState.transform
-        self.frame = self.textViewContainer.frame
+
+//        self.frame = self.textViewContainer.frame
 //        self.clipsToBounds = true
 //        print(self.frame)
     }
@@ -151,7 +152,7 @@ extension RPCaptionView {
     }
 }
 
-// MARK: - UITextView Delegate ---> THIS WORKS; ALLOWS FILTER SWIPES BUT CANNOT TOUCH AND RESIZE IT. CONFIGRAUTION IS ALSO VERY BAD
+// MARK: - UITextView Delegate
 extension RPCaptionView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -162,7 +163,7 @@ extension RPCaptionView: UITextViewDelegate {
         lastState = viewState
         UIView.animate(withDuration: 0.3) { [unowned self] in
             self.updateState(self.getInitState())
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height/2)
         }
     }
     

@@ -288,7 +288,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         
         // II DAY
         let day = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-        day.font = UIFont(name: "GillSans-Bold", size: 60)
+        day.font = UIFont(name: "AvenirNext-Bold", size: 50)
         day.textColor = UIColor.white
         day.layer.applyShadow(layer: day.layer)
         day.text = "\(dayOfWeek)"
@@ -344,10 +344,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         */
         
         var rpFilters = ["nil",
-                         "CIPhotoEffectInstant",
+                         "CISharpenLuminance",
                          "CIPhotoEffectChrome",
                          "CIPhotoEffectNoir",
-                         "CICMYKHalftone"]
+                         "CIColorPosterize"]
         
         // Append data accordingly
         if currentGeoFence.isEmpty || temperature.isEmpty {
