@@ -10,7 +10,26 @@ import UIKit
 import CoreImage
 
 open class SNFilter: UIImageView {
-    open static var filterIdentities = [String]()
+    
+    /*
+     Array to hold CoreImageFilters --> This public variable is accessible in 
+     CapturedStill.swift and is append-able.
+     */
+    open static var filterIdentities = ["nil" ,
+                                        "CIUnsharpMask",
+                                        "CINoiseReduction",
+                                        "CISharpenLuminance",
+                                        "CIPhotoEffectChrome",
+                                        "CIPhotoEffectNoir",
+                                        "CICMYKHalftone",
+                                        
+                                        "CICrystallize",
+                                        "CIGloom",
+                                        "CIEdgeWork",
+        
+                                        "nil",
+                                        "nil"]
+    
     open var name:String?
     var stickers = [SNSticker]()
     
@@ -50,37 +69,6 @@ open class SNFilter: UIImageView {
         self.layer.mask = maskLayer;
     }
     
-    
-    /*
-     } else if name == "CIColorControls" {
-     // (1) CIImage:
-     // UIImage --> CGImage --> CIImage
-     let aCIImage = CIImage(cgImage: filter.image!.cgImage!)
-     // (2) Define Context
-     let context = CIContext(options: nil)
-     // (3) CIFilter
-     let brightnessFilter = CIFilter(name: name)
-     // Set Image
-     brightnessFilter?.setValue(aCIImage, forKey: "inputImage")
-     // Configure Brightness
-     brightnessFilter?.setValue(0.50, forKey: "inputBrightness")
-     // (4) CIImage --> declare and get output image from filter
-     let outputImage = brightnessFilter?.outputImage
-     // (5) CGImage --> get cgImage created from CIContext
-     let imageRef = context.createCGImage(outputImage!, from: outputImage!.extent)
-     // (6) Convert filtered cgImage to UIImage and set orientation
-     var filteredImage: UIImage?
-     if isRearCam! == true {
-     filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.right)
-     } else if isRearCam! == false {
-     filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
-     }
-     // (7) Add filtered image to array
-     filter.image = filteredImage
-     return filter
-     */
-    
-    
     func applyFilter(filterNamed name:String) -> SNFilter {
         
         let filter: SNFilter = self.copy() as! SNFilter
@@ -109,9 +97,9 @@ open class SNFilter: UIImageView {
             // (6) Convert filtered cgImage to UIImage and set orientation
             var filteredImage: UIImage?
             if isRearCam! == true {
-                filteredImage = UIImage(cgImage: outputCGImage!, scale: 1.0, orientation: UIImageOrientation.right)
+                filteredImage = UIImage(cgImage: outputCGImage!, scale: 0.5, orientation: UIImageOrientation.right)
             } else if isRearCam! == false {
-                filteredImage = UIImage(cgImage: outputCGImage!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
+                filteredImage = UIImage(cgImage: outputCGImage!, scale: 0.5, orientation: UIImageOrientation.leftMirrored)
             }
             // (7) Add filtered image to array
             filter.image = filteredImage

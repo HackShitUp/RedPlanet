@@ -264,8 +264,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     }
     
     
-    //MARK: Functions
+    // MARK: SnapSliderFilters - Create Image Filters
     fileprivate func createData(_ image: UIImage) {
+        
+        // Clear Data (filterIdentities)
+        self.data.removeAll(keepingCapacity: false)
 
         // Configure TIME and DAY
         let timeFormatter = DateFormatter()
@@ -274,7 +277,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         dayFormatter.dateFormat = "EEEE"
         let dayOfWeek = dayFormatter.string(from: Date())
         
-        // I TIME STAMP
+        // I TIME FILTER
         let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
         time.font = UIFont(name: "AvenirNext-Demibold", size: 60)
         time.textColor = UIColor.white
@@ -286,7 +289,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // II DAY
+        // II DAY FILTER
         let day = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
         day.font = UIFont(name: "AvenirNext-Bold", size: 50)
         day.textColor = UIColor.white
@@ -298,17 +301,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let dayStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        // III RED FILTER
-        let red = UIView()
-        red.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-        red.alpha = 0.25
-        red.frame = self.view.bounds
-        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        red.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let redFilter = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        
+        /*
         // IV "Me, Myself, and I"
         let me = UIImageView(frame: self.view.bounds)
         me.contentMode = .scaleAspectFill
@@ -323,56 +316,20 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         me.layer.render(in: UIGraphicsGetCurrentContext()!)
         let meFilter = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        */
 
         
-        /*
-         (0) OG Photo
-         (1) Instant
-         (2) Chrome
-         (3) Halftone
-         (4) Noir
-         
-         (5) Red
-         (6) Time
-         (7) Day
-         
-         (8) CITY
-         (9) TEMP
-         (10) ME
-         (11)
-         (12)
-        */
-        
-        var rpFilters = ["nil",
-                         "CISharpenLuminance",
-                         "CIPhotoEffectChrome",
-                         "CIPhotoEffectNoir",
-                         "CIColorPosterize"]
+        self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+        // Time
+        self.data[5].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
+        // Day
+        self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
         
         // Append data accordingly
-        if currentGeoFence.isEmpty || temperature.isEmpty {
-        // GEOLOCATION DISABLED ==================================================
-            // Append filters
-            rpFilters.append(contentsOf:
-                            ["nil",
-                            "nil",
-                            "nil",
-                            "nil"])
-            SNFilter.filterIdentities.append(contentsOf: rpFilters)
-            self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            // Red
-            self.data[5].addSticker(SNSticker(frame: self.view.bounds, image: redFilter!, atZPosition: 0))
-            // Time
-            self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
-            // Day
-            self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
-            // Profile Photo
-            self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
-            
-        } else {
+        if !currentGeoFence.isEmpty || !temperature.isEmpty {
         // GEOLOCATION ENABLED ===================================================
 
-            // IV AREA: "City, State"
+            // LOCATION FILTER
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
             city.textColor = UIColor.white
             city.backgroundColor = UIColor.clear
@@ -389,7 +346,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            // V TEMERPATURE
+            // TEMERPATURE FILTER
             let temp = UILabel(frame: self.view.bounds)
             temp.font = UIFont(name: "Futura-Bold", size: 50)
             temp.textColor = UIColor.white
@@ -402,28 +359,17 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            // Append filters
-            rpFilters.append(contentsOf: ["nil",
-                                          "nil",
-                                          "nil",
-                                          "nil",
-                                          "nil",
-                                          "nil"])
-            SNFilter.filterIdentities.append(contentsOf: rpFilters)
+            
+            SNFilter.filterIdentities.append(contentsOf: ["nil",
+                                                          "nil"])
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            // Red
-            self.data[5].addSticker(SNSticker(frame: self.view.bounds, image: redFilter!, atZPosition: 0))
-            // Time
-            self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
-            // Day
-            self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
             // Location
-            self.data[8].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
+            self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
             // Temperature
-            self.data[9].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
-            // Profile Photo
-            self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
+            self.data[8].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
         }
+        
+        print(data.count)
     }
 
     // UPDATE NEW PICTURE
