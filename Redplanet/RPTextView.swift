@@ -24,7 +24,7 @@ class RPTextView: UITextView {
         self.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         
         // Set UIEdgeInsets
-        self.contentInset = UIEdgeInsets(top: 88, left: 8, bottom: 0, right: 8)
+        self.contentInset = UIEdgeInsets(top: 88, left: 16, bottom: 0, right: 16)
         
         // MARK: - RPExtensions
         self.layer.applyShadow(layer: self.layer)

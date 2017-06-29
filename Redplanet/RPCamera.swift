@@ -74,11 +74,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
-        DispatchQueue.main.async(execute: {
-            let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
-            stillVC.stillImage = photo
-            self.navigationController?.pushViewController(stillVC, animated: false)
-        })
+        let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
+        stillVC.stillImage = photo
+        self.navigationController?.pushViewController(stillVC, animated: false)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {

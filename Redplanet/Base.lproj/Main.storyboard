@@ -2181,10 +2181,11 @@
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcf-O0-oxy">
                                         <rect key="frame" x="119" y="5" width="25" height="25"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="qcf-O0-oxy" secondAttribute="height" multiplier="1:1" id="ffm-FL-kVu"/>
                                         </constraints>
-                                        <state key="normal" image="Stickers"/>
+                                        <state key="normal" image="StickersChat"/>
                                         <connections>
                                             <action selector="showStickers:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mxG-Pl-57o"/>
                                         </connections>
@@ -4859,7 +4860,7 @@
         <image name="SentFilled" width="45" height="45"/>
         <image name="Settings" width="24" height="24"/>
         <image name="ShareOP" width="50" height="50"/>
-        <image name="Stickers" width="75" height="75"/>
+        <image name="StickersChat" width="55" height="55"/>
         <image name="SwapCamera" width="100" height="100"/>
         <image name="User_48" width="24" height="24"/>
         <image name="Views" width="50" height="50"/>

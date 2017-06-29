@@ -107,6 +107,8 @@ class RPCaptionView: UIView {
         textViewContainer.center = viewState.center
         textViewContainer.transform = viewState.transform
 
+//        self.center = viewState.center
+//        self.transform = viewState.transform
 //        self.frame = self.textViewContainer.frame
 //        self.clipsToBounds = true
 //        print(self.frame)
@@ -161,9 +163,11 @@ extension RPCaptionView: UITextViewDelegate {
         textView.isScrollEnabled = true
         
         lastState = viewState
+        self.updateState(self.getInitState())
         UIView.animate(withDuration: 0.3) { [unowned self] in
-            self.updateState(self.getInitState())
+//            self.updateState(self.getInitState())
             self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height/2)
+            self.clipsToBounds = true
         }
     }
     
@@ -185,6 +189,10 @@ extension RPCaptionView: UITextViewDelegate {
         if text == "\n" {
             _ = self.resignFirstResponder()
         }
-        return true
+        
+        // Limit text to 500 characters
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.characters.count
+        return numberOfChars < 500
     }
 }

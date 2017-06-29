@@ -15,18 +15,14 @@ open class SNFilter: UIImageView {
      Array to hold CoreImageFilters --> This public variable is accessible in 
      CapturedStill.swift and is append-able.
      */
-    open static var filterIdentities = ["nil" ,
-                                        "CIUnsharpMask",
-                                        "CINoiseReduction",
-                                        "CISharpenLuminance",
+    open static var filterIdentities = ["CINoiseReduction",
                                         "CIPhotoEffectChrome",
                                         "CIPhotoEffectNoir",
                                         "CICMYKHalftone",
-                                        
                                         "CICrystallize",
                                         "CIGloom",
                                         "CIEdgeWork",
-        
+                                        "CIPhotoEffectFade",
                                         "nil",
                                         "nil"]
     
@@ -86,20 +82,20 @@ open class SNFilter: UIImageView {
             // (1) Create Source Image
             let sourceImage = CIImage(image: filter.image!)
             // (2) Create Filter Image
-            let myFilter = CIFilter(name: name)
-            myFilter?.setDefaults()
+            let rpFilter = CIFilter(name: name)
+            rpFilter?.setDefaults()
             // (3) Set Source Image
-            myFilter?.setValue(sourceImage, forKey: kCIInputImageKey)
+            rpFilter?.setValue(sourceImage, forKey: kCIInputImageKey)
             // (4) Create Core Image Context
             let context = CIContext(options: nil)
             // (5) Output filtered image as cgImage with dimension
-            let outputCGImage = context.createCGImage(myFilter!.outputImage!, from: myFilter!.outputImage!.extent)
+            let outputCGImage = context.createCGImage(rpFilter!.outputImage!, from: rpFilter!.outputImage!.extent)
             // (6) Convert filtered cgImage to UIImage and set orientation
             var filteredImage: UIImage?
             if isRearCam! == true {
-                filteredImage = UIImage(cgImage: outputCGImage!, scale: 0.5, orientation: UIImageOrientation.right)
+                filteredImage = UIImage(cgImage: outputCGImage!, scale: 0.5, orientation: .right)
             } else if isRearCam! == false {
-                filteredImage = UIImage(cgImage: outputCGImage!, scale: 0.5, orientation: UIImageOrientation.leftMirrored)
+                filteredImage = UIImage(cgImage: outputCGImage!, scale: 0.5, orientation: .leftMirrored)
             }
             // (7) Add filtered image to array
             filter.image = filteredImage

@@ -24,44 +24,37 @@ import OneSignal
 
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     // Declare Stickers
-    let stickers = ["HeartFilled",
-                    "HeartBroken",
-                    "Stickers",
-                    "Sun.png",
-                    "Pineapple.png",
-                        "9.png",
-                        "10.png",
-                        "11.png",
-                        "12.png",
-                        "13.png",
-                        "14.png",
-                        "15.png",
-                        "16.png",
-                        "17.png",
-                        "18.png",
-                        "19.png",
-                        "20.png",
-                        "30.png",
-                        "31.png",
-                        "32.png",
-                        "691505.png",
-                        "691504.png",
-                        "691502.png",
-                        "691501.png",
-                        "691499.png",
-                        "691498.png",
-                        "691497.png",
-                        "691496.png",
-                        "691495.png",
-                        "691494.png",
-                        "691493.png",
-                        "691491.png",
-                        "691490.png",
-                        "3018651.png",
-                        "3018646.png",
-                        "3018638.png",
-                        "3018637.png",
-                        ]
+    let stickers = ["bruh",
+                    "crying",
+                    "cute",
+                    "dance",
+                    "duh",
+                    "electrified",
+                    "embarrassed",
+                    "ew",
+                    "faded",
+                    "goodbye",
+                    "happybirthday",
+                    "hello",
+                    "icanteven",
+                    "ily",
+                    "lit",
+                    "loveit",
+                    "makeout",
+                    "nah",
+                    "ok",
+                    "omg",
+                    "question",
+                    "sorry",
+                    "Sun",
+                    "thankyou",
+                    "wannachill",
+                    "word",
+                    "wow",
+                    "wtf",
+                    "yay",
+                    "yougotit",
+                    "yourealright"]
     
     
     // MARK: - UIView Life Cycle
@@ -80,6 +73,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width/4, height: UIScreen.main.bounds.size.width/4)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
+        
         
         collectionView!.collectionViewLayout = layout
         collectionView!.reloadData()

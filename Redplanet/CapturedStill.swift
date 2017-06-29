@@ -36,7 +36,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
 
     // MARK: - SnapSliderFilters
     let filterView = SNSlider(frame: UIScreen.main.bounds)
-    var data:[SNFilter] = []
+    var filterData: [SNFilter] = []
     
     // MARK: - InstaCaptionContainer
     let captionContainer = RPCaptionView(frame: UIScreen.main.bounds)
@@ -167,12 +167,20 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         // Set textButton title
         self.textButton.setTitle("Aa", for: .normal)
 
-        // MARK: - InstaCaptionContainer
+        // MARK: - RPCaptionContainer
         self.captionContainer.addGestureRecognizer(tapGesture)
         tapGesture.addTarget(self, action: #selector(wakeInstaCaptionContainer))
         
         // MARK: - SnapSliderFilters
-        self.setupSlider()
+        self.stillPhoto.image = self.stillImage!
+        self.createData(self.stillImage!)
+        self.filterView.dataSource = self
+        self.filterView.isUserInteractionEnabled = true
+        self.filterView.isMultipleTouchEnabled = true
+        self.filterView.isExclusiveTouch = false
+        self.filterView.addGestureRecognizer(tapGesture)
+        self.stillPhoto.addSubview(filterView)
+        self.filterView.reloadData()
 
         // MARK:- SwipeNavigationController
         self.containerSwipeNavigationController?.delegate = self
@@ -249,26 +257,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     }
     
     
-    // FUNCTION - Setup SnapSliderFilters
-    func setupSlider() {
-        // Setup slider
-        self.stillPhoto.image = self.stillImage!
-        self.createData(self.stillImage!)
-        self.filterView.dataSource = self
-        self.filterView.isUserInteractionEnabled = true
-        self.filterView.isMultipleTouchEnabled = true
-        self.filterView.isExclusiveTouch = false
-        self.filterView.addGestureRecognizer(tapGesture)
-        self.stillPhoto.addSubview(filterView)
-        self.filterView.reloadData()
-    }
-    
-    
     // MARK: SnapSliderFilters - Create Image Filters
     fileprivate func createData(_ image: UIImage) {
         
         // Clear Data (filterIdentities)
-        self.data.removeAll(keepingCapacity: false)
+        filterData.removeAll(keepingCapacity: false)
 
         // Configure TIME and DAY
         let timeFormatter = DateFormatter()
@@ -301,29 +294,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let dayStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        /*
-        // IV "Me, Myself, and I"
-        let me = UIImageView(frame: self.view.bounds)
-        me.contentMode = .scaleAspectFill
-        if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
-            // MARK: - SDWebImage
-            me.sd_setImage(with: URL(string: proPic.url!))
-        } else {
-            me.image = UIImage(named: "GenderNeutralUser")
-        }
-        me.alpha = 0.25
-        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        me.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let meFilter = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        */
-
-        
-        self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+        // Generate Filters; Modify index if new CIFilters are added
+        filterData = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
         // Time
-        self.data[5].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
+        filterData[8].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
         // Day
-        self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
+        filterData[9].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
         
         // Append data accordingly
         if !currentGeoFence.isEmpty || !temperature.isEmpty {
@@ -359,17 +335,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            
-            SNFilter.filterIdentities.append(contentsOf: ["nil",
-                                                          "nil"])
-            self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+            // Append 2 new filters
+            SNFilter.filterIdentities.append(contentsOf: ["nil", "nil"])
+            // Generate data
+            filterData = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
             // Location
-            self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
+            filterData[10].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
             // Temperature
-            self.data[8].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
+            filterData[11].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
         }
-        
-        print(data.count)
     }
 
     // UPDATE NEW PICTURE
@@ -389,11 +363,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
 extension CapturedStill: SNSliderDataSource {
     
     func numberOfSlides(_ slider: SNSlider) -> Int {
-        return data.count
+        return filterData.count
     }
     
     func slider(_ slider: SNSlider, slideAtIndex index: Int) -> SNFilter {
-        return data[index]
+        return filterData[index]
     }
     
     func startAtIndex(_ slider: SNSlider) -> Int {
