@@ -68,6 +68,7 @@ open class SNSlider: UIView {
     }
     
     fileprivate func loadData() {
+        
         self.numberOfPages = dataSource!.numberOfSlides(self)
         self.startingIndex = dataSource!.startAtIndex(self)
         self.slider.contentSize = CGSize(width: self.frame.width*(CGFloat(numberOfPages+2)), height: self.frame.height)
@@ -111,15 +112,18 @@ open class SNSlider: UIView {
 extension SNSlider: UIScrollViewDelegate {
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         for i in 0..<data.count {
             data[i].updateMask(data[i].frame, newXPosition: positionOfPageAtIndex(i-1)-scrollView.contentOffset.x)
         }
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
         if (scrollView.contentOffset.x == positionOfPageAtIndex(-1)) {
             self.slider.scrollRectToVisible(CGRect(x: positionOfPageAtIndex(numberOfPages-1),y: 0,width: self.frame.width,height: self.frame.height), animated:false);
-        } else if (scrollView.contentOffset.x == positionOfPageAtIndex(numberOfPages)) {
+        }
+        else if (scrollView.contentOffset.x == positionOfPageAtIndex(numberOfPages)) {
             self.slider.scrollRectToVisible(CGRect(x: positionOfPageAtIndex(0),y: 0,width: self.frame.width,height: self.frame.height), animated:false);
         }
     }
