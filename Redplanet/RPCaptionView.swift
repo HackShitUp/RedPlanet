@@ -163,9 +163,14 @@ extension RPCaptionView: UITextViewDelegate {
         textView.isScrollEnabled = true
         
         lastState = viewState
-        self.updateState(self.getInitState())
+//        self.updateState(self.getInitState())
         UIView.animate(withDuration: 0.3) { [unowned self] in
 //            self.updateState(self.getInitState())
+            
+            var viewState = ViewState()
+            viewState.center = self.defaultCenter
+            viewState.transform = self.defaultTransform
+            
             self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height/2)
             self.clipsToBounds = true
         }

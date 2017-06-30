@@ -108,6 +108,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Reset UINavigationBar font title
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+        }
+        
         // MARK: - RPExtensions; whitenBar
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
