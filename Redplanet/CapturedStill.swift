@@ -38,8 +38,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     let filterView = SNSlider(frame: UIScreen.main.bounds)
     var data: [SNFilter] = []
     
-    // MARK: - InstaCaptionContainer
-    let captionContainer = RPCaptionView(frame: UIScreen.main.bounds)
+    // MARK: - RPCaptionView
+    var rpCaptionView: RPCaptionView!
     let textView = UITextView(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height/2))
     let tapGesture = UITapGestureRecognizer()
     
@@ -74,7 +74,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     
     @IBOutlet weak var textButton: UIButton!
     @IBAction func text(_ sender: Any) {
-        self.wakeInstaCaptionContainer()
+        self.wakeCaptionView()
     }
     
     @IBOutlet weak var continueButton: UIButton!
@@ -87,7 +87,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             itmPhoto["byUsername"] = PFUser.current()!.username!
             itmPhoto["contentType"] = "itm"
             itmPhoto["saved"] = false
-            itmPhoto["textPost"] = self.captionContainer.textView.text
+            itmPhoto["textPost"] = self.rpCaptionView.textView.text
             itmPhoto["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             // Show ShareWith View Controller
             shareWithObject.append(itmPhoto)
@@ -167,9 +167,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         // Set textButton title
         self.textButton.setTitle("Aa", for: .normal)
 
-        // MARK: - RPCaptionContainer
-        self.captionContainer.addGestureRecognizer(tapGesture)
-        tapGesture.addTarget(self, action: #selector(wakeInstaCaptionContainer))
+        // MARK: - RPCaptionView
+        rpCaptionView = RPCaptionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height/2))
+        rpCaptionView.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self, action: #selector(wakeCaptionView))
         
         // MARK: - SnapSliderFilters
         self.stillPhoto.image = self.stillImage!
@@ -247,11 +248,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         SDImageCache.shared().clearDisk()
     }
 
-    // MARK: - InstaCaptionContainer; Function to "wake up" InstaCaptionContainer and bring to front...
-    func wakeInstaCaptionContainer() {
-        self.captionContainer.configurate()
-        self.filterView.addSubview(self.captionContainer)
-//        _ = self.captionContainer.becomeFirstResponder()
+    // MARK: - RPCaptionView; Function to "wake up" RPCaptionView and bring to front...
+    func wakeCaptionView() {
+        self.filterView.addSubview(self.rpCaptionView)
+        _ = self.rpCaptionView.becomeFirstResponder()
+//        self.view.bringSubview(toFront: self.rpCaptionView)
+//        _ = self.rpCaptionView.becomeFirstResponder()
     }
     
     // MARK: SnapSliderFilters - Create Image Filters

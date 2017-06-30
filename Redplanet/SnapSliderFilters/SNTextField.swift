@@ -74,15 +74,15 @@ extension SNTextField: UITextFieldDelegate {
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return true;
+        return true
     }
     
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        return true;
+        return true
     }
     
     public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return true;
+        return true
     }
     
     // Limit the text size to the screen width
@@ -95,7 +95,7 @@ extension SNTextField: UITextFieldDelegate {
     // Hide the keyboard
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         hideKeyboard()
-        return true;
+        return true
     }
 }
 

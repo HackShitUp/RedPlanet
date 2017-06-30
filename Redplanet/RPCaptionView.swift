@@ -10,38 +10,48 @@ import Foundation
 
 class RPCaptionView: UIView {
     
+    // Struct element to determine state of object
     struct ViewState {
         var transform = CGAffineTransform.identity
         var center = CGPoint.zero
     }
     
-    open var textViewContainer = UIView()
-    open var textView = RPTextView()
-    
-    fileprivate var pinchGesture: UIPinchGestureRecognizer!
-    fileprivate var panGesture: UIPanGestureRecognizer!
-    fileprivate var rotateGesture: UIRotationGestureRecognizer!
-    fileprivate var tapGesture: UITapGestureRecognizer!
-    
     fileprivate private(set) var viewState: ViewState?
     fileprivate var lastState: ViewState?
     
+//    var defaultSize: CGSize {
+//        return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2)
+//    }
+//    
+//    var defaultCenter: CGPoint {
+////        return CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
+//        return CGPoint(x: bounds.width / 2, y: bounds.width / 2)
+//    }
+    
     var defaultSize: CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        let width = UIScreen.main.bounds.width
+        return CGSize(width: width * 2, height: width * 2)
     }
     
     var defaultCenter: CGPoint {
-        return CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
+        return CGPoint(x: bounds.width / 2, y: bounds.width / 2)
     }
     
     var defaultTransform: CGAffineTransform {
         return CGAffineTransform.init(scaleX: 0.5, y: 0.5)
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        configurate()
-    }
+    
+    // MARK: - Class variables
+    open var textViewContainer = UIView()
+    open var textView = RPTextView()
+    
+    // MARK: - UIGestureRecognizers
+    fileprivate var pinchGesture: UIPinchGestureRecognizer!
+    fileprivate var panGesture: UIPanGestureRecognizer!
+    fileprivate var rotateGesture: UIRotationGestureRecognizer!
+    fileprivate var tapGesture: UITapGestureRecognizer!
+    
     
     override var isFirstResponder: Bool {
         return textView.isFirstResponder
@@ -49,14 +59,18 @@ class RPCaptionView: UIView {
     
     override func becomeFirstResponder() -> Bool {
         self.superview?.bringSubview(toFront: self)
-        return textView.becomeFirstResponder()
+        self.textView.becomeFirstResponder()
+        return self.textView.isFirstResponder
     }
     
     override func resignFirstResponder() -> Bool {
         return textView.resignFirstResponder()
     }
     
-    func configurate() {
+    // Initialize RPCaptionView
+    required public override init(frame: CGRect) {
+        super.init(frame: frame)
+
         clipsToBounds = false
         backgroundColor = UIColor.clear
         
@@ -71,28 +85,33 @@ class RPCaptionView: UIView {
         textView.delegate = self
         
         // PINCH
-        pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(_:)))
+        pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchAction(sender:)))
         pinchGesture.delegate = self
         self.textViewContainer.addGestureRecognizer(pinchGesture)
         
         // ROTATE
-        rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(rotateAction(_:)))
+        rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(rotateAction(sender:)))
         rotateGesture.delegate = self
         self.textViewContainer.addGestureRecognizer(rotateGesture)
         
         // PAN
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(sender:)))
         panGesture.delegate = self
         self.textViewContainer.addGestureRecognizer(panGesture)
         
         // TAP
-        tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(_:)))
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(sender:)))
         tapGesture.delegate = self
         self.textViewContainer.addGestureRecognizer(tapGesture)
         
         viewState = getInitState()
         updateState(viewState)
     }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     
     fileprivate func getInitState() -> ViewState {
         var viewState = ViewState()
@@ -106,51 +125,82 @@ class RPCaptionView: UIView {
         self.viewState = viewState
         textViewContainer.center = viewState.center
         textViewContainer.transform = viewState.transform
-
-//        self.center = viewState.center
-//        self.transform = viewState.transform
-//        self.frame = self.textViewContainer.frame
-//        self.clipsToBounds = true
-//        print(self.frame)
     }
 }
 
 // MARK: - UIGestureRecognizer Delegate
 extension RPCaptionView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+//        return true
+        return gestureRecognizer.view?.isKind(of: UITextView.classForCoder()) == false &&
+            otherGestureRecognizer.view?.isKind(of: UITextView.classForCoder()) == false
     }
 }
 
 // MARK: - Gesture Handlers
 extension RPCaptionView {
     
-    func tapAction(_ gesture: UITapGestureRecognizer) {
+    func tapAction(sender: UITapGestureRecognizer) {
         textView.becomeFirstResponder()
     }
     
-    func panAction(_ gesture: UIPanGestureRecognizer) {
-        textView.resignFirstResponder()
+    func panAction(sender: UIPanGestureRecognizer) {
+//        textView.resignFirstResponder()
+//        guard var viewState = viewState else { return }
+//        viewState.center = sender.location(in: self)
+//        updateState(viewState)
+//        sender.setTranslation(.zero, in: sender.view)
         guard var viewState = viewState else { return }
-        viewState.center = gesture.location(in: self)
-        updateState(viewState)
-        gesture.setTranslation(.zero, in: gesture.view)
+        switch sender.state {
+        case .began:
+            textView.resignFirstResponder()
+        case .changed:
+            let translation = sender.translation(in: sender.view)
+            let newCenter = CGPoint(x: viewState.center.x + translation.x, y: viewState.center.y + translation.y)
+            viewState.center = newCenter
+            updateState(viewState)
+            sender.setTranslation(CGPoint.zero, in: sender.view)
+        default:
+            break
+        }
     }
     
-    func pinchAction(_ gesture: UIPinchGestureRecognizer) {
-        textView.resignFirstResponder()
+    func pinchAction(sender: UIPinchGestureRecognizer) {
+//        textView.resignFirstResponder()
+//        guard var viewState = viewState else { return }
+//        viewState.transform = viewState.transform.scaledBy(x: sender.scale, y: sender.scale)
+//        updateState(viewState)
+//        sender.scale = 1
         guard var viewState = viewState else { return }
-        viewState.transform = viewState.transform.scaledBy(x: gesture.scale, y: gesture.scale)
-        updateState(viewState)
-        gesture.scale = 1
+        switch sender.state {
+        case .began:
+            textView.resignFirstResponder()
+        case .changed:
+            viewState.transform = viewState.transform.scaledBy(x: sender.scale, y: sender.scale)
+            updateState(viewState)
+            sender.scale = 1
+        default:
+            break
+        }
     }
     
-    func rotateAction(_ gesture: UIRotationGestureRecognizer) {
-        textView.resignFirstResponder()
+    func rotateAction(sender: UIRotationGestureRecognizer) {
+//        textView.resignFirstResponder()
+//        guard var viewState = viewState else { return }
+//        viewState.transform = viewState.transform.rotated(by: sender.rotation)
+//        updateState(viewState)
+//        sender.rotation = 0
         guard var viewState = viewState else { return }
-        viewState.transform = viewState.transform.rotated(by: gesture.rotation)
-        updateState(viewState)
-        gesture.rotation = 0
+        switch sender.state {
+        case .began:
+            textView.resignFirstResponder()
+        case .changed:
+            viewState.transform = viewState.transform.rotated(by: sender.rotation)
+            updateState(viewState)
+            sender.rotation = 0
+        default:
+            break
+        }
     }
 }
 
@@ -163,31 +213,30 @@ extension RPCaptionView: UITextViewDelegate {
         textView.isScrollEnabled = true
         
         lastState = viewState
-//        self.updateState(self.getInitState())
         UIView.animate(withDuration: 0.3) { [unowned self] in
-//            self.updateState(self.getInitState())
-            
-            var viewState = ViewState()
-            viewState.center = self.defaultCenter
-            viewState.transform = self.defaultTransform
-            
-            self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height/2)
-            self.clipsToBounds = true
+            self.updateState(self.getInitState())
         }
+        
+        print(self.frame)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        // Bring self to front of keyWindow
-        UIApplication.shared.keyWindow?.bringSubview(toFront: self)
-        
         let contentSize = textView.contentSize
         textView.clipsToBounds = false
         textView.isScrollEnabled = false
         textView.bounds.size = contentSize
-
+        
         UIView.animate(withDuration: 0.3) { [unowned self] in
             self.updateState(self.lastState)
+            // self.frame = self.textViewContainer.frame
         }
+
+        // Bring self to front of keyWindow
+        UIApplication.shared.keyWindow?.bringSubview(toFront: self)
+        
+        print("UITextView_Frame: \(self.textView.frame)")
+        print("TextViewContainer_Frame: \(self.textViewContainer.frame)")
+        print("RPCaptionView_Frame: \(self.frame)")
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

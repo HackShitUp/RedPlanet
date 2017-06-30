@@ -18,8 +18,6 @@
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
 		7E2AC0121EF32AD200827574 /* EmailPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2AC0111EF32AD200827574 /* EmailPassword.swift */; };
 		7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3066461E90F7D800CDEABD /* CurrentUser.swift */; };
-		7E371A891F0228AA0086351D /* RPCaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E371A871F0228AA0086351D /* RPCaptionView.swift */; };
-		7E371A8A1F0228AA0086351D /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E371A881F0228AA0086351D /* RPTextView.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
 		7E4199251E4C668000EFA065 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4199241E4C668000EFA065 /* SwipeView.m */; };
@@ -179,6 +177,8 @@
 		7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE671E3C7B6D003FA134 /* UserCell.xib */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
+		7EFB45AA1F06E66F00BBC779 /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB45A81F06E66F00BBC779 /* RPTextView.swift */; };
+		7EFB45AB1F06E66F00BBC779 /* RPCaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB45A91F06E66F00BBC779 /* RPCaptionView.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -213,8 +213,6 @@
 		7E2AC0111EF32AD200827574 /* EmailPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailPassword.swift; sourceTree = "<group>"; };
 		7E3066461E90F7D800CDEABD /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
-		7E371A871F0228AA0086351D /* RPCaptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionView.swift; sourceTree = "<group>"; };
-		7E371A881F0228AA0086351D /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
 		7E3FFB201EF2416800694D82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -445,6 +443,8 @@
 		7EECEE671E3C7B6D003FA134 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
+		7EFB45A81F06E66F00BBC779 /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
+		7EFB45A91F06E66F00BBC779 /* RPCaptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionView.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -516,8 +516,8 @@
 		7E371A8B1F0228B20086351D /* RPCaptionView */ = {
 			isa = PBXGroup;
 			children = (
-				7E371A871F0228AA0086351D /* RPCaptionView.swift */,
-				7E371A881F0228AA0086351D /* RPTextView.swift */,
+				7EFB45A91F06E66F00BBC779 /* RPCaptionView.swift */,
+				7EFB45A81F06E66F00BBC779 /* RPTextView.swift */,
 			);
 			name = RPCaptionView;
 			sourceTree = "<group>";
@@ -1701,6 +1701,7 @@
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
+				7EFB45AA1F06E66F00BBC779 /* RPTextView.swift in Sources */,
 				7EC7690B1EB6655B00507911 /* NewsCell.swift in Sources */,
 				7E607DBE1ED64D320029292D /* ViewsCell.swift in Sources */,
 				7EDB846C1EB96D41005E805E /* RPExtensions.swift in Sources */,
@@ -1718,7 +1719,6 @@
 				7EBDAF291EE7A5E500C645D9 /* UIImageColors.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
-				7E371A891F0228AA0086351D /* RPCaptionView.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
 				7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */,
 				7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */,
@@ -1746,7 +1746,6 @@
 				7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7E99CA081E90E42700661B78 /* MasterUI.swift in Sources */,
-				7E371A8A1F0228AA0086351D /* RPTextView.swift in Sources */,
 				7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
@@ -1815,6 +1814,7 @@
 				7EBAFEF11ED7BAE300BB052D /* SubtleVolume.swift in Sources */,
 				7E80DAAD1EB420D7003F0067 /* UIViewShadowExtension.swift in Sources */,
 				7E80352E1EB4102700C9BA63 /* Home.swift in Sources */,
+				7EFB45AB1F06E66F00BBC779 /* RPCaptionView.swift in Sources */,
 				7E0F0F271F04A08500D1F050 /* RPCamera.swift in Sources */,
 				7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
