@@ -14,19 +14,23 @@ class RPTextView: UITextView {
     func configurate() {
         // Those properties need to set after attributedText
         text = ""
-        font = UIFont(name: "AvenirNext-Bold", size: 60)
+        font = UIFont(name: "AvenirNext-Bold", size: 70)
         textAlignment = .center
         spellCheckingType = .no
         backgroundColor = UIColor.clear
         textColor = UIColor.white
         
         // Set tint color
-        self.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        self.tintColor = UIColor.groupTableViewBackground
         
         // Set UIEdgeInsets
         self.contentInset = UIEdgeInsets(top: 88, left: 16, bottom: 0, right: 16)
         
         // MARK: - RPExtensions
         self.layer.applyShadow(layer: self.layer)
+        
+        // Hide scrolls
+        self.showsHorizontalScrollIndicator = false
+        self.showsVerticalScrollIndicator = true
     }
 }

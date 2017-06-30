@@ -252,8 +252,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     func wakeCaptionView() {
         self.filterView.addSubview(self.rpCaptionView)
         _ = self.rpCaptionView.becomeFirstResponder()
-//        self.view.bringSubview(toFront: self.rpCaptionView)
-//        _ = self.rpCaptionView.becomeFirstResponder()
     }
     
     // MARK: SnapSliderFilters - Create Image Filters
