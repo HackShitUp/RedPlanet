@@ -25,13 +25,11 @@ var chatCamera: Bool = false
 // Boolean to determine camera side; used for SnapSliderFilters to process filters efficiently
 var isRearCam: Bool?
 
-
 /*
  Class that adopts the SwiftyCamViewController (open-source). If the user taps the camera button (photo-moment), this class
  pushes to "CapturedStill.swift". Otherwise, if the user holds onto the camera button (video-moment), this class pushes to
  "CapturedVideo.swift"
- */
-
+*/
 
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
     
@@ -381,12 +379,66 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         SDImageCache.shared().clearDisk()
     }
     
-    // MARK: - CoreLocation Delegate Methods
+    
+    
+    
+    
+    /******************************************************************************************
+     // MARK: - OpenWeatherMap.org API
+     *******************************************************************************************/
+    open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        
+        // MARK: - OpenWeatherMap API
+        URLSession.shared.dataTask(with: URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=0abf9dff54ea3ccb6561c3574557594c")!,
+                                   completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+                                    if error != nil {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - RPHelpers
+                                        let rpHelpers = RPHelpers()
+                                        rpHelpers.showError(withTitle: "Network Error")
+                                        return
+                                    }
+                                    do  {
+                                        // Traverse JSON data to "Mutable Containers"
+                                        let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
+                                        
+                                        // Optionally chain NSDictionary value to prevent from crashing...
+                                        if let main = (json as AnyObject).value(forKey: "main") as? NSDictionary {
+                                            let kelvin = main["temp"] as! Double
+                                            let farenheit = (kelvin * 1.8) - 459.67
+                                            let celsius = kelvin - 273.15
+                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
+                                            // Append Temperature as String
+                                            temperature.append(both)
+                                        }
+                                        
+                                    } catch let error {
+                                        print(error.localizedDescription as Any)
+                                        // MARK: - RPHelpers
+                                        let rpHelpers = RPHelpers()
+                                        rpHelpers.showError(withTitle: "Network Error")
+                                    }
+        }) .resume()
+    }
+    
+    
+    
+    /*
+     MARK: - CoreLocation Delegate Methods
+     (1) Append Altitude: CLLocationDistance
+     (2) Append Geolocation: CLPlacemark
+     (3) Append Weather: String
+     */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations[0]
-        // MARK: - CLGeocoder
-        // Reverse engineer coordinates, and get address
-        geoLocation.reverseGeocodeLocation(location) {
+        // Clear global arrays in "CapturedStill.swift"
+        let capturedStill = CapturedStill()
+        capturedStill.clearArrays()
+        
+        // (1) CLLocationDistance
+        altitudeFence.append(locations[0].altitude)
+        
+        // MARK: - CLGeocoder; Reverse engineer coordinates, and get the address
+        geoLocation.reverseGeocodeLocation(locations[0]) {
             (placemarks: [CLPlacemark]?, error: Error?) in
             if error == nil {
                 if placemarks!.count > 0 {
@@ -397,12 +449,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                     PFUser.current()!.saveInBackground()
                     
                     if currentGeoFence.isEmpty {
-                        // Append: CLPlacemark
+                        
+                        // (2) Append Geolocation --> CLPlacemark
                         currentGeoFence.append(pm)
                         
-                        // MARK: - RPHelpers; Get weather data
-                        let rpHelpers = RPHelpers()
-                        _ = rpHelpers.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
+                        // (3) Append Weather --> String
+                        // MARK: - OpenWeatherMap API
+                        self.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
+                        
                         
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()

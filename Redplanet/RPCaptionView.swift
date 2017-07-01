@@ -109,7 +109,15 @@ class RPCaptionView: UIView {
     fileprivate func updateFrame(_ viewState: ViewState?) {
         guard let viewState = viewState else { return }
         self.viewState = viewState
-        self.frame = self.textViewContainer.frame
+        
+        // Get the final frame of textViewContainer with respect to this view, RPCaptionView...
+        let finalFrame = self.convert(self.textViewContainer.frame, from: self)
+        self.frame = finalFrame
+        
+//        print(finalFrame)
+//        print(self.textViewContainer.frame)
+//        print(self.frame)
+//        print(self.textView.frame)
     }
 }
 
@@ -134,10 +142,6 @@ extension RPCaptionView {
         viewState.center = sender.location(in: self)
         updateState(viewState)
         sender.setTranslation(.zero, in: sender.view)
-        
-//        if sender.state == .ended {
-//            self.updateFrame(viewState)
-//        }
     }
     
     func pinchAction(sender: UIPinchGestureRecognizer) {
@@ -146,10 +150,6 @@ extension RPCaptionView {
         viewState.transform = viewState.transform.scaledBy(x: sender.scale, y: sender.scale)
         updateState(viewState)
         sender.scale = 1
-        
-//        if sender.state == .ended {
-//            self.updateFrame(viewState)
-//        }
     }
     
     func rotateAction(sender: UIRotationGestureRecognizer) {
@@ -158,10 +158,6 @@ extension RPCaptionView {
         viewState.transform = viewState.transform.rotated(by: sender.rotation)
         updateState(viewState)
         sender.rotation = 0
-        
-//        if sender.state == .ended {
-//            self.updateFrame(viewState)
-//        }
     }
 }
 
@@ -205,6 +201,7 @@ extension RPCaptionView: UITextViewDelegate {
 
         // Bring self to front of keyWindow
         UIApplication.shared.keyWindow?.bringSubview(toFront: self)
+        self.superview!.bringSubview(toFront: self)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

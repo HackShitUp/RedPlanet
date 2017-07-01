@@ -14,7 +14,7 @@ class RPTextView: UITextView {
     func configurate() {
         // Those properties need to set after attributedText
         text = ""
-        font = UIFont(name: "AvenirNext-Bold", size: 70)
+        font = UIFont(name: "AvenirNext-Bold", size: 80)
         textAlignment = .center
         spellCheckingType = .no
         backgroundColor = UIColor.clear
@@ -24,7 +24,7 @@ class RPTextView: UITextView {
         self.tintColor = UIColor.groupTableViewBackground
         
         // Set UIEdgeInsets
-        self.contentInset = UIEdgeInsets(top: 88, left: 16, bottom: 0, right: 16)
+        self.contentInset = UIEdgeInsets(top: 32, left: 16, bottom: 32, right: 16)
         
         // MARK: - RPExtensions
         self.layer.applyShadow(layer: self.layer)

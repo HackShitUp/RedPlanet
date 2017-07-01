@@ -21,8 +21,8 @@ import SwipeNavigationController
 
 // Array to hold user's location
 var currentGeoFence = [CLPlacemark]()
+var altitudeFence = [CLLocationDistance]()
 var temperature = [String]()
-
 
 /*
  UIViewController class that allows users to filter and edit their photo-moments before sharing them. When red arrow button is tapped,
@@ -146,6 +146,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     // FUNCTION - Clear arrays
     open func clearArrays() {
         currentGeoFence.removeAll(keepingCapacity: false)
+        altitudeFence.removeAll(keepingCapacity: false)
         temperature.removeAll(keepingCapacity: false)
     }
 
@@ -168,7 +169,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         self.textButton.setTitle("Aa", for: .normal)
 
         // MARK: - RPCaptionView
-        rpCaptionView = RPCaptionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height/2))
+        rpCaptionView = RPCaptionView(frame: CGRect(x: 0, y: 53, width: self.view.frame.size.width, height: self.view.frame.size.height/2))
         rpCaptionView.addGestureRecognizer(tapGesture)
         tapGesture.addTarget(self, action: #selector(wakeCaptionView))
         
@@ -264,10 +265,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         dayFormatter.dateFormat = "EEEE"
         let dayOfWeek = dayFormatter.string(from: Date())
         
-        // I TIME FILTER
+        // TIME FILTER
         let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-        time.font = UIFont(name: "Futura-Medium", size: 60)
+        time.font = UIFont(name: "Futura-Medium", size: 65)
         time.textColor = UIColor.white
+        // MARK: - RPExtensions
         time.layer.applyShadow(layer: time.layer)
         time.text = "\(timeFormatter.string(from: NSDate() as Date))"
         time.textAlignment = .center
@@ -276,10 +278,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // II DAY FILTER
+        // DAY FILTER
         let day = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-        day.font = UIFont(name: "AvenirNext-Bold", size: 50)
+        day.font = UIFont(name: "Avenir-Black", size: 50)
         day.textColor = UIColor.white
+        // MARK: - RPExtensions
         day.layer.applyShadow(layer: day.layer)
         day.text = "\(dayOfWeek)"
         day.textAlignment = .center
@@ -288,8 +291,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let dayStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // IV "Me, Myself, and I"
-        let me = UIImageView(frame: self.view.bounds)
+        // PROFILE PHOTO FILTER
+        let me = UIImageView(frame: CGRect(x: view.center.x, y: view.center.y, width: 120, height: 120))
         me.contentMode = .scaleAspectFill
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
@@ -304,15 +307,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         UIGraphicsEndImageContext()
         
         
-        var rpFilters =  ["CINoiseReduction",
+        var rpFilters =  ["nil",
+                          "CINoiseReduction",
                           "CIPhotoEffectChrome",
                           "CIPhotoEffectNoir",
                           "CIPhotoEffectFade",
-                          "CICMYKHalftone",
                           "CICrystallize"]
         
         // GEO LOCATION DISABLED
-        if currentGeoFence.isEmpty || temperature.isEmpty {
+        if currentGeoFence.isEmpty || temperature.isEmpty || altitudeFence.isEmpty {
             // Append "nil" --> TIME and "nil" --> DAY
             rpFilters.append(contentsOf:["nil","nil"])
             // Append rpFilters
@@ -325,6 +328,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
         } else {
         // GEOLOCATION ENABLED
+            
             // LOCATION FILTER
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
             city.textColor = UIColor.white
@@ -334,8 +338,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             city.numberOfLines = 0
             // Manipulate font size of CLPlacemark's name attribute
             let formattedString = NSMutableAttributedString()
-            _ = formattedString.bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 30)).normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
+            _ = formattedString
+                .bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 30))
+                .normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
             city.attributedText = formattedString
+            // MARK: - RPExtensions
             city.layer.applyShadow(layer: city.layer)
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
             city.layer.render(in: UIGraphicsGetCurrentContext()!)
@@ -343,16 +350,47 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             UIGraphicsEndImageContext()
             
             // TEMPERATURE FILTER
-            let temp = UILabel(frame: self.view.bounds)
-            temp.font = UIFont(name: "Futura-Bold", size: 50)
-            temp.textColor = UIColor.white
-            temp.textAlignment = .center
-            temp.numberOfLines = 0
-            temp.text = temperature.last!
-            temp.layer.applyShadow(layer: temp.layer)
+            let temperatureLabel = UILabel(frame: self.view.bounds)
+            temperatureLabel.textColor = UIColor.white
+            temperatureLabel.textAlignment = .center
+            temperatureLabel.numberOfLines = 0
+            // Get Fahrenheit and Celsius Temperatures
+            // °F\n\(Int(celsius))°C"
+            let fahrenheit = temperature.last!.components(separatedBy: "\n").first!.replacingOccurrences(of: "°F", with: "")
+            let celsius = temperature.last!.components(separatedBy: "\n").last!.replacingOccurrences(of: "°C", with: "")
+            // Manipulate font size of temperature
+            let tempFormattedString = NSMutableAttributedString()
+            _ = tempFormattedString
+                .bold("\(fahrenheit)", withFont: UIFont(name: "Futura-Bold", size: 60))
+                .normal("°F", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .bold("\n\(celsius)", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .normal("°C", withFont: UIFont(name: "Futura-Bold", size: 21))
+            temperatureLabel.attributedText = tempFormattedString
+            // MARK: - RPExtensions
+            temperatureLabel.layer.applyShadow(layer: temperatureLabel.layer)
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-            temp.layer.render(in: UIGraphicsGetCurrentContext()!)
+            temperatureLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
             let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            // ALTITUDE FILTER
+            let altitudeLabel = UILabel(frame: self.view.bounds)
+            altitudeLabel.textColor = UIColor.white
+            altitudeLabel.textAlignment = .center
+            altitudeLabel.numberOfLines = 0
+            // Manipulate font size of altitude filter
+            let altitudeFormattedString = NSMutableAttributedString()
+            _ = altitudeFormattedString
+                .bold("\(round(altitudeFence.last!/0.3048))", withFont: UIFont(name: "Futura-Medium", size: 60))
+                .normal(" ft", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .bold("\n\(round(altitudeFence.last!))", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .normal(" m", withFont: UIFont(name: "Futura-Bold", size: 21))
+            altitudeLabel.attributedText = altitudeFormattedString
+            // MARK: - RPExtensions
+            altitudeLabel.layer.applyShadow(layer: altitudeLabel.layer)
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            altitudeLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let altitudeFilter = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
             // Append filters
@@ -361,16 +399,16 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             SNFilter.filterIdentities.append(contentsOf: rpFilters)
             // Generate Filters
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            // Time
+            // TIME FILTER
             self.data[6].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: timeStamp!, atZPosition: 0))
-            // Day
+            // DAY FILTER
             self.data[7].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: dayStamp!, atZPosition: 0))
-            // Location
+            // LOCATION FILTER
             self.data[8].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
-            // Temperature
-            self.data[9].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
-            // Profile Photo
-            self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
+            // TEMPERATURE FILTER
+            self.data[9].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height), image: tempFilter!, atZPosition: 0))
+            // ALTITUDE FILTER
+            self.data[10].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height), image: altitudeFilter!, atZPosition: 0))
         }
     }
     

@@ -90,7 +90,7 @@ class VideoCell: UICollectionViewCell, VIMVideoPlayerViewDelegate {
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser")!)
                 // MARK: - RPExtensions
-                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.groupTableViewBackground)
+                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0, borderColor: UIColor.clear)
             }
         }
         

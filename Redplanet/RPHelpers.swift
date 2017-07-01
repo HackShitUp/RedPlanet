@@ -60,44 +60,6 @@ class RPHelpers: NSObject {
         banner.duration = 0.20
         banner.show()
     }
-
-    
-    
-    /******************************************************************************************
-    // MARK: - OpenWeatherMap.org API
-    *******************************************************************************************/
-    open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        // Clear global array --> "CapturedStill.swift"
-        temperature.removeAll(keepingCapacity: false)
-        
-        // MARK: - OpenWeatherMap API
-        URLSession.shared.dataTask(with: URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=0abf9dff54ea3ccb6561c3574557594c")!,
-                                   completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
-                                    if error != nil {
-                                        print(error?.localizedDescription as Any)
-                                        self.showError(withTitle: "Network Error")
-                                        return
-                                    }
-                                    do  {
-                                        // Traverse JSON data to "Mutable Containers"
-                                        let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
-                                        
-                                        // Optionally chain NSDictionary value to prevent from crashing...
-                                        if let main = (json as AnyObject).value(forKey: "main") as? NSDictionary {
-                                            let kelvin = main["temp"] as! Double
-                                            let farenheit = (kelvin * 1.8) - 459.67
-                                            let celsius = kelvin - 273.15
-                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
-                                            // Append Temperature as String
-                                            temperature.append(both)
-                                        }
-                                        
-                                    } catch let error {
-                                        print(error.localizedDescription as Any)
-                                        self.showError(withTitle: "Network Error")
-                                    }
-        }) .resume()
-    }
     
     
     
