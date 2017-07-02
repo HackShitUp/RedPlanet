@@ -9,10 +9,12 @@
 import UIKit
 import CoreData
 import CoreLocation
+
 import Parse
 import ParseUI
 import Bolts
 
+import GPUImage
 import OneSignal
 import SDWebImage
 import SVProgressHUD
@@ -162,6 +164,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // MARK: - GPUImage; Sharpen Image immediately
+        let sharpenFilter = GPUImageSharpenFilter()
+        let filteredImage = sharpenFilter.image(byFilteringImage: self.stillImage!)
+        self.stillImage = filteredImage
         
         // Enable interaction with stillPhoto for filterView
         self.stillPhoto.isUserInteractionEnabled = true
@@ -339,8 +346,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             // Manipulate font size of CLPlacemark's name attribute
             let formattedString = NSMutableAttributedString()
             _ = formattedString
-                .bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 30))
-                .normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
+                .bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
+                .normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 30))
             city.attributedText = formattedString
             // MARK: - RPExtensions
             city.layer.applyShadow(layer: city.layer)
@@ -383,7 +390,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
             _ = altitudeFormattedString
                 .bold("\(round(altitudeFence.last!/0.3048))", withFont: UIFont(name: "Futura-Medium", size: 60))
                 .normal(" ft", withFont: UIFont(name: "Futura-Bold", size: 30))
-                .bold("\n\(round(altitudeFence.last!))", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .bold("\n\(round(altitudeFence.last!))", withFont: UIFont(name: "Futura-Medium", size: 30))
                 .normal(" m", withFont: UIFont(name: "Futura-Bold", size: 21))
             altitudeLabel.attributedText = altitudeFormattedString
             // MARK: - RPExtensions

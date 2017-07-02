@@ -8,6 +8,7 @@ target 'Redplanet' do
 	pod 'AnimatedCollectionViewLayout’, ’0.2.0’
 	pod ‘Bolts’
 	pod 'DZNEmptyDataSet'
+	pod ‘GPUImage’
 	pod ‘Heap’
 	pod 'KILabel'
 	pod 'NotificationBannerSwift'

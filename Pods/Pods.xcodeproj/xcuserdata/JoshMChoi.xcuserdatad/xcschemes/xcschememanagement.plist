@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>GPUImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Ji.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -122,27 +127,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>01FE5C5D0E97E15A65D7E6AEB38F79B1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>02D6C51431A5A4B594C6D90115B5366A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2CD9CD93C9C7F2814E583C81939085DF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2EEC6252F4B524CC23211F9DBBEE11D1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>30F42A7A4EDBA3122E77BEECFF597B57</key>
+		<key>2597E77C6D3830202BFB48C276629F0A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,22 +147,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>798DCA25600D73EB76D0E6A9A6350BFA</key>
+		<key>44D760101792B4BA0A45EE9B1F43FADF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B9AD7EB9216CEE6371C6C96873085BD</key>
+		<key>6706243AE7DBA58A56BCE71D1511072C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>86675E2AA67C9BF7EF39FFAA37C1F7AC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>89DF988F5C33AD58F8D903C3C7B11656</key>
+		<key>920C5707AD5EC39CA2437E9E37304B9A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -192,7 +172,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AF107D59E3F5853BE7B3B33707260C25</key>
+		<key>AA1D2DA429326CCCB482FACB05333DE8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AC1C284C8B61DC3039984398B21B5FFB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B87F10FE7AE2147117275A2F7691C9A1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -217,7 +207,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>DB6137BE74885924D94048047535645F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>EAA88C5A4B6AEAC54C2772A9995B99C2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F3DE94F9DFD299B17A774DDCBFA1100D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB1C9DC2B8C1C7AAFF2180FCECEF764B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FC9D85DAACE4AE9AD4FF599BCBA24BDD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

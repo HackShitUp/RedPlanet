@@ -7,6 +7,7 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
   - DZNEmptyDataSet (1.8.1)
+  - GPUImage (0.1.7)
   - Heap (4.0.0)
   - Ji (2.0.1):
     - Ji/Ji (= 2.0.1)
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - AnimatedCollectionViewLayout (= 0.2.0)
   - Bolts
   - DZNEmptyDataSet
+  - GPUImage
   - Heap
   - KILabel
   - NotificationBannerSwift
@@ -60,6 +62,7 @@ SPEC CHECKSUMS:
   AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
   Ji: 6bb602a28dd08b804158f64990e6051ed5de0110
   KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
@@ -78,6 +81,6 @@ SPEC CHECKSUMS:
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
 
-PODFILE CHECKSUM: a6233c36633e5813867aaecb136d89c887db6b8d
+PODFILE CHECKSUM: c31b84396678df1d12e19a912aba3a13ded3663a
 
 COCOAPODS: 1.2.1
