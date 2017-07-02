@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreImage
+import GPUImage
 
 /*
  ["CINoiseReduction",
@@ -19,6 +20,18 @@ import CoreImage
  "CIEdgeWork",
  "CIPhotoEffectFade"]
  */
+
+let gpuFilters = [GPUImageBrightnessFilter(),
+                   GPUImageSharpenFilter(),
+                   //                   GPUImageMonochromeFilter(),
+    GPUImageMedianFilter(),
+    GPUImageKuwaharaFilter(),
+    GPUImageToonFilter(),
+    GPUImagePinchDistortionFilter(),
+    GPUImageStretchDistortionFilter(),
+    //                   GPUImageSketchFilter(),
+    GPUImageBulgeDistortionFilter(),
+]
 
 open class SNFilter: UIImageView {
     open static var filterIdentities = [String]()
@@ -96,6 +109,35 @@ open class SNFilter: UIImageView {
             }
             // (7) Add filtered image to array
             filter.image = filteredImage
+            
+            
+            
+//            // MARK: - GPUImage; Sharpen Image immediately
+//            let sharpenFilter = GPUImageSharpenFilter()
+//            let filteredImage = sharpenFilter.image(byFilteringImage: self.stillImage!)
+//            
+//            let a = GPUImageToonFilter()
+//            
+//            let b = GPUImageBrightnessFilter()
+//            
+//            let c = GPUImageMonochromeFilter()
+//            
+//            let d = GPUImageHistogramGenerator()
+//            let filteredImage = sharpenFilter.image(byFilteringImage: self.stillImage!)
+            
+            
+            /*
+             ["CINoiseReduction",
+             "CIPhotoEffectChrome",
+             "CIPhotoEffectNoir",
+             "CICMYKHalftone",
+             "CICrystallize",
+             "CIGloom",
+             "CIEdgeWork",
+             "CIPhotoEffectFade"]
+             */
+            
+            
             return filter
         }
     }
@@ -104,7 +146,7 @@ open class SNFilter: UIImageView {
         self.stickers.append(sticker)
     }
     
-    open static func generateFilters(_ originalImage: SNFilter, filters:[String]) -> [SNFilter] {
+    open static func generateFilters(_ originalImage: SNFilter, filters: [String]) -> [SNFilter] {
         
         var finalFilters = [SNFilter]()
         let syncQueue = DispatchQueue(label: "com.redplanetapp.redplanet", attributes: .concurrent)
