@@ -30,16 +30,17 @@
 
 #pragma mark-
 
-//+ (UIImage*)applyFilter:(UIImage*)image
-//{
-//    GPUImagePicture *imageSource = [[GPUImagePicture alloc] initWithImage:image];
-//    GPUImageVignetteFilter *filter = [[GPUImageVignetteFilter alloc] init];
-//    
-//    [imageSource addTarget:filter];
-//    [imageSource processImage];
-//    
-//    return [filter imageFromCurrentlyProcessedOutput];
-//}
++ (UIImage*)applyFilter:(UIImage*)image
+{
+    GPUImagePicture *imageSource = [[GPUImagePicture alloc] initWithImage:image];
+    GPUImageVignetteFilter *filter = [[GPUImageVignetteFilter alloc] init];
+    
+    [imageSource addTarget:filter];
+    [imageSource processImage];
+    
+
+    return [filter imageByFilteringImage: image];
+}
 
 @end
 
