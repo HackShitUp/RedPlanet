@@ -282,13 +282,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     func keyboardWillShow(notification: NSNotification) {
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        // Move UI up: UITextView, and menuView
-        self.textView.frame.size.height -= self.keyboard.height
         UIView.animate(withDuration: 0.4) { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
             if self.menuView.frame.origin.y == self.menuView.frame.origin.y {
-                // Move UITextView up
+                // Resize UITextView
                 self.textView.frame.size.height -= self.keyboard.height
                 // Move menuView up
                 self.menuView.frame.origin.y -= self.keyboard.height

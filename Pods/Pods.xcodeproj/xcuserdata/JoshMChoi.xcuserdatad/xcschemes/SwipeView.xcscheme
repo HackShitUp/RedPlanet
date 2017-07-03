@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '85922BAF86CFCF88008EA1093DE7AC00'
-               BlueprintName = 'TRMosaicLayout'
+               BlueprintIdentifier = 'FC3F22BA3DCAA43018F4645E7EA08506'
+               BlueprintName = 'SwipeView'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'TRMosaicLayout.framework'>
+               BuildableName = 'SwipeView.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

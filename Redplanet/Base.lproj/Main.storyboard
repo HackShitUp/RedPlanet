@@ -3085,11 +3085,11 @@
                                 </constraints>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7Qm-Cb-z8l">
-                                <rect key="frame" x="109" y="0.0" width="250" height="101"/>
+                                <rect key="frame" x="109" y="0.0" width="250" height="535"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="101" id="Nfj-uv-lUZ"/>
+                                    <constraint firstAttribute="height" constant="535" id="Nfj-uv-lUZ"/>
                                     <constraint firstAttribute="width" constant="250" id="bho-g2-1WG"/>
                                 </constraints>
                                 <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>

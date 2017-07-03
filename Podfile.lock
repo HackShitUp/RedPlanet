@@ -35,6 +35,7 @@ PODS:
   - SVProgressHUD (2.1.2)
   - SwiftyCam (2.2.2)
   - SwipeNavigationController (2.0.2)
+  - SwipeView (1.3.2)
   - TRMosaicLayout (1.0.0)
   - VIMVideoPlayer (6.0.1)
 
@@ -55,6 +56,7 @@ DEPENDENCIES:
   - SVProgressHUD
   - SwiftyCam (= 2.2.2)
   - SwipeNavigationController
+  - SwipeView
   - TRMosaicLayout
   - VIMVideoPlayer
 
@@ -78,9 +80,10 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
+  SwipeView: bd67cfaf7760c036438446b3ccb28a3b84fce009
   TRMosaicLayout: 1875505c48dd2877afd69a8bea7b4c1c63afa5b5
   VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
 
-PODFILE CHECKSUM: c31b84396678df1d12e19a912aba3a13ded3663a
+PODFILE CHECKSUM: b0a20243ba99f364a232dc7e9c0913cd20cf0240
 
 COCOAPODS: 1.2.1

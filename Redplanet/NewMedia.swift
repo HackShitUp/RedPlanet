@@ -335,6 +335,8 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
             if self.menuView.frame.origin.y == self.menuView.frame.origin.y {
                 // Move menuView up
                 self.menuView.frame.origin.y -= self.keyboard.height
+                // Resize UITextView
+                self.textPost.frame.size.height -= self.keyboard.height
             }
         }
     }
@@ -345,6 +347,8 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         if self.menuView!.frame.origin.y != self.view.frame.size.height - self.menuView.frame.size.height {
             // Move menuView down
             self.menuView.frame.origin.y += self.keyboard.height
+            // Resize UITextView
+            self.textPost.frame.size.height += self.keyboard.height
         }
     }
 

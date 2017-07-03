@@ -106,6 +106,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SnapKit/SnapKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyCam/SwiftyCam.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwipeNavigationController/SwipeNavigationController.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SwipeView/SwipeView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TRMosaicLayout/TRMosaicLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/VIMVideoPlayer/VIMVideoPlayer.framework"
 fi
@@ -127,6 +128,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SnapKit/SnapKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyCam/SwiftyCam.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwipeNavigationController/SwipeNavigationController.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SwipeView/SwipeView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TRMosaicLayout/TRMosaicLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/VIMVideoPlayer/VIMVideoPlayer.framework"
 fi

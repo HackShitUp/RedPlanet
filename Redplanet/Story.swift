@@ -631,6 +631,26 @@ extension Story {
     
     // FUNCTION - More options for post ***
     func showOption(sender: Any) {
+        
+        // Manipulate UIView Animations based on UIGestureRecognizer's state
+        if (sender as! UILongPressGestureRecognizer).state == .began {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.2,
+                           options: .beginFromCurrentState,
+                           animations: {
+                            self.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+                            // MARK: - RPExtensions
+                            self.view.roundAllCorners(sender: self.view)
+            }, completion: nil)
+        } else if (sender as! UILongPressGestureRecognizer).state == .ended || (sender as! UILongPressGestureRecognizer).state == .cancelled {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.2,
+                           options: .beginFromCurrentState,
+                           animations: {
+                            self.view.transform = CGAffineTransform.identity
+                            // MARK: - RPExtensions
+                            self.view.straightenCorners(sender: self.view)
+            }, completion: nil)
+        }
+        
         // Set edit-able contentType's
         let editTypes = ["tp", "ph", "pp", "sp", "vi"]
         

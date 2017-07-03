@@ -116,13 +116,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
-        // Tapped preview layer
-        let focusView = UILabel(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
-        focusView.text = String().randomEmoji()
-        focusView.alpha = 0.5
+        let focusView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        focusView.makeCircular(forView: focusView, borderWidth: 0, borderColor: UIColor.clear)
+        focusView.backgroundColor = UIColor.randomColor()
+        focusView.image = UIImage(named: "Camera")
         focusView.center = point
-        focusView.alpha = 0.0
         view.addSubview(focusView)
+        // Animate focusView
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseInOut, animations: {
             focusView.alpha = 1.0
             focusView.transform = CGAffineTransform(scaleX: 1.25, y: 1.25)

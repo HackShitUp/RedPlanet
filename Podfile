@@ -21,6 +21,7 @@ target 'Redplanet' do
 	pod ’SVProgressHUD’
 	pod ‘SwiftyCam’, ‘2.2.2’
 	pod 'SwipeNavigationController'
+	pod ‘SwipeView’
 	pod 'TRMosaicLayout'
 	pod 'VIMVideoPlayer'
 

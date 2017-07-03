@@ -15,7 +15,6 @@ open class SNSlider: UIView {
     fileprivate var startingIndex:Int
     fileprivate var data = [SNFilter]()
     
-    
     open weak var dataSource:SNSliderDataSource?
     
     public override init(frame: CGRect) {
@@ -115,6 +114,10 @@ extension SNSlider: UIScrollViewDelegate {
         
         for i in 0..<data.count {
             data[i].updateMask(data[i].frame, newXPosition: positionOfPageAtIndex(i-1)-scrollView.contentOffset.x)
+            print(positionOfPageAtIndex(i-1))
+            print(scrollView.contentOffset.x)
+            print(positionOfPageAtIndex(i-1)-scrollView.contentOffset.x)
+            print("\n")
         }
     }
     
@@ -122,8 +125,7 @@ extension SNSlider: UIScrollViewDelegate {
         
         if (scrollView.contentOffset.x == positionOfPageAtIndex(-1)) {
             self.slider.scrollRectToVisible(CGRect(x: positionOfPageAtIndex(numberOfPages-1),y: 0,width: self.frame.width,height: self.frame.height), animated:false);
-        }
-        else if (scrollView.contentOffset.x == positionOfPageAtIndex(numberOfPages)) {
+        } else if (scrollView.contentOffset.x == positionOfPageAtIndex(numberOfPages)) {
             self.slider.scrollRectToVisible(CGRect(x: positionOfPageAtIndex(0),y: 0,width: self.frame.width,height: self.frame.height), animated:false);
         }
     }

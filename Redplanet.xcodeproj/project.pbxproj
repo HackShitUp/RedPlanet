@@ -20,7 +20,6 @@
 		7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3066461E90F7D800CDEABD /* CurrentUser.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
-		7E4199251E4C668000EFA065 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4199241E4C668000EFA065 /* SwipeView.m */; };
 		7E41C7A51E4006380025129B /* CurrentUserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E41C7A41E4006380025129B /* CurrentUserHeader.xib */; };
 		7E41C7A71E4012300025129B /* CurrentUserHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7A61E4012300025129B /* CurrentUserHeader.swift */; };
 		7E41C7B81E4056870025129B /* OtherUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7B71E4056870025129B /* OtherUser.swift */; };
@@ -227,8 +226,6 @@
 		7E3FFB321EF241E100694D82 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		7E3FFB341EF241E900694D82 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		7E4199201E4C64A400EFA065 /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = "../../Library/Developer/Redplanet-cycwfppcruraxnagqhlxgeaqvwaw/Build/Products/Debug-iphoneos/GPUImage.framework"; sourceTree = "<group>"; };
-		7E4199231E4C668000EFA065 /* SwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeView.h; sourceTree = "<group>"; };
-		7E4199241E4C668000EFA065 /* SwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeView.m; sourceTree = "<group>"; };
 		7E41C7A41E4006380025129B /* CurrentUserHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentUserHeader.xib; sourceTree = "<group>"; };
 		7E41C7A61E4012300025129B /* CurrentUserHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserHeader.swift; sourceTree = "<group>"; };
 		7E41C7B71E4056870025129B /* OtherUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUser.swift; sourceTree = "<group>"; };
@@ -538,15 +535,6 @@
 				7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */,
 			);
 			name = FOLLOWREQUESTS;
-			sourceTree = "<group>";
-		};
-		7E4199221E4C668000EFA065 /* SwipeView */ = {
-			isa = PBXGroup;
-			children = (
-				7E4199231E4C668000EFA065 /* SwipeView.h */,
-				7E4199241E4C668000EFA065 /* SwipeView.m */,
-			);
-			path = SwipeView;
 			sourceTree = "<group>";
 		};
 		7E43833F1DD9139300337007 /* HASHTAGS/SELECTED_STORIES */ = {
@@ -1109,7 +1097,6 @@
 				7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */,
 				7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */,
 				7EBAFEF21ED7BAE800BB052D /* SubtleVolume */,
-				7E4199221E4C668000EFA065 /* SwipeView */,
 				7E8035381EB4113B00C9BA63 /* TwicketSegmentedControl */,
 				7EBDAF2A1EE7A5ED00C645D9 /* UIImageColors */,
 				7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */,
@@ -1757,7 +1744,6 @@
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E6D90E21ECF9D0C00F7FD6B /* CollectionCell.swift in Sources */,
 				7E41C7A71E4012300025129B /* CurrentUserHeader.swift in Sources */,
-				7E4199251E4C668000EFA065 /* SwipeView.m in Sources */,
 				7E972FDF1EA93E8B0047F4D4 /* StoryCell.swift in Sources */,
 				7E95F54D1ECB9A6F007E4507 /* FeaturedCell.swift in Sources */,
 				7EE79A4D1EDBB52C005D91AD /* Likes.swift in Sources */,
