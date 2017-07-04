@@ -87,7 +87,6 @@ open class SNSlider: UIView {
     }
     
     fileprivate func presentData() {
-        
         for i in 0..<data.count {
             weak var filter:SNFilter! = data[i]
             filter.layer.zPosition = 0
@@ -111,18 +110,12 @@ open class SNSlider: UIView {
 extension SNSlider: UIScrollViewDelegate {
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         for i in 0..<data.count {
             data[i].updateMask(data[i].frame, newXPosition: positionOfPageAtIndex(i-1)-scrollView.contentOffset.x)
-            print(positionOfPageAtIndex(i-1))
-            print(scrollView.contentOffset.x)
-            print(positionOfPageAtIndex(i-1)-scrollView.contentOffset.x)
-            print("\n")
         }
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
         if (scrollView.contentOffset.x == positionOfPageAtIndex(-1)) {
             self.slider.scrollRectToVisible(CGRect(x: positionOfPageAtIndex(numberOfPages-1),y: 0,width: self.frame.width,height: self.frame.height), animated:false);
         } else if (scrollView.contentOffset.x == positionOfPageAtIndex(numberOfPages)) {
