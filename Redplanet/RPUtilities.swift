@@ -1,13 +1,13 @@
 //
-//  SNUtils.swift
-//  Pods
+//  RPUtilities.swift
+//  Redplanet
 //
-//  Created by Paul Jeannot on 04/05/2016.
-//
+//  Created by Joshua Choi on 7/3/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
-import UIKit
-open class SNUtils {
+import Foundation
+open class RPUtilities {
     open static let screenSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     
     // Allow you to take a screenshot of the screen

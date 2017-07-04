@@ -265,7 +265,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.cameraDelegate = self
         // Set delegate to record video
         self.captureButton.delegate = self
-
         
         // MARK: - SnapSliderFilters
         // Set bool so images aren't flipped and reloaded
