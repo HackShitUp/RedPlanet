@@ -39,7 +39,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     
     // Create GPUImageFilters, Filtered UIImages, and UIImageView for filter
     var filters = [Any]()
-    let filterImageView = UIImageView(frame: UIScreen.main.bounds)
     var filteredImages = [UIImage]()
     
     // MARK: - SwipeView
@@ -113,7 +112,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
     
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButton(_ sender: Any) {
-        
         // Configure button states
         self.configureButtonState(shouldHide: true) { (success: Bool) in
             // Execute Saving to Server if completionHandler returns true
@@ -166,17 +164,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
                     // MARK: - SwipeNavigationController
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
                 }
-                
-                
             }
         }
     }
-
-    // MARK: - RPCaptionView; Function to "wake up" RPCaptionView and bring to front...
-    func wakeCaptionView() {
-        self.swipeView.addSubview(self.rpCaptionView)
-        _ = self.rpCaptionView.becomeFirstResponder()
-    }
+    
     
     // FUNCTION - Apply mask
     func applyMask(maskRect: CGRect, newXPosition: CGFloat) {
@@ -184,169 +175,62 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         let path = CGMutablePath()
         var rect = maskRect
 //        rect.origin.x = newXPosition
+//        rect.origin.x = newXPosition/swipeView.frame.width
+//        rect.origin.x = newXPosition * swipeView.frame.width
+        print(newXPosition)
         path.addRect(rect)
         maskLayer.path = path
-        
-        maskLayer.filters = filters
         self.swipeView.layer.mask = maskLayer
-//        self.filterImageView.layer.mask = maskLayer
+//        self.swipeView.currentItemView.layer.mask = maskLayer
+//        self.view.layer.mask = maskLayer
     }
     
-    // FUNCTION - Generate Filters
-    func generateFilters(_ image: UIImage) {
-        // Clear array
-        self.filteredImages.removeAll(keepingCapacity: false)
-        
-        if isRearCam! == false {
-            // MARK: - GPUImage; Append GPUImageFilters to filters
-            self.filters.append(contentsOf: [GPUImageMedianFilter(),
-                                             GPUImageToonFilter(),
-                                             GPUImagePinchDistortionFilter(),
-                                             GPUImageStretchDistortionFilter(),
-                                             GPUImageBulgeDistortionFilter()])
-        } else {
-            // MARK: - GPUImage; Append GPUImageFilters to filters
-            self.filters.append(contentsOf: [GPUImageMedianFilter(),
-                                             GPUImageMonochromeFilter(),
-                                             GPUImageToonFilter()])
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        // Pop View Controller
+        if position == .bottom {
+            _ = self.navigationController?.popViewController(animated: false)
         }
+    }
+    
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        // Delegate
+    }
+    
+    // MARK: - SwipeView Data Source Methods
+    func numberOfItems(in swipeView: SwipeView!) -> Int {
+        // Add 2 for Time and Day filters
+        return self.filteredImages.count
+    }
+    
+    func swipeViewItemSize(_ swipeView: SwipeView!) -> CGSize {
+        return UIScreen.main.bounds.size
+    }
+    
+    func swipeView(_ swipeView: SwipeView!, viewForItemAt index: Int, reusing view: UIView!) -> UIView! {
+        let filteredImageView = UIImageView(frame: self.view.frame)
+        filteredImageView.contentMode = .scaleAspectFill
+        filteredImageView.image = filteredImages[index]
+        return filteredImageView
+    }
+    
+    // MARK: - SwipeView Delegate Methods
+    func swipeViewDidScroll(_ swipeView: SwipeView!) {
+        // CONTENTOFFSET
+        let currentFrame = swipeView.currentItemView.convert(swipeView.currentItemView.frame, from: self.swipeView)
+        let newFrameWithIndex = currentFrame.origin.x/swipeView.frame.size.width - CGFloat(swipeView.numberOfItems - 1)
+        let svContentOffset = newFrameWithIndex * swipeView.frame.width
         
-        // Configure TIME and DAY
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mma"
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "EEEE"
-        let dayOfWeek = dayFormatter.string(from: Date())
-        
-        // TIME FILTER
-        let time = UILabel(frame: self.view.frame)
-        time.font = UIFont(name: "Futura-Medium", size: 65)
-        time.textColor = UIColor.white
-        time.text = "\(timeFormatter.string(from: NSDate() as Date))"
-        time.textAlignment = .center
-        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        time.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        // DAY FILTER
-        let day = UILabel(frame: self.view.frame)
-        day.font = UIFont(name: "Avenir-Black", size: 50)
-        day.textColor = UIColor.white
-        day.text = "\(dayOfWeek)"
-        day.textAlignment = .center
-        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        day.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let dayStamp = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        
-        // GEOLOCATION DISABLED
-        if currentGeoFence.isEmpty || temperature.isEmpty || altitudeFence.isEmpty {
-            // Append Time and Day filters
-            self.filters.append(contentsOf: ["time", "day"])
-            
-            // MARK: - GPUImage; Filter and process images
-            for index in 0..<self.filters.count {
-                if let gpuFilter = self.filters[index] as? GPUImageFilter {
-                    let filteredImage = gpuFilter.image(byFilteringImage: image)
-                    self.filteredImages.append(filteredImage!)
-                }
-            }
-            
-            self.filteredImages.append(timeStamp!)
-            self.filteredImages.append(dayStamp!)
-            
-        } else {
-            // GEOLOCATION IS ENABLED
-            
-            // LOCATION FILTER
-            let city = UILabel(frame: self.view.frame)
-            city.textColor = UIColor.white
-            city.backgroundColor = UIColor.clear
-            city.textAlignment = .center
-            city.lineBreakMode = .byWordWrapping
-            city.numberOfLines = 0
-            // Manipulate font size of CLPlacemark's name attribute
-            let formattedString = NSMutableAttributedString()
-            _ = formattedString
-                .bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
-                .normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 30))
-            city.attributedText = formattedString
-            // MARK: - RPExtensions
-            city.layer.applyShadow(layer: city.layer)
-            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-            city.layer.render(in: UIGraphicsGetCurrentContext()!)
-            let cityFilter = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            // TEMPERATURE FILTER
-            let temperatureLabel = UILabel(frame: self.view.frame)
-            temperatureLabel.textColor = UIColor.white
-            temperatureLabel.textAlignment = .center
-            temperatureLabel.numberOfLines = 0
-            // Get Fahrenheit and Celsius Temperatures
-            // °F\n\(Int(celsius))°C"
-            let fahrenheit = temperature.last!.components(separatedBy: "\n").first!.replacingOccurrences(of: "°F", with: "")
-            let celsius = temperature.last!.components(separatedBy: "\n").last!.replacingOccurrences(of: "°C", with: "")
-            // Manipulate font size of temperature
-            let tempFormattedString = NSMutableAttributedString()
-            _ = tempFormattedString
-                .bold("\(fahrenheit)", withFont: UIFont(name: "Futura-Bold", size: 60))
-                .normal("°F", withFont: UIFont(name: "Futura-Bold", size: 30))
-                .bold("\n\(celsius)", withFont: UIFont(name: "Futura-Bold", size: 30))
-                .normal("°C", withFont: UIFont(name: "Futura-Bold", size: 21))
-            temperatureLabel.attributedText = tempFormattedString
-            // MARK: - RPExtensions
-            temperatureLabel.layer.applyShadow(layer: temperatureLabel.layer)
-            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-            temperatureLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
-            let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            // ALTITUDE FILTER
-            let altitudeLabel = UILabel(frame: self.view.frame)
-            altitudeLabel.textColor = UIColor.white
-            altitudeLabel.textAlignment = .center
-            altitudeLabel.numberOfLines = 0
-            // Manipulate font size of altitude filter
-            let altitudeFormattedString = NSMutableAttributedString()
-            _ = altitudeFormattedString
-                .bold("\(round(altitudeFence.last!/0.3048))", withFont: UIFont(name: "Futura-Medium", size: 60))
-                .normal(" ft", withFont: UIFont(name: "Futura-Bold", size: 30))
-                .bold("\n\(round(altitudeFence.last!))", withFont: UIFont(name: "Futura-Medium", size: 30))
-                .normal(" m", withFont: UIFont(name: "Futura-Bold", size: 21))
-            altitudeLabel.attributedText = altitudeFormattedString
-            // MARK: - RPExtensions
-            altitudeLabel.layer.applyShadow(layer: altitudeLabel.layer)
-            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-            altitudeLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
-            let altitudeFilter = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            
-            // Append Time and Day filters
-            self.filters.append(contentsOf: ["time", "day", "location", "temp", "altitude"])
-            
-            // MARK: - GPUImage; Filter and process images
-            for index in 0..<self.filters.count {
-                if let gpuFilter = self.filters[index] as? GPUImageFilter {
-                    let filteredImage = gpuFilter.image(byFilteringImage: image)
-                    self.filteredImages.append(filteredImage!)
-                }
-            }
-            
-            self.filteredImages.append(timeStamp!)
-            self.filteredImages.append(dayStamp!)
-            self.filteredImages.append(cityFilter!)
-            self.filteredImages.append(tempFilter!)
-            self.filteredImages.append(altitudeFilter!)
-        }
-        
-        // MARK: - SwipeView
-        swipeView.dataSource = self
-        swipeView.delegate = self
-        swipeView.isWrapEnabled = true
+        // Position Of Page at Index
+        let indexPosition = swipeView.frame.width * CGFloat(swipeView.currentItemIndex - 1) + swipeView.frame.width
+
+        // Get newX
+        let newX = svContentOffset - indexPosition
+        applyMask(maskRect: swipeView.frame, newXPosition: newX)
+    }
+    
+    func swipeViewDidEndDecelerating(_ swipeView: SwipeView!) {
+        // TODO
     }
     
     // MARK: - UIView Life Cycle
@@ -429,56 +313,169 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
+
     
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        // Pop View Controller
-        if position == .bottom {
-            _ = self.navigationController?.popViewController(animated: false)
+    // MARK: - RPCaptionView; Function to "wake up" RPCaptionView and bring to front...
+    func wakeCaptionView() {
+        self.swipeView.addSubview(self.rpCaptionView)
+        _ = self.rpCaptionView.becomeFirstResponder()
+    }
+    
+    // MARK: - GPUImage
+    // FUNCTION - Generate Filters
+    func generateFilters(_ image: UIImage) {
+        // Clear array
+        self.filteredImages.removeAll(keepingCapacity: false)
+        
+        if isRearCam! == false {
+            // MARK: - GPUImage; Append GPUImageFilters to filters
+            self.filters.append(contentsOf: [GPUImageMedianFilter(),
+                                             GPUImageToonFilter(),
+                                             GPUImagePinchDistortionFilter(),
+                                             GPUImageStretchDistortionFilter(),
+                                             GPUImageBulgeDistortionFilter()])
+        } else {
+            // MARK: - GPUImage; Append GPUImageFilters to filters
+            self.filters.append(contentsOf: [GPUImageMedianFilter(),
+                                             GPUImageMonochromeFilter(),
+                                             GPUImageToonFilter()])
         }
-    }
-    
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-        // Delegate
-    }
-    
-    // MARK: - SwipeView Data Source Methods
-    func numberOfItems(in swipeView: SwipeView!) -> Int {
-        // Add 2 for Time and Day filters
-        return self.filteredImages.count
-    }
-    
-    func swipeViewItemSize(_ swipeView: SwipeView!) -> CGSize {
-        return UIScreen.main.bounds.size
-    }
-    
-    func swipeView(_ swipeView: SwipeView!, viewForItemAt index: Int, reusing view: UIView!) -> UIView! {
-        let view = UIView()
-        filterImageView.contentMode = .scaleAspectFill
-        filterImageView.image = filteredImages[index]
-        view.addSubview(filterImageView)
-        return view
-    }
-    
-    // MARK: - SwipeView Delegate Methods
-    func swipeViewWillBeginDragging(_ swipeView: SwipeView!) {
-    }
-    
-    func swipeViewDidScroll(_ swipeView: SwipeView!) {
-        // CONTENTOFFSET
-        let currentFrame = swipeView.currentItemView.convert(swipeView.currentItemView.frame, from: self.swipeView)
-        let newFrameWithIndex = currentFrame.origin.x/swipeView.frame.size.width - CGFloat(swipeView.numberOfItems - 1)
-        let svContentOffset = newFrameWithIndex * swipeView.frame.width
         
-        // Position Of Page at Index
-        let indexPosition = swipeView.frame.width * CGFloat(swipeView.currentItemIndex - 1) + swipeView.frame.width
+        // Configure TIME and DAY
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mma"
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "EEEE"
+        let dayOfWeek = dayFormatter.string(from: Date())
         
-        // Get newX
-        let newX = svContentOffset - indexPosition
-        applyMask(maskRect: swipeView.frame, newXPosition: newX)
+        // TIME FILTER
+        let time = UILabel(frame: self.view.frame)
+        time.font = UIFont(name: "Futura-Medium", size: 65)
+        time.textColor = UIColor.white
+        time.text = "\(timeFormatter.string(from: NSDate() as Date))"
+        time.textAlignment = .center
+        // MARK: - RPExtensions
+        time.layer.applyShadow(layer: time.layer)
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        time.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let timeFilter = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // DAY FILTER
+        let day = UILabel(frame: self.view.frame)
+        day.font = UIFont(name: "Avenir-Black", size: 50)
+        day.textColor = UIColor.white
+        day.text = "\(dayOfWeek)"
+        day.textAlignment = .center
+        // MARK: - RPExtensions
+        day.layer.applyShadow(layer: day.layer)
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        day.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let dayFilter = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // Append Time and Day filters
+        self.filters.append(contentsOf: ["nil", "nil"])
+        
+        // MARK: - GPUImage; Filter and process images
+        for index in 0..<self.filters.count {
+            if let gpuFilter = self.filters[index] as? GPUImageFilter {
+                let filteredImage = gpuFilter.image(byFilteringImage: image)
+                self.filteredImages.append(filteredImage!)
+            }
+        }
+        
+        self.filteredImages.append(timeFilter!)
+        self.filteredImages.append(dayFilter!)
+        
+        
+        // GEOLOCATION IS NOT DISABLED
+        if !currentGeoFence.isEmpty || !temperature.isEmpty || !altitudeFence.isEmpty {
+            // LOCATION FILTER
+            let city = UILabel(frame: self.view.frame)
+            city.textColor = UIColor.white
+            city.backgroundColor = UIColor.clear
+            city.textAlignment = .center
+            city.lineBreakMode = .byWordWrapping
+            city.numberOfLines = 0
+            // Manipulate font size of CLPlacemark's name attribute
+            let formattedString = NSMutableAttributedString()
+            _ = formattedString
+                .bold("\(currentGeoFence.last!.name!.uppercased())", withFont: UIFont(name: "AvenirNext-Bold", size: 21))
+                .normal("\n\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)", withFont: UIFont(name: "AvenirNext-Bold", size: 30))
+            city.attributedText = formattedString
+            // MARK: - RPExtensions
+            city.layer.applyShadow(layer: city.layer)
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            city.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let cityFilter = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            // TEMPERATURE FILTER
+            let temperatureLabel = UILabel(frame: self.view.frame)
+            temperatureLabel.textColor = UIColor.white
+            temperatureLabel.textAlignment = .center
+            temperatureLabel.numberOfLines = 0
+            // Get Fahrenheit and Celsius Temperatures
+            // °F\n\(Int(celsius))°C"
+            let fahrenheit = temperature.last!.components(separatedBy: "\n").first!.replacingOccurrences(of: "°F", with: "")
+            let celsius = temperature.last!.components(separatedBy: "\n").last!.replacingOccurrences(of: "°C", with: "")
+            // Manipulate font size of temperature
+            let tempFormattedString = NSMutableAttributedString()
+            _ = tempFormattedString
+                .bold("\(fahrenheit)", withFont: UIFont(name: "Futura-Bold", size: 60))
+                .normal("°F", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .bold("\n\(celsius)", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .normal("°C", withFont: UIFont(name: "Futura-Bold", size: 21))
+            temperatureLabel.attributedText = tempFormattedString
+            // MARK: - RPExtensions
+            temperatureLabel.layer.applyShadow(layer: temperatureLabel.layer)
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            temperatureLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            // ALTITUDE FILTER
+            let altitudeLabel = UILabel(frame: self.view.frame)
+            altitudeLabel.textColor = UIColor.white
+            altitudeLabel.textAlignment = .center
+            altitudeLabel.numberOfLines = 0
+            // Manipulate font size of altitude filter
+            let altitudeFormattedString = NSMutableAttributedString()
+            _ = altitudeFormattedString
+                .bold("\(round(altitudeFence.last!/0.3048))", withFont: UIFont(name: "Futura-Medium", size: 60))
+                .normal(" ft", withFont: UIFont(name: "Futura-Bold", size: 30))
+                .bold("\n\(round(altitudeFence.last!))", withFont: UIFont(name: "Futura-Medium", size: 30))
+                .normal(" m", withFont: UIFont(name: "Futura-Bold", size: 21))
+            altitudeLabel.attributedText = altitudeFormattedString
+            // MARK: - RPExtensions
+            altitudeLabel.layer.applyShadow(layer: altitudeLabel.layer)
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            altitudeLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let altitudeFilter = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            // Append Time and Day filters
+            self.filters.append(contentsOf: ["nil", "nil", "nil"])
+            
+            // MARK: - GPUImage; Filter and process images
+            for index in 0..<self.filters.count {
+                if let gpuFilter = self.filters[index] as? GPUImageFilter {
+                    let filteredImage = gpuFilter.image(byFilteringImage: image)
+                    self.filteredImages.append(filteredImage!)
+                }
+            }
+            
+            self.filteredImages.append(cityFilter!)
+            self.filteredImages.append(tempFilter!)
+            self.filteredImages.append(altitudeFilter!)
+        }
+        
+        // MARK: - SwipeView
+        swipeView.dataSource = self
+        swipeView.delegate = self
+        swipeView.isWrapEnabled = true
     }
+
     
-    func swipeViewDidEndDecelerating(_ swipeView: SwipeView!) {
-        // TODO
-    }
 }
