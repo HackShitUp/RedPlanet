@@ -75,7 +75,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     let rpComment = Reaction(id: "rpComment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!)
     let rpShare = Reaction(id: "rpShare", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)
     let rpViews = Reaction(id: "rpViews", title: "Views", color: .lightGray, icon: UIImage(named: "Views")!)
-    let rpMore = Reaction(id: "rpMore", title: "More", color: .lightGray, icon: UIImage(named: "MoreButton")!)
+    let rpMore = Reaction(id: "rpSave", title: "More", color: .lightGray, icon: UIImage(named: "Bookmark")!)
     
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -884,7 +884,7 @@ extension Stories {
             dialogController.addAction(delete)
             // Add saveButton
             dialogController.rightToolStyle = { (button) in
-                button.setImage(UIImage(named: "SaveBlack"), for: .normal)
+                button.setImage(UIImage(named: "Bookmark"), for: .normal)
                 button.tintColor = .darkGray
                 return true
             }

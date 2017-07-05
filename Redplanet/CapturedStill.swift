@@ -388,7 +388,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
         self.filteredImages.append(timeFilter!)
         self.filteredImages.append(dayFilter!)
         
-        
         // GEOLOCATION IS NOT DISABLED
         if !currentGeoFence.isEmpty || !temperature.isEmpty || !altitudeFence.isEmpty {
             // LOCATION FILTER

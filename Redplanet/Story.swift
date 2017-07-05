@@ -830,7 +830,7 @@ extension Story {
             dialogController.addAction(delete)
             // Add saveButton
             dialogController.rightToolStyle = { (button) in
-                button.setImage(UIImage(named: "SaveBlack"), for: .normal)
+                button.setImage(UIImage(named: "Bookmark"), for: .normal)
                 button.tintColor = .darkGray
                 return true
             }

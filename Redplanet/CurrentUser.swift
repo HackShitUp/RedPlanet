@@ -38,7 +38,7 @@ let myProfileNotification = Notification.Name("myProfile")
  "FollowRequests.swift" or "OtherUser.swift"
 
  Works with "RPPopUpVC.swift" to present any of the other classes necesary.
- */
+*/
 
 class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, UINavigationControllerDelegate, TwicketSegmentedControlDelegate, OSPermissionObserver, OSSubscriptionObserver, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     

@@ -41,6 +41,10 @@ UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
 • Baby Blue
 UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
 #00A1FF
+  
+• Yellow
+UIColor(red: 1, green: 1, blue: 0, alpha: 1)
+# FFFF00
 
 • Useful Gray
 UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
@@ -49,9 +53,6 @@ UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
 • Super Light Gray
 UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
 
-• Yellow
-UIColor(red: 1, green: 0.86, blue: 0, alpha: 1)
-  
   
   MARK: - Class documentation
   This class executes the following crucial functions:
