@@ -1,5 +1,5 @@
 //
-//  ShareWith.swift
+//  SendTo.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 7/5/17.
@@ -16,23 +16,13 @@ import Bolts
 
 import DZNEmptyDataSet
 import SDWebImage
+import SVProgressHUD
 import SwipeNavigationController
 
-/*
- UITableViewController class that allows users to share another user's Text Post, Photo, Video, or Moment with individuals.
- Holds "ShareWithCell.swift" to present each user, but binds the data in this class. The selected users are appended to an array
- in this class titled "usersToShareWith". When the "Done" button is tapped, the code checks for the current user's object and
- posts it if it exists.
- 
- NOTE: This class returns 1 section for searched users, and 2 sections when not searched.
- In other words, the UITableView will by default have show a list of people the current user is following
- IF however, the user has searched for someone, the UITableView will have only 1 section.
- */
-
-class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UISearchBarDelegate, SwipeNavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, SwipeNavigationControllerDelegate {
     
-    // MARK: - Class Variable; used to determine PFObject and content to be shared privately
-    var shareWithObject: PFObject?
+    // MARK: - Class Variable; Used to hold newly created object
+    var sendToObject: PFObject?
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -46,33 +36,82 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     
     // Array to hold following
     var abcFollowing = [PFObject]()
+    
+    var sortedFollowingSections = Dictionary<String, Array<PFObject>>()
+    
+    
+    let alphabet = ["🔍", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    
+    
+    private var animals = [AnyHashable: Any]()
+    private var animalSectionTitles = [Any]()
+    
+    
+    
     // Array to hold searched
     var searchedUsers = [PFObject]()
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sendMenu: UIView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     @IBAction func backAction(_ sender: Any) {
         // Pop VC
         _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {
-        // Refresh
+        // MARK: - SVProgressHUD
+        SVProgressHUD.show()
+        // Fetch Following
+        self.fetchFollowing()
     }
     
-    @IBOutlet weak var shareButton: UIButton!
-    @IBAction func shareAction(_ sender: Any) {
+    @IBOutlet weak var sendButton: UIButton!
+    @IBAction func sendAction(_ sender: Any) {
         switch self.usersToShareWith.count {
         case let x where x > 7:
             // Show Alert
             self.showAlert(withStatus: "Exceeded")
         case let x where x > 0:
             // Disable button
-            self.shareButton.isEnabled = false
-            // Send to people privately
+            self.sendButton.isEnabled = false
+            // Save to <Posts>
+            if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                // Traverse PFObject to get object data...
+                let postObject = self.sendToObject!
+                if let geoPoint = PFUser.current()!.value(forKey: "location") as? PFGeoPoint {
+                    postObject["location"] = geoPoint   // add geoLocation...
+                }
+                postObject.saveInBackground(block: { (success: Bool, error: Error?) in
+                    if success {
+                        // Handle nil textPost
+                        if postObject.value(forKey: "textPost") != nil {
+                            // MARK: - RPHelpers; check for #'s and @'s
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.checkHash(forObject: postObject,
+                                                forText: (postObject.value(forKey: "textPost") as! String))
+                            rpHelpers.checkTags(forObject: postObject,
+                                                forText: (postObject.value(forKey: "textPost") as! String),
+                                                postType: (postObject.value(forKey: "contentType") as! String))
+                        }
+                        
+                        // Send Notification
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error...")
+                    }
+                })
+            }
+            
+            // Send to individual people
             for user in self.usersToShareWith {
                 if user.objectId! != PFUser.current()!.objectId! {
                     // Switch Statement...
-                    switch self.shareWithObject!.value(forKey: "contentType") as! String {
+                    switch self.sendToObject!.value(forKey: "contentType") as! String {
                     case "tp":
                         // TEXT POST
                         let textPostChat = PFObject(className: "Chats")
@@ -82,7 +121,7 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         textPostChat["receiverUsername"] = user.value(forKey: "username") as! String
                         textPostChat["read"] = false
                         textPostChat["saved"] = false
-                        textPostChat["Message"] = self.shareWithObject!.value(forKey: "textPost") as! String
+                        textPostChat["Message"] = self.sendToObject!.value(forKey: "textPost") as! String
                         // Update "CHATS"
                         self.updateChats(withObject: textPostChat, user: user)
                         
@@ -96,7 +135,7 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         photoChat["read"] = false
                         photoChat["saved"] = false
                         photoChat["contentType"] = "ph"
-                        photoChat["photoAsset"] = self.shareWithObject!.value(forKey: "photoAsset") as! PFFile
+                        photoChat["photoAsset"] = self.sendToObject!.value(forKey: "photoAsset") as! PFFile
                         // Update "ChatsQueue"
                         self.updateChats(withObject: photoChat, user: user)
                         
@@ -110,7 +149,7 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         videoChat["read"] = false
                         videoChat["saved"] = false
                         videoChat["contentType"] = "vi"
-                        videoChat["videoAsset"] = self.shareWithObject!.value(forKey: "videoAsset") as! PFFile
+                        videoChat["videoAsset"] = self.sendToObject!.value(forKey: "videoAsset") as! PFFile
                         // Update "ChatsQueue"
                         self.updateChats(withObject: videoChat, user: user)
                         
@@ -124,10 +163,10 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         momentChat["contentType"] = "itm"
                         momentChat["read"] = false
                         momentChat["saved"] = false
-                        if self.shareWithObject!.value(forKey: "photoAsset") != nil {
-                            momentChat["photoAsset"] = self.shareWithObject!.value(forKey: "photoAsset") as! PFFile
+                        if self.sendToObject!.value(forKey: "photoAsset") != nil {
+                            momentChat["photoAsset"] = self.sendToObject!.value(forKey: "photoAsset") as! PFFile
                         } else {
-                            momentChat["videoAsset"] = self.shareWithObject!.value(forKey: "videoAsset") as! PFFile
+                            momentChat["videoAsset"] = self.sendToObject!.value(forKey: "videoAsset") as! PFFile
                         }
                         // Update "ChatsQueue"
                         self.updateChats(withObject: momentChat, user: user)
@@ -142,16 +181,15 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             let rpHelpers = RPHelpers()
             rpHelpers.showSuccess(withTitle: "Shared")
             
+            // Deallocate CapturedStill.swift
+            let capturedStill = CapturedStill()
+            capturedStill.clearArrays()
+            
             // Clear arrays
             self.usersToShareWith.removeAll(keepingCapacity: false)
             
             // Show center, or pop VC
             if self.navigationController?.restorationIdentifier == "right" || self.navigationController?.restorationIdentifier == "left" {
-                
-                // Deallocate CapturedStill.swift
-                let capturedStill = CapturedStill()
-                capturedStill.clearArrays()
-                
                 // MARK: - SwipeNavigationController; show center VC
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
                 
@@ -168,7 +206,7 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             break;
         }
     }
-
+    
     // FUNCTION - MARK: - RPHelpers; update "chatsQueue" and send push notification
     func updateChats(withObject: PFObject?, user: PFObject?) {
         withObject!.saveInBackground(block: { (success: Bool, error: Error?) in
@@ -225,11 +263,11 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         dialogController.show(in: self)
     }
     
-    
-    // FUNCTION - Fetch following
+    // FUNCTION - Fetch Current User's Following
     func fetchFollowing() {
         // MARK: - AppDelegate; queryRelationships
         _ = appDelegate.queryRelationships()
+        
         // Get following
         let following = PFQuery(className: "FollowMe")
         following.whereKey("follower", equalTo: PFUser.current()!)
@@ -240,6 +278,10 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+                
                 // Create array
                 var following = [PFObject]()
                 // Clear array
@@ -253,6 +295,11 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 // Reload data in main thread
                 DispatchQueue.main.async(execute: {
                     self.abcFollowing = following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+                    
+                    for a in self.abcFollowing {
+                        
+                    }
+                    
                     self.tableView.reloadData()
                 })
                 
@@ -264,18 +311,19 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             }
         }
     }
-    
+
     // FUNCTION - Stylize UINavigationBar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21) {
+        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Share With..."
+            self.title = "Send To..."
         }
+        
         // MARK: - RPHelpers; whiten UINavigationBar and roundAllCorners
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
@@ -303,7 +351,6 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         if position == .bottom {
             NotificationCenter.default.post(name: homeNotification, object: nil)
         }
-        
     }
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
@@ -343,29 +390,32 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Fetch Following
-        fetchFollowing()
         // Stylize title
         configureView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // MARK: - SwipeNavigationControllerDelegate
         self.containerSwipeNavigationController?.delegate = self
         
         // Configure UISearchBar
         searchBar.delegate = self
-        searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         searchBar.barTintColor = UIColor.white
         searchBar.sizeToFit()
-        tableView?.tableHeaderView = self.searchBar
-        tableView?.tableHeaderView?.layer.borderWidth = 0.5
-        tableView?.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
-        tableView?.tableHeaderView?.clipsToBounds = true
-        tableView?.tableFooterView = UIView()
-        tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        
+        // Configure UITableView
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.tableHeaderView = self.searchBar
+        tableView.tableHeaderView?.layer.borderWidth = 0.5
+        tableView.tableHeaderView?.layer.borderColor = UIColor.groupTableViewBackground.cgColor
+        tableView.tableHeaderView?.clipsToBounds = true
+        tableView.separatorColor = UIColor.groupTableViewBackground
+        tableView.tableFooterView = UIView()
+        tableView.sectionIndexColor = UIColor.darkGray
+        tableView.sectionIndexTrackingBackgroundColor = UIColor.groupTableViewBackground
         
         // Register NIB
         tableView.register(UINib(nibName: "SendToCell", bundle: nil), forCellReuseIdentifier: "SendToCell")
@@ -375,18 +425,11 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        
+        // Fetch Following
+        fetchFollowing()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        // Clear arrays
-        self.usersToShareWith.removeAll(keepingCapacity: false)
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()
@@ -443,34 +486,49 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         })
     }
     
-    
     // MARK: - UITableView DataSource Methods
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if searchBar.text != "" && self.searchBar.isFirstResponder {
+            // SEARCHED
+            return 1
+        } else {
+            // MY STORY & FOLLOWING
+//            return 2 + 26
+            return 2
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // # of Rows
+        var numberOfRows: Int?
         // SEARCHED
         if self.tableView.numberOfSections == 1 && self.searchBar.text != "" {
-            return self.searchedUsers.count
-        } else {
+            numberOfRows = self.searchedUsers.count
+        } else if self.tableView.numberOfSections == 2 && section == 0 {
+        // MY STORY
+            numberOfRows = 1
+        } else if self.tableView.numberOfSections == 2 && section == 1 {
         // FOLLOWING
-            return self.abcFollowing.count
+            numberOfRows = self.abcFollowing.count
         }
+        
+        return numberOfRows!
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UILabel()
         header.backgroundColor = UIColor.white
-        header.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        header.textColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
         header.font = UIFont(name: "AvenirNext-Bold", size: 12)
         header.textAlignment = .left
-        // SEARCHED
-        if self.searchBar.text != "" {
+        if self.tableView.numberOfSections == 1 {
             header.text = "   SEARCHED..."
         } else {
-            // FOLLOWING
-            header.text = "   FOLLOWING"
+            if section == 0 {
+                header.text = "   MY STORY"
+            } else {
+                header.text = "   FOLLOWING"
+            }
         }
         return header
     }
@@ -487,17 +545,71 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "SendToCell") as! SendToCell
 
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0, borderColor: UIColor.clear)
         
-        if self.searchBar.text != "" {
+        switch self.tableView.numberOfSections {
+        case 2:
+            if indexPath.section == 0 && indexPath.row == 0 {
+            // MY STORY
+                // (1) Set text
+                // Manipulate font size and type of String for UILabel
+                let formattedString = NSMutableAttributedString()
+                // MARK: - RPExtensions
+                _ = formattedString
+                    .bold("Post", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+                    .normal(" to My Story", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+                cell.rpUsername.attributedText = formattedString
+                
+                // (2) Set Profile Photo
+                if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+                
+                // (3) Configure selected state
+                if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                    cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+                    cell.accessoryType = .checkmark
+                } else {
+                    cell.contentView.backgroundColor = UIColor.white
+                    cell.accessoryType = .none
+                }
+                
+            } else {
+            // FOLLOWING
+                // (1) Set realNameOfUser followed by username
+                // Manipulate font size and type of String for UILabel
+                let formattedString = NSMutableAttributedString()
+                // MARK: - RPExtensions
+                _ = formattedString
+                    .bold("\(self.abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+                    .normal("\n\((self.abcFollowing[indexPath.row].value(forKey: "username") as! String).lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+                cell.rpUsername.attributedText = formattedString
+                
+                // (2) Set Profile Photo
+                if let proPic = self.abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                }
+                // (3) Configure selected state
+                if self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
+                    cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+                    cell.accessoryType = .checkmark
+                } else {
+                    cell.contentView.backgroundColor = UIColor.white
+                    cell.accessoryType = .none
+                }
+            }
+            
+        case 1:
             // SEARCHED
             // (1) Set realNameOfUser followed by username
             // Manipulate font size and type of String for UILabel
             let formattedString = NSMutableAttributedString()
             // MARK: - RPExtensions
             _ = formattedString
-                .bold("\(self.searchedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
-                .normal("\n\((self.searchedUsers[indexPath.row].value(forKey: "username") as! String).lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+                .bold("\(self.searchedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 17))
+                .normal("\n\((self.searchedUsers[indexPath.row].value(forKey: "username") as! String).lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 17))
             cell.rpUsername.attributedText = formattedString
             
             // (2) Set Profile Photo
@@ -513,53 +625,38 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 cell.contentView.backgroundColor = UIColor.white
                 cell.accessoryType = .none
             }
-            
-        } else {
-            // FOLLOWING
-            // (1) Set realNameOfUser followed by username
-            // Manipulate font size and type of String for UILabel
-            let formattedString = NSMutableAttributedString()
-            // MARK: - RPExtensions
-            _ = formattedString
-                .bold("\(self.abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
-                .normal("\n\((self.abcFollowing[indexPath.row].value(forKey: "username") as! String).lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
-            cell.rpUsername.attributedText = formattedString
-            
-            // (2) Set Profile Photo
-            if let proPic = self.abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-            }
-            // (3) Configure selected state
-            if self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
-                cell.contentView.backgroundColor = UIColor.groupTableViewBackground
-                cell.accessoryType = .checkmark
-            } else {
-                cell.contentView.backgroundColor = UIColor.white
-                cell.accessoryType = .none
-            }
+        default:
+            break
         }
+        
         
         return cell
     }
     
     // MARK: - UITableView Delegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if self.searchBar.text != "" {
+        // Append object to array
+        switch self.tableView.numberOfSections {
+        case 1:
             // SEARCHED
             // Append searched object
             if !self.usersToShareWith.contains(where: {$0.objectId! == self.searchedUsers[indexPath.row].objectId!}) {
                 self.usersToShareWith.append(self.searchedUsers[indexPath.row])
             }
-        } else {
-            // FOLLOWING
-            // Append following object
-            if !self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
-                self.usersToShareWith.append(self.abcFollowing[indexPath.row])
+        case 2:
+            // MY STORY: Append current user's object
+            if indexPath.section == 0 && indexPath.row == 0 && !self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}){
+                self.usersToShareWith.append(PFUser.current()!)
+            } else {
+            // FOLLOWING: Sort Following in ABC-Order
+                // Append following object
+                if !self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
+                    self.usersToShareWith.append(self.abcFollowing[indexPath.row])
+                }
             }
+        default:
+            break;
         }
-        
         // Configure selected state
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.contentView.backgroundColor = UIColor.groupTableViewBackground
@@ -568,8 +665,8 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
-        if self.searchBar.text != "" {
+        switch self.tableView.numberOfSections {
+        case 1:
             // SEARCHED
             // Remove Searched User
             self.searchedUsers.remove(at: self.searchedUsers.index(of: self.searchedUsers[indexPath.row])!)
@@ -577,13 +674,19 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             self.searchBar.text! = ""
             // Query Following
             fetchFollowing()
-            
-        } else {
-            // FOLLOWING
-            // Remove object at index
-            if let removalIndex = self.usersToShareWith.index(of: self.abcFollowing[indexPath.row]) {
-                self.usersToShareWith.remove(at: removalIndex)
+        case 2:
+            // NOT SEARCHED
+            if indexPath.section == 0 && indexPath.row == 0 {
+                // Remove: PFUser.current()!
+                self.usersToShareWith.remove(at: self.usersToShareWith.index(of: PFUser.current()!)!)
+            } else {
+                // Remove object at index
+                if let removalIndex = self.usersToShareWith.index(of: self.abcFollowing[indexPath.row]) {
+                    self.usersToShareWith.remove(at: removalIndex)
+                }
             }
+        default:
+            break;
         }
         
         // Configure selected state
@@ -591,8 +694,15 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             cell.contentView.backgroundColor = UIColor.white
             cell.accessoryType = .none
         }
-        
     }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return self.alphabet
+    }
+    
+//    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+//    }
+    
     
     // MARK: - UIScrollView Delegate Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -617,5 +727,5 @@ class ShareWith: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         // Reload data
         fetchFollowing()
     }
-    
+
 }

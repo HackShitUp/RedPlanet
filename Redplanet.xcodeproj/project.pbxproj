@@ -125,7 +125,6 @@
 		7E9B2E161ECAC669000F1AD2 /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B2E151ECAC669000F1AD2 /* ExploreCell.swift */; };
 		7E9B2E181ECACB48000F1AD2 /* TableCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B2E171ECACB48000F1AD2 /* TableCollectionCell.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
-		7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
 		7EA45CCA1DB6A1B900A466D9 /* CreateProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* CreateProfile.swift */; };
 		7EA4E4D51E738060000163AD /* BlockedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA4E4D41E738060000163AD /* BlockedUsers.swift */; };
@@ -135,8 +134,13 @@
 		7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
+		7EB39F961F0D84D200A0A10E /* SendTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB39F951F0D84D200A0A10E /* SendTo.swift */; };
+		7EB39F9D1F0DA5D800A0A10E /* CollectionNamesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB39F9B1F0DA5D800A0A10E /* CollectionNamesCell.swift */; };
+		7EB39F9E1F0DA5D800A0A10E /* CollectionNamesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB39F9C1F0DA5D800A0A10E /* CollectionNamesCell.xib */; };
+		7EB39FA01F0DC48300A0A10E /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB39F9F1F0DC48300A0A10E /* ShareWith.swift */; };
+		7EB39FA51F0DD06800A0A10E /* SendToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB39FA31F0DD06800A0A10E /* SendToCell.swift */; };
+		7EB39FA61F0DD06800A0A10E /* SendToCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EB39FA41F0DD06800A0A10E /* SendToCell.xib */; };
 		7EB40B5B1EC6618A0034E8AF /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5A1EC6618A0034E8AF /* Story.swift */; };
-		7EB40B5D1EC690520034E8AF /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5C1EC690520034E8AF /* ShareWith.swift */; };
 		7EBAFEF11ED7BAE300BB052D /* SubtleVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */; };
 		7EBDAF291EE7A5E500C645D9 /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDAF281EE7A5E500C645D9 /* UIImageColors.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
@@ -378,7 +382,6 @@
 		7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
-		7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWithCell.swift; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		7EA45CC91DB6A1B900A466D9 /* CreateProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfile.swift; sourceTree = "<group>"; };
 		7EA4E4D41E738060000163AD /* BlockedUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsers.swift; sourceTree = "<group>"; };
@@ -388,8 +391,13 @@
 		7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersFollowing.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
+		7EB39F951F0D84D200A0A10E /* SendTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendTo.swift; sourceTree = "<group>"; };
+		7EB39F9B1F0DA5D800A0A10E /* CollectionNamesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionNamesCell.swift; sourceTree = "<group>"; };
+		7EB39F9C1F0DA5D800A0A10E /* CollectionNamesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionNamesCell.xib; sourceTree = "<group>"; };
+		7EB39F9F1F0DC48300A0A10E /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
+		7EB39FA31F0DD06800A0A10E /* SendToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendToCell.swift; sourceTree = "<group>"; };
+		7EB39FA41F0DD06800A0A10E /* SendToCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendToCell.xib; sourceTree = "<group>"; };
 		7EB40B5A1EC6618A0034E8AF /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Story.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		7EB40B5C1EC690520034E8AF /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
 		7EBAFEF01ED7BAE300BB052D /* SubtleVolume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtleVolume.swift; sourceTree = "<group>"; };
 		7EBDAF281EE7A5E500C645D9 /* UIImageColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -948,13 +956,17 @@
 			name = EasyBadge;
 			sourceTree = "<group>";
 		};
-		7EA1C74E1E59835500FBE39B /* ShareWith */ = {
+		7EA1C74E1E59835500FBE39B /* SendTo/ShareWith */ = {
 			isa = PBXGroup;
 			children = (
-				7EB40B5C1EC690520034E8AF /* ShareWith.swift */,
-				7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */,
+				7EB39F951F0D84D200A0A10E /* SendTo.swift */,
+				7EB39F9F1F0DC48300A0A10E /* ShareWith.swift */,
+				7EB39FA31F0DD06800A0A10E /* SendToCell.swift */,
+				7EB39FA41F0DD06800A0A10E /* SendToCell.xib */,
+				7EB39F9B1F0DA5D800A0A10E /* CollectionNamesCell.swift */,
+				7EB39F9C1F0DA5D800A0A10E /* CollectionNamesCell.xib */,
 			);
-			name = ShareWith;
+			name = SendTo/ShareWith;
 			sourceTree = "<group>";
 		};
 		7EA45CCF1DB6A1F800A466D9 /* Onboarding */ = {
@@ -988,7 +1000,7 @@
 		7EA730D61E3B293500CF4D12 /* RPShareUI */ = {
 			isa = PBXGroup;
 			children = (
-				7EA1C74E1E59835500FBE39B /* ShareWith */,
+				7EA1C74E1E59835500FBE39B /* SendTo/ShareWith */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
@@ -1460,6 +1472,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EB39F9E1F0DA5D800A0A10E /* CollectionNamesCell.xib in Resources */,
 				7E972FE01EA93E8B0047F4D4 /* StoryCell.xib in Resources */,
 				7E01A5211EB81C8100CD7FBF /* StoryScrollCell.xib in Resources */,
 				7EA570BA1EC02C5400A57C70 /* ReactionsHeader.xib in Resources */,
@@ -1467,6 +1480,7 @@
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
 				7E972FE81EA95B180047F4D4 /* MomentPhoto.xib in Resources */,
 				7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */,
+				7EB39FA61F0DD06800A0A10E /* SendToCell.xib in Resources */,
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
 				7E41C7A51E4006380025129B /* CurrentUserHeader.xib in Resources */,
 				7E9457F21EB7FF4700035C08 /* ProfilePhotoCell.xib in Resources */,
@@ -1646,6 +1660,7 @@
 				7E972FE71EA95B180047F4D4 /* MomentPhoto.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
+				7EB39F961F0D84D200A0A10E /* SendTo.swift in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* CreateProfile.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
@@ -1663,6 +1678,7 @@
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
+				7EB39FA01F0DC48300A0A10E /* ShareWith.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7EFB45AA1F06E66F00BBC779 /* RPTextView.swift in Sources */,
@@ -1699,7 +1715,6 @@
 				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
 				7E2E6E691F0B452300D5DE42 /* RPUtilities.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
-				7EB40B5D1EC690520034E8AF /* ShareWith.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7E99272C1EF505E500610A6E /* TextPostCell.swift in Sources */,
 				7EA570B61EC01F3F00A57C70 /* CommentsCell.swift in Sources */,
@@ -1755,15 +1770,16 @@
 				7E99272F1EF517A700610A6E /* Onboarding.swift in Sources */,
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
+				7EB39F9D1F0DA5D800A0A10E /* CollectionNamesCell.swift in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,
-				7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
+				7EB39FA51F0DD06800A0A10E /* SendToCell.swift in Sources */,
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
 				7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */,
 				7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */,

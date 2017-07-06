@@ -158,8 +158,8 @@ class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDeleg
                 self.navigationController?.pushViewController(reactionsVC, animated: true)
             case "rpShare":
                 // SHARE
-                shareWithObject.append(self.posts[self.currentIndex!])
                 let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                shareWithVC.shareWithObject = self.posts[self.currentIndex!]
                 self.navigationController?.pushViewController(shareWithVC, animated: true)
             case "rpViews":
                 // VIEWS

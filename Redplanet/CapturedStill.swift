@@ -127,11 +127,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
                     itmPhoto["saved"] = false
                     itmPhoto["textPost"] = self.rpCaptionView.textView.text
                     itmPhoto["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(RPUtilities.screenShot(self.view)!, 0.5)!)
-                    // Show ShareWith View Controller
-                    shareWithObject.append(itmPhoto)
-                    let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-                    self.navigationController?.pushViewController(shareWithVC, animated: true)
-                    
+                    // Show SendTo UIViewController
+                    let sendToVC = self.storyboard?.instantiateViewController(withIdentifier: "sendToVC") as! SendTo
+                    sendToVC.sendToObject = itmPhoto
+                    self.navigationController?.pushViewController(sendToVC, animated: true)
                 } else {
                 // CHATS
                     // Disable button

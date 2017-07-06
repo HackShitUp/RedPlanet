@@ -180,8 +180,8 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
-        refresher.tintColor = UIColor.white
+        refresher.backgroundColor = UIColor(red: 1, green: 1, blue: 0, alpha: 1)
+        refresher.tintColor = UIColor.black
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refresher)
         
@@ -280,8 +280,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
         if self.searchBar.text! != "" {
             // (1) Get and set user's data
             if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
-                // Set username
-                cell.rpUsername.text = user.username!
+                // Set realNameOfUser followed by username
+                // Manipulate font size and type of String for UILabel
+                let formattedString = NSMutableAttributedString()
+                // MARK: - RPExtensions
+                _ = formattedString
+                    .bold("\(user.value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+                    .normal("\n\(user.username!.lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+                cell.rpUsername.attributedText = formattedString
+                
+                
                 // Get and set userProfilePicture
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - RPExtensions
@@ -295,8 +303,15 @@ class Views: UITableViewController, UINavigationControllerDelegate, UISearchBarD
         // VIEWED
             // (1) Get and set user's data
             if let user = self.viewObjects[indexPath.row].object(forKey: "byUser") as? PFUser {
-                // Set username
-                cell.rpUsername.text = user.username!
+                // Set realNameOfUser followed by username
+                // Manipulate font size and type of String for UILabel
+                let formattedString = NSMutableAttributedString()
+                // MARK: - RPExtensions
+                _ = formattedString
+                    .bold("\(user.value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+                    .normal("\n\(user.username!.lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+                cell.rpUsername.attributedText = formattedString
+                
                 // Get and set userProfilePicture
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - RPExtensions

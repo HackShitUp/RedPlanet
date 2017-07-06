@@ -144,11 +144,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             textPost["textPost"] = self.textView!.text!
             textPost["contentType"] = "tp"
             textPost["saved"] = false
-            
-            // Show ShareWith View Controller
-            shareWithObject.append(textPost)
-            let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-            self.navigationController?.pushViewController(shareWithVC, animated: true)
+
+            // Show SendTo UIViewController
+            let sendToVC = self.storyboard?.instantiateViewController(withIdentifier: "sendToVC") as! SendTo
+            sendToVC.sendToObject = textPost
+            self.navigationController?.pushViewController(sendToVC, animated: true)
         }
     }
     
@@ -196,12 +196,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         // Stylize title
         configureView()
         
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true
+        
         // Add observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -209,9 +211,16 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Stylize title
-        configureView()
+        
+        // Set placeholder text
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            self.textView.text! = "What's up? 😜"
+        } else {
+            // Odd
+            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
+        }
         
         // Configure UITableView
         tableView.isHidden = true
@@ -242,15 +251,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.textView.textColor = UIColor.darkGray
         self.textView.font = UIFont(name: "AvenirNext-Medium", size: 30)
         self.textView.delegate = self
-        
-        let randomInt = arc4random()
-        if randomInt % 2 == 0 {
-            // Even
-            self.textView.text! = "What's up? 😜"
-        } else {
-            // Odd
-            self.textView.text! = "Thoughts are preludes to revolutionary movements..."
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

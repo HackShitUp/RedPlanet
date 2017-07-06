@@ -113,10 +113,10 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate {
                     DispatchQueue.main.async(execute: {
                         // Pause VIMPlayerView's AVPlayer
                         self.vimPlayerView.player?.pause()
-                        // Append PFObject
-                        shareWithObject.append(video)
-                        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-                        self.navigationController?.pushViewController(shareWithVC, animated: true)
+                        // Show SendTo UIViewController
+                        let sendToVC = self.storyboard?.instantiateViewController(withIdentifier: "sendToVC") as! SendTo
+                        sendToVC.sendToObject = video
+                        self.navigationController?.pushViewController(sendToVC, animated: true)
                     })
                     
                 } catch let error {

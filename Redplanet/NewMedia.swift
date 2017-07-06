@@ -112,10 +112,10 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
         photo["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaPreview.image!, 0.5)!)
         photo["textPost"] = self.textPost.text
         photo["saved"] = false
-        // Append PFObject
-        shareWithObject.append(photo)
-        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-        self.navigationController?.pushViewController(shareWithVC, animated: true)
+        // Show SendTo UIViewController
+        let sendToVC = self.storyboard?.instantiateViewController(withIdentifier: "sendToVC") as! SendTo
+        sendToVC.sendToObject = photo
+        self.navigationController?.pushViewController(sendToVC, animated: true)
     }
     
     // FUNCTION - Share video
@@ -149,10 +149,10 @@ class NewMedia: UIViewController, UINavigationControllerDelegate, UITextViewDele
                     video["textPost"] = self.textPost.text
                     video["saved"] = false
                     DispatchQueue.main.async(execute: {
-                        // Append PFObject
-                        shareWithObject.append(video)
-                        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-                        self.navigationController?.pushViewController(shareWithVC, animated: true)
+                        // Show SendTo UIViewController
+                        let sendToVC = self.storyboard?.instantiateViewController(withIdentifier: "sendToVC") as! SendTo
+                        sendToVC.sendToObject = video
+                        self.navigationController?.pushViewController(sendToVC, animated: true)
                     })
                     
                 } catch let error {
