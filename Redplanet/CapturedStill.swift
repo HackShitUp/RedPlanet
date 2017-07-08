@@ -176,7 +176,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, UIGesture
 //        rect.origin.x = newXPosition
 //        rect.origin.x = newXPosition/swipeView.frame.width
 //        rect.origin.x = newXPosition * swipeView.frame.width
-        print(newXPosition)
+//        print(newXPosition)
         path.addRect(rect)
         maskLayer.path = path
         self.swipeView.layer.mask = maskLayer

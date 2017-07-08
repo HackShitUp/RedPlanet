@@ -41,12 +41,62 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
     
     
     let alphabet = ["🔍", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+//    let alphabet = ["🔍ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+    let abcUsers = ["🔍" : [PFUser.current()!],
+                    "A" : [PFObject](),
+                    "B" : [PFObject](),
+                    "C" : [PFObject](),
+                    "D" : [PFObject](),
+                    "E" : [PFObject](),
+                    "F" : [PFObject](),
+                    "G" : [PFObject](),
+                    "H" : [PFObject](),
+                    "I" : [PFObject](),
+                    "J" : [PFObject](),
+                    "K" : [PFObject](),
+                    "L" : [PFObject](),
+                    "M" : [PFObject](),
+                    "N" : [PFObject](),
+                    "O" : [PFObject](),
+                    "P" : [PFObject](),
+                    "Q" : [PFObject](),
+                    "R" : [PFObject](),
+                    "S" : [PFObject](),
+                    "T" : [PFObject](),
+                    "U" : [PFObject](),
+                    "V" : [PFObject](),
+                    "W" : [PFObject](),
+                    "X" : [PFObject](),
+                    "Y" : [PFObject](),
+                    "Z" : [PFObject]()]
     
-    
-    private var animals = [AnyHashable: Any]()
-    private var animalSectionTitles = [Any]()
-    
-    
+    // Array to hold users based on alphabetical order...
+    var aUsers = [PFObject]()
+    var bUsers = [PFObject]()
+    var cUsers = [PFObject]()
+    var dUsers = [PFObject]()
+    var eUsers = [PFObject]()
+    var fUsers = [PFObject]()
+    var gUsers = [PFObject]()
+    var hUsers = [PFObject]()
+    var iUsers = [PFObject]()
+    var jUsers = [PFObject]()
+    var kUsers = [PFObject]()
+    var lUsers = [PFObject]()
+    var mUsers = [PFObject]()
+    var nUsers = [PFObject]()
+    var oUsers = [PFObject]()
+    var pUsers = [PFObject]()
+    var qUsers = [PFObject]()
+    var rUsers = [PFObject]()
+    var sUsers = [PFObject]()
+    var tUsers = [PFObject]()
+    var uUsers = [PFObject]()
+    var vUsers = [PFObject]()
+    var wUsers = [PFObject]()
+    var xUsers = [PFObject]()
+    var yUsers = [PFObject]()
+    var zUsers = [PFObject]()
     
     // Array to hold searched
     var searchedUsers = [PFObject]()
@@ -296,10 +346,28 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
                 DispatchQueue.main.async(execute: {
                     self.abcFollowing = following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                     
-                    for a in self.abcFollowing {
-                        
-                    }
                     
+                    let names = self.abcFollowing.map{$0.value(forKey: "realNameOfUser") as! String}
+                    let dict = names.reduce([String : [String]]()) { (key, value) -> [String: [String]] in
+                        var key = key
+                        if let first = value.characters.first {
+                            let prefix = String(describing: first).uppercased()
+                            var array = key[prefix]
+                            if array == nil { array = [] }
+                            array!.append(value)
+                            key[prefix] = array!.sorted()
+                        }
+                        print(key)
+                        return key
+                    }
+//                    print(dict.keys.sorted())
+//                    print(dict)
+                    var dictionary = [String: [PFObject]]()
+                    for i in 0..<names.count {
+                        if let first = names[i].characters.first {
+                            let prefix = String(describing: first).uppercased()
+                        }
+                    }
                     self.tableView.reloadData()
                 })
                 
@@ -493,8 +561,7 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
             return 1
         } else {
             // MY STORY & FOLLOWING
-//            return 2 + 26
-            return 2
+            return 1 + 26
         }
     }
     
@@ -502,16 +569,17 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
         // # of Rows
         var numberOfRows: Int?
         // SEARCHED
-        if self.tableView.numberOfSections == 1 && self.searchBar.text != "" {
+        if tableView.numberOfSections == 1 && self.searchBar.text != "" {
             numberOfRows = self.searchedUsers.count
-        } else if self.tableView.numberOfSections == 2 && section == 0 {
+        } else if section == 0 {
         // MY STORY
             numberOfRows = 1
-        } else if self.tableView.numberOfSections == 2 && section == 1 {
-        // FOLLOWING
-            numberOfRows = self.abcFollowing.count
+        } else {
+        // ALPHABET
+            let names = self.abcFollowing.map{$0.value(forKey: "realNameOfUser") as! String}
+            numberOfRows = names.count
         }
-        
+    
         return numberOfRows!
     }
     
@@ -527,7 +595,7 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
             if section == 0 {
                 header.text = "   MY STORY"
             } else {
-                header.text = "   FOLLOWING"
+                header.text = "   \(self.alphabet[section])"
             }
         }
         return header
@@ -547,61 +615,7 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0, borderColor: UIColor.clear)
         
-        switch self.tableView.numberOfSections {
-        case 2:
-            if indexPath.section == 0 && indexPath.row == 0 {
-            // MY STORY
-                // (1) Set text
-                // Manipulate font size and type of String for UILabel
-                let formattedString = NSMutableAttributedString()
-                // MARK: - RPExtensions
-                _ = formattedString
-                    .bold("Post", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
-                    .normal(" to My Story", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
-                cell.rpUsername.attributedText = formattedString
-                
-                // (2) Set Profile Photo
-                if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                }
-                
-                // (3) Configure selected state
-                if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                    cell.contentView.backgroundColor = UIColor.groupTableViewBackground
-                    cell.accessoryType = .checkmark
-                } else {
-                    cell.contentView.backgroundColor = UIColor.white
-                    cell.accessoryType = .none
-                }
-                
-            } else {
-            // FOLLOWING
-                // (1) Set realNameOfUser followed by username
-                // Manipulate font size and type of String for UILabel
-                let formattedString = NSMutableAttributedString()
-                // MARK: - RPExtensions
-                _ = formattedString
-                    .bold("\(self.abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
-                    .normal("\n\((self.abcFollowing[indexPath.row].value(forKey: "username") as! String).lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
-                cell.rpUsername.attributedText = formattedString
-                
-                // (2) Set Profile Photo
-                if let proPic = self.abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                }
-                // (3) Configure selected state
-                if self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
-                    cell.contentView.backgroundColor = UIColor.groupTableViewBackground
-                    cell.accessoryType = .checkmark
-                } else {
-                    cell.contentView.backgroundColor = UIColor.white
-                    cell.accessoryType = .none
-                }
-            }
-            
-        case 1:
+        if tableView.numberOfSections == 1 {
             // SEARCHED
             // (1) Set realNameOfUser followed by username
             // Manipulate font size and type of String for UILabel
@@ -625,11 +639,58 @@ class SendTo: UIViewController, UITableViewDataSource, UITableViewDelegate, UISe
                 cell.contentView.backgroundColor = UIColor.white
                 cell.accessoryType = .none
             }
-        default:
-            break
+
+        } else if tableView.numberOfSections != 1 && indexPath.section == 0 && indexPath.row == 0 {
+            // MY STORY
+            // (1) Set text
+            // Manipulate font size and type of String for UILabel
+            let formattedString = NSMutableAttributedString()
+            // MARK: - RPExtensions
+            _ = formattedString
+                .bold("Post", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+                .normal(" to My Story", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+            cell.rpUsername.attributedText = formattedString
+            
+            // (2) Set Profile Photo
+            if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            }
+            
+            // (3) Configure selected state
+            if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+                cell.accessoryType = .checkmark
+            } else {
+                cell.contentView.backgroundColor = UIColor.white
+                cell.accessoryType = .none
+            }
+        } else {
+            // FOLLOWING
+            // (1) Set realNameOfUser followed by username
+            // Manipulate font size and type of String for UILabel
+            let formattedString = NSMutableAttributedString()
+            // MARK: - RPExtensions
+            _ = formattedString
+                .bold("\(self.abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String)", withFont: UIFont(name: "AvenirNext-Demibold", size: 15))
+                .normal("\n\((self.abcFollowing[indexPath.row].value(forKey: "username") as! String).lowercased())", withFont: UIFont(name: "AvenirNext-Medium", size: 15))
+            cell.rpUsername.attributedText = formattedString
+            
+            // (2) Set Profile Photo
+            if let proPic = self.abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+            }
+            // (3) Configure selected state
+            if self.usersToShareWith.contains(where: {$0.objectId! == self.abcFollowing[indexPath.row].objectId!}) {
+                cell.contentView.backgroundColor = UIColor.groupTableViewBackground
+                cell.accessoryType = .checkmark
+            } else {
+                cell.contentView.backgroundColor = UIColor.white
+                cell.accessoryType = .none
+            }
         }
-        
-        
+
         return cell
     }
     
